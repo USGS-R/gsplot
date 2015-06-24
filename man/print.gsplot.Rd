@@ -18,7 +18,7 @@ modified gsplot object
 show gsplot
 }
 \examples{
-gs <- gsplot(list(figure="testFig"))
+gs <- gsplot(list())
 gsNew <- points(gs, x=1, y=2)
 gsNew
 }

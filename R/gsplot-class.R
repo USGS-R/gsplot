@@ -17,4 +17,3 @@ gsplot.list <- function(x){
   class(x) <- "gsplot"
   invisible(x) 
 }
-
