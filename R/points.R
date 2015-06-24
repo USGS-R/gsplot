@@ -6,7 +6,7 @@
 #' @return modified gsplot object 
 #' @export
 #' @examples
-#' gs <- gsplot(list(plot=list(x=0,ylim=c(0,10),xlim=c(0,10))))
+#' gs <- gsplot(list())
 #' gsNew <- points(gs, x=1, y=2)
 #' gsNew <- points(gsNew, x=c(3,4,3), y=c(2,4,6))
 points <- function(object, legend.name=NULL, side=NA, ...){
