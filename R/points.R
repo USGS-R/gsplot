@@ -2,8 +2,7 @@
 #'
 #' Point stuff
 #'
-#' @param gsplot gsplot object
-#' @param \dots
+#' @param \dots stuff
 #' @return modified gsplot object 
 #' @export
 #' @examples
