@@ -1,0 +1,21 @@
+---
+title: "Introduction to gsplot."
+author: "Jordan Read, Laura DeCicco, Jordan Walker, Phethala Thongsavanh"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+    number_sections: true
+    fig_caption: yes
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{gsplot Intro}
+  \usepackage[utf8]{inputenc}
+---
+
+```{r message=FALSE, echo=FALSE}
+library(gsplot)
+
+
+```
+

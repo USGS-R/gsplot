@@ -7,7 +7,13 @@
 points(object, legend.name = NULL, side = NA, ...)
 }
 \arguments{
-\item{\dots}{...    Further graphical parameters may also be supplied as arguments. See ‘Details’.}
+\item{object}{gsplot object}
+
+\item{legend.name}{character}
+
+\item{side}{integer vector}
+
+\item{\dots}{...    Further graphical parameters may also be supplied as arguments. See 'Details'.}
 }
 \value{
 modified gsplot object
