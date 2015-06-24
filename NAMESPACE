@@ -2,3 +2,4 @@
 
 S3method(gsplot,list)
 export(gsplot)
+export(points)
