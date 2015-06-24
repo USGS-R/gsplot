@@ -4,6 +4,7 @@ Title: Geological Survey plotting
 Version: 0.0.1
 Date: 2015-06-24
 Author: CIDA
+License: CC0
 Maintainer: cida top dog <cida@usgs.gov>
 Description: Geological Survey plotting
 Copyright: This software is in the public domain because it contains materials
@@ -12,6 +13,7 @@ Copyright: This software is in the public domain because it contains materials
     official USGS copyright policy at
     http://www.usgs.gov/visual-id/credit_usgs.html#copyright
 Suggests:
-    testthat
+    testthat,
+    knitr
 VignetteBuilder: knitr
 BuildVignettes: true
