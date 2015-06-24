@@ -8,9 +8,11 @@ language: objective-c
 
 env:
    global:
-     - R_BUILD_ARGS=" "
-     - R_CHECK_ARGS="--as-cran"
-     - NOT_CRAN="true" 
+     - R_LIBS="http://cran.rstudio.com"
+     - R_BUILD_ARGS="--no-build-vignettes --no-manual"
+     - R_CHECK_ARGS="--no-build-vignettes --no-manual --as-cran"
+     - BOOTSTRAP_LATEX=""
+     - NOT_CRAN="true"
      
 before_install:
   - curl -OL http://raw.github.com/craigcitro/r-travis/master/scripts/travis-tool.sh
