@@ -1,10 +1,11 @@
 #' gsplot points
 #'
 #' Point stuff
-#' @param gsplot a gsplot object
-#' @param legend.name a character vector of length one to be used in the legend (if needed)
-#' @param side the side(s) to use for axes (1,2,3,4 for sides, or 5,6,7,8 for outward offsets of those)
-#' @param \dots ...	Further graphical parameters may also be supplied as arguments. See ‘Details’.
+#'
+#' @param object gsplot object
+#' @param legend.name character
+#' @param side integer vector
+#' @param \dots ...	Further graphical parameters may also be supplied as arguments. See 'Details'.
 #' @return modified gsplot object 
 #' @export
 #' @examples
