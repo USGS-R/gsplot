@@ -4,7 +4,7 @@
 \alias{lines}
 \title{gsplot lines}
 \usage{
-lines(object, legend.name = NULL, side = NA, ...)
+lines(object, legend.name = NULL, side = c(1, 2), ...)
 }
 \arguments{
 \item{legend.name}{a character vector of length one to be used in the legend (if needed)}
@@ -25,7 +25,7 @@ Point stuff
 gs <- gsplot(list())
 gsNew <- lines(gs, x=1, y=2)
 gsNew <- lines(gsNew, x=c(3,4,3), y=c(2,4,6))
-gsNew <- points(gsNew, x=c(8,4,1.2), y=c(2,4.7,6))
+gsNew <- points(gsNew, x=c(8,4,1.2), y=c(2,4.7,6), side=c(3,2))
 gsNew
 }
 
