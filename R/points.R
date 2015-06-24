@@ -2,6 +2,9 @@
 #'
 #' Point stuff
 #'
+#' @param object gsplot object
+#' @param legend.name character
+#' @param side integer vector
 #' @param \dots ...	Further graphical parameters may also be supplied as arguments. See ‘Details’.
 #' @return modified gsplot object 
 #' @export

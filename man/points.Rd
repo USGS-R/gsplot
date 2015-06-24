@@ -7,6 +7,12 @@
 points(object, legend.name = NULL, side = NA, ...)
 }
 \arguments{
+\item{object}{gsplot object}
+
+\item{legend.name}{character}
+
+\item{side}{integer vector}
+
 \item{\dots}{...    Further graphical parameters may also be supplied as arguments. See ‘Details’.}
 }
 \value{
