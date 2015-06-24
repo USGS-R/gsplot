@@ -3,4 +3,5 @@
 S3method(gsplot,list)
 S3method(print,gsplot)
 export(gsplot)
+export(lines)
 export(points)
