@@ -11,7 +11,6 @@
 #' gsNew <- points(gs, x=1, y=2)
 #' gsNew
 print.gsplot <- function(x, ...){
-  #lapply(x, function(x) do.call(x, x[[]]))
   for (i in 1:length(x)){
     do.call(names(x[i]),x[[i]])
   }

@@ -17,8 +17,3 @@ gsplot.list <- function(x){
   class(x) <- "gsplot"
   invisible(x) 
 }
-
-#' @export
-append.gsplot <- function(x, values, after){
-   UseMethod("append", x)
-}
