@@ -6,7 +6,6 @@ Date: 2015-06-24
 Author: CIDA
 Maintainer: cida top dog <cida@usgs.gov>
 Description: Geological Survey plotting
-License: file LICENSE
 Copyright: This software is in the public domain because it contains materials
     that originally came from the United States Geological Survey, an agency of
     the United States Department of Interior. For more information, see the
@@ -15,3 +14,4 @@ Copyright: This software is in the public domain because it contains materials
 Suggests:
     testthat
 VignetteBuilder: knitr
+BuildVignettes: true
