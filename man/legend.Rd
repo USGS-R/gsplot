@@ -22,12 +22,42 @@ If called with gsplot as first argument, will set the internal gsplot configurat
 for legends
 }
 \examples{
-gs <- gsplot(list())
-gs <- points(gs, x=1, y=2, side=c(1,2), legend.name="Example Points 1", pch=1, col="blue")
-gs <- points(gs, x=3, y=4, side=c(1,4), legend.name="Example Points 2", pch=5, col="red")
-gs <- lines(gs, x=c(3,4,3), y=c(2,4,6), side=c(1,3), legend.name="Example Line", lty=1, col="orange")
-gs <- lines(gs, x=c(2,6,8), y=c(1,6,9), side=c(1,4), lty=1, col="yellow")
-gs <- legend(gs)
-gs
+bottom <- gsplot(list()) \%>\%
+ points(x=1, y=2, side=c(3,2), legend.name="Example Points 1", pch=1, col="blue") \%>\%
+ points(x=3, y=4, side=c(1,4), legend.name="Example Points 2", pch=5, col="red") \%>\%
+ legend(location="bottom")
+bottom
+
+topright <- gsplot(list()) \%>\%
+ lines(x=c(3,4,3), y=c(2,4,6), legend.name="Example Lines", lty=5, col="orange") \%>\%
+ points(x=1, y=2, side=c(3,2), legend.name="Example Points 1", pch=1, col="blue") \%>\%
+ points(x=3, y=4, side=c(1,4), legend.name="Example Points 2", pch=5, col="red") \%>\%
+ legend(location="topright")
+topright
+
+above <- gsplot(list()) \%>\%
+ points(x=1, y=2, side=c(3,2), legend.name="Example Points 1", pch=1, col="blue") \%>\%
+ points(x=3, y=4, side=c(1,4), legend.name="Example Points 2", pch=5, col="red") \%>\%
+ legend(location="above")
+above
+
+below <- gsplot(list()) \%>\%
+ points(x=1, y=2, side=c(3,2), legend.name="Example Points 1", pch=1, col="blue") \%>\%
+ points(x=3, y=4, side=c(1,4), legend.name="Example Points 2", pch=5, col="red") \%>\%
+ legend(location="below")
+below
+
+toright <- gsplot(list()) \%>\%
+ points(x=1, y=2, side=c(3,2), legend.name="Example Points 1", pch=1, col="blue") \%>\%
+ lines(x=c(3,4,3), y=c(2,4,6)) \%>\%
+ points(x=3, y=4, side=c(1,4), legend.name="Example Points 2", pch=5, col="red") \%>\%
+ legend(location="toright")
+toright
+
+toleft <- gsplot(list()) \%>\%
+ points(x=1, y=2, side=c(3,2), legend.name="Example Points 1", pch=1, col="blue") \%>\%
+ points(x=3, y=4, side=c(1,4), legend.name="Example Points 2", pch=5, col="red") \%>\%
+ legend(location="toleft")
+toleft
 }
 
