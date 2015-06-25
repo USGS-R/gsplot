@@ -126,7 +126,7 @@ draw_legend <- function(gsplot) {
     lines_i <- which(names(gsplot) %in% 'lines')
     for (i in lines_i){
       lines <- gs[[i]]
-      smartLegend <- rbind(smartLegend, getLegendItem(pts[['gs.config']]$legend.name, NA, lines[['arguments']]$col, lines[['arguments']]$lty))
+      smartLegend <- rbind(smartLegend, getLegendItem(lines[['gs.config']]$legend.name, NA, lines[['arguments']]$col, lines[['arguments']]$lty))
     }
     
     #only include pch if we have a non-NA entry for points
