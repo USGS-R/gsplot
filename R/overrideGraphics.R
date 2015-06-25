@@ -1,3 +1,5 @@
+#' @keywords internal
+#' @export
 overrideGraphics <- function(name, object, ...) {
   if(!missing(object) && class(object) == "gsplot") {
     fun <- function(object, ...) {
