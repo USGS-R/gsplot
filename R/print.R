@@ -30,6 +30,7 @@ print.gsplot <- function(x, ...){
     par(new=TRUE)
   }
 
+  par(new=FALSE)
   print("oh my")
 }
 
