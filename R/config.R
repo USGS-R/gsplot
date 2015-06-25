@@ -1,12 +1,3 @@
-graphTemplate <- list(
-  pch=c(19,15,17,18,21,22,24,23),
-  xaxs="i",
-  yaxs="i",
-  tcl=0.5,
-  mgp=c(3,1,0),
-  lty=c(1,2,3,4,5,6,1,2 )
-  
-)
 
 
 #' @title Load gsplot config
@@ -45,19 +36,10 @@ loadConfig = function(filename) {
   options("gsplot"=graphTemplate)
 }
 
-graphTemplate <- list(
-    pch=c(19),
-    xaxs="i",
-    yaxs="i",
-    tcl=0.5,
-    mgp=c(3,1,0),
-    lty=c(1)
-) 
-
-options("gsplot"=graphTemplate)
-
 
 config <- function(type){
+  
+  loadConfig()
   
   type <- match.arg(type, c("points","lines"))
   

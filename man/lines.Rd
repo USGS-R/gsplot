@@ -23,8 +23,8 @@ Point stuff
 }
 \examples{
 gs <- gsplot(list())
-gsNew <- lines(gs, x=1, y=2)
-gsNew <- lines(gsNew, x=c(3,4,3), y=c(2,4,6))
+gsNew <- lines(gs, x=c(1,2), y=c(2,5))
+gsNew <- lines(gsNew, x=c(3,4,3), y=c(2,4,6), pch=6)
 gsNew <- points(gsNew, x=c(8,4,1.2), y=c(2,4.7,6), side=c(3,2))
 gsNew
 }
