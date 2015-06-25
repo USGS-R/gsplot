@@ -12,7 +12,7 @@
 #' gs <- gsplot(list())
 #' gsNew <- points(gs, x=1, y=2, col="blue", pch=18)
 #' gsNew <- points(gsNew, x=c(3,4,3), y=c(2,4,6))
-points <- function(object, legend.name=NULL, side=NA, ...){
+points <- function(object, legend.name=NULL, side=c(1,2), ...){
   
   if (!missing(object) && class(object) == "gsplot" ){
     object <- append(object, list(points = list(..., legend.name = legend.name, side = side)))

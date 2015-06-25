@@ -4,7 +4,7 @@
 \alias{points}
 \title{gsplot points}
 \usage{
-points(object, legend.name = NULL, side = NA, ...)
+points(object, legend.name = NULL, side = c(1, 2), ...)
 }
 \arguments{
 \item{object}{gsplot object}
