@@ -11,7 +11,7 @@
 #' @return modified gsplot object 
 #' @export
 #' @examples
-#' gs <- gsplot(list(figure="testFig"))
+#' gs <- gsplot(list())
 #' gs <- points(gs, x=1, y=2, sides=c(1,2), legend.name="Example Points 1", pch=1, col="blue")
 #' gs <- points(gs, x=3, y=4, sides=c(1,4), legend.name="Example Points 2", pch=5, col="red")
 #' gs <- lines(gs, x=c(3,4,3), y=c(2,4,6), sides=c(1,8), legend.name="Example Line", lty=1, col="orange")
@@ -36,17 +36,17 @@ legend.gsplot <- function(object, location="topright", ...) {
 
 draw_legend <- function(gsplot) {
   legendParams <- gsplot[['legend']]
-  if(!is.null(legend)) {
+  if(!is.null(legendParams)) {
     smartLegend <- data.frame(text = character(), 
                               symbol = numeric(), 
                               color = character(), 
                               line = numeric(), 
                               stringsAsFactors = FALSE)
-    addToLegend <- function(newText, newSymbol, newColor, newLine) { 
+    getLegendItem <- function(newText, newSymbol, newColor, newLine) { 
       if(is.null(newText)) {
         newText <- ""
       }
-      smartLegend <<- rbind(smartLegend, data.frame(text = newText, 
+      return(data.frame(text = newText, 
                                                        symbol = newSymbol, 
                                                        color = newColor, 
                                                        line = newLine, 
@@ -57,14 +57,14 @@ draw_legend <- function(gsplot) {
     pts_i <- which(names(gsplot) %in% 'points')
     for (i in pts_i){
       pts <- gs[[i]]
-      addToLegend(pts$legend.name, pts$pch, pts$col, NA)
+      rbind(smartLegend, getLegendItem(pts$legend.name, pts$pch, pts$col, NA))
     }
     
     #get legend entries for lines
     lines_i <- which(names(gsplot) %in% 'lines')
     for (i in lines_i){
       lines <- gs[[i]]
-      addToLegend(lines$legend.name, NA, lines$col, lines$lty)
+      rbind(smartLegend, getLegendItem(lines$legend.name, NA, lines$col, lines$lty))
     }
     
     #only include pch if we have a non-NA entry for points
