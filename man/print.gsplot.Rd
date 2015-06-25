@@ -18,8 +18,10 @@ modified gsplot object
 show gsplot
 }
 \examples{
-gs <- gsplot(list())
-gsNew <- points(gs, x=1, y=2)
-gsNew
+gs <- gsplot(list()) \%>\%
+   points(x=1, y=2, legend.name="Cool points") \%>\%
+   lines(x=1:5, y=1:5, legend.name="Cool lines")
+   #legend()
+gs
 }
 
