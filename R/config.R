@@ -45,10 +45,10 @@ loadConfig = function(filename) {
       pch=19,
       xaxs="i",
       yaxs="i",
-      tcl=0.5,
-      mgp=c(3,1,0),
+      tcl=0.3,
+      mgp=c(1.5,.3,0),
       lty=1,
-      lwd=2
+      lwd=1
     )
     
   } else {

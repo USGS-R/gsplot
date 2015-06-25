@@ -38,8 +38,9 @@ calc_view_lims <- function(views){
     view <- views[[i]]
     x <- lapply(view, var='x', function(list, var) strip_pts(list,var))
     y <- lapply(view, var='y', function(list, var) strip_pts(list,var))
-    views[[i]]$xlim <- lims_from_list(x)
-    views[[i]]$ylim <- lims_from_list(y)
+#     views[[i]]$xlim <- lims_from_list(x)
+#     views[[i]]$ylim <- lims_from_list(y)
+    views[[i]]$usr <- c(lims_from_list(x), lims_from_list(y))
   }
   return(views)
 }
