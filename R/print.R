@@ -12,6 +12,8 @@
 #' gsNew
 print.gsplot <- function(x, ...){
   
+  plot.new()
+  
   # -- set plot -- 
   # will call plot.new
   views = calc_views(x)
@@ -20,6 +22,9 @@ print.gsplot <- function(x, ...){
     view = views[[i]]
     
     plot(x=NA,xlim=view[['xlim']],ylim=view[['ylim']], ylab=NA, xlab=NA, axes = F)
+    
+    
+    
     axis(side=view[['gs.config']][['side']][1])
     axis(side=view[['gs.config']][['side']][2])
     
