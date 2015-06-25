@@ -6,6 +6,9 @@
 \usage{
 lhs \%>\% rhs
 }
+\arguments{
+\item{lhs,rhs}{A dataset and function to apply to it}
+}
 \description{
 using the magrittr pipe (lhs \%>\% rhs) to chain operations
 }
