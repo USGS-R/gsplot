@@ -12,15 +12,15 @@
 #' @export
 #' @examples
 #' gs <- gsplot(list(figure="testFig"))
-#' gs <- points(gs, x=1, y=2, legend.name="Example Points 1", pch=1, col="blue")
-#' gs <- points(gs, x=3, y=4, legend.name="Example Points 2", pch=5, col="red")
-#' gs <- lines(gs, x=c(3,4,3), y=c(2,4,6), legend.name="Example Line", lty=1, col="orange")
-#' gs <- lines(gs, x=c(2,6,8), y=c(1,6,9), lty=1, col="yellow")
+#' gs <- points(gs, x=1, y=2, sides=c(1,2), legend.name="Example Points 1", pch=1, col="blue")
+#' gs <- points(gs, x=3, y=4, sides=c(1,4), legend.name="Example Points 2", pch=5, col="red")
+#' gs <- lines(gs, x=c(3,4,3), y=c(2,4,6), sides=c(1,8), legend.name="Example Line", lty=1, col="orange")
+#' gs <- lines(gs, x=c(2,6,8), y=c(1,6,9), sides=c(3,6), lty=1, col="yellow")
 #' gs <- legend(gs)
+#' gs
 legend <- function(object, ...){
   overrideGraphics("legend", object, ...)
 }
-
 
 legend.gsplot <- function(object, location="topright", ...) {
   object <- append(object, list(legend = list(x = location, ...)))
@@ -46,7 +46,7 @@ draw_legend <- function(gsplot) {
       if(is.null(newText)) {
         newText <- ""
       }
-      smartLegend <<- rbind(primary_legend, data.frame(text = newText, 
+      smartLegend <<- rbind(smartLegend, data.frame(text = newText, 
                                                        symbol = newSymbol, 
                                                        color = newColor, 
                                                        line = newLine, 
