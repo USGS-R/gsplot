@@ -36,8 +36,10 @@ print.gsplot <- function(x, ...){
     par(new=TRUE)
   }
 
+  draw_legend(x)
+  box()
   par(new=FALSE)
-  print("oh my")
+  
 }
 
 to_gsplot <- function(x, which_i){
