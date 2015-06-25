@@ -118,14 +118,14 @@ draw_legend <- function(gsplot) {
     #get legend entries for points
     pts_i <- which(names(gsplot) %in% 'points')
     for (i in pts_i){
-      pts <- gs[[i]]
+      pts <- gsplot[[i]]
       smartLegend <- rbind(smartLegend, getLegendItem(pts[['gs.config']]$legend.name, pts[['arguments']]$pch, pts[['arguments']]$col, NA))
     }
     
     #get legend entries for lines
     lines_i <- which(names(gsplot) %in% 'lines')
     for (i in lines_i){
-      lines <- gs[[i]]
+      lines <- gsplot[[i]]
       smartLegend <- rbind(smartLegend, getLegendItem(lines[['gs.config']]$legend.name, NA, lines[['arguments']]$col, lines[['arguments']]$lty))
     }
     
