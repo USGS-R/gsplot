@@ -26,3 +26,4 @@ gs <- gsplot(list())
 gsNew <- points(gs, x=1, y=2)
 gsNew <- points(gsNew, x=c(3,4,3), y=c(2,4,6))
 }
+
