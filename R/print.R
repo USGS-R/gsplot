@@ -13,14 +13,23 @@
 print.gsplot <- function(x, ...){
   
   # -- set plot -- 
-  plot(x=0,ylim=c(0,10),xlim=c(0,10))
+  # will call plot.new
+  views = calc_views(x)
   
-  # -- call lines -- 
-  to_gsplot(x, which(names(x)  %in% 'lines'))
+  for (i in 1:length(views)){
+    view = views[[i]]
+    plot(x=NA,xlim=view[['xlim']],ylim=view[['ylim']], ylab=NA, xlab=NA, axes = F)
+    axis(side=view[['side']][1])
+    axis(side=view[['side']][2])
+    
+    # -- call lines -- 
+    to_gsplot(view, which(names(view)  %in% 'lines'))
+    
+    # -- call points -- 
+    to_gsplot(view, which(names(view)  %in% 'points'))
+    par(new=TRUE)
+  }
 
-  # -- call points -- 
-  to_gsplot(x, which(names(x)  %in% 'points'))
-  
   draw_legend(x)
 }
 
