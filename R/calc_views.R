@@ -1,7 +1,15 @@
 #' @export
 calc_views <- function(gsplot){
   
+  views <- group_views(gsplot)
   
+  views <- calc_view_lims(views)
+  
+  return(views)
+}
+
+
+group_views <- function(gsplot){
   unique_sides <- unique(lapply(gsplot, function(x) x$side))
   views <- rep(list(view=c()),length(unique_sides))
   
@@ -20,6 +28,27 @@ calc_views <- function(gsplot){
     views[[view_i]] <- append(views[[view_i]], to_draw)
   }
   
-  
   return(views)
+}
+
+calc_view_lims <- function(views){
+  
+  for (i in 1:length(views)){
+    view <- views[[i]]
+    x <- lapply(view, var='x', function(list, var) strip_pts(list,var))
+    y <- lapply(view, var='y', function(list, var) strip_pts(list,var))
+    views[[i]]$xlim <- lims_from_list(x)
+    views[[i]]$ylim <- lims_from_list(y)
+  }
+  return(views)
+}
+
+strip_pts <- function(list, var){
+  if (var %in% names(list))
+    list[[var]]
+  else
+    NA
+}
+lims_from_list <- function(list){
+  c(min(sapply(list, min),na.rm=TRUE), max(sapply(list, max),na.rm=TRUE))
 }
