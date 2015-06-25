@@ -4,14 +4,14 @@
 \alias{lines}
 \title{gsplot lines}
 \usage{
-lines(object, legend.name = NULL, side = c(1, 2), ...)
+lines(object, ...)
 }
 \arguments{
+\item{object}{a gsplot object}
+
 \item{legend.name}{a character vector of length one to be used in the legend (if needed)}
 
 \item{side}{the side(s) to use for axes (1,2,3,4 for sides, or 5,6,7,8 for outward offsets of those)}
-
-\item{gsplot}{a gsplot object}
 
 \item{\dots}{...    Further graphical parameters may also be supplied as arguments. See 'Details'.}
 }
