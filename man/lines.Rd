@@ -13,7 +13,7 @@ lines(object, ...)
 
 \item{side}{the side(s) to use for axes (1,2,3,4 for sides, or 5,6,7,8 for outward offsets of those)}
 
-\item{\dots}{...    Further graphical parameters may also be supplied as arguments. See 'Details'.}
+\item{\dots}{Further graphical parameters may also be supplied as arguments. See 'Details'.}
 }
 \value{
 modified gsplot object

@@ -1,11 +1,13 @@
 #' gsplot points
 #'
 #' Point stuff
-#'
+#' @usage 
+#' points(object, legend.name=NULL, side=c(1,2), ...)
+#' 
 #' @param object gsplot object
 #' @param legend.name character
 #' @param side integer vector
-#' @param \dots ...	Further graphical parameters may also be supplied as arguments. See 'Details'.
+#' @param \dots Further graphical parameters may also be supplied as arguments. See 'Details'.
 #' @return modified gsplot object 
 #' @examples
 #' gs <- gsplot(list())
