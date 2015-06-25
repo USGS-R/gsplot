@@ -15,8 +15,9 @@
 #' gs <- points(gs, x=1, y=2, legend.name="Example Points 1", pch=1, col="blue")
 #' gs <- points(gs, x=3, y=4, legend.name="Example Points 2", pch=5, col="red")
 #' gs <- lines(gs, x=c(3,4,3), y=c(2,4,6), legend.name="Example Line", lty=1, col="orange")
+#' gs <- lines(gs, x=c(2,6,8), y=c(1,6,9), legend.name="Example Line", lty=1, col="yellow")
 #' gs <- legend(gs)
-legend <- function(object, ...){
+gslegend <- function(object, ...){
   overrideGraphics("legend", object, ...)
 }
 
@@ -41,26 +42,29 @@ draw_legend <- function(gsplot) {
                               color = character(), 
                               line = numeric(), 
                               stringsAsFactors = FALSE)
+    addToLegend <- function(newText, newSymbol, newColor, newLine) { 
+      if(is.null(newText)) {
+        newText <- ""
+      }
+      smartLegend <<- rbind(primary_legend, data.frame(text = newText, 
+                                                       symbol = newSymbol, 
+                                                       color = newColor, 
+                                                       line = newLine, 
+                                                       stringsAsFactors = FALSE))
+    }
+    
     #get legend entries for points
     pts_i <- which(names(gsplot) %in% 'points')
     for (i in pts_i){
       pts <- gs[[i]]
-      smartLegend <- rbind(smartLegend, data.frame(text = pts$legend.name, 
-                                                   symbol = pts$pch, 
-                                                   color = pts$col, 
-                                                   line = NA, 
-                                                   stringsAsFactors = FALSE))
+      addToLegend(pts$legend.name, pts$pch, pts$col, NA)
     }
     
     #get legend entries for lines
     lines_i <- which(names(gsplot) %in% 'lines')
     for (i in lines_i){
       lines <- gs[[i]]
-      smartLegend <- rbind(smartLegend, data.frame(text = lines$legend.name, 
-                                                   symbol = NA, 
-                                                   color = lines$col, 
-                                                   line = lines$lty, 
-                                                   stringsAsFactors = FALSE))
+      addToLegend(lines$legend.name, NA, lines$col, lines$lty)
     }
     
     #only include pch if we have a non-NA entry for points
@@ -70,7 +74,7 @@ draw_legend <- function(gsplot) {
       ))
     }
     
-    #only include pch if we have a non-NA entry for points
+    #only include lty if we have a non-NA entry for lines
     if(length(lines_i) > 0) {
       legendParams <- append(legendParams, list(
         lty=smartLegend$line
