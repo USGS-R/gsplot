@@ -4,7 +4,7 @@
 \alias{points}
 \title{gsplot points}
 \usage{
-points(object, ...)
+points(object, legend.name=NULL, side=c(1,2), ...)
 }
 \arguments{
 \item{object}{gsplot object}
@@ -13,7 +13,7 @@ points(object, ...)
 
 \item{side}{integer vector}
 
-\item{\dots}{...    Further graphical parameters may also be supplied as arguments. See 'Details'.}
+\item{\dots}{Further graphical parameters may also be supplied as arguments. See 'Details'.}
 }
 \value{
 modified gsplot object
@@ -23,7 +23,7 @@ Point stuff
 }
 \examples{
 gs <- gsplot(list())
-gsNew <- points(gs, x=1, y=2)
+gsNew <- points(gs, x=1, y=2, col="blue", pch=18)
 gsNew <- points(gsNew, x=c(3,4,3), y=c(2,4,6))
 }
 
