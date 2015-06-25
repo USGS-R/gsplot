@@ -18,9 +18,10 @@ print.gsplot <- function(x, ...){
   
   for (i in 1:length(views)){
     view = views[[i]]
+    
     plot(x=NA,xlim=view[['xlim']],ylim=view[['ylim']], ylab=NA, xlab=NA, axes = F)
-    axis(side=view[['side']][1])
-    axis(side=view[['side']][2])
+    axis(side=view[['gs.config']][['side']][1])
+    axis(side=view[['gs.config']][['side']][2])
     
     # -- call lines -- 
     to_gsplot(view, which(names(view)  %in% 'lines'))

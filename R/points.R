@@ -17,9 +17,16 @@ points <- function(object, ...) {
   overrideGraphics("points", object, ...)
 }
 
-
 points.gsplot <- function(object, legend.name=NULL, side=c(1,2), ...){
+  current_list <- config("points")
+  arguments <- list(...)
   
-  object <- append(object, list(points = list(..., legend.name = legend.name, side = side)))
+  indicesToAdd <- !(names(current_list) %in% names(arguments))
+  arguments <- append(arguments, current_list[indicesToAdd])
+  
+  # current_list[!( %in% names(arguments) ] <- arguments
+  object <- append(object,  list(points = list(arguments = arguments, 
+                                            gs.config=list(legend.name = legend.name, 
+                                            side = side))))
   return(gsplot(object))
 }
