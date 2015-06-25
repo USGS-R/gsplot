@@ -26,6 +26,7 @@ gs <- gsplot(list(figure="testFig"))
 gs <- points(gs, x=1, y=2, legend.name="Example Points 1", pch=1, col="blue")
 gs <- points(gs, x=3, y=4, legend.name="Example Points 2", pch=5, col="red")
 gs <- lines(gs, x=c(3,4,3), y=c(2,4,6), legend.name="Example Line", lty=1, col="orange")
+gs <- lines(gs, x=c(2,6,8), y=c(1,6,9), lty=1, col="yellow")
 gs <- legend(gs)
 }
 
