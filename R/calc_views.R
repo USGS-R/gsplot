@@ -10,7 +10,7 @@ calc_views <- function(gsplot){
 
 
 group_views <- function(gsplot){
-  unique_sides <- unique(lapply(gsplot, function(x) x$side))
+  unique_sides <- unique(lapply(gsplot, function(x) x[['gs.config']][['side']]))
   views <- rep(list(view=c()),length(unique_sides))
   
   for (i in 1:length(unique_sides)){
