@@ -21,7 +21,7 @@ print.gsplot <- function(x, ...){
   # -- call points -- 
   to_gsplot(x, which(names(x)  %in% 'points'))
   
-  print("oh my")
+  draw_legend(x)
 }
 
 to_gsplot <- function(x, which_i){

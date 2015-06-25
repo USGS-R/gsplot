@@ -1,10 +1,10 @@
 #' gsplot legend
 #'
-#' If called, will cycle through the gsplot settings (points, lines, etc)
-#' and will produce a legend data structure to be added to the plot when it
-#' is rendered.
+#' If called with gsplot as first argument, will cycle through the gsplot settings 
+#' (points, lines, etc) and will produce a legend data structure to be added to the 
+#' plot when it is rendered.
 #'
-#' @param legend.position specifies where the legend is relative to the plot. 
+#' @param legend.location specifies where the legend is relative to the plot. 
 #'  Can use standard location parameter ("bottomright", "bottom", "bottomleft", "left", 
 #'  "topleft", "top", "topright", "right" and "center") with the additions "below", "above", 
 #'  "out-left", "out-right".
@@ -13,33 +13,32 @@
 #' @export
 #' @examples
 #' gs <- gsplot(list(figure="testFig"))
-#' gsNew <- points(gs, x=1, y=2, legend.name="Example Points", pch=1, col="blue")
-#' gsNew <- legend(gs, legend.position="below")
+#' gs <- points(gs, x=1, y=2, legend.name="Example Points", pch=1, col="blue")
+#' gs <- legend(gs, location="topleft")
 legend <- function(object, location="topright", ...){
-  
   if (!missing(object) && class(object) == "gsplot" ){
-    gsplot <- object
-    
-    gsplot$legend$location = location
-    
-    #pull point entries which need to be placed in legend
-    pointList < gsplot$points
-    gsplot$legend$entries = data.frame(text = pointList$legend.name,
-                                       symbol = pointList$pch, 
-                                       color = pointList$col, 
-                                       line = pointList$lty, 
-                                       stringsAsFactors = FALSE)
-    
-    #add line entries?
-    
-    return(gsplot(object))
+    object$legend <- list(location = location, ...)
+    return(object)
   } else {
     if (missing(object)){
-      graphics::points(location=location, ...)
+      graphics::legend(...)
     } else {
-      graphics::points(object, location=location, ...)
+      graphics::legend(object, ...)
     }
   }
 }
+#' gsplot draw_legend
+#'
+#' Will cycle through  the gsplot, looking at the legend configuration (if one exists), and
+#' create legend entries based on the points, lines, etc. contained in the gsplot.
+#' 
+#' @param gsplot the gsplot to render legend on
+
+draw_legend <- function(gsplot) {
+  location <- gsplot[['legend']]$location
+  legend(x=gsplot$legend$location, y=NULL, "YAAAAAAAAY", pch = 1, col = c(1, 3), cex = 1.2)
+}
+
+
 
 
