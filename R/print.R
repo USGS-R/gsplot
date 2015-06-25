@@ -7,22 +7,29 @@
 #' @return modified gsplot object 
 #' @export
 #' @examples
-#' gs <- gsplot(list())
-#' gsNew <- points(gs, x=1, y=2)
-#' gsNew
+#' gs <- gsplot(list()) %>%
+#'    points(x=1, y=2, legend.name="Cool points") %>%
+#'    lines(x=1:5, y=1:5, legend.name="Cool lines") 
+#'    #legend()
+#' gs
 print.gsplot <- function(x, ...){
-  
+
+  plot.new()
   # -- set plot -- 
-  # will call plot.new
   views = calc_views(x)
+  
+  defaultPar <- par(no.readonly = TRUE)
   
   for (i in 1:length(views)){
     view = views[[i]]
     
-    plot(x=NA,xlim=view[['xlim']],ylim=view[['ylim']], ylab=NA, xlab=NA, axes = F)
-    axis(side=view[['gs.config']][['side']][1])
-    axis(side=view[['gs.config']][['side']][2])
+    par(usr=view$usr)
+    par(options("gsplot")[[1]])
     
+    axis(side=view$gs.config$side[1], config("axis"))
+    axis(side=view$gs.config$side[2], config("axis"))
+    
+    # par(defaultPar)
     # -- call lines -- 
     to_gsplot(view, which(names(view)  %in% 'lines'))
     
