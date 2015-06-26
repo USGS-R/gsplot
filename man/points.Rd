@@ -21,6 +21,9 @@ modified gsplot object
 \description{
 Point stuff
 }
+\details{
+Add additional functionality to points.
+}
 \examples{
 gs <- gsplot(list())
 gsNew <- points(gs, x=1, y=2, col="blue", pch=18)

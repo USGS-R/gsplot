@@ -8,9 +8,9 @@
 #' @return modified gsplot object 
 #' @examples
 #' gs <- gsplot(list())
-#' gsNew <- lines(gs, x=c(1,2), y=c(2,5))
-#' gsNew <- lines(gsNew, x=c(3,4,3), y=c(2,4,6), pch=6)
-#' gsNew <- points(gsNew, x=c(8,4,1.2), y=c(2,4.7,6), side=c(3,2))
+#' gsNew <- lines(gs, c(1,2), c(2,5))
+#' gsNew <- lines(gsNew, c(3,4,3), c(2,4,6), pch=6)
+#' gsNew <- points(gsNew, c(8,4,1.2), c(2,4.7,6), side=c(3,2))
 #' gsNew
 #' @export
 lines <- function(object, ...) {
@@ -18,10 +18,10 @@ lines <- function(object, ...) {
 }
 
 
-lines.gsplot <- function(object, legend.name=NULL, side=c(1,2), ...){
+lines.gsplot <- function(object, x, y=NULL, ..., legend.name=NULL, side=c(1,2)){
   
   current_list <- config("lines")
-  arguments <- list(...)
+  arguments <- list(x=x, y=y, ...)
   
   indicesToAdd <- !(names(current_list) %in% names(arguments))
   arguments <- append(arguments, current_list[indicesToAdd])
