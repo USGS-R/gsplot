@@ -49,7 +49,7 @@ below
 
 toright <- gsplot(list()) \%>\%
  points(x=1, y=2, side=c(3,2), legend.name="Example Points 1", pch=1, col="blue") \%>\%
- lines(x=c(3,4,3), y=c(2,4,6)) \%>\%
+ lines(x=c(3,4,3), y=c(2,4,6), legend.name="Example Lines", lty=5, col="orange") \%>\%
  points(x=3, y=4, side=c(1,4), legend.name="Example Points 2", pch=5, col="red") \%>\%
  legend(location="toright")
 toright
