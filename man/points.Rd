@@ -26,7 +26,8 @@ Add additional functionality to points.
 }
 \examples{
 gs <- gsplot(list())
-gsNew <- points(gs, x=1, y=2, col="blue", pch=18)
-gsNew <- points(gsNew, x=c(3,4,3), y=c(2,4,6))
+gsNew <- points(gs, 1, 2, col="blue", pch=18)
+gsNew <- points(gsNew, c(3,4,3), c(2,4,6))
+gsNew
 }
 
