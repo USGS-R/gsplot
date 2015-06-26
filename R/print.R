@@ -37,11 +37,11 @@ print.gsplot <- function(x, ...){
     to_gsplot(view, which(names(view)  %in% 'points'))
     par(new=TRUE)
   }
-
-  draw_legend(x)
   box()
-  par(new=FALSE)
   
+  draw_legend(x)
+
+  par(new=FALSE)
 }
 
 to_gsplot <- function(x, which_i){
