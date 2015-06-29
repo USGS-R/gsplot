@@ -18,7 +18,7 @@ print.gsplot <- function(x, ...){
   # -- set plot -- 
   views = calc_views(x)
   
-  defaultPar <- par(no.readonly = TRUE)
+  defaultPar <- par(no.readonly = TRUE, mar=legend_adjusted_margins(x))
   
   for (i in 1:length(views)){
     view = views[[i]]
