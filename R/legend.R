@@ -21,6 +21,14 @@
 #'  legend(location="topright")
 #' topright
 #' 
+#' defaultLegend <- gsplot(list()) %>% 
+#'  points(x=1, y=2, side=c(3,2)) %>% 
+#'  points(x=3, y=4, side=c(1,4)) %>% 
+#'  lines(x=c(3,4,3), y=c(2,4,6)) %>%
+#'  lines(x=c(1,2,5), y=c(1,8,5)) %>%  
+#'  legend()
+#' defaultLegend
+#' 
 #' above <- gsplot(list()) %>% 
 #'  points(x=1, y=2, side=c(3,2), legend.name="Example Points 1", pch=1, col="blue") %>% 
 #'  points(x=3, y=4, side=c(1,4), legend.name="Example Points 2", pch=5, col="red") %>% 
@@ -103,13 +111,19 @@ draw_legend <- function(gsplot) {
                               stringsAsFactors = FALSE)
     getLegendItem <- function(newText, newSymbol, newColor, newLine) { 
       if(is.null(newText)) {
-        newText <- ""
+        if(!is.na(newSymbol)) {
+          newText <- "Plotted Points"
+        }
+        
+        if(!is.na(newLine)) {
+          newText <- "Plotted Line"
+        }
       }
       return(data.frame(text = newText, 
-                       symbol = newSymbol, 
-                       color = newColor, 
-                       line = newLine, 
-                       stringsAsFactors = FALSE))
+                        symbol = newSymbol, 
+                        color = newColor, 
+                        line = newLine, 
+                        stringsAsFactors = FALSE))
     }
     
     #get legend entries for points
