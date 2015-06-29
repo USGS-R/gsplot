@@ -27,25 +27,32 @@
 #' above <- gsplot(list()) %>% 
 #'  points(x=1, y=2, side=c(3,2), legend.name="Example Points 1", pch=1, col="blue") %>% 
 #'  points(x=3, y=4, side=c(1,4), legend.name="Example Points 2", pch=5, col="red") %>% 
+#'  lines(x=c(3,4,3), y=c(2,4,6), legend.name="Example Lines 1", lty=5, col="orange") %>%
+#'  lines(x=c(1,2,5), y=c(1,8,5), legend.name="Example Lines 2", lty=5, col="green") %>%  
 #'  legend(location="above")
 #' above
 #' 
 #' below <- gsplot(list()) %>% 
 #'  points(x=1, y=2, side=c(3,2), legend.name="Example Points 1", pch=1, col="blue") %>% 
 #'  points(x=3, y=4, side=c(1,4), legend.name="Example Points 2", pch=5, col="red") %>% 
+#'  lines(x=c(3,4,3), y=c(2,4,6), legend.name="Example Lines 1", lty=5, col="orange") %>%
+#'  lines(x=c(1,2,5), y=c(1,8,5), legend.name="Example Lines 2", lty=5, col="green") %>% 
 #'  legend(location="below")
 #' below
 #' 
 #' toright <- gsplot(list()) %>% 
 #'  points(x=1, y=2, side=c(3,2), legend.name="Example Points 1", pch=1, col="blue") %>% 
-#'  lines(x=c(3,4,3), y=c(2,4,6), legend.name="Example Lines", lty=5, col="orange") %>% 
 #'  points(x=3, y=4, side=c(1,4), legend.name="Example Points 2", pch=5, col="red") %>% 
+#'  lines(x=c(3,4,3), y=c(2,4,6), legend.name="Example Lines 1", lty=5, col="orange") %>%
+#'  lines(x=c(1,2,5), y=c(1,8,5), legend.name="Example Lines 2", lty=5, col="green") %>% 
 #'  legend(location="toright")
 #' toright
 #' 
 #' toleft <- gsplot(list()) %>% 
 #'  points(x=1, y=2, side=c(3,2), legend.name="Example Points 1", pch=1, col="blue") %>% 
 #'  points(x=3, y=4, side=c(1,4), legend.name="Example Points 2", pch=5, col="red") %>% 
+#'  lines(x=c(3,4,3), y=c(2,4,6), legend.name="Example Lines 1", lty=5, col="orange") %>%
+#'  lines(x=c(1,2,5), y=c(1,8,5), legend.name="Example Lines 2", lty=5, col="green") %>% 
 #'  legend(location="toleft")
 #' toleft
 legend <- function(object, ...){
@@ -54,38 +61,31 @@ legend <- function(object, ...){
 
 
 legend.gsplot <- function(object, location="topright", legend_offset=0.3, ...) {
-  #TODO support explicit x/y coords
-  y <- NULL
-  inset <- NULL
-  x <- NULL
-  inset <- c(NA, NA)
-  bty <- "o"
-  if(location == "below") {
-    x = "bottom"
-    inset <- c(0, -legend_offset)
-    bty <- "n"
-    object <- append(object, list(legend = list(x = x, y = y, inset=inset, bty=bty, ...)))
-  } else if(location == "above") {
-    x = "top"
-    inset <- c(0, -legend_offset)
-    bty <- "n"
-    object <- append(object, list(legend = list(x = x, y = y, inset=inset, bty=bty, ...)))
-  } else if(location == "toright") {
-    x = "right"
-    inset <- c(-legend_offset, 0)
-    bty <- "n"
-    object <- append(object, list(legend = list(x = x, y = y, inset=inset, bty=bty, ...)))
-  } else if(location == "toleft") {
-    x = "left"
-    inset <- c(-legend_offset, 0)
-    bty <- "n"
-    object <- append(object, list(legend = list(x = x, y = y, inset=inset, bty=bty, ...)))
-  } else {
-    x <- location
-    object <- append(object, list(legend = list(x = x, ...)))
-  }
+  arguments <- list(...)
+  gsConfig <- list(location = location, legend_offset = legend_offset)
+  
+  arguments <- appendLegendPositionConfiguration(location, gsConfig, arguments)
+  
+  object <- append(object, list(legend = list(legend.arguments = arguments, legend.gs.config = gsConfig)))
   
   return(gsplot(object))
+}
+
+appendLegendPositionConfiguration <- function(location, gsConfig, arguments) {
+  #TODO support explicit x/y coords
+  legend_offset <- gsConfig$legend_offset
+  
+  if(location == "below") {
+    return(append(arguments, list(x = "bottom", y = NULL, inset=c(0, -legend_offset), bty="n")))
+  } else if(location == "above") {
+    return(append(arguments, list(x = "top", y = NULL, inset=c(0, -legend_offset), bty="n")))
+  } else if(location == "toright") {
+    return(append(arguments, list(x = "right", y = NULL, inset=c(-legend_offset, 0), bty="n")))
+  } else if(location == "toleft") {
+    return(append(arguments, list(x = "left", y = NULL, inset=c(-legend_offset, 0), bty="n")))
+  } else {
+    return(append(arguments, list(x = location)))
+  }
 }
 
 #' gsplot draw_legend
@@ -97,7 +97,7 @@ legend.gsplot <- function(object, location="topright", legend_offset=0.3, ...) {
 
 draw_legend <- function(gsplot) {
   par(xpd=TRUE)
-  legendParams <- gsplot[['legend']]
+  legendParams <- gsplot[['legend']][['legend.arguments']]
   if(!is.null(legendParams)) {
     smartLegend <- data.frame(text = character(), 
                               symbol = numeric(), 
@@ -109,10 +109,10 @@ draw_legend <- function(gsplot) {
         newText <- ""
       }
       return(data.frame(text = newText, 
-                                                       symbol = newSymbol, 
-                                                       color = newColor, 
-                                                       line = newLine, 
-                                                       stringsAsFactors = FALSE))
+                        symbol = newSymbol, 
+                        color = newColor, 
+                        line = newLine, 
+                        stringsAsFactors = FALSE))
     }
     
     #get legend entries for points
@@ -146,8 +146,41 @@ draw_legend <- function(gsplot) {
     legendParams <- append(legendParams, list(
       legend=smartLegend$text, 
       col=smartLegend$color
-      ))
+    ))
     
+    #for above/below, dynamically set the number of columns
+    location <- gsplot[['legend']][['legend.gs.config']]$location
+    if(location == "below" || location == "above") {
+      itemsPerCol <- 3 #TODO load this from config
+      cols <- NROW(smartLegend) %/% 3;
+      if(NROW(smartLegend) %% 3 > 0) {
+        cols <- cols + 1
+      }
+      legendParams <- append(legendParams, list(
+        ncol=cols
+      ))
+    }
     legend(legendParams) 
   }
+}
+
+legend_adjusted_margins <- function(gsPlot) {
+  defaults <- config("plot")
+  defaultMargins <- c(3, 3, 3, 3) #default margins should come from config
+  leftRightMarginMultiplier <- 3 #load in config?
+  
+  location <- gsPlot$legend$legend.gs.config$location
+  legend_offset <- ceiling(1 / gsPlot$legend$legend.gs.config$legend_offset)
+  if(location == "below") {
+    mar <- c(defaultMargins[1] + legend_offset, defaultMargins[2], defaultMargins[3], defaultMargins[4])
+  } else if(location == "above") {
+    mar <- c(defaultMargins[1], defaultMargins[2], defaultMargins[3] + legend_offset, defaultMargins[4])
+  } else if(location == "toright") {
+    mar <- c(defaultMargins[1], defaultMargins[2], defaultMargins[3], defaultMargins[4] + (legend_offset * leftRightMarginMultiplier))
+  } else if(location == "toleft") {
+    mar <- c(defaultMargins[1], defaultMargins[2] + (legend_offset * leftRightMarginMultiplier), defaultMargins[3], defaultMargins[4])
+  } else {
+    mar <- defaultMargins
+  }
+  return(mar)
 }
