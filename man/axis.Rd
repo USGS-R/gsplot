@@ -9,8 +9,6 @@ axis(object, ...)
 \arguments{
 \item{object}{gsplot object}
 
-\item{side}{integer vector}
-
 \item{\dots}{...  Further graphical parameters may also be supplied as arguments. See 'Details'.}
 }
 \value{

@@ -3,10 +3,7 @@
 #' If called with gsplot as first argument, will set the internal gsplot configuration
 #' for legends
 #'
-#' @param legend.location specifies where the legend is relative to the plot. 
-#'  Can use standard location parameter ("bottomright", "bottom", "bottomleft", "left", 
-#'  "topleft", "top", "topright", "right" and "center") with the additions "below", "above", 
-#'  "out-left", "out-right".
+#' @param object a gsplot object
 #' @param \dots normal legend params should forward through
 #' @return modified gsplot object 
 #' @export
