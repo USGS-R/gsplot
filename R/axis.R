@@ -3,7 +3,6 @@
 #' Axis stuff
 #'
 #' @param object gsplot object
-#' @param side integer vector
 #' @param \dots ...  Further graphical parameters may also be supplied as arguments. See 'Details'.
 #' @return modified gsplot object 
 #' @export
