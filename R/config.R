@@ -63,7 +63,7 @@ config <- function(type){
   
   loadConfig()
 
-  type <- match.arg(type, c("points","lines","axis"))
+  type <- match.arg(type, c("plot", "points","lines","axis"))
   
   config_list <- options("gsplot")[[1]]
   
@@ -73,6 +73,11 @@ config <- function(type){
   }
   
   if(type %in% c("lines")){
+    formalsNames <- names(formals(plot.xy))
+    formalsNames <- formalsNames[formalsNames != "..."]
+  }
+  
+  if(type %in% c("plot")){
     formalsNames <- names(formals(plot.xy))
     formalsNames <- formalsNames[formalsNames != "..."]
   }
