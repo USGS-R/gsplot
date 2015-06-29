@@ -54,38 +54,31 @@ legend <- function(object, ...){
 
 
 legend.gsplot <- function(object, location="topright", legend_offset=0.3, ...) {
-  #TODO support explicit x/y coords
-  y <- NULL
-  inset <- NULL
-  x <- NULL
-  inset <- c(NA, NA)
-  bty <- "o"
-  if(location == "below") {
-    x = "bottom"
-    inset <- c(0, -legend_offset)
-    bty <- "n"
-    object <- append(object, list(legend = list(x = x, y = y, inset=inset, bty=bty, ...)))
-  } else if(location == "above") {
-    x = "top"
-    inset <- c(0, -legend_offset)
-    bty <- "n"
-    object <- append(object, list(legend = list(x = x, y = y, inset=inset, bty=bty, ...)))
-  } else if(location == "toright") {
-    x = "right"
-    inset <- c(-legend_offset, 0)
-    bty <- "n"
-    object <- append(object, list(legend = list(x = x, y = y, inset=inset, bty=bty, ...)))
-  } else if(location == "toleft") {
-    x = "left"
-    inset <- c(-legend_offset, 0)
-    bty <- "n"
-    object <- append(object, list(legend = list(x = x, y = y, inset=inset, bty=bty, ...)))
-  } else {
-    x <- location
-    object <- append(object, list(legend = list(x = x, ...)))
-  }
+  arguments <- list(...)
+  gsConfig <- list(location = location, legend_offset = legend_offset)
+  
+  arguments <- appendLegendPositionConfiguration(location, gsConfig, arguments)
+  
+  object <- append(object, list(legend = list(legend.arguments = arguments, legend.gs.config = gsConfig)))
   
   return(gsplot(object))
+}
+
+appendLegendPositionConfiguration <- function(location, gsConfig, arguments) {
+  #TODO support explicit x/y coords
+  legend_offset <- gsConfig$legend_offset
+  
+  if(location == "below") {
+    return(append(arguments, list(x = "bottom", y = NULL, inset=c(0, -legend_offset), bty="n")))
+  } else if(location == "above") {
+    return(append(arguments, list(x = "top", y = NULL, inset=c(0, -legend_offset), bty="n")))
+  } else if(location == "toright") {
+    return(append(arguments, list(x = "right", y = NULL, inset=c(-legend_offset, 0), bty="n")))
+  } else if(location == "toleft") {
+    return(append(arguments, list(x = "left", y = NULL, inset=c(-legend_offset, 0), bty="n")))
+  } else {
+    return(append(arguments, list(x = location)))
+  }
 }
 
 #' gsplot draw_legend
@@ -97,7 +90,7 @@ legend.gsplot <- function(object, location="topright", legend_offset=0.3, ...) {
 
 draw_legend <- function(gsplot) {
   par(xpd=TRUE)
-  legendParams <- gsplot[['legend']]
+  legendParams <- gsplot[['legend']][['legend.arguments']]
   if(!is.null(legendParams)) {
     smartLegend <- data.frame(text = character(), 
                               symbol = numeric(), 
@@ -109,10 +102,10 @@ draw_legend <- function(gsplot) {
         newText <- ""
       }
       return(data.frame(text = newText, 
-                                                       symbol = newSymbol, 
-                                                       color = newColor, 
-                                                       line = newLine, 
-                                                       stringsAsFactors = FALSE))
+                        symbol = newSymbol, 
+                        color = newColor, 
+                        line = newLine, 
+                        stringsAsFactors = FALSE))
     }
     
     #get legend entries for points
@@ -146,7 +139,7 @@ draw_legend <- function(gsplot) {
     legendParams <- append(legendParams, list(
       legend=smartLegend$text, 
       col=smartLegend$color
-      ))
+    ))
     
     legend(legendParams) 
   }
