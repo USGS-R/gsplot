@@ -11,7 +11,7 @@
 #' gs <- gsplot(list())
 #' gsNew <- axis(gs, side=1)
 #' gsNew <- axis(gsNew, side=2)
-#' #gsNew
+#' gsNew
 axis <- function(object, ...) {
   overrideGraphics("axis", object, ...)
 }
