@@ -109,24 +109,39 @@ draw_legend <- function(gsplot) {
         newText <- ""
       }
       return(data.frame(text = newText, 
-                                                       symbol = newSymbol, 
-                                                       color = newColor, 
-                                                       line = newLine, 
-                                                       stringsAsFactors = FALSE))
+                       symbol = newSymbol, 
+                       color = newColor, 
+                       line = newLine, 
+                       stringsAsFactors = FALSE))
     }
     
     #get legend entries for points
     pts_i <- which(names(gsplot) %in% 'points')
     for (i in pts_i){
       pts <- gsplot[[i]]
-      smartLegend <- rbind(smartLegend, getLegendItem(pts[['gs.config']]$legend.name, pts[['arguments']]$pch, pts[['arguments']]$col, NA))
+      
+      if(all((c("pch","col") %in% names(pts[['arguments']])))){
+        smartLegend <- rbind(smartLegend, getLegendItem(pts[['gs.config']]$legend.name, pts[['arguments']]$pch, pts[['arguments']]$col, NA))
+      } else {
+        pch <- ifelse("pch" %in% names(pts[['arguments']]), pts[['arguments']]$pch, par("pch"))
+        col <- ifelse("col" %in% names(pts[['arguments']]), pts[['arguments']]$col, par("col"))
+        smartLegend <- rbind(smartLegend, getLegendItem(pts[['gs.config']]$legend.name, pch, col, NA))
+      }
+      
     }
     
     #get legend entries for lines
     lines_i <- which(names(gsplot) %in% 'lines')
     for (i in lines_i){
       lines <- gsplot[[i]]
-      smartLegend <- rbind(smartLegend, getLegendItem(lines[['gs.config']]$legend.name, NA, lines[['arguments']]$col, lines[['arguments']]$lty))
+      if(all((c("lty","col") %in% names(lines[['arguments']])))){
+        smartLegend <- rbind(smartLegend, getLegendItem(lines[['gs.config']]$legend.name, NA, lines[['arguments']]$col, lines[['arguments']]$lty))
+      } else {
+        lty <- ifelse("lty" %in% names(lines[['arguments']]), lines[['arguments']]$lty, par("lty"))
+        col <- ifelse("col" %in% names(lines[['arguments']]), lines[['arguments']]$col, par("col"))
+        smartLegend <- rbind(smartLegend, getLegendItem(lines[['gs.config']]$legend.name, NA, col, lty))
+      }
+      
     }
     
     #only include pch if we have a non-NA entry for points
