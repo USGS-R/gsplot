@@ -7,7 +7,7 @@
 calc_views(gsplot)
 }
 \arguments{
-\item{object}{a gsplot object}
+\item{gsplot}{a gsplot object}
 }
 \description{
 calc_views

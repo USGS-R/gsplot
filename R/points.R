@@ -7,10 +7,9 @@
 #' @details Add additional functionality to points.
 #' 
 #' @param object gsplot object
-#' @param legend.name character
-#' @param side integer vector
 #' @param \dots Further graphical parameters may also be supplied as arguments. See 'Details'.
 #' @return modified gsplot object 
+#' @rdname points
 #' @examples
 #' gs <- gsplot(list())
 #' gsNew <- points(gs, 1, 2, col="blue", pch=18)
@@ -21,6 +20,11 @@ points <- function(object, ...) {
   overrideGraphics("points", object, ...)
 }
 
+#' @rdname points
+#' @param x vector
+#' @param y vector
+#' @param legend.name character
+#' @param side integer vector
 points.gsplot <- function(object, x, y=NULL, ..., legend.name=NULL, side=c(1,2)){
   current_list <- config("points")
   arguments <- list(x=x, y=y, ...)

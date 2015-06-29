@@ -2,7 +2,7 @@
 #' 
 #' calc_views
 #' 
-#' @param object a gsplot object
+#' @param gsplot a gsplot object
 #' @export
 calc_views <- function(gsplot){
   

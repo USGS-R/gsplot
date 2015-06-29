@@ -2,12 +2,20 @@
 % Please edit documentation in R/points.R
 \name{points}
 \alias{points}
+\alias{points.gsplot}
 \title{gsplot points}
 \usage{
 points(object, legend.name=NULL, side=c(1,2), ...)
+
+points.gsplot(object, x, y = NULL, ..., legend.name = NULL, side = c(1,
+  2))
 }
 \arguments{
 \item{object}{gsplot object}
+
+\item{x}{vector}
+
+\item{y}{vector}
 
 \item{legend.name}{character}
 

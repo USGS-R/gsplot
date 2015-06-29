@@ -2,12 +2,19 @@
 % Please edit documentation in R/lines.R
 \name{lines}
 \alias{lines}
+\alias{lines.gsplot}
 \title{gsplot lines}
 \usage{
 lines(object, ...)
+
+lines.gsplot(object, x, y = NULL, ..., legend.name = NULL, side = c(1, 2))
 }
 \arguments{
 \item{object}{a gsplot object}
+
+\item{x}{vector}
+
+\item{y}{vector}
 
 \item{legend.name}{a character vector of length one to be used in the legend (if needed)}
 

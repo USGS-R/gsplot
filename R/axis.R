@@ -5,12 +5,13 @@
 #' @param object gsplot object
 #' @param \dots ...  Further graphical parameters may also be supplied as arguments. See 'Details'.
 #' @return modified gsplot object 
+#' @rdname axis
 #' @export
 #' @examples
 #' gs <- gsplot(list())
 #' gsNew <- axis(gs, side=1)
 #' gsNew <- axis(gsNew, side=2)
-#' gsNew
+#' #gsNew
 axis <- function(object, ...) {
   overrideGraphics("axis", object, ...)
 }
