@@ -9,8 +9,8 @@
 #' @examples
 #' gs <- gsplot(list()) %>%
 #'    points(x=1, y=2, legend.name="Cool points") %>%
-#'    lines(x=1:5, y=1:5, legend.name="Cool lines") 
-#'    #legend()
+#'    lines(x=1:5, y=1:5, legend.name="Cool lines") %>%
+#'    legend(location="topright")
 #' gs
 print.gsplot <- function(x, ...){
 
