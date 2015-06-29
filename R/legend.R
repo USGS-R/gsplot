@@ -178,7 +178,7 @@ draw_legend <- function(gsplot) {
 
 legend_adjusted_margins <- function(gsPlot) {
   defaults <- config("plot")
-  mar <- c(3, 3, 3, 3) #default margins should come from config
+  defaultMargins <- c(3, 3, 3, 3) #default margins should come from config
   leftRightMarginMultiplier <- 3 #load in config?
   
   if(!is.null(gsPlot$legend)) {
@@ -192,7 +192,11 @@ legend_adjusted_margins <- function(gsPlot) {
       mar <- c(defaultMargins[1], defaultMargins[2], defaultMargins[3], defaultMargins[4] + (legend_offset * leftRightMarginMultiplier))
     } else if(location == "toleft") {
       mar <- c(defaultMargins[1], defaultMargins[2] + (legend_offset * leftRightMarginMultiplier), defaultMargins[3], defaultMargins[4])
+    } else {
+      mar <- defaultMargins
     }
+  } else {
+    mar <- defaultMargins
   }
   return(mar)
 }
