@@ -6,7 +6,7 @@ Date: 2015-06-24
 Author: CIDA
 License: CC0
 Maintainer: cida top dog <cida@usgs.gov>
-Description: Geological Survey plotting
+Description: Workflow and plotting style defaults created for the U.S. Geological Survey.
 Depends:
     R (>= 3.0)
 Copyright: This software is in the public domain because it contains materials

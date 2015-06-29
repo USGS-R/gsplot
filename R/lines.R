@@ -2,8 +2,6 @@
 #'
 #' Point stuff
 #' @param object a gsplot object
-#' @param legend.name a character vector of length one to be used in the legend (if needed)
-#' @param side the side(s) to use for axes (1,2,3,4 for sides, or 5,6,7,8 for outward offsets of those)
 #' @param \dots Further graphical parameters may also be supplied as arguments. See 'Details'.
 #' @return modified gsplot object 
 #' @examples
@@ -13,11 +11,16 @@
 #' gsNew <- points(gsNew, c(8,4,1.2), c(2,4.7,6), side=c(3,2))
 #' gsNew
 #' @export
+#' @rdname lines
 lines <- function(object, ...) {
   overrideGraphics("lines", object, ...)
 }
 
-
+#' @param legend.name a character vector of length one to be used in the legend (if needed)
+#' @param side the side(s) to use for axes (1,2,3,4 for sides, or 5,6,7,8 for outward offsets of those)
+#' @param x vector
+#' @param y vector
+#' @rdname lines
 lines.gsplot <- function(object, x, y=NULL, ..., legend.name=NULL, side=c(1,2)){
   
   current_list <- config("lines")

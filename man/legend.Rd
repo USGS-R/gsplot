@@ -7,10 +7,7 @@
 legend(object, ...)
 }
 \arguments{
-\item{legend.location}{specifies where the legend is relative to the plot.
-Can use standard location parameter ("bottomright", "bottom", "bottomleft", "left",
-"topleft", "top", "topright", "right" and "center") with the additions "below", "above",
-"out-left", "out-right".}
+\item{object}{a gsplot object}
 
 \item{\dots}{normal legend params should forward through}
 }
