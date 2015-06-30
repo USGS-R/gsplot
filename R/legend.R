@@ -21,6 +21,14 @@
 #'  legend(location="topright")
 #' topright
 #' 
+#' defaultLegend <- gsplot(list()) %>% 
+#'  points(x=1, y=2, side=c(3,2)) %>% 
+#'  points(x=3, y=4, side=c(1,4)) %>% 
+#'  lines(x=c(3,4,3), y=c(2,4,6)) %>%
+#'  lines(x=c(1,2,5), y=c(1,8,5)) %>%  
+#'  legend()
+#' defaultLegend
+#' 
 #' above <- gsplot(list()) %>% 
 #'  points(x=1, y=2, side=c(3,2), legend.name="Example Points 1", pch=1, col="blue") %>% 
 #'  points(x=3, y=4, side=c(1,4), legend.name="Example Points 2", pch=5, col="red") %>% 
@@ -39,8 +47,8 @@
 #' 
 #' toright <- gsplot(list()) %>% 
 #'  points(x=1, y=2, side=c(3,2), legend.name="Example Points 1", pch=1, col="blue") %>% 
-#'  points(x=3, y=4, side=c(1,4), legend.name="Example Points 2", pch=5, col="red") %>% 
-#'  lines(x=c(3,4,3), y=c(2,4,6), legend.name="Example Lines 1", lty=5, col="orange") %>%
+#'  points(x=3, y=4, side=c(1,4), legend.name="Example Points 1", pch=1, col="blue") %>% 
+#'  lines(x=c(3,4,3), y=c(2,4,6), legend.name="Example Lines 1", lty=5) %>%
 #'  lines(x=c(1,2,5), y=c(1,8,5), legend.name="Example Lines 2", lty=5, col="green") %>% 
 #'  legend(location="toright")
 #' toright
@@ -103,13 +111,19 @@ draw_legend <- function(gsplot) {
                               stringsAsFactors = FALSE)
     getLegendItem <- function(newText, newSymbol, newColor, newLine) { 
       if(is.null(newText)) {
-        newText <- ""
+        if(!is.na(newSymbol)) {
+          newText <- "Plotted Points"
+        }
+        
+        if(!is.na(newLine)) {
+          newText <- "Plotted Line"
+        }
       }
       return(data.frame(text = newText, 
-                       symbol = newSymbol, 
-                       color = newColor, 
-                       line = newLine, 
-                       stringsAsFactors = FALSE))
+                        symbol = newSymbol, 
+                        color = newColor, 
+                        line = newLine, 
+                        stringsAsFactors = FALSE))
     }
     
     #get legend entries for points
@@ -140,6 +154,8 @@ draw_legend <- function(gsplot) {
       }
       
     }
+    
+    smartLegend <- unique(smartLegend)
     
     #only include pch if we have a non-NA entry for points
     if(length(pts_i) > 0) {
@@ -179,18 +195,22 @@ draw_legend <- function(gsplot) {
 legend_adjusted_margins <- function(gsPlot) {
   defaults <- config("plot")
   defaultMargins <- c(3, 3, 3, 3) #default margins should come from config
-  leftRightMarginMultiplier <- 3 #load in config?
+  leftRightMarginMultiplier <- 2 #load in config?
   
-  location <- gsPlot$legend$legend.gs.config$location
-  legend_offset <- ceiling(1 / gsPlot$legend$legend.gs.config$legend_offset)
-  if(location == "below") {
-    mar <- c(defaultMargins[1] + legend_offset, defaultMargins[2], defaultMargins[3], defaultMargins[4])
-  } else if(location == "above") {
-    mar <- c(defaultMargins[1], defaultMargins[2], defaultMargins[3] + legend_offset, defaultMargins[4])
-  } else if(location == "toright") {
-    mar <- c(defaultMargins[1], defaultMargins[2], defaultMargins[3], defaultMargins[4] + (legend_offset * leftRightMarginMultiplier))
-  } else if(location == "toleft") {
-    mar <- c(defaultMargins[1], defaultMargins[2] + (legend_offset * leftRightMarginMultiplier), defaultMargins[3], defaultMargins[4])
+  if(!is.null(gsPlot$legend)) {
+    location <- gsPlot$legend$legend.gs.config$location
+    legend_offset <- ceiling(1 / gsPlot$legend$legend.gs.config$legend_offset)
+    if(location == "below") {
+      mar <- c(defaultMargins[1] + legend_offset, defaultMargins[2], defaultMargins[3], defaultMargins[4])
+    } else if(location == "above") {
+      mar <- c(defaultMargins[1], defaultMargins[2], defaultMargins[3] + legend_offset, defaultMargins[4])
+    } else if(location == "toright") {
+      mar <- c(defaultMargins[1], defaultMargins[2], defaultMargins[3], defaultMargins[4] + (legend_offset * leftRightMarginMultiplier))
+    } else if(location == "toleft") {
+      mar <- c(defaultMargins[1], defaultMargins[2] + (legend_offset * leftRightMarginMultiplier), defaultMargins[3], defaultMargins[4])
+    } else {
+      mar <- defaultMargins
+    }
   } else {
     mar <- defaultMargins
   }
