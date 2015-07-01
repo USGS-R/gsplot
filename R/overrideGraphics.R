@@ -6,10 +6,29 @@ overrideGraphics <- function(name, object, ...) {
     fun(object, ...)
   } else {
     params <- list()
-    if (!missing(object)) {
-      params <- append(params, object)
-    }
     params <- append(params, list(...))
+    switch(name,
+           points={
+             if (!missing(object)) {
+               params <- append(params, list(x=object))
+             }
+             if(!("type" %in% names(params))){
+               params <- append(params, list(type="p"))
+             }
+           },
+           lines={
+             if (!missing(object)) {
+               params <- append(params, list(x=object))
+             }
+             if(!("type" %in% names(params))){
+               params <- append(params, list(type="l"))
+             }
+           },
+           legend={
+             if (!missing(object)) {
+               params <- append(params, object)
+             }              
+           })
     do.call(getFromNamespace(name, "graphics"), params)
   }
 }
