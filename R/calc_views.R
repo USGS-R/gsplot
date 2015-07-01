@@ -16,7 +16,7 @@ group_views <- function(gsplot){
   unique_sides <- unique_sides[!sapply(unique_sides, is.null)]
   views <- rep(list(view=c()),length(unique_sides))
   
-  for (i in 1:length(unique_sides)){
+  for (i in seq_len(length(unique_sides))){
     views[[i]][['gs.config']][['side']] = unique_sides[[i]]
   }
   
