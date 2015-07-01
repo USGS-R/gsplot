@@ -48,33 +48,47 @@ loadConfig = function(filename) {
       tcl=0.3,
       mgp=c(1.5,.3,0),
       lty=1,
-      lwd=1
+      lwd=1,
+      grid=list(lty=2,
+                col="grey"),
+      points=list(pch=6,col="red"),
+      lines=list()
     )
     
   } else {
     load(filename)
   }
-
   options("gsplot"=graphTemplate)
 }
 
 
-config <- function(type){
+config <- function(type=c("par","points","lines","axis","plot"),...){
   
   loadConfig()
 
-  type <- match.arg(type, c("plot", "points","lines","axis"))
+  type <- match.arg(type)
   
   config_list <- options("gsplot")[[1]]
+  
+  globalConfig <- config_list[!(names(config_list) %in% c("points","lines","grid"))]
+  
+  if(type %in% c("par")){
+    formalsNames <- names(par(no.readonly = TRUE))
+    formalsNames <- formalsNames[formalsNames != "..."]
+  }
   
   if(type %in% c("points")){
     formalsNames <- names(formals(plot.xy))
     formalsNames <- formalsNames[formalsNames != "..."]
+    globalConfig[names(config_list$points)] <- NULL
+    globalConfig <- append(globalConfig, config_list$points)
   }
   
   if(type %in% c("lines")){
     formalsNames <- names(formals(plot.xy))
     formalsNames <- formalsNames[formalsNames != "..."]
+    globalConfig[names(config_list$lines)] <- NULL
+    globalConfig <- append(globalConfig, config_list$lines)
   }
   
   if(type %in% c("plot")){
@@ -87,9 +101,25 @@ config <- function(type){
     formalsNames <- formalsNames[formalsNames != "..."]
   }
   
-  current_list <- config_list[names(config_list) %in% formalsNames]
-
-  return(current_list)
+  if(type %in% c("legend")){
+    formalsNames <- names(formals(graphics::legend))
+    formalsNames <- formalsNames[formalsNames != "..."]
+  }
+  
+  if(type %in% c("grid")){
+    formalsNames <- names(formals(graphics::grid))
+    formalsNames <- formalsNames[formalsNames != "..."]
+    globalConfig[names(config_list$grid)] <- NULL
+    globalConfig <- append(globalConfig, config_list$grid)
+  }
+  
+  globalConfig <- globalConfig[names(globalConfig) %in% formalsNames]
+  
+  globalConfig[names(list(...))] <- NULL
+  globalConfig <- append(globalConfig, list(...))
+  
+  
+  return(globalConfig)
   
 }
 
