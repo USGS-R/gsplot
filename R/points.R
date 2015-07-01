@@ -12,7 +12,7 @@
 #' @rdname points
 #' @examples
 #' gs <- gsplot(list())
-#' gsNew <- points(gs, 1, 2, col="blue", pch=18)
+#' gsNew <- points(gs, y=1, x=2, col="blue", pch=18)
 #' gsNew <- points(gsNew, c(3,4,3), c(2,4,6))
 #' gsNew
 #' @export

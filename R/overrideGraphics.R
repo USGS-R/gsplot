@@ -6,10 +6,16 @@ overrideGraphics <- function(name, object, ...) {
     fun(object, ...)
   } else {
     params <- list()
-    if (!missing(object)) {
-      params <- append(params, object)
-    }
     params <- append(params, list(...))
+ 
+    if (!missing(object)) {
+      params <- append(list(object), params)
+    }
+    
+    defFun <- ifelse(existsFunction(paste0(name,".default")), paste0(name,".default"), name)
+    
+    names(params)[which(names(params) == "")] <- names(formals(defFun))[which(names(params) == "")]
+    
     do.call(getFromNamespace(name, "graphics"), params)
   }
 }
