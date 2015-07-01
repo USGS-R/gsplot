@@ -1,14 +1,11 @@
-#' calc_views
-#' 
-#' calc_views
-#' 
-#' @param gsplot a gsplot object
 #' @export
 calc_views <- function(gsplot){
   
   views <- group_views(gsplot)
   
-  views <- calc_view_lims(views)
+  usrs <- calc_view_usr(views)
+  
+  views <- add_view_usr(views, usrs)
   
   return(views)
 }
@@ -30,6 +27,7 @@ group_views <- function(gsplot){
     } else {
       view_i = 1 
     }
+    # // to do: verify sides are in order: x then y
     to_draw <- setNames(list(gsplot[[i]][['arguments']]), names(gsplot[i]))
     views[[view_i]] <- append(views[[view_i]], to_draw)
   }
@@ -37,17 +35,39 @@ group_views <- function(gsplot){
   return(views)
 }
 
-calc_view_lims <- function(views){
-  
+add_view_usr <- function(views, usrs){
   for (i in 1:length(views)){
-    view <- views[[i]]
-    x <- lapply(view, var='x', function(list, var) strip_pts(list,var))
-    y <- lapply(view, var='y', function(list, var) strip_pts(list,var))
-    xlim <- lims_from_list(x)
-    ylim <- lims_from_list(y)
-    views[[i]]$usr <- c(usr_from_lim(xlim, type=par()$xaxs), usr_from_lim(ylim, type=par()$yaxs))
+    sides <- views[[i]][['gs.config']][['side']]
+    views[[i]][['usr']] <- c(usrs[[sides[1]]][[1]], usrs[[sides[2]]][[1]])
   }
   return(views)
+}
+
+calc_view_usr <- function(views){
+  
+  unique_sides <- unique(unlist(lapply(views,function(x)x[['gs.config']][['side']])))
+  sides <- list()
+  for (side in unique_sides){
+    
+    view_i <- which(unlist(lapply(views,function(x)any(x[['gs.config']][['side']]==side))))
+    
+    # collapse these into a single list of components that reference this side
+    side_components <- do.call(c,views[view_i]) 
+    
+    if ((side %% 2) == 0){
+      # is y 
+      lims <- lims_from_list(lapply(side_components, var='y', function(list, var) strip_pts(list,var)))
+      usr <- usr_from_lim(lims, type=par()$yaxs)
+    } else {
+      # is x
+      lims <- lims_from_list(lapply(side_components, var='x', function(list, var) strip_pts(list,var)))
+      usr <- usr_from_lim(lims, type=par()$xaxs)
+    }
+    sides[[side]] = list(usr=usr)
+    
+  }
+  names(sides) <- unique_sides
+  return(sides)
 }
 
 strip_pts <- function(list, var){
