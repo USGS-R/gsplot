@@ -11,13 +11,25 @@ Currently only available via github. Easiest way to install is to use the `devto
 devtools::install_github("USGS-R/gsplot")
 ```
 
+This package is still very much in development, so the API may change at any time.
+
 ##Overview
 The goal of this package is to simplify plotting in R. This includes improving the basic workflow and using defaults that tend to adhear to USGS style guidelines.
 
 ##Improved workflow examples
 
 ```r
-x <- 1
+library(gsplot)
+
+demoPlot <- gsplot() %>% 
+ points(x=1, y=2, legend.name="Points 1", cex=3, pch=19) %>% 
+ points(x=3, y=4, side=c(1,4), legend.name="Points 2", pch=5, col="red") %>% 
+ lines(x=c(3,4,3), y=c(2,4,6), legend.name="Lines 1", lty=5, lwd=3) %>%
+ lines(x=c(1,2,5), y=c(1,8,5), legend.name="Lines 2", lty=5, col="green") %>% 
+ abline(a=1, b=0) %>%
+ legend(location="topleft")
+demoPlot
+
 ```
 
 ##Disclaimer
