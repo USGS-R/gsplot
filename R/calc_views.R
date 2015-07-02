@@ -1,4 +1,11 @@
+#' calc_view
+#' 
+#' calc_view
+#'
+#'
+#' @param gsplot object
 #' @export
+#' @keywords internal
 calc_views <- function(gsplot){
   
   views <- group_views(gsplot)

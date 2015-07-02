@@ -29,7 +29,7 @@ topright <- gsplot(list()) \%>\%
  lines(x=c(3,4,3), y=c(2,4,6), legend.name="Example Lines", lty=5, col="orange") \%>\%
  points(x=1, y=2, side=c(3,2), legend.name="Example Points 1", pch=1, col="blue") \%>\%
  points(x=3, y=4, side=c(1,4), legend.name="Example Points 2", pch=5, col="red") \%>\%
- legend(location="topright")
+ legend(location="topright", title="LEGEND!!!")
 topright
 
 defaultLegend <- gsplot(list()) \%>\%
