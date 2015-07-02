@@ -71,7 +71,7 @@ legend.gsplot <- function(object, location="topright", legend_offset=0.3, ...) {
   
   arguments <- appendLegendPositionConfiguration(location, gsConfig, arguments)
   
-  object <- append(object, list(legend = list(legend.arguments = arguments, legend.gs.config = gsConfig)))
+  object <- append(object, list(legend = list(arguments = arguments, gs.config = gsConfig)))
   
   return(gsplot(object))
 }
@@ -102,7 +102,7 @@ appendLegendPositionConfiguration <- function(location, gsConfig, arguments) {
 
 draw_legend <- function(gsplot) {
   par(xpd=TRUE)
-  legendParams <- gsplot[['legend']][['legend.arguments']]
+  legendParams <- gsplot[['legend']][['arguments']]
   if(!is.null(legendParams)) {
     smartLegend <- data.frame(text = character(), 
                               symbol = numeric(), 
@@ -177,7 +177,7 @@ draw_legend <- function(gsplot) {
     ))
     
     #for above/below, dynamically set the number of columns
-    location <- gsplot[['legend']][['legend.gs.config']]$location
+    location <- gsplot[['legend']][['gs.config']][['location']]
     if(location == "below" || location == "above") {
       itemsPerCol <- 3 #TODO load this from config
       cols <- NROW(smartLegend) %/% 3;

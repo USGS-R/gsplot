@@ -23,20 +23,22 @@ group_views <- function(gsplot){
   for (i in seq_len(length(gsplot))){
     draw_sides <- gsplot[[i]][['gs.config']][['side']]
     if (!is.null(draw_sides)){
+      # // to do: verify sides are in order: x then y
       view_i <- which(sapply(unique_sides, function(x) x[1] == draw_sides[1] & x[2] == draw_sides[2]))
+      to_draw <- setNames(list(gsplot[[i]][['arguments']]), names(gsplot[i]))
+      views[[view_i]] <- append(views[[view_i]], to_draw)
     } else {
-      view_i = 1 
+      # // if field isn't associated with a side(s), it is moved up to top level (e.g., legend)
+      views[[names(gsplot[i])]] <- gsplot[[i]]
     }
-    # // to do: verify sides are in order: x then y
-    to_draw <- setNames(list(gsplot[[i]][['arguments']]), names(gsplot[i]))
-    views[[view_i]] <- append(views[[view_i]], to_draw)
   }
   
   return(views)
 }
 
 add_view_usr <- function(views, usrs){
-  for (i in 1:length(views)){
+  view_i <- which(names(views) %in% 'view')
+  for (i in view_i){
     sides <- views[[i]][['gs.config']][['side']]
     views[[i]][['usr']] <- c(usrs[[sides[1]]][[1]], usrs[[sides[2]]][[1]])
   }
