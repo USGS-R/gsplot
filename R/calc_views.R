@@ -67,13 +67,13 @@ calc_view_usr <- function(views){
       # is y 
       
       lims <- lims_from_list(lapply(side_components, var='y', function(list, var) strip_pts(list,var)))
-      client_lims <- lims_from_client(side_components, var='ylim')
+      client_lims <- lims_from_client(side_components, var='ylim', side)
       lims[!is.na(client_lims)] <- client_lims[!is.na(client_lims)]
       usr <- usr_from_lim(lims, type=par()$yaxs)
     } else {
       # is x
       lims <- lims_from_list(lapply(side_components, var='x', function(list, var) strip_pts(list,var)))
-      client_lims <- lims_from_client(side_components, var='xlim')
+      client_lims <- lims_from_client(side_components, var='xlim', side)
       lims[!is.na(client_lims)] <- client_lims[!is.na(client_lims)]
       usr <- usr_from_lim(lims, type=par()$xaxs)
     }
@@ -91,7 +91,7 @@ strip_pts <- function(list, var){
     NA
 }
 
-lims_from_client <- function(list, var){
+lims_from_client <- function(list, var, side){
   client_lims <- lapply(list, var=var, function(list, var) strip_pts(list,var))
   client_lims <- client_lims[!is.na(client_lims)]
   if (length(client_lims) > 1)
