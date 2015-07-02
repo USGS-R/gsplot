@@ -1,15 +1,12 @@
 #' gsplot points
 #'
 #' Point stuff
-#' @usage 
-#' points(object, legend.name=NULL, side=c(1,2), ...)
 #' 
 #' @details Add additional functionality to points.
 #' 
 #' @param object gsplot object
 #' @param \dots Further graphical parameters may also be supplied as arguments. See 'Details'.
 #' @return modified gsplot object 
-#' @rdname points
 #' @examples
 #' gs <- gsplot(list())
 #' gsNew <- points(gs, y=1, x=2, col="blue", pch=18)
