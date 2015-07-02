@@ -51,7 +51,7 @@ add_view_usr <- function(views, usrs){
   view_i <- which(names(views) %in% 'view')
   for (i in view_i){
     sides <- views[[i]][['gs.config']][['side']]
-    views[[i]][['usr']] <- c(usrs[[sides[1]]][[1]], usrs[[sides[2]]][[1]])
+    views[[i]][['gs.config']][['usr']] <- c(usrs[[sides[1]]][[1]], usrs[[sides[2]]][[1]])
   }
   return(views)
 }

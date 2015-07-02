@@ -23,7 +23,7 @@ print.gsplot <- function(x, ...){
   for (i in which(names(views) %in% 'view')){
     view = views[[i]]
     
-    par(usr=view$usr)
+    par(usr=view$gs.config$usr)
     
     par(config("par"))
     
@@ -31,12 +31,10 @@ print.gsplot <- function(x, ...){
     axis(side=view$gs.config$side[2], config("axis"))
     mtext(text=view$gs.config$xlab, view$gs.config$side[1], line = 2)
     mtext(text=view$gs.config$ylab, view$gs.config$side[2], line = 2)
-    # par(defaultPar)
-    # -- call lines -- 
-    to_gsplot(view, which(names(view)  %in% 'lines'))
-    
-    # -- call points -- 
-    to_gsplot(view, which(names(view)  %in% 'points'))
+
+    # -- call functions -- 
+    to_gsplot(view, which(!names(view)  %in% 'gs.config'))
+
     par(new=TRUE)
   }
   box()
