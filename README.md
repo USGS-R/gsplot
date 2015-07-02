@@ -23,17 +23,7 @@ Improved workflow examples
 
 ``` r
 library(gsplot)
-```
 
-    ## This information is preliminary or provisional and is subject to revision. It is being provided to meet the need for timely best science. The information has not received final approval by the U.S. Geological Survey (USGS) and is provided on the condition that neither the USGS nor the U.S. Government shall be held liable for any damages resulting from the authorized or unauthorized use of the information. Although this software program has been used by the USGS, no warranty, expressed or implied, is made by the USGS or the U.S. Government as to the accuracy and functioning of the program and related program material nor shall the fact of distribution constitute any such warranty, and no responsibility is assumed by the USGS in connection therewith.
-    ## 
-    ## Attaching package: 'gsplot'
-    ## 
-    ## The following objects are masked from 'package:graphics':
-    ## 
-    ##     abline, axis, legend, lines, points
-
-``` r
 demoPlot <- gsplot() %>% 
  points(x=1, y=2, legend.name="Points 1", pch=19, xlab="Label 1", ylab="1st Y") %>% 
  points(x=3, y=4, side=c(1,4), legend.name="Points 2", pch=5, col="blue", ylab="2nd Y") %>% 

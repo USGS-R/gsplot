@@ -26,7 +26,7 @@ The goal of this package is to simplify plotting in R. This includes improving t
 
 ##Improved workflow examples
 
-```{r echo=TRUE}
+```{r echo=TRUE, warning=FALSE, message=FALSE}
 library(gsplot)
 
 demoPlot <- gsplot() %>% 
