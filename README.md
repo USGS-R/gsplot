@@ -23,14 +23,18 @@ library(gsplot)
 
 demoPlot <- gsplot() %>% 
  points(x=1, y=2, legend.name="Points 1", cex=3, pch=19) %>% 
- points(x=3, y=4, side=c(1,4), legend.name="Points 2", pch=5, col="red") %>% 
+ points(x=3, y=4, side=c(1,4), legend.name="Points 2", pch=5, col="blue") %>% 
  lines(x=c(3,4,3), y=c(2,4,6), legend.name="Lines 1", lty=5, lwd=3) %>%
  lines(x=c(1,2,5), y=c(1,8,5), legend.name="Lines 2", lty=5, col="green") %>% 
- abline(a=1, b=0) %>%
- legend(location="topleft")
+ abline(a=0, b=1) %>%
+ legend(location="topleft", title="Fake data")
+
+png(filename="test.png")
 demoPlot
+dev.off()
 
 ```
+![Result image](test.png)
 
 ##Disclaimer
 This software is in the public domain because it contains materials that originally came from the U.S. Geological Survey, an agency of the United States Department of Interior. For more information, see the [official USGS copyright policy](http://www.usgs.gov/visual-id/credit_usgs.html#copyright/ "official USGS copyright policy")
