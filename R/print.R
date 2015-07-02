@@ -9,7 +9,7 @@
 #' @examples
 #' gs <- gsplot(list()) %>%
 #'    points(1, 2, legend.name="Cool points") %>%
-#'    lines(x=1:5, y=1:5, legend.name="Cool lines") %>%
+#'    lines(x=1:5, y=1:5, legend.name="Cool lines", ylab='taco night') %>%
 #'    legend(location="top")
 #' gs
 print.gsplot <- function(x, ...){
@@ -29,7 +29,8 @@ print.gsplot <- function(x, ...){
     
     axis(side=view$gs.config$side[1], config("axis"))
     axis(side=view$gs.config$side[2], config("axis"))
-    
+    mtext(text=view$gs.config$xlab, view$gs.config$side[1], line = 2)
+    mtext(text=view$gs.config$ylab, view$gs.config$side[2], line = 2)
     # par(defaultPar)
     # -- call lines -- 
     to_gsplot(view, which(names(view)  %in% 'lines'))
