@@ -24,7 +24,8 @@ print.gsplot <- function(x, ...){
     view = views[[i]]
     
     par(usr=view$usr)
-    par(options("gsplot")[[1]])
+    
+    par(config("par"))
     
     axis(side=view$gs.config$side[1], config("axis"))
     axis(side=view$gs.config$side[2], config("axis"))
