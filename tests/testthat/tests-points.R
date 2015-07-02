@@ -4,6 +4,12 @@ test_that("graphics examples work", {
   
   plot(-4:4, -4:4, type = "n")  # setting up coord. system
   points(rnorm(200), rnorm(200), col = "red")
+  
+  dev.off()
+  plot(-4:4, -4:4, type = "n", xlim=c(0,100000), ylim=c(0,1))  # setting up coord. system
+  lx <- seq(1, 5, length = 41)
+  xy = xy.coords(x=10^lx,y=exp(-.5*lx^2))
+  plot.xy(xy, type='p')
 
 })
 
