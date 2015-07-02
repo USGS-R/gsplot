@@ -21,7 +21,7 @@ abline stuff
 Add additional functionality to points.
 }
 \examples{
-gs <- gsplot(list())
+gs <- gsplot()
 gsNew <- points(gs, y=1, x=2, col="blue", pch=18, legend.name="Points")
 gsNew <- lines(gsNew, c(3,4,3), c(2,4,6), legend.name="Lines")
 gsNew <- abline(gsNew, b=1, a=0, legend.name="1:1")

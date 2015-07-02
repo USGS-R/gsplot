@@ -10,6 +10,8 @@
 #'@examples
 #'loadConfig()
 #'@export
+#' @importFrom graphics plot.xy
+#' @importFrom graphics par
 loadConfig = function(filename) {
   
   if(missing(filename)){

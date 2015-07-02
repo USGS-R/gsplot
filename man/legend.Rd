@@ -19,20 +19,20 @@ If called with gsplot as first argument, will set the internal gsplot configurat
 for legends
 }
 \examples{
-bottom <- gsplot(list()) \%>\%
+bottom <- gsplot() \%>\%
  points(x=1, y=2, side=c(3,2), legend.name="Example Points 1", pch=1, col="blue") \%>\%
  points(x=3, y=4, side=c(1,4), legend.name="Example Points 2", pch=5, col="red") \%>\%
  legend(location="bottom")
 bottom
 
-topright <- gsplot(list()) \%>\%
+topright <- gsplot() \%>\%
  lines(x=c(3,4,3), y=c(2,4,6), legend.name="Example Lines", lty=5, col="orange") \%>\%
  points(x=1, y=2, side=c(3,2), legend.name="Example Points 1", pch=1, col="blue") \%>\%
  points(x=3, y=4, side=c(1,4), legend.name="Example Points 2", pch=5, col="red") \%>\%
  legend(location="topright", title="LEGEND!!!")
 topright
 
-defaultLegend <- gsplot(list()) \%>\%
+defaultLegend <- gsplot() \%>\%
  points(x=1, y=2, side=c(3,2)) \%>\%
  points(x=3, y=4, side=c(1,4)) \%>\%
  lines(x=c(3,4,3), y=c(2,4,6)) \%>\%
@@ -40,7 +40,7 @@ defaultLegend <- gsplot(list()) \%>\%
  legend()
 defaultLegend
 
-above <- gsplot(list()) \%>\%
+above <- gsplot() \%>\%
  points(x=1, y=2, side=c(3,2), legend.name="Example Points 1", pch=1, col="blue") \%>\%
  points(x=3, y=4, side=c(1,4), legend.name="Example Points 2", pch=5, col="red") \%>\%
  lines(x=c(3,4,3), y=c(2,4,6), legend.name="Example Lines 1", lty=5, col="orange") \%>\%
@@ -48,7 +48,7 @@ above <- gsplot(list()) \%>\%
  legend(location="above")
 above
 
-below <- gsplot(list()) \%>\%
+below <- gsplot() \%>\%
  points(x=1, y=2, side=c(3,2), legend.name="Example Points 1", pch=1, col="blue") \%>\%
  points(x=3, y=4, side=c(1,4), legend.name="Example Points 2", pch=5, col="red") \%>\%
  lines(x=c(3,4,3), y=c(2,4,6), legend.name="Example Lines 1", lty=5, col="orange") \%>\%
@@ -56,7 +56,7 @@ below <- gsplot(list()) \%>\%
  legend(location="below")
 below
 
-toright <- gsplot(list()) \%>\%
+toright <- gsplot() \%>\%
  points(x=1, y=2, side=c(3,2), legend.name="Example Points 1", pch=1, col="blue") \%>\%
  points(x=3, y=4, side=c(1,4), legend.name="Example Points 1", pch=1, col="blue") \%>\%
  lines(x=c(3,4,3), y=c(2,4,6), legend.name="Example Lines 1", lty=5) \%>\%
@@ -64,12 +64,20 @@ toright <- gsplot(list()) \%>\%
  legend(location="toright")
 toright
 
-toleft <- gsplot(list()) \%>\%
+toleft <- gsplot() \%>\%
  points(x=1, y=2, side=c(3,2), legend.name="Example Points 1", pch=1, col="blue") \%>\%
  points(x=3, y=4, side=c(1,4), legend.name="Example Points 2", pch=5, col="red") \%>\%
  lines(x=c(3,4,3), y=c(2,4,6), legend.name="Example Lines 1", lty=5, col="orange") \%>\%
  lines(x=c(1,2,5), y=c(1,8,5), lty=5, col="green") \%>\%
  legend(location="below")
 toleft
+
+usrDef <- gsplot() \%>\%
+ points(x=1, y=2, side=c(3,2), legend.name="Example Points 1", pch=1, col="blue") \%>\%
+ points(x=3, y=4, side=c(1,4), legend.name="Example Points 2", pch=5, col="red") \%>\%
+ lines(x=c(3,4,3), y=c(2,4,6), legend.name="Example Lines 1", lty=5, col="orange") \%>\%
+ lines(x=c(1,2,5), y=c(1,8,5), legend.name="Example Lines 2", lty=5, col="green") \%>\%
+ legend(x=3,y=4)
+usrDef
 }
 

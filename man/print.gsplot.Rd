@@ -18,7 +18,7 @@ modified gsplot object
 show gsplot
 }
 \examples{
-gs <- gsplot(list()) \%>\%
+gs <- gsplot() \%>\%
    points(1, 2, legend.name="Cool points") \%>\%
    lines(x=1:5, y=1:5, legend.name="Cool lines", ylab='taco night') \%>\%
    legend(location="top")

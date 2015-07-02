@@ -5,6 +5,7 @@
 #'
 #' @param gsplot object
 #' @export
+#' @importFrom graphics par
 #' @keywords internal
 calc_views <- function(gsplot){
   
