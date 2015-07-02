@@ -31,6 +31,9 @@ print.gsplot <- function(x, ...){
     axis(side=view$gs.config$side[2], config("axis"))
     
     # par(defaultPar)
+    # -- call ablines --
+    to_gsplot(view, which(names(view)  %in% 'abline'))
+    
     # -- call lines -- 
     to_gsplot(view, which(names(view)  %in% 'lines'))
     

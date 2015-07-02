@@ -26,7 +26,7 @@ loadConfig = function(filename) {
                 col="grey"),
       points=list(pch=6,col="red"),
       lines=list(),
-      abline=list(),
+      abline=list(col="grey"),
       legend=list(),
       axis=list()
     )
@@ -38,15 +38,17 @@ loadConfig = function(filename) {
 }
 
 
-config <- function(type=c("par","points","lines","axis","plot","abline","grid"),...){
+config <- function(type,...){
   
   loadConfig()
-
-  type <- match.arg(type)
+  
+  allowedTypes <- c("par","points","lines","axis","plot","abline","grid","legend")
+  
+  type <- match.arg(type, choices = allowedTypes)
   
   config_list <- options("gsplot")[[1]]
   
-  globalConfig <- config_list[!(names(config_list) %in% c("points","lines","grid"))]
+  globalConfig <- config_list[!(names(config_list) %in% allowedTypes[allowedTypes != "par"])]
   
   formalsNames <- names(formals(plot.xy))
   formalsNames <- switch(type,
