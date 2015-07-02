@@ -9,7 +9,6 @@
 #' gsplot(list())
 gsplot <- function(x){
   UseMethod("gsplot", x)
-  invisible(x)
 }
 
 #' @export

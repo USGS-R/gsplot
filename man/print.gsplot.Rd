@@ -21,7 +21,7 @@ show gsplot
 gs <- gsplot(list()) \%>\%
    points(1, 2, legend.name="Cool points") \%>\%
    lines(x=1:5, y=1:5, legend.name="Cool lines") \%>\%
-   legend(location="below")
+   legend(location="top")
 gs
 }
 

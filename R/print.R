@@ -10,7 +10,7 @@
 #' gs <- gsplot(list()) %>%
 #'    points(1, 2, legend.name="Cool points") %>%
 #'    lines(x=1:5, y=1:5, legend.name="Cool lines") %>%
-#'    legend(location="below")
+#'    legend(location="top")
 #' gs
 print.gsplot <- function(x, ...){
 
@@ -18,9 +18,9 @@ print.gsplot <- function(x, ...){
   # -- set plot -- 
   views = calc_views(x)
   
-  defaultPar <- par(no.readonly = TRUE, mar=legend_adjusted_margins(x))
+  defaultPar <- par(no.readonly = TRUE)#, mar=legend_adjusted_margins(x))
   
-  for (i in 1:length(views)){
+  for (i in which(names(views) %in% 'view')){
     view = views[[i]]
     
     par(usr=view$usr)
@@ -42,7 +42,7 @@ print.gsplot <- function(x, ...){
   
   draw_legend(x)
 
-  par(new=FALSE)
+  par(defaultPar)
 }
 
 to_gsplot <- function(x, which_i){
