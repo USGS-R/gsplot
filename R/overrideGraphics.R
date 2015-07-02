@@ -5,11 +5,10 @@ overrideGraphics <- function(name, object, ...) {
     }
     fun(object, ...)
   } else {
-    params <- list()
-    params <- append(params, list(...))
+    params <- list(...)
  
     if (!missing(object)) {
-      params <- append(list(object), params)
+      params <- append(object, params)
     }
     
     
