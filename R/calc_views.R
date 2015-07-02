@@ -65,11 +65,16 @@ calc_view_usr <- function(views){
     
     if ((side %% 2) == 0){
       # is y 
+      
       lims <- lims_from_list(lapply(side_components, var='y', function(list, var) strip_pts(list,var)))
+      client_lims <- lims_from_client(side_components, var='ylim')
+      lims[!is.na(client_lims)] <- client_lims[!is.na(client_lims)]
       usr <- usr_from_lim(lims, type=par()$yaxs)
     } else {
       # is x
       lims <- lims_from_list(lapply(side_components, var='x', function(list, var) strip_pts(list,var)))
+      client_lims <- lims_from_client(side_components, var='xlim')
+      lims[!is.na(client_lims)] <- client_lims[!is.na(client_lims)]
       usr <- usr_from_lim(lims, type=par()$xaxs)
     }
     sides[[side]] = list(usr=usr)
@@ -85,6 +90,19 @@ strip_pts <- function(list, var){
   else
     NA
 }
+
+lims_from_client <- function(list, var){
+  client_lims <- lapply(list, var=var, function(list, var) strip_pts(list,var))
+  client_lims <- client_lims[!is.na(client_lims)]
+  if (length(client_lims) > 1)
+    warning('for side ', side,', more than one ',var,' specified. Using last')
+  
+  if (length(client_lims) == 0)
+    client_lims <- list(c(NA,NA))
+  
+  client_lims <- client_lims[[length(client_lims)]]
+}
+
 lims_from_list <- function(list){
   c(min(sapply(list, min),na.rm=TRUE), max(sapply(list, max),na.rm=TRUE))
 }
@@ -95,7 +113,7 @@ usr_from_lim <- function(lim, type = 'i', log=FALSE){
     stop('log = TRUE not currently supported')
   usr <- switch (type,
     i = lim,
-    r = c(lim[1]-0.04*lim[1], lim[2]+0.04*lim[2])
+    r = c(lim[1]-0.04*diff(lim), lim[2]+0.04*diff(lim))
   )
   if (diff(usr) == 0){
     usr <- c(usr[1]-0.5, usr[2]+0.5)
