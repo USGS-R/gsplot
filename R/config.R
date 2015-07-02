@@ -60,14 +60,13 @@ config <- function(type,...){
                          formalsNames)
   
   formalsNames <- formalsNames[formalsNames != "..."]
-
+  
+  globalConfig <- globalConfig[names(globalConfig) %in% formalsNames]
+  
   if(type %in% names(config_list)){
     globalConfig[names(config_list[[type]])] <- NULL
     globalConfig <- append(globalConfig, config_list[[type]])
   }
-  
-  globalConfig <- globalConfig[names(globalConfig) %in% formalsNames]
-  
   globalConfig[names(list(...))] <- NULL
   globalConfig <- append(globalConfig, list(...))
   

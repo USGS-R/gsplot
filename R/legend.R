@@ -137,7 +137,7 @@ draw_legend <- function(gsplot) {
     }
     
     #get legend entries for lines
-    lines_i <- which(names(gsplot) %in% 'lines')
+    lines_i <- which(names(gsplot) %in% c('lines','abline'))
     for (i in lines_i){
       lines <- gsplot[[i]]
       if(all((c("lty","col") %in% names(lines[['arguments']])))){
@@ -151,6 +151,11 @@ draw_legend <- function(gsplot) {
     }
     
     smartLegend <- unique(smartLegend)
+    
+    lineTypes <- c("blank", "solid", "dashed", "dotted", "dotdash", "longdash", "twodash")
+    
+    lineNums <- suppressWarnings(as.numeric(smartLegend$line))
+    smartLegend$line[!is.na(lineNums)] <- lineTypes[lineNums+1][!is.na(lineTypes[lineNums+1])]
     
     if(nrow(smartLegend) > 0){
     
