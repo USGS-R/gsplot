@@ -9,7 +9,7 @@
 #' @examples
 #' gs <- gsplot(list()) %>%
 #'    points(1, 2, legend.name="Cool points") %>%
-#'    lines(x=1:5, y=1:5, legend.name="Cool lines") %>%
+#'    lines(x=1:5, y=1:5, legend.name="Cool lines", ylab='taco night') %>%
 #'    legend(location="top")
 #' gs
 print.gsplot <- function(x, ...){
@@ -23,19 +23,18 @@ print.gsplot <- function(x, ...){
   for (i in which(names(views) %in% 'view')){
     view = views[[i]]
     
-    par(usr=view$usr)
+    par(usr=view$gs.config$usr)
     
     par(config("par"))
     
     axis(side=view$gs.config$side[1], config("axis"))
     axis(side=view$gs.config$side[2], config("axis"))
-    
-    # par(defaultPar)
-    # -- call lines -- 
-    to_gsplot(view, which(names(view)  %in% 'lines'))
-    
-    # -- call points -- 
-    to_gsplot(view, which(names(view)  %in% 'points'))
+    mtext(text=view$gs.config$xlab, view$gs.config$side[1], line = 2)
+    mtext(text=view$gs.config$ylab, view$gs.config$side[2], line = 2)
+
+    # -- call functions -- 
+    to_gsplot(view, which(!names(view)  %in% 'gs.config'))
+
     par(new=TRUE)
   }
   box()

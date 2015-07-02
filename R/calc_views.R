@@ -12,7 +12,11 @@ calc_views <- function(gsplot){
   
   usrs <- calc_view_usr(views)
   
+  labs <- calc_view_labs(views)
+  
   views <- add_view_usr(views, usrs)
+  
+  views <- add_view_labs(views, labs)
   
   return(views)
 }
@@ -47,7 +51,17 @@ add_view_usr <- function(views, usrs){
   view_i <- which(names(views) %in% 'view')
   for (i in view_i){
     sides <- views[[i]][['gs.config']][['side']]
-    views[[i]][['usr']] <- c(usrs[[sides[1]]][[1]], usrs[[sides[2]]][[1]])
+    views[[i]][['gs.config']][['usr']] <- c(usrs[[sides[1]]][[1]], usrs[[sides[2]]][[1]])
+  }
+  return(views)
+}
+
+add_view_labs <- function(views, labs){
+  view_i <- which(names(views) %in% 'view')
+  for (i in view_i){
+    sides <- views[[i]][['gs.config']][['side']]
+    views[[i]][['gs.config']][['xlab']] <- labs[[sides[1]]]
+    views[[i]][['gs.config']][['ylab']] <- labs[[sides[2]]]
   }
   return(views)
 }
@@ -65,11 +79,16 @@ calc_view_usr <- function(views){
     
     if ((side %% 2) == 0){
       # is y 
+      
       lims <- lims_from_list(lapply(side_components, var='y', function(list, var) strip_pts(list,var)))
+      client_lims <- lims_from_client(side_components, var='ylim', side)
+      lims[!is.na(client_lims)] <- client_lims[!is.na(client_lims)]
       usr <- usr_from_lim(lims, type=par()$yaxs)
     } else {
       # is x
       lims <- lims_from_list(lapply(side_components, var='x', function(list, var) strip_pts(list,var)))
+      client_lims <- lims_from_client(side_components, var='xlim', side)
+      lims[!is.na(client_lims)] <- client_lims[!is.na(client_lims)]
       usr <- usr_from_lim(lims, type=par()$xaxs)
     }
     sides[[side]] = list(usr=usr)
@@ -79,12 +98,65 @@ calc_view_usr <- function(views){
   return(sides)
 }
 
+calc_view_labs <- function(views){
+  
+  #// to do: refactor to eliminate duplicated comb_view methods (like this on and the usr one)
+  unique_sides <- unique(unlist(lapply(views,function(x)x[['gs.config']][['side']])))
+  labels <- list()
+  for (side in unique_sides){
+    
+    view_i <- which(unlist(lapply(views,function(x)any(x[['gs.config']][['side']]==side))))
+    
+    # collapse these into a single list of components that reference this side
+    side_components <- do.call(c,views[view_i]) 
+    
+    if ((side %% 2) == 0){
+      # is y 
+      var = 'ylab'
+      lab <- labs_from_client(side_components, var=var,side=side)
+    } else {
+      # is x
+      var = 'xlab'
+      lab <- labs_from_client(side_components, var=var,side=side)
+    }
+
+    labels[[side]] = lab
+    
+  }
+  names(labels) <- unique_sides
+  return(labels)
+}
+
 strip_pts <- function(list, var){
   if (var %in% names(list))
     list[[var]]
   else
     NA
 }
+
+lims_from_client <- function(list, var, side){
+  client_lims <- lapply(list, var=var, function(list, var) strip_pts(list,var))
+  client_lims <- client_lims[!is.na(client_lims)]
+  if (length(client_lims) > 1)
+    warning('for side ', side,', more than one ',var,' specified. Using last')
+  
+  if (length(client_lims) == 0)
+    client_lims <- list(c(NA,NA))
+  
+  return(client_lims[[length(client_lims)]])
+}
+
+labs_from_client <- function(list,var,side){
+  client_labs <- lapply(list, var=var, function(list, var) strip_pts(list,var))
+  client_labs <- client_labs[!is.na(client_labs)]
+  if (length(client_labs) > 1)
+    warning('for side ', side,', more than one ',var,' specified. Using last')
+  
+  if (length(client_labs) == 0)
+    client_labs <- list(NA)
+  return(client_labs[[length(client_labs)]])
+}
+
 lims_from_list <- function(list){
   c(min(sapply(list, min),na.rm=TRUE), max(sapply(list, max),na.rm=TRUE))
 }
@@ -95,7 +167,7 @@ usr_from_lim <- function(lim, type = 'i', log=FALSE){
     stop('log = TRUE not currently supported')
   usr <- switch (type,
     i = lim,
-    r = c(lim[1]-0.04*lim[1], lim[2]+0.04*lim[2])
+    r = c(lim[1]-0.04*diff(lim), lim[2]+0.04*diff(lim))
   )
   if (diff(usr) == 0){
     usr <- c(usr[1]-0.5, usr[2]+0.5)
