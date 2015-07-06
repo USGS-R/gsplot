@@ -7,21 +7,22 @@
 #' @param \dots normal legend params should forward through
 #' @return modified gsplot object 
 #' @export
+#' @importFrom graphics par
 #' @examples
-#' bottom <- gsplot(list()) %>% 
-#'  points(x=1, y=2, side=c(3,2), legend.name="Example Points 1", pch=1, col="blue") %>% 
-#'  points(x=3, y=4, side=c(1,4), legend.name="Example Points 2", pch=5, col="red") %>% 
+#' bottom <- gsplot() %>% 
+#'  points(x=1, y=2, side=c(3,2), legend.name="Points 1", pch=1, col="blue") %>% 
+#'  points(x=3, y=4, side=c(1,4), legend.name="Points 2", pch=5, col="red") %>% 
 #'  legend(location="bottom")
 #' bottom
 #' 
-#' topright <- gsplot(list()) %>% 
-#'  lines(x=c(3,4,3), y=c(2,4,6), legend.name="Example Lines", lty=5, col="orange") %>% 
-#'  points(x=1, y=2, side=c(3,2), legend.name="Example Points 1", pch=1, col="blue") %>% 
-#'  points(x=3, y=4, side=c(1,4), legend.name="Example Points 2", pch=5, col="red") %>% 
+#' topright <- gsplot() %>% 
+#'  lines(x=c(3,4,3), y=c(2,4,6), legend.name="Lines", lty=5, col="orange") %>% 
+#'  points(x=1, y=2, side=c(3,2), legend.name="Points 1", pch=1, col="blue") %>% 
+#'  points(x=3, y=4, side=c(1,4), legend.name="Points 2", pch=5, col="red") %>% 
 #'  legend(location="topright", title="LEGEND!!!")
 #' topright
 #' 
-#' defaultLegend <- gsplot(list()) %>% 
+#' defaultLegend <- gsplot() %>% 
 #'  points(x=1, y=2, side=c(3,2)) %>% 
 #'  points(x=3, y=4, side=c(1,4)) %>% 
 #'  lines(x=c(3,4,3), y=c(2,4,6)) %>%
@@ -29,37 +30,45 @@
 #'  legend()
 #' defaultLegend
 #' 
-#' above <- gsplot(list()) %>% 
-#'  points(x=1, y=2, side=c(3,2), legend.name="Example Points 1", pch=1, col="blue") %>% 
-#'  points(x=3, y=4, side=c(1,4), legend.name="Example Points 2", pch=5, col="red") %>% 
-#'  lines(x=c(3,4,3), y=c(2,4,6), legend.name="Example Lines 1", lty=5, col="orange") %>%
-#'  lines(x=c(1,2,5), y=c(1,8,5), legend.name="Example Lines 2", lty=5, col="green") %>%  
+#' above <- gsplot() %>% 
+#'  points(x=1, y=2, side=c(3,2), legend.name="Points 1", pch=1, col="blue") %>% 
+#'  points(x=3, y=4, side=c(1,4), legend.name="Points 2", pch=5, col="red") %>% 
+#'  lines(x=c(3,4,3), y=c(2,4,6), legend.name="Lines 1", lty=5, col="orange") %>%
+#'  lines(x=c(1,2,5), y=c(1,8,5), legend.name="Lines 2", lty=5, col="green") %>%  
 #'  legend(location="above")
 #' above
 #' 
-#' below <- gsplot(list()) %>% 
-#'  points(x=1, y=2, side=c(3,2), legend.name="Example Points 1", pch=1, col="blue") %>% 
-#'  points(x=3, y=4, side=c(1,4), legend.name="Example Points 2", pch=5, col="red") %>% 
-#'  lines(x=c(3,4,3), y=c(2,4,6), legend.name="Example Lines 1", lty=5, col="orange") %>%
-#'  lines(x=c(1,2,5), y=c(1,8,5), legend.name="Example Lines 2", lty=5, col="green") %>% 
+#' below <- gsplot() %>% 
+#'  points(x=1, y=2, side=c(3,2), legend.name="Points 1", pch=1, col="blue") %>% 
+#'  points(x=3, y=4, side=c(1,4), legend.name="Points 2", pch=5, col="red") %>% 
+#'  lines(x=c(3,4,3), y=c(2,4,6), legend.name="Lines 1", lty=5, col="orange") %>%
+#'  lines(x=c(1,2,5), y=c(1,8,5), legend.name="Lines 2", lty=5, col="green") %>% 
 #'  legend(location="below")
 #' below
 #' 
-#' toright <- gsplot(list()) %>% 
-#'  points(x=1, y=2, side=c(3,2), legend.name="Example Points 1", pch=1, col="blue") %>% 
-#'  points(x=3, y=4, side=c(1,4), legend.name="Example Points 1", pch=1, col="blue") %>% 
-#'  lines(x=c(3,4,3), y=c(2,4,6), legend.name="Example Lines 1", lty=5) %>%
-#'  lines(x=c(1,2,5), y=c(1,8,5), legend.name="Example Lines 2", lty=5, col="green") %>% 
+#' toright <- gsplot() %>% 
+#'  points(x=1, y=2, side=c(3,2), legend.name="Points 1", pch=1, col="blue") %>% 
+#'  points(x=3, y=4, side=c(1,4), legend.name="Points 1", pch=1, col="blue") %>% 
+#'  lines(x=c(3,4,3), y=c(2,4,6), legend.name="Lines 1", lty=5) %>%
+#'  lines(x=c(1,2,5), y=c(1,8,5), legend.name="Lines 2", lty=5, col="green") %>% 
 #'  legend(location="toright")
 #' toright
 #' 
-#' toleft <- gsplot(list()) %>% 
-#'  points(x=1, y=2, side=c(3,2), legend.name="Example Points 1", pch=1, col="blue") %>% 
-#'  points(x=3, y=4, side=c(1,4), legend.name="Example Points 2", pch=5, col="red") %>% 
-#'  lines(x=c(3,4,3), y=c(2,4,6), legend.name="Example Lines 1", lty=5, col="orange") %>%
+#' toleft <- gsplot() %>% 
+#'  points(x=1, y=2, side=c(3,2), legend.name="Points 1", pch=1, col="blue") %>% 
+#'  points(x=3, y=4, side=c(1,4), legend.name="Points 2", pch=5, col="red") %>% 
+#'  lines(x=c(3,4,3), y=c(2,4,6), legend.name="Lines 1", lty=5, col="orange") %>%
 #'  lines(x=c(1,2,5), y=c(1,8,5), lty=5, col="green") %>% 
 #'  legend(location="below")
 #' toleft
+#' 
+#' usrDef <- gsplot() %>% 
+#'  points(x=1, y=2, side=c(3,2), legend.name="Points 1", cex=3) %>% 
+#'  points(x=3, y=4, side=c(1,4), legend.name="Points 2", pch=5, col="red") %>% 
+#'  lines(x=c(3,4,3), y=c(2,4,6), legend.name="Lines 1", lty=5, col="orange") %>%
+#'  lines(x=c(1,2,5), y=c(1,8,5), legend.name="Lines 2", lwd=3) %>%  
+#'  legend(x=3,y=4)
+#' usrDef
 legend <- function(object, ...){
   overrideGraphics("legend", object, ...)
 }
@@ -67,6 +76,11 @@ legend <- function(object, ...){
 
 legend.gsplot <- function(object, location="topright", legend_offset=0.3, ...) {
   arguments <- list(...)
+  
+  if("x" %in% names(arguments)){
+    location <- arguments$x
+  }
+  
   gsConfig <- list(location = location, legend_offset = legend_offset)
   
   arguments <- appendLegendPositionConfiguration(location, gsConfig, arguments)
@@ -88,6 +102,8 @@ appendLegendPositionConfiguration <- function(location, gsConfig, arguments) {
     return(append(arguments, list(x = "right", y = NULL, inset=c(-legend_offset, 0), bty="n")))
   } else if(location == "toleft") {
     return(append(arguments, list(x = "left", y = NULL, inset=c(-legend_offset, 0), bty="n")))
+  } else if("x" %in% names(arguments)){
+    return(arguments)
   } else {
     return(append(arguments, list(x = location)))
   }
@@ -137,7 +153,7 @@ draw_legend <- function(gsplot) {
     }
     
     #get legend entries for lines
-    lines_i <- which(names(gsplot) %in% 'lines')
+    lines_i <- which(names(gsplot) %in% c('lines','abline'))
     for (i in lines_i){
       lines <- gsplot[[i]]
       if(all((c("lty","col") %in% names(lines[['arguments']])))){
@@ -151,6 +167,11 @@ draw_legend <- function(gsplot) {
     }
     
     smartLegend <- unique(smartLegend)
+    
+    lineTypes <- c("blank", "solid", "dashed", "dotted", "dotdash", "longdash", "twodash")
+    
+    lineNums <- suppressWarnings(as.numeric(smartLegend$line))
+    smartLegend$line[!is.na(lineNums)] <- lineTypes[lineNums+1][!is.na(lineTypes[lineNums+1])]
     
     if(nrow(smartLegend) > 0){
     

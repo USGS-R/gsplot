@@ -5,9 +5,13 @@
 #' @param x gsplot object
 #' @param \dots stuff
 #' @return modified gsplot object 
+#' @importFrom graphics mtext
+#' @importFrom graphics plot.new
+#' @importFrom graphics box
+#' @importFrom graphics plot.xy
 #' @export
 #' @examples
-#' gs <- gsplot(list()) %>%
+#' gs <- gsplot() %>%
 #'    points(1, 2, legend.name="Cool points") %>%
 #'    lines(x=1:5, y=1:5, legend.name="Cool lines", ylab='taco night') %>%
 #'    legend(location="top")
@@ -29,11 +33,13 @@ print.gsplot <- function(x, ...){
     
     axis(side=view$gs.config$side[1], config("axis"))
     axis(side=view$gs.config$side[2], config("axis"))
+
     mtext(text=view$gs.config$xlab, view$gs.config$side[1], line = 2)
     mtext(text=view$gs.config$ylab, view$gs.config$side[2], line = 2)
 
     # -- call functions -- 
     to_gsplot(view, which(!names(view)  %in% 'gs.config'))
+
 
     par(new=TRUE)
   }

@@ -5,14 +5,17 @@
 #' @param x list
 #' @return gsplot 
 #' @export
+#' @importFrom utils getFromNamespace
+#' @importFrom stats setNames
+#' @importFrom methods existsFunction
 #' @examples
-#' gsplot(list())
-gsplot <- function(x){
+#' gsplot()
+gsplot <- function(x=list()){
   UseMethod("gsplot", x)
 }
 
 #' @export
-gsplot.list <- function(x){
+gsplot.list <- function(x=list()){
   class(x) <- "gsplot"
   invisible(x) 
 }

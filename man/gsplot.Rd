@@ -4,7 +4,7 @@
 \alias{gsplot}
 \title{gsplot}
 \usage{
-gsplot(x)
+gsplot(x = list())
 }
 \arguments{
 \item{x}{list}
@@ -16,6 +16,6 @@ gsplot
 Class stuff
 }
 \examples{
-gsplot(list())
+gsplot()
 }
 

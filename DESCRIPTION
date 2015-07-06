@@ -1,6 +1,6 @@
 Package: gsplot
 Type: Package
-Title: Geological Survey plotting
+Title: Geological Survey Plotting
 Version: 0.0.1
 Date: 2015-06-24
 Author: CIDA
@@ -15,7 +15,11 @@ Copyright: This software is in the public domain because it contains materials
     official USGS copyright policy at
     http://www.usgs.gov/visual-id/credit_usgs.html#copyright
 Imports:
-    magrittr
+    magrittr,
+    stats,
+    graphics,
+    utils,
+    methods
 Suggests:
     testthat,
     knitr
