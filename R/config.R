@@ -31,7 +31,8 @@ loadConfig = function(filename) {
       abline=list(col="grey"),
       legend=list(),
       axis=list(),
-      title=list()
+      title=list(),
+      text=list()
     )
     
   } else {
@@ -45,7 +46,8 @@ config <- function(type,...){
   
   loadConfig()
   
-  allowedTypes <- c("par","points","lines","axis","plot","abline","grid","legend","title")
+  allowedTypes <- c("par","points","lines","axis","plot",
+                    "abline","grid","legend","title","text")
   
   type <- match.arg(type, choices = allowedTypes)
   
@@ -61,6 +63,7 @@ config <- function(type,...){
                          grid=names(formals(graphics::grid)),
                          abline=names(formals(graphics::abline)),
                          title=names(formals(graphics::title)),
+                         text=names(formals(graphics::text)),
                          formalsNames)
   
   formalsNames <- formalsNames[formalsNames != "..."]
