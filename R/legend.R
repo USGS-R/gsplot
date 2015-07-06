@@ -76,6 +76,11 @@ legend <- function(object, ...){
 
 legend.gsplot <- function(object, location="topright", legend_offset=0.3, ...) {
   arguments <- list(...)
+  
+  if("x" %in% names(arguments)){
+    location <- arguments$x
+  }
+  
   gsConfig <- list(location = location, legend_offset = legend_offset)
   
   arguments <- appendLegendPositionConfiguration(location, gsConfig, arguments)
@@ -97,6 +102,8 @@ appendLegendPositionConfiguration <- function(location, gsConfig, arguments) {
     return(append(arguments, list(x = "right", y = NULL, inset=c(-legend_offset, 0), bty="n")))
   } else if(location == "toleft") {
     return(append(arguments, list(x = "left", y = NULL, inset=c(-legend_offset, 0), bty="n")))
+  } else if("x" %in% names(arguments)){
+    return(arguments)
   } else {
     return(append(arguments, list(x = location)))
   }
