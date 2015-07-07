@@ -12,9 +12,9 @@
 #' @export
 #' @examples
 #' gs <- gsplot() %>%
-#'    points(1, 2, legend.name="Cool points") %>%
+#'    points(1, 2, legend.name="Cool points", xlim=c(0,NA)) %>%
 #'    lines(x=1:5, y=1:5, legend.name="Cool lines", ylab='taco night') %>%
-#'    legend(location="top")
+#'    legend(location="topleft")
 #' gs
 print.gsplot <- function(x, ...){
 
@@ -34,8 +34,8 @@ print.gsplot <- function(x, ...){
     axis(side=view$gs.config$side[1], config("axis"))
     axis(side=view$gs.config$side[2], config("axis"))
 
-    mtext(text=view$gs.config$xlab, view$gs.config$side[1], line = 2)
-    mtext(text=view$gs.config$ylab, view$gs.config$side[2], line = 2)
+    mtext(text=view$gs.config$xlab, side=view$gs.config$side[1], line = 2)
+    mtext(text=view$gs.config$ylab, side=view$gs.config$side[2], line = 2)
 
     # -- call functions -- 
     to_gsplot(view, which(!names(view)  %in% 'gs.config'))

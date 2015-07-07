@@ -19,9 +19,9 @@ show gsplot
 }
 \examples{
 gs <- gsplot() \%>\%
-   points(1, 2, legend.name="Cool points") \%>\%
+   points(1, 2, legend.name="Cool points", xlim=c(0,NA)) \%>\%
    lines(x=1:5, y=1:5, legend.name="Cool lines", ylab='taco night') \%>\%
-   legend(location="top")
+   legend(location="topleft")
 gs
 }
 
