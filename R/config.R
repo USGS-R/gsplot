@@ -24,13 +24,17 @@ loadConfig = function(filename) {
       mgp=c(1.5,.3,0),
       lty=1,
       lwd=1,
-      grid=list(lty=2,
-                col="grey"),
       points=list(pch=6,col="red"),
       lines=list(),
       abline=list(col="grey"),
       legend=list(),
-      axis=list()
+      axis=list(),
+      title=list(),
+      text=list(),
+      mtext=list(),
+      grid=list(col="grey",
+                lwd=1, lty=2),
+      segments=list()
     )
     
   } else {
@@ -44,21 +48,28 @@ config <- function(type,...){
   
   loadConfig()
   
-  allowedTypes <- c("par","points","lines","axis","plot","abline","grid","legend")
+  allowedTypes <- c("par","points","lines","axis","plot",
+                    "abline","legend","title","text",
+                    "mtext","grid","segments")
   
   type <- match.arg(type, choices = allowedTypes)
   
   config_list <- options("gsplot")[[1]]
   
   globalConfig <- config_list[!(names(config_list) %in% allowedTypes[allowedTypes != "par"])]
-  
+
   formalsNames <- names(formals(plot.xy))
+
   formalsNames <- switch(type,
                          par=names(par(no.readonly = TRUE)),
                          axis=names(formals(graphics::axis)),
                          legend=names(formals(graphics::legend)),
-                         grid=names(formals(graphics::grid)),
                          abline=names(formals(graphics::abline)),
+                         title=names(formals(graphics::title)),
+                         text=names(formals(graphics::text)),
+                         mtext=names(formals(graphics::mtext)),
+                         grid=names(formals(graphics::grid)),
+                         segments=names(formals(graphics::segments)),
                          formalsNames)
   
   formalsNames <- formalsNames[formalsNames != "..."]
