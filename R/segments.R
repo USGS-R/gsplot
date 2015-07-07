@@ -1,6 +1,6 @@
-#' gsplot grid
+#' gsplot segments
 #'
-#' grid stuff
+#' segments stuff
 #' 
 #' @details Add additional functionality to points.
 #' 
@@ -16,21 +16,22 @@
 #' gsNew <- abline(gsNew, b=1, a=0, legend.name="1:1")
 #' gsNew <- legend(gsNew, "topleft",title="Awesome!")
 #' gsNew <- grid(gsNew)
+#' gsNew <- segments(gsNew, x0=2, y0=0.75, y1=1.25)
 #' gsNew
-grid <- function(object, ...) {
-  overrideGraphics("grid", object, ...)
+segments <- function(object, ...) {
+  overrideGraphics("segments", object, ...)
 }
 
 
-grid.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
-  current_list <- config("grid")
+segments.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
+  current_list <- config("segments")
   arguments <- list(...)
   
   indicesToAdd <- !(names(current_list) %in% names(arguments))
   arguments <- append(arguments, current_list[indicesToAdd])
   
-  object <- append(object,  list(grid = list(arguments = arguments, 
-                                               gs.config=list(legend.name = legend.name, 
-                                                              side = side))))
+  object <- append(object,  list(segments = list(arguments = arguments, 
+                                             gs.config=list(legend.name = legend.name, 
+                                                            side = side))))
   return(gsplot(object))
 }
