@@ -27,7 +27,7 @@ error_bar_vertical <- function(object, ...) {
 
 
 error_bar_vertical.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
-  current_list <- config("error_bar")
+  current_list <- config("error_bar_vertical")
   arguments <- list(...)
   
   indicesToAdd <- !(names(current_list) %in% names(arguments))
@@ -60,7 +60,7 @@ error_bar_horizontal <- function(object, ...) {
 }
 
 error_bar_horizontal.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
-  current_list <- config("error_bar")
+  current_list <- config("error_bar_horizontal")
   arguments <- list(...)
   
   indicesToAdd <- !(names(current_list) %in% names(arguments))
