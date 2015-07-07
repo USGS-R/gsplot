@@ -31,16 +31,15 @@ print.gsplot <- function(x, ...){
     
     par(config("par"))
     
-    axis(side=view$gs.config$side[1], config("axis"))
-    axis(side=view$gs.config$side[2], config("axis"))
-
-    mtext(text=view$gs.config$xlab, side=view$gs.config$side[1], line = 2)
-    mtext(text=view$gs.config$ylab, side=view$gs.config$side[2], line = 2)
-
     # -- call functions -- 
     to_gsplot(view, which(!names(view)  %in% 'gs.config'))
 
-
+    axis(side=view$gs.config$side[1], config("axis"))
+    axis(side=view$gs.config$side[2], config("axis"))
+    
+    mtext(text=view$gs.config$xlab, side=view$gs.config$side[1], line = 2)
+    mtext(text=view$gs.config$ylab, side=view$gs.config$side[2], line = 2)
+    
     par(new=TRUE)
   }
   box()
