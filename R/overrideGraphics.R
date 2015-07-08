@@ -14,11 +14,16 @@ overrideGraphics <- function(name, object, ...) {
         params <- append(list(object), params)
     }
     
-    
-    defFun <- getFromNamespace(ifelse(existsFunction(paste0(name,".default")), paste0(name,".default"), name), 'graphics')
+    base.package <- ifelse(length(grep(pattern="error_bar", x=name)) > 0, "gsplot", "graphics")
+    defFun <- getFromNamespace(ifelse(existsFunction(paste0(name,".default")), paste0(name,".default"), name), base.package)
     
     names(params)[which(names(params) == "")] <- names(formals(defFun))[which(names(params) == "")]
     
-    do.call(getFromNamespace(name, "graphics"), params)
+    if(base.package == "gsplot"){
+      do.call(paste0(name,".default"), params)
+    } else {
+      do.call(getFromNamespace(name, base.package), params)
+    }
+    
   }
 }

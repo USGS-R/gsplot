@@ -80,16 +80,47 @@ calc_view_usr <- function(views){
     
     if ((side %% 2) == 0){
       # is y 
+      if(length(grep("^y$", unlist(lapply(side_components, names)))) > 0){
+        lims <- lims_from_list(lapply(side_components, var='y', function(list, var) strip_pts(list,var)))
+        client_lims <- lims_from_client(side_components, var='ylim', side)
+        lims[!is.na(client_lims)] <- client_lims[!is.na(client_lims)]
+      } else {
+        dataViews <- views[!(names(views) %in% "legend")]
+        dataViews <- do.call(c, unname(dataViews))
+        dataViews <- dataViews[!names(dataViews) %in% c("axis","gs.config")]
+        dataViews <- do.call(c, unname(dataViews))
+        yData <- do.call(c, unname(dataViews[grep("^y$", names(dataViews))]))
+
+        lims <- range(yData,na.rm=TRUE)
+        client_lims <- dataViews[grep("^ylim$", names(dataViews))]
+        if(length(client_lims) > 0){
+          client_lims <- client_lims[[1]]
+          lims[!is.na(client_lims)] <- client_lims[!is.na(client_lims)]
+        }
+      }
       
-      lims <- lims_from_list(lapply(side_components, var='y', function(list, var) strip_pts(list,var)))
-      client_lims <- lims_from_client(side_components, var='ylim', side)
-      lims[!is.na(client_lims)] <- client_lims[!is.na(client_lims)]
-      usr <- usr_from_lim(lims, type=par()$yaxs)
+      usr <- usr_from_lim(lims, type=par()$yaxs) 
     } else {
       # is x
-      lims <- lims_from_list(lapply(side_components, var='x', function(list, var) strip_pts(list,var)))
-      client_lims <- lims_from_client(side_components, var='xlim', side)
-      lims[!is.na(client_lims)] <- client_lims[!is.na(client_lims)]
+      if(length(grep("^x$", unlist(lapply(side_components, names)))) > 0){
+        lims <- lims_from_list(lapply(side_components, var='x', function(list, var) strip_pts(list,var)))
+        client_lims <- lims_from_client(side_components, var='xlim', side)
+        lims[!is.na(client_lims)] <- client_lims[!is.na(client_lims)]
+      } else {
+        dataViews <- views[!(names(views) %in% "legend")]
+        dataViews <- do.call(c, unname(dataViews))
+        dataViews <- dataViews[!names(dataViews) %in% c("axis","gs.config")]
+        dataViews <- do.call(c, unname(dataViews))
+        xData <- do.call(c, unname(dataViews[grep("^x$", names(dataViews))]))
+        
+        lims <- range(xData,na.rm=TRUE)
+        client_lims <- dataViews[grep("^xlim$", names(dataViews))]
+        if(length(client_lims) > 0){
+          client_lims <- client_lims[[1]]
+          lims[!is.na(client_lims)] <- client_lims[!is.na(client_lims)]
+        }
+      }
+      
       usr <- usr_from_lim(lims, type=par()$xaxs)
     }
     sides[[side]] = list(usr=usr)
