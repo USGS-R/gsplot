@@ -80,8 +80,8 @@ calc_view_usr <- function(views){
     
     if ((side %% 2) == 0){
       # is y 
-      if(length(grep("^y$", unlist(lapply(side_components, names)))) > 0){
-        lims <- lims_from_list(lapply(side_components, var='y', function(list, var) strip_pts(list,var)))
+      if (any(unname(unlist(lapply(side_components, names))) %in% c('y','y1','y0'))){
+        lims <- lims_from_list(lapply(side_components, var=c('y','y1','y0'), function(list, var) strip_pts(list,var)))
         client_lims <- lims_from_client(side_components, var='ylim', side)
         lims[!is.na(client_lims)] <- client_lims[!is.na(client_lims)]
       } else {
@@ -102,8 +102,8 @@ calc_view_usr <- function(views){
       usr <- usr_from_lim(lims, type=par()$yaxs) 
     } else {
       # is x
-      if(length(grep("^x$", unlist(lapply(side_components, names)))) > 0){
-        lims <- lims_from_list(lapply(side_components, var='x', function(list, var) strip_pts(list,var)))
+      if(any(unname(unlist(lapply(side_components, names))) %in% c('x','x1','x0'))){
+        lims <- lims_from_list(lapply(side_components, var=c('x','x1','x0'), function(list, var) strip_pts(list,var)))
         client_lims <- lims_from_client(side_components, var='xlim', side)
         lims[!is.na(client_lims)] <- client_lims[!is.na(client_lims)]
       } else {
@@ -160,10 +160,14 @@ calc_view_labs <- function(views){
 }
 
 strip_pts <- function(list, var){
-  if (var %in% names(list))
-    list[[var]]
-  else
-    NA
+  out <- c()
+  for (v in var){
+    if (v %in% names(list))
+      out <- c(out, list[[v]])
+    else
+      out <- c(out, NA)
+  }
+  return(out)
 }
 
 lims_from_client <- function(list, var, side){
@@ -190,7 +194,8 @@ labs_from_client <- function(list,var,side){
 }
 
 lims_from_list <- function(list){
-  c(min(sapply(list, min),na.rm=TRUE), max(sapply(list, max),na.rm=TRUE))
+
+  range(list,na.rm = T, na.action = NA)
 }
 
 usr_from_lim <- function(lim, type = 'i', log=FALSE){
