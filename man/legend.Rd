@@ -77,7 +77,7 @@ usrDef <- gsplot() \%>\%
  points(x=3, y=4, side=c(1,4), legend.name="Points 2", pch=5, col="red") \%>\%
  lines(x=c(3,4,3), y=c(2,4,6), legend.name="Lines 1", lty=5, col="orange") \%>\%
  lines(x=c(1,2,5), y=c(1,8,5), legend.name="Lines 2", lwd=3) \%>\%
- legend(x=3,y=4)
+ legend(x=1.5,y=4)
 usrDef
 }
 
