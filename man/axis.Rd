@@ -18,9 +18,17 @@ modified gsplot object
 Axis stuff
 }
 \examples{
-gs <- gsplot(list())
-gsNew <- axis(gs, side=1)
-gsNew <- axis(gsNew, side=2)
-gsNew
+gs <- gsplot() \%>\%
+   points(x=1:5, y=1:5, legend.name="Stuff") \%>\%
+   lines(x=2:6, y=2:6, ylim=c(0,10)) \%>\%
+   axis(side=c(3,4),labels=FALSE) \%>\%
+   legend("topright")
+gs
+
+gs <- gsplot() \%>\%
+   points(y=c(3,1,2), x=1:3, xlim=c(0,NA),ylim=c(0,NA),
+           col="blue", pch=18, legend.name="Points", xlab="Index") \%>\%
+   axis(side=c(3,4), labels=FALSE)
+gs
 }
 
