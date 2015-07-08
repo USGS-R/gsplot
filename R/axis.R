@@ -10,7 +10,7 @@
 #' @examples
 #' gs <- gsplot() %>%
 #'    points(x=1:5, y=1:5, legend.name="Stuff") %>%
-#'    lines(x=2:6, y=2:6, ylim=c(0,10)) %>%
+#'    lines(2:6, y=2:6, ylim=c(0,10)) %>%
 #'    axis(side=c(3,4),labels=FALSE) %>%
 #'    legend("topright")
 #' gs
