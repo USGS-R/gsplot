@@ -18,7 +18,12 @@
 #' gs
 print.gsplot <- function(x, ...){
 
-  plot.new()
+  gsOptions <- do.call(c, unname(options("gsplot")))
+  
+  if(!(dev.cur() == 1) && !("new" %in% names(gsOptions))){
+    plot.new()
+  }
+  
   # -- set plot -- 
   views = calc_views(x)
   
@@ -29,7 +34,7 @@ print.gsplot <- function(x, ...){
     
     par(usr=view$gs.config$usr)
     
-    par(config("par"))
+    par(config("par")) 
     
     # -- call functions -- 
     to_gsplot(view, which(!names(view)  %in% 'gs.config'))
