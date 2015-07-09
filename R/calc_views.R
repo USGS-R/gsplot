@@ -89,7 +89,7 @@ calc_view_usr <- function(views){
         dataViews <- do.call(c, unname(dataViews))
         dataViews <- dataViews[!names(dataViews) %in% c("axis","gs.config")]
         dataViews <- do.call(c, unname(dataViews))
-        yData <- do.call(c, unname(dataViews[grep("^y$", names(dataViews))]))
+        yData <- do.call(c, unname(dataViews[names(dataViews) %in% c('y','y1','y0')]))
 
         lims <- range(yData,na.rm=TRUE)
         client_lims <- dataViews[grep("^ylim$", names(dataViews))]
@@ -111,7 +111,7 @@ calc_view_usr <- function(views){
         dataViews <- do.call(c, unname(dataViews))
         dataViews <- dataViews[!names(dataViews) %in% c("axis","gs.config")]
         dataViews <- do.call(c, unname(dataViews))
-        xData <- do.call(c, unname(dataViews[grep("^x$", names(dataViews))]))
+        xData <- do.call(c, unname(dataViews[names(dataViews) %in% c('x','x1','x0')]))
         
         lims <- range(xData,na.rm=TRUE)
         client_lims <- dataViews[grep("^xlim$", names(dataViews))]
