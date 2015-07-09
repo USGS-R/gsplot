@@ -48,6 +48,16 @@ loadConfig = function(filename) {
   } else {
     load(filename)
   }
+  usrOptions <- do.call(c, unname(options("gsplot")))
+  #Need to respect user options but add the template if not in user options
+  
+  if(any((names(graphTemplate) %in% names(usrOptions)))){
+    for(type in names(graphTemplate)[names(graphTemplate) %in% names(usrOptions)]){
+      graphTemplate[[type]] <- NULL
+    }
+    graphTemplate <- append(usrOptions, graphTemplate)
+  }
+  
   options("gsplot"=graphTemplate)
 }
 
