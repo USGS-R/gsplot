@@ -43,6 +43,7 @@ loadConfig = function(filename) {
       error_bar_horizontal=list(),
       error_bar_vertical=list(),
       arrows=list(),
+      callouts=list(col='black'),
       bgCol=list()
     )
     
@@ -70,7 +71,7 @@ config <- function(type,...){
   allowedTypes <- c("par","points","lines","axis","plot",
                     "abline","legend","title","text",
                     "mtext","grid","segments","error_bar_horizontal",
-                    "error_bar_vertical","arrows","bgCol")
+                    "error_bar_vertical","arrows","bgCol","callouts")
   
   type <- match.arg(type, choices = allowedTypes)
   
@@ -93,6 +94,7 @@ config <- function(type,...){
                          error_bar_horizontal=names(formals(error_bar_horizontal.default)),
                          error_bar_vertical=names(formals(error_bar_vertical.default)),
                          bgCol=names(formals(bgCol.default)),
+                         callouts=names(formals(callouts.default)),
                          formalsNames)
   
   formalsNames <- formalsNames[formalsNames != "..."]

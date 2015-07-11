@@ -13,7 +13,7 @@ overrideGraphics <- function(name, object, ...) {
       else 
         params <- append(list(object), params)
     }
-    customFuns <- c("error_bar_horizontal","error_bar_vertical","bgCol")
+    customFuns <- c("error_bar_horizontal","error_bar_vertical","bgCol","callouts")
     base.package <- ifelse(name %in% customFuns, "gsplot", "graphics")
     defFun <- getFromNamespace(ifelse(existsFunction(paste0(name,".default")), paste0(name,".default"), name), base.package)
     
