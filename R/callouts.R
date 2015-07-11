@@ -24,10 +24,8 @@ callouts.gsplot <- function(object, x, y, labels=NA, length=0.1, angle=30, ..., 
   arguments <- list(...)
   
   indicesToAdd <- !(names(current_list) %in% names(arguments))
-  arguments <- append(list(x=x, y=y, labels=labels, length=length, angle=angle), 
-                      arguments) #, current_list[indicesToAdd]) ???
-  # // to do: figure out why I can't include current_list...
-  
+  arguments <- append(list(x=x, y=y, labels=labels, length=length, angle=angle), arguments)
+  arguments <- append(arguments, current_list[indicesToAdd]) 
   
   object <- append(object,  list(callouts = list(arguments = arguments, 
                                              gs.config=list(side = side))))
@@ -48,14 +46,23 @@ callouts.gsplot <- function(object, x, y, labels=NA, length=0.1, angle=30, ..., 
 #' @export
 callouts.default <- function(x, y, labels, length, angle, ...){
   
-  # // to do: use angle actually for x1 and y1
-  # // to do: use angle to figure out what `pos` value should be 
+  stopifnot(angle >= 0, angle <= 360)
+  # // to do: possibly support angle and length as vectors equal in length to x 
   xrange <- diff(par("usr")[c(1,2)])
   yrange <- diff(par("usr")[c(3,4)])
-  x1 <- x-xrange*length
-  y1 <- y+yrange*length
+  x1 = x + length * xrange * cos(2*pi*(angle/360));
+  y1 = y + length * yrange * sin(2*pi*(angle/360));
+  if (angle >= 315 | angle <= 45){
+    pos = 4
+  } else if (angle > 45 & angle <= 135) {
+    pos = 3
+  } else if (angle > 135 & angle <= 225){
+    pos = 2
+  } else {
+    pos = 1
+  }
   
   segments(x0=x, y0=y, x1=x1, y1=y1, ...)
-  text(x=x1, y=y1, labels=labels, pos=2,...)
+  text(x=x1, y=y1, labels=labels, pos=pos,...)
   
 }
