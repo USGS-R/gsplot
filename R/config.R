@@ -42,7 +42,8 @@ loadConfig = function(filename) {
       segments=list(),
       error_bar_horizontal=list(),
       error_bar_vertical=list(),
-      arrows=list()
+      arrows=list(),
+      bgCol=list()
     )
     
   } else {
@@ -69,7 +70,7 @@ config <- function(type,...){
   allowedTypes <- c("par","points","lines","axis","plot",
                     "abline","legend","title","text",
                     "mtext","grid","segments","error_bar_horizontal",
-                    "error_bar_vertical","arrows")
+                    "error_bar_vertical","arrows","bgCol")
   
   type <- match.arg(type, choices = allowedTypes)
   
@@ -91,6 +92,7 @@ config <- function(type,...){
                          segments=names(formals(graphics::segments)),
                          error_bar_horizontal=names(formals(error_bar_horizontal.default)),
                          error_bar_vertical=names(formals(error_bar_vertical.default)),
+                         bgCol=names(formals(bgCol.default)),
                          formalsNames)
   
   formalsNames <- formalsNames[formalsNames != "..."]
