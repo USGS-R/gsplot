@@ -241,12 +241,12 @@ lims_from_list <- function(list){
 usr_from_lim <- function(lim, type = 'i', log=FALSE){
   
   if (log)
-    stop('log = TRUE not currently supported')
+    lim <- log10(lim)
   usr <- switch (type,
     i = lim,
     r = c(lim[1]-0.04*diff(lim), lim[2]+0.04*diff(lim))
   )
-  if (diff(usr) == 0){
+  if (diff(usr) < 1){
     usr <- c(usr[1]-0.5, usr[2]+0.5)
   }
   return(usr)
