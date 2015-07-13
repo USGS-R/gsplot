@@ -20,7 +20,6 @@ print.gsplot <- function(x, ...){
 
   gsOptions <- do.call(c, unname(options("gsplot")))
   
-  plot(c(1,10),c(1,10),log='x')
   if(!(dev.cur() == 1) && !("new" %in% names(gsOptions))){
     plot.new()
   }
