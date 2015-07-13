@@ -25,9 +25,9 @@ Improved workflow examples
 library(gsplot)
 
 demoPlot <- gsplot() %>%
-   points( y=c(3,1,2), x=1:3, xlim=c(0,NA),ylim=c(0,NA),
-            col="blue", pch=18, legend.name="Points", xlab="Index") %>%
-  lines(c(3,4,3), c(2,4,6), legend.name="Lines", ylab="Data") %>%
+  points(y=c(3,1,2), x=1:3, xlim=c(0.1,NA),ylim=c(0.5,NA),
+         col="blue", pch=18, legend.name="Points", xlab="Index") %>%
+  lines(c(3,4,3), c(2,4,6), legend.name="Lines", ylab="Data", log='xy') %>%
   abline(b=1, a=0, legend.name="1:1") %>%
   legend("topleft",title="Awesome!") %>%
   grid() %>%
@@ -39,6 +39,19 @@ demoPlot
 ```
 
 ![](README_files/figure-markdown_github/unnamed-chunk-2-1.png)
+
+``` r
+library(gsplot)
+
+demoPlot <- gsplot() %>%
+  points(y=c(3,1,2), x=1:3, xlim=c(0.1,NA),ylim=c(0.5,NA),
+         col="blue", pch=18, legend.name="Points", xlab="Index") %>%
+  lines(c(3,4,3), c(2,4,6), legend.name="Lines", ylab="Data", xlab="logged axis", log='xy') %>%
+  title("logged axes")
+demoPlot
+```
+
+![](README_files/figure-markdown_github/unnamed-chunk-3-1.png)
 
 Disclaimer
 ----------
