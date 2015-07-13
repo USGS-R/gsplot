@@ -48,8 +48,15 @@ callouts.default <- function(x, y, labels, length, angle, ...){
   
   stopifnot(angle >= 0, angle <= 360)
   # // to do: possibly support angle and length as vectors equal in length to x 
-  xrange <- diff(par("usr")[c(1,2)])
-  yrange <- diff(par("usr")[c(3,4)])
+  x.usr <- par("usr")[c(1,2)]
+  if (par("xlog"))
+    x.usr <- 10^x.usr
+  y.usr <- par("usr")[c(3,4)]
+  if (par("xlog"))
+    y.usr <- 10^y.usr
+
+  xrange <- diff(x.usr)
+  yrange <- diff(y.usr)
   x1 = x + length * xrange * cos(2*pi*(angle/360));
   y1 = y + length * yrange * sin(2*pi*(angle/360));
   if (angle >= 315 | angle <= 45){
