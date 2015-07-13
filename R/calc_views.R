@@ -89,16 +89,19 @@ group_views <- function(gsplot){
 set_view_list <- function(views, var, na.action=NA, remove=TRUE){
   view_i <- which(names(views) %in% "view")
   for (i in view_i){
-    values <- na.omit(sapply(views[[i]], function(x) strip_pts(x, var)))
-    if (length(values) > 1){
+    values <- do.call(rbind, lapply(views[[i]], function(x) strip_pts(x, var)))
+    val.i <- which(!is.na(values)) # which row to use
+    if (length(val.i) > 1){
       warning('for view ', i,', more than one ',var,' specified. Using last')
-    } else if (length(values) == 0)
-      values = list(NA)
-    
+      values <- values[val.i[1], ]
+    } else if (length(val.i) == 0){
+      values = na.action
+    } else 
+      values <- values[val.i, ]
     if (remove)
       views[[i]] <- lapply(views[[i]], function(x) remove_field(x, var))
     
-    views[[i]][['gs.config']][[var]] <- ifelse(is.na(values[[1]]),na.action,values[[1]])
+    views[[i]][['gs.config']][[var]] <- values
   }
   
   return(views)
@@ -115,8 +118,8 @@ set_view_lab <- function(views){
 
 
 set_view_lim <- function(views){
-  views <- set_view_list(views, var = 'xlim', na.action=c(NA,NA))
-  views <- set_view_list(views, var = 'ylim', na.action=c(NA,NA))
+  views <- set_view_list(views, var = 'xlim', na.action=NA)
+  views <- set_view_list(views, var = 'ylim', na.action=NA)
   
   data <- list(y=summarize_args(views,c('y','y1','y0')), x=summarize_args(views,c('x','x1','x0')))
   var <- 'y'
