@@ -32,7 +32,11 @@ print.gsplot <- function(x, ...){
   for (i in which(names(views) %in% 'view')){
     view = views[[i]]
     
+    par(xlog=view$gs.config$xlog, ylog=view$gs.config$ylog)
     par(usr=view$gs.config$usr)
+    
+    # // hard-coding set of logged axis for example of log='x'
+    par(xaxp=c(1,10,3))
     
     par(config("par")) 
     

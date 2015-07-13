@@ -11,6 +11,10 @@ calc_views <- function(gsplot){
   
   views <- group_views(gsplot)
   
+  logs <- calc_view_logs(views)
+  
+  views <- add_view_logs(views, logs)
+  
   usrs <- calc_view_usr(views)
   
   labs <- calc_view_labs(views)
@@ -97,6 +101,25 @@ add_view_usr <- function(views, usrs){
   return(views)
 }
 
+add_view_logs <- function(views, logs){
+  view_i <- which(names(views) %in% 'view')
+  for (i in view_i){
+    sides <- views[[i]][['gs.config']][['side']]
+    views[[i]][['gs.config']][['xlog']] <- logs[[sides[1]]][[1]]
+    views[[i]][['gs.config']][['ylog']] <- logs[[sides[2]]][[1]]
+    # // strip out log 
+    non_config <- which(!names(views[[i]]) %in% 'gs.config')
+    for (j in non_config){
+      views[[i]][[j]][['log']] <- NULL
+    }
+  }
+
+
+  
+  # // to do: remove logs from all non-gs.config fields 
+  return(views)
+}
+
 add_view_labs <- function(views, labs){
   view_i <- which(names(views) %in% 'view')
   for (i in view_i){
@@ -139,7 +162,7 @@ calc_view_usr <- function(views){
         }
       }
       
-      usr <- usr_from_lim(lims, type=par()$yaxs) 
+      usr <- usr_from_lim(lims, type=par()$yaxs, log = side_components$view.gs.config$ylog)
     } else {
       # is x
       if(any(unname(unlist(lapply(side_components, names))) %in% c('x','x1','x0'))){
@@ -161,13 +184,42 @@ calc_view_usr <- function(views){
         }
       }
       
-      usr <- usr_from_lim(lims, type=par()$xaxs)
+      usr <- usr_from_lim(lims, type=par()$xaxs, log = side_components$view.gs.config$xlog)
     }
     sides[[side]] = list(usr=usr)
     
   }
   names(sides) <- unique_sides
   return(sides)
+}
+
+calc_view_logs <- function(views){
+  
+  #// to do: refactor to eliminate duplicated comb_view methods (like this on and the usr one)
+  unique_sides <- unique(unlist(lapply(views,function(x)x[['gs.config']][['side']])))
+  logs <- list()
+  for (side in unique_sides){
+    
+    view_i <- which(unlist(lapply(views,function(x)any(x[['gs.config']][['side']]==side))))
+    
+    # collapse these into a single list of components that reference this side
+    side_components <- do.call(c,views[view_i]) 
+    
+    var = 'log'
+    if ((side %% 2) == 0){
+      # is y 
+      
+      log <- logs_from_client(side_components, var=var,side=side,match='y')
+    } else {
+      # is x
+      log <- logs_from_client(side_components, var=var,side=side,match='x')
+    }
+    
+    logs[[side]] = log
+    
+  }
+  names(logs) <- unique_sides
+  return(logs)
 }
 
 calc_view_labs <- function(views){
@@ -181,7 +233,7 @@ calc_view_labs <- function(views){
     
     # collapse these into a single list of components that reference this side
     side_components <- do.call(c,views[view_i]) 
-    
+
     if ((side %% 2) == 0){
       # is y 
       var = 'ylab'
@@ -232,6 +284,18 @@ labs_from_client <- function(list,var,side){
     client_labs <- list(NA)
   return(client_labs[[length(client_labs)]])
 }
+
+logs_from_client <- function(list,var,side, match){
+  client_logs <- lapply(list, var=var, function(list, var) strip_pts(list,var))
+  client_logs <- client_logs[!is.na(client_logs)]
+  if (length(client_logs) > 1)
+    warning('for side ', side,', more than one ',var,' specified. Using last')
+  
+  if (length(client_logs) == 0)
+    client_logs <- list(NA)
+  return(client_logs[[length(client_logs)]] == match)
+}
+
 
 lims_from_list <- function(list){
 
