@@ -91,13 +91,13 @@ set_view_list <- function(views, var, na.action=NA, remove=TRUE){
   for (i in view_i){
     values <- do.call(rbind, lapply(views[[i]], function(x) strip_pts(x, var)))
     val.i <- which(!is.na(values)) # which row to use
-    if (length(val.i) > 1){
-      warning('for view ', i,', more than one ',var,' specified. Using last')
-      values <- values[val.i[1], ]
-    } else if (length(val.i) == 0){
+    if (length(val.i) == 0){
       values = na.action
-    } else 
-      values <- values[val.i, ]
+    } else {
+      if (length(unique(rownames(values[val.i]))) > 1)
+        warning('for view ', i,', more than one ',var,' specified. ', unique(rownames(values[val.i])))
+      values <- values[val.i]
+    }
     if (remove)
       views[[i]] <- lapply(views[[i]], function(x) remove_field(x, var))
     
