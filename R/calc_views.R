@@ -113,7 +113,7 @@ set_view_log <- function(views){
 
 set_view_lab <- function(views){
   views <- set_view_list(views, var = 'ylab', na.action="")
-  set_view_list(views, var = 'ylab', na.action="")
+  set_view_list(views, var = 'xlab', na.action="")
 }
 
 
