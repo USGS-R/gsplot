@@ -25,9 +25,9 @@ Improved workflow examples
 library(gsplot)
 
 demoPlot <- gsplot() %>%
-  points(y=c(3,1,2), x=1:3, xlim=c(0.1,NA),ylim=c(0.5,NA),
+  points(y=c(3,1,2), x=1:3, xlim=c(0,NA),ylim=c(0,NA),
          col="blue", pch=18, legend.name="Points", xlab="Index") %>%
-  lines(c(3,4,3), c(2,4,6), legend.name="Lines", ylab="Data", log='xy') %>%
+  lines(c(3,4,3), c(2,4,6), legend.name="Lines", ylab="Data") %>%
   abline(b=1, a=0, legend.name="1:1") %>%
   legend("topleft",title="Awesome!") %>%
   grid() %>%
@@ -44,9 +44,9 @@ demoPlot
 library(gsplot)
 
 demoPlot <- gsplot() %>%
-  points(y=c(3,1,2), x=1:3, xlim=c(0.1,NA),ylim=c(0.5,NA),
-         col="blue", pch=18, legend.name="Points", xlab="Index") %>%
-  lines(c(3,4,3), c(2,4,6), legend.name="Lines", ylab="Data", xlab="logged axis", log='xy') %>%
+  points(y=c(3,1,2,4,5), x=c(1:3,8,80), col="blue", pch=18, legend.name="Points") %>%
+  lines(c(3,4,3), c(2,4,6), legend.name="Lines", ylab="logged y axis", xlab="logged x axis", log='xy') %>%
+  callouts(x=8, y=4, lwd=2, angle=45, labels="Not sure about this one") %>%
   title("logged axes")
 demoPlot
 ```
