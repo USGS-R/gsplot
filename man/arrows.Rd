@@ -32,8 +32,7 @@ gs <- gsplot() \%>\%
    error_bar_horizontal(x=1:3, y=c(3,1,2), x.low=.2, x.high=.2, col="red",lwd=3) \%>\%
    arrows(x0=0.75, y0=2, x1=1, y1=2.8, lwd=2) \%>\%
    title("Graphing Fun") \%>\%
-   text(.75,1.75,labels="Weird data") \%>\%
-   axis(side=c(3,4), labels=FALSE)
+   text(.75,1.75,labels="Weird data")
 gs
 }
 

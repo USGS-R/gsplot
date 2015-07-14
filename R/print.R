@@ -32,9 +32,9 @@ print.gsplot <- function(x, ...){
   for (i in which(names(views) %in% 'view')){
     view = views[[i]]
     
-    par(usr=view$gs.config$usr)
-    
     par(config("par")) 
+    
+    plot.window(xlim = view$gs.config$xlim, ylim = view$gs.config$ylim, log = view$gs.config$log)
     
     # -- call functions -- 
     to_gsplot(view, which(!names(view)  %in% 'gs.config'))
