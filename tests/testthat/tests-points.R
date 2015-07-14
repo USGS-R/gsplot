@@ -13,6 +13,12 @@ test_that("graphics examples work", {
 
 })
 
+context("points arguments")
+test_that("setting params works as expected",{
+  expect_equal(gsplot:::graphics_params("points", 5, y = NULL), list(x=5, y=NULL))
+  expect_equal(gsplot:::graphics_params("points", y=5, x=0), list(x=0, y=5))
+})
+
 test_that("testing content of gsplot list", {
   
   gs <- gsplot(list())

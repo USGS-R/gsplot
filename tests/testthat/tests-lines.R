@@ -1,5 +1,12 @@
 context("lines")
 
+context("lines arguments")
+test_that("setting params works as expected",{
+  expect_equal(gsplot:::graphics_params("lines", c(0,0), c(2,5)), list(x=c(0,0), y=c(2,5)))
+  expect_equal(gsplot:::graphics_params("lines", x=c(0,0), y=c(2,5)), list(x=c(0,0), y=c(2,5)))
+  expect_equal(gsplot:::graphics_params("lines", y=c(2,5), x=c(0,0)), list(x=c(0,0), y=c(2,5)))
+})
+
 test_that("graphics examples work", {
   
   plot(-4:4, -4:4, type = "n")  # setting up coord. system
