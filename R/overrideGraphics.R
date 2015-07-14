@@ -5,19 +5,8 @@ overrideGraphics <- function(name, object, ...) {
     }
     fun(object, ...)
   } else {
-    params <- list(...)
- 
-    if (!missing(object)) {
-      if (!is.null(names(object)))
-        params <- append(object, params)
-      else 
-        params <- append(list(object), params)
-    }
-    customFuns <- c("error_bar_horizontal","error_bar_vertical","bgCol","callouts")
-    base.package <- ifelse(name %in% customFuns, "gsplot", "graphics")
-    defFun <- getFromNamespace(ifelse(existsFunction(paste0(name,".default")), paste0(name,".default"), name), base.package)
-    
-    names(params)[which(names(params) == "")] <- names(formals(defFun))[which(names(params) == "")]
+    params <- graphics_params(name, object, ...)
+    base.package <- package_fun(name)
     
     if(base.package == "gsplot"){
       do.call(paste0(name,".default"), params)
@@ -26,4 +15,39 @@ overrideGraphics <- function(name, object, ...) {
     }
     
   }
+}
+
+package_fun <- function(name){
+  customFuns <- c("error_bar_horizontal","error_bar_vertical","bgCol","callouts")
+  base.package <- ifelse(name %in% customFuns, "gsplot", "graphics")
+  return(base.package)
+}
+
+graphics_params <- function(name, object, ...){
+  params <- list(...)
+  
+  if (!missing(object)) {
+    if (!is.null(names(object)))
+      params <- append(object, params)
+    else 
+      params <- append(list(object), params)
+  }
+  
+  base.package <- package_fun(name)
+  defFun <- getFromNamespace(ifelse(existsFunction(paste0(name,".default")), paste0(name,".default"), name), base.package)
+  
+  arg.names = names(formals(defFun))[which(!names(formals(defFun)) %in% names(params))]
+  
+  if (is.null(names(params))){
+    # // all are unnamed
+    names(params) <- arg.names[1:length(params)]
+  } else {
+    names(params)[which(names(params) == "")] <- arg.names[1:sum(names(params) == "")]
+  }
+  
+  
+  # // re-order
+  params <- params[sort(match(names(params), names(formals(defFun))), index.return = T)$ix]
+  
+  return(params)
 }
