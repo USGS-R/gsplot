@@ -19,8 +19,10 @@
 print.gsplot <- function(x, ...){
 
   gsOptions <- do.call(c, unname(options("gsplot")))
-  
-  if(!(dev.cur() == 1) && !("new" %in% names(gsOptions))){
+
+  if(!("new" %in% names(gsOptions))){
+    dev.hold()
+    on.exit(dev.flush())
     plot.new()
   }
   
@@ -54,6 +56,7 @@ print.gsplot <- function(x, ...){
   draw_legend(x)
 
   par(defaultPar)
+  
 }
 
 to_gsplot <- function(x, which_i){
