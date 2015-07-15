@@ -42,12 +42,15 @@ graphics_params <- function(name, object, ...){
     # // all are unnamed
     names(params) <- arg.names[1:length(params)]
   } else {
-    names(params)[which(names(params) == "")] <- arg.names[1:sum(names(params) == "")]
+    names(params)[which(names(params) == "")] <- arg.names[seq_len(sum(names(params) == ""))]
   }
   
   
   # // re-order
-  params <- params[sort(match(names(params), names(formals(defFun))), index.return = T)$ix]
+  sort.i <- seq_len(length(params))
+  match.i <- match(names(params), names(formals(defFun)))
+  sort.i[!is.na(match.i)] <- match.i[!is.na(match.i)]
+  params <- params[sort(sort.i, index.return = T)$ix]
   
   return(params)
 }
