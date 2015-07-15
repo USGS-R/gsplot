@@ -13,6 +13,8 @@ This package is still very much in development, so the API may change at any tim
 
 [![Build Status](https://travis-ci.org/USGS-R/gsplot.svg)](https://travis-ci.org/USGS-R/gsplot)
 
+[![Coverage Status](https://coveralls.io/repos/USGS-R/gsplot/badge.svg?branch=master&service=github)](https://coveralls.io/github/USGS-R/gsplot?branch=master)
+
 Overview
 --------
 
