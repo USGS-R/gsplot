@@ -12,6 +12,7 @@
 #'  \item{\code{col, lty, lwd}} {parameters describing the color, type, and width of the arrow, respectively}
 #' }
 #' 
+#' @export
 #' @examples
 #' gs <- gsplot() %>%
 #'    points( y=c(3,1,2), x=1:3, xlim=c(0,NA),ylim=c(0,NA),

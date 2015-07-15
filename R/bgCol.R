@@ -5,7 +5,7 @@
 #' @param object gsplot object
 #' @param \dots Further graphical parameters may also be supplied as arguments. See 'Details'.
 #' 
-#' @rdname bgCol
+#' @export
 #' 
 #' @examples
 #' gs <- gsplot() %>%
@@ -32,9 +32,6 @@ bgCol.gsplot <- function(object, col, ..., legend.name=NULL, side=c(1,2)){
   return(gsplot(object))
 }
 
-#' @export
-#' @rdname bgCol
-#' @param col color
 bgCol.default <- function(col,...){
   
   rect(par("usr")[1],par("usr")[3],par("usr")[2],par("usr")[4],col = col,...)

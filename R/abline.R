@@ -13,7 +13,8 @@
 #'  \item{\code{col, lty, lwd}} {parameters describing the color, type, and width of the line, respectively}
 #'  \item{\code{legend.name}} {name that appears the legend, see \code{\link{legend}}}
 #'  } 
-#'  
+#'
+#' @export
 #' @examples
 #' gs <- gsplot()
 #' gsNew <- points(gs, y=1, x=2, col="blue", pch=18, legend.name="Points")
