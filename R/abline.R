@@ -1,13 +1,19 @@
 #' gsplot abline
 #'
-#' abline stuff
-#' 
-#' @details Add additional functionality to points.
+#' Creates straight lines on the existing gsplot object.  
 #' 
 #' @param object gsplot object
 #' @param \dots Further graphical parameters may also be supplied as arguments. See 'Details'.
-#' @return modified gsplot object 
-#' @export
+#' 
+#' @details Additional graphical parameter inputs:
+#' \itemize{
+#'  \item{\code{a, b}} {slope, y-intercept}
+#'  \item{\code{h}} {the y-value specifying a horizontal line}
+#'  \item{\code{v}} {the x-value specifying a vertical line}
+#'  \item{\code{col, lty, lwd}} {parameters describing the color, type, and width of the line, respectively}
+#'  \item{\code{legend.name}} {name that appears the legend, see \link{legend}}
+#'  } 
+#'  
 #' @examples
 #' gs <- gsplot()
 #' gsNew <- points(gs, y=1, x=2, col="blue", pch=18, legend.name="Points")
