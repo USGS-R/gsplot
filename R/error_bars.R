@@ -1,12 +1,10 @@
-#' gsplot segments
+#' gsplot error bars
 #'
-#' error_bar_vertical stuff
-#' 
-#' @details Add additional functionality to points.
+#' Creates vertical and horizontal error bars around plot points. 
 #' 
 #' @param object gsplot object
 #' @param \dots Further graphical parameters may also be supplied as arguments. See 'Details'.
-#' @return modified gsplot object 
+#'
 #' @rdname error_bar
 #' @export
 #' @examples
@@ -41,8 +39,8 @@ error_bar_vertical.gsplot <- function(object, x, y, y.high, y.low, epsilon=0.1, 
 
 #' @export
 #' @rdname error_bar
-#' @param x numeric
-#' @param y numeric
+#' @param x value of data point on the x-axis
+#' @param y value of data point on the y-axis
 #' @param y.low numeric lower offset for error bar (this is subtracted from y)
 #' @param y.high numeric upper offset for error bar (this is added to y)
 error_bar_vertical.default <- function(x, y, y.high, y.low, epsilon=0.1, ...){
@@ -75,9 +73,10 @@ error_bar_horizontal.gsplot <- function(object,x, y, x.high, x.low, epsilon=0.1,
 
 #' @export
 #' @rdname error_bar
-#' @param epsilon half-width of error bar edge
 #' @param x.low numeric lower offset for error bar (this is subtracted from x)
 #' @param x.high numeric upper offset for error bar (this is added to x)
+#' @param epsilon half-width of error bar edge
+
 error_bar_horizontal.default <- function(x, y, x.high, x.low, epsilon=0.1, ...){
   
   segments(x-x.low, y, x+x.high, y, ...)
