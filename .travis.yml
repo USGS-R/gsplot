@@ -5,6 +5,7 @@
 #   https://github.com/craigcitro/r-travis/wiki
 
 language: objective-c
+sudo: required
 
 env:
    global:
@@ -13,15 +14,20 @@ env:
      - R_CHECK_ARGS="--no-build-vignettes --no-manual --as-cran"
      - BOOTSTRAP_LATEX=""
      - NOT_CRAN="true"
-     
+
 before_install:
   - curl -OL http://raw.github.com/craigcitro/r-travis/master/scripts/travis-tool.sh
   - chmod 755 ./travis-tool.sh
   - ./travis-tool.sh bootstrap
+
 install:
   - ./travis-tool.sh install_deps
- 
+  - ./travis-tool.sh github_package jimhester/covr
+
 script: ./travis-tool.sh run_tests
+
+after_success:
+  - Rscript -e 'covr::coveralls()'
 
 after_failure:
   - ./travis-tool.sh dump_logs
