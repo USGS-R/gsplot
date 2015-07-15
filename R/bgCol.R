@@ -1,14 +1,12 @@
 #' gsplot bgCol
 #'
-#' bgCol stuff
-#' 
-#' @details Add additional functionality to points.
+#' Adds color to the plot background. 
 #' 
 #' @param object gsplot object
 #' @param \dots Further graphical parameters may also be supplied as arguments. See 'Details'.
-#' @return modified gsplot object 
+#' 
 #' @rdname bgCol
-#' @export
+#' 
 #' @examples
 #' gs <- gsplot() %>%
 #'    points(y=c(3,1,2), x=4:6, xlim=c(0,NA),legend.name="Points") %>%
