@@ -11,14 +11,16 @@ arrows(object, ...)
 
 \item{\dots}{Further graphical parameters may also be supplied as arguments. See 'Details'.}
 }
-\value{
-modified gsplot object
-}
 \description{
-arrows stuff
+Creates an arrow pointing at a specified plot location.
 }
 \details{
-Add additional functionality to points.
+Often used with \code{\link{text}} to label a feature on the plot. Additional graphical parameter inputs:
+\itemize{
+ \item{\code{x0, y0}} {position of the arrow tail}
+ \item{\code{x, y}} {position of the arrow head}
+ \item{\code{col, lty, lwd}} {parameters describing the color, type, and width of the arrow, respectively}
+}
 }
 \examples{
 gs <- gsplot() \%>\%

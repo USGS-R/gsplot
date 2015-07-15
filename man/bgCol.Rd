@@ -16,14 +16,8 @@ bgCol.default(col, ...)
 
 \item{\dots}{Further graphical parameters may also be supplied as arguments. See 'Details'.}
 }
-\value{
-modified gsplot object
-}
 \description{
-bgCol stuff
-}
-\details{
-Add additional functionality to points.
+Adds color to the plot background.
 }
 \examples{
 gs <- gsplot() \%>\%
