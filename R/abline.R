@@ -11,7 +11,7 @@
 #'  \item{\code{h}} {the y-value specifying a horizontal line}
 #'  \item{\code{v}} {the x-value specifying a vertical line}
 #'  \item{\code{col, lty, lwd}} {parameters describing the color, type, and width of the line, respectively}
-#'  \item{\code{legend.name}} {name that appears the legend, see \link{legend}}
+#'  \item{\code{legend.name}} {name that appears the legend, see \code{\link{legend}}}
 #'  } 
 #'  
 #' @examples
