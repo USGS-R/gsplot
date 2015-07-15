@@ -19,6 +19,11 @@ test_that("setting params works as expected",{
   expect_equal(gsplot:::graphics_params("points", y=5, x=0), list(x=0, y=5))
 })
 
+test_that("setting non-formal params works as expected",{
+  expect_equal(gsplot:::graphics_params("points", y=5, x=0, col='blue'), list(x=0, y=5, col='blue'))
+  expect_equal(gsplot:::graphics_params("points", y=5, x=0, lty=2, col='red'), list(x=0, y=5, lty=2, col='red'))
+})
+
 test_that("testing content of gsplot list", {
   
   gs <- gsplot(list())
