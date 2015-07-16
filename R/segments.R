@@ -1,12 +1,17 @@
 #' gsplot segments
 #'
-#' segments stuff
+#' Creates line segments in the plot. 
 #' 
-#' @details Add additional functionality to points.
+#' @details Additional graphical parameter inputs:
+#' \itemize{
+#'  \item{\code{x0, y0}} {coordinates for the start of the segment}
+#'  \item{\code{x, y}} {coordinates for the end of the segment}
+#'  \item{\code{col, lty, lwd}} {parameters describing the color, type, and width of the segment, respectively}
+#' }
 #' 
 #' @param object gsplot object
 #' @param \dots Further graphical parameters may also be supplied as arguments. See 'Details'.
-#' @return modified gsplot object 
+#' 
 #' @export
 #' @examples
 #' gs <- gsplot()
