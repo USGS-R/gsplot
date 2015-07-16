@@ -33,7 +33,11 @@ mtext.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
   
   if(length(side) == 1){
     arguments <- append(arguments, list(side=side))
-    side <- c(side, ifelse((side %% 2) == 1,2,1))
+    if (side %% 2 == 0){
+      side <- c(1, side)
+    } else {
+      side <- c(side, 2)
+    }
   }
   
   object <- append(object,  list(mtext = list(arguments = arguments, 
