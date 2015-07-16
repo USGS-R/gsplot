@@ -2,7 +2,7 @@
 % Please edit documentation in R/callouts.R
 \name{callouts.default}
 \alias{callouts.default}
-\title{default for adding callouts to a plot}
+\title{Default for adding callouts to a plot.}
 \usage{
 callouts.default(x, y, labels, length, angle, ...)
 }
@@ -18,7 +18,7 @@ callouts.default(x, y, labels, length, angle, ...)
 \item{angle}{callout line angle}
 }
 \description{
-default for adding callouts to a plot
+Default for adding callouts to a plot.
 }
 \keyword{internal}
 
