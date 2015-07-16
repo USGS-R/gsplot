@@ -18,7 +18,7 @@
 #' gsNew <- title(gsNew, main="Great Graph")
 #' gsNew
 text <- function(object, ...) {
-  overrideGraphics("text", object, ...)
+  override("graphics","text", object, ...)
 }
 
 

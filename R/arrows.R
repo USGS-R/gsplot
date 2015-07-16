@@ -28,7 +28,7 @@
 #'    text(.75,1.75,labels="Weird data")
 #' gs
 arrows <- function(object, ...) {
-  overrideGraphics("arrows", object, ...)
+  override("graphics", "arrows", object, ...)
 }
 
 

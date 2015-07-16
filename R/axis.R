@@ -29,7 +29,7 @@
 #' gs
 #' }
 axis <- function(object, ...) {
-  overrideGraphics("axis", object, ...)
+  override("graphics", "axis", object, ...)
 }
 
 axis.gsplot <- function(object, ..., side=c(1,2)) {

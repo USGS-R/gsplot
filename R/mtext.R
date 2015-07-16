@@ -19,7 +19,7 @@
 #' gsNew <- mtext(gsNew, "More Stuff", side=1, line=2)
 #' gsNew
 mtext <- function(object, ...) {
-  overrideGraphics("mtext", object, ...)
+  override("graphics", "mtext", object, ...)
 }
 
 

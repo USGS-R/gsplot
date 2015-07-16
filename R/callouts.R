@@ -15,7 +15,7 @@
 #' gsNew <- callouts(gsNew, 2, 1, labels='dog')
 #' gsNew
 callouts <- function(object, ...) {
-  overrideGraphics("callouts", object, ...)
+  override("gsplot", "callouts", object, ...)
 }
 
 
