@@ -1,9 +1,18 @@
 #' gsplot lines
 #'
-#' Point stuff
-#' @param object a gsplot object
+#' Creating a line by specifying specific plot points. 
+#' 
+#' @param object gsplot object
 #' @param \dots Further graphical parameters may also be supplied as arguments. See 'Details'.
-#' @return modified gsplot object 
+#' 
+#' @details Additional graphical parameter inputs:
+#' \itemize{
+#'  \item{\code{x}} {vector of x-coordinates for points that make up the line}
+#'  \item{\code{y}} {vector of y-coordinates for points that make up the line}
+#'  \item{\code{legend.name}} {a character vector of length one to be used in the legend}
+#'  \item{\code{side}} {vector specifying the side(s) to use for axes (1,2,3,4 for sides, or 5,6,7,8 for outward offsets of those)}
+#' }  
+#'    
 #' @examples
 #' gsNew <- gsplot()
 #' gsNew <- lines(gsNew, c(1,2), y=c(2,5))
@@ -11,6 +20,7 @@
 #' gsNew <- points(gsNew, c(8,4,1.2), c(2,4.7,6), side=c(3,2))
 #' gsNew
 #' 
+#' # Same example using the magrittr pipe '%>%' to connect operations within gsplot
 #' gsNewpipe <- gsplot() %>%
 #'    lines(c(1,2), c(2,5)) %>%
 #'    lines(c(3,4,3), c(2,4,6), pch=6) %>%
@@ -22,11 +32,7 @@ lines <- function(object, ...) {
   overrideGraphics("lines", object, ...)
 }
 
-#' @param legend.name a character vector of length one to be used in the legend (if needed)
-#' @param side the side(s) to use for axes (1,2,3,4 for sides, or 5,6,7,8 for outward offsets of those)
-#' @param x vector
-#' @param y vector
-#' @rdname lines
+
 lines.gsplot <- function(object, x, y=NULL, ..., legend.name=NULL, side=c(1,2)){
   
   current_list <- config("lines")
