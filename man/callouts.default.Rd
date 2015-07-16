@@ -18,7 +18,7 @@ callouts.default(x, y, labels, length, angle, ...)
 \item{angle}{callout line angle}
 }
 \description{
-add callout arrows and text to a plot
+default for adding callouts to a plot
 }
 \keyword{internal}
 
