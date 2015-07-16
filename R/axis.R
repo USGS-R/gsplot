@@ -1,10 +1,16 @@
 #' gsplot axis
 #'
-#' Axis stuff
+#' Formats axes for the plotting region.
 #'
 #' @param object gsplot object
-#' @param \dots ...  Further graphical parameters may also be supplied as arguments. See 'Details'.
-#' @return modified gsplot object 
+#' @param \dots Further graphical parameters may also be supplied as arguments. See 'Details'.
+#' 
+#' @details Additional graphical parameter inputs: 
+#' \itemize{
+#'  \item{\code{side}} {integer indicating the bottom(1), left(2), top(3), or right(4) side of the plot to draw the axis}
+#'  \item{\code{labels}} {logical value indicating whether numerical values are shown at the tickmarks, or a character vector of labels for each tickmark}
+#'  }
+#'    
 #' @rdname axis
 #' @export
 #' @examples

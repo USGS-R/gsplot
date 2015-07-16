@@ -1,12 +1,10 @@
 #' gsplot grid
 #'
-#' grid stuff
-#' 
-#' @details Add additional functionality to points.
+#' Adds grid lines to the plot background. 
 #' 
 #' @param object gsplot object
-#' @param \dots Further graphical parameters may also be supplied as arguments. See 'Details'.
-#' @return modified gsplot object 
+#' @param \dots Further graphical parameters may also be supplied as arguments
+#' 
 #' @export
 #' @examples
 #' gs <- gsplot()

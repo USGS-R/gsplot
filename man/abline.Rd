@@ -11,14 +11,18 @@ abline(object, ...)
 
 \item{\dots}{Further graphical parameters may also be supplied as arguments. See 'Details'.}
 }
-\value{
-modified gsplot object
-}
 \description{
-abline stuff
+Creates straight lines on the existing gsplot object.
 }
 \details{
-Add additional functionality to points.
+Additional graphical parameter inputs:
+\itemize{
+ \item{\code{a, b}} {slope, y-intercept}
+ \item{\code{h}} {the y-value specifying a horizontal line}
+ \item{\code{v}} {the x-value specifying a vertical line}
+ \item{\code{col, lty, lwd}} {parameters describing the color, type, and width of the line, respectively}
+ \item{\code{legend.name}} {name that appears the legend, see \code{\link{legend}}}
+ }
 }
 \examples{
 gs <- gsplot()

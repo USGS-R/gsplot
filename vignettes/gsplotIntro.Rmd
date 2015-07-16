@@ -1,6 +1,6 @@
 ---
 title: "Introduction to gsplot."
-author: "Jordan Read, Laura DeCicco, Jordan Walker, Phethala Thongsavanh"
+author: "Jordan Read, Laura DeCicco, Jordan Walker, Phethala Thongsavanh, Lindsay Carr"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: 
   rmarkdown::html_vignette:
@@ -17,7 +17,7 @@ vignette: >
 library(gsplot)
 
 MaumeeDV <- MaumeeDV
-
+plot.new()
 demoPlot <- gsplot() %>%
   points(y=c(3,1,2), x=1:3, xlim=c(0,NA),ylim=c(0,NA),
          col="blue", pch=18, legend.name="Points", xlab="Index") %>%

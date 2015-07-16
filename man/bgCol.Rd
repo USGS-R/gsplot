@@ -2,28 +2,17 @@
 % Please edit documentation in R/bgCol.R
 \name{bgCol}
 \alias{bgCol}
-\alias{bgCol.default}
 \title{gsplot bgCol}
 \usage{
 bgCol(object, ...)
-
-bgCol.default(col, ...)
 }
 \arguments{
 \item{object}{gsplot object}
 
-\item{col}{color}
-
 \item{\dots}{Further graphical parameters may also be supplied as arguments. See 'Details'.}
 }
-\value{
-modified gsplot object
-}
 \description{
-bgCol stuff
-}
-\details{
-Add additional functionality to points.
+Adds color to the plot background.
 }
 \examples{
 gs <- gsplot() \%>\%

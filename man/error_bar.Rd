@@ -5,7 +5,7 @@
 \alias{error_bar_horizontal.default}
 \alias{error_bar_vertical}
 \alias{error_bar_vertical.default}
-\title{gsplot segments}
+\title{gsplot error bars}
 \usage{
 error_bar_vertical(object, ...)
 
@@ -18,9 +18,9 @@ error_bar_horizontal.default(x, y, x.high, x.low, epsilon = 0.1, ...)
 \arguments{
 \item{object}{gsplot object}
 
-\item{x}{numeric}
+\item{x}{value of data point on the x-axis}
 
-\item{y}{numeric}
+\item{y}{value of data point on the y-axis}
 
 \item{y.high}{numeric upper offset for error bar (this is added to y)}
 
@@ -34,14 +34,8 @@ error_bar_horizontal.default(x, y, x.high, x.low, epsilon = 0.1, ...)
 
 \item{\dots}{Further graphical parameters may also be supplied as arguments. See 'Details'.}
 }
-\value{
-modified gsplot object
-}
 \description{
-error_bar_vertical stuff
-}
-\details{
-Add additional functionality to points.
+Creates vertical and horizontal error bars around plot points.
 }
 \examples{
 gs <- gsplot()

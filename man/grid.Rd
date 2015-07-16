@@ -9,16 +9,10 @@ grid(object, ...)
 \arguments{
 \item{object}{gsplot object}
 
-\item{\dots}{Further graphical parameters may also be supplied as arguments. See 'Details'.}
-}
-\value{
-modified gsplot object
+\item{\dots}{Further graphical parameters may also be supplied as arguments}
 }
 \description{
-grid stuff
-}
-\details{
-Add additional functionality to points.
+Adds grid lines to the plot background.
 }
 \examples{
 gs <- gsplot()

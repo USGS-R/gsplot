@@ -1,12 +1,17 @@
 #' gsplot arrows
 #'
-#' arrows stuff
-#' 
-#' @details Add additional functionality to points.
+#' Creates an arrow pointing at a specified plot location.
 #' 
 #' @param object gsplot object
 #' @param \dots Further graphical parameters may also be supplied as arguments. See 'Details'.
-#' @return modified gsplot object 
+#' 
+#' @details Often used with \code{\link{text}} to label a feature on the plot. Additional graphical parameter inputs:
+#' \itemize{
+#'  \item{\code{x0, y0}} {position of the arrow tail}
+#'  \item{\code{x, y}} {position of the arrow head}
+#'  \item{\code{col, lty, lwd}} {parameters describing the color, type, and width of the arrow, respectively}
+#' }
+#' 
 #' @export
 #' @examples
 #' gs <- gsplot() %>%
