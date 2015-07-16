@@ -15,7 +15,7 @@
 #'    bgCol("lightgrey") 
 #' gs
 bgCol <- function(object, ...) {
-  overrideGraphics("bgCol", object, ...)
+  override("gsplot", "bgCol", object, ...)
 }
 
 

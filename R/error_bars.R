@@ -20,7 +20,7 @@
 #' gsNew <- title(gsNew, "Graphing Fun")
 #' gsNew
 error_bar_vertical <- function(object, ...) {
-  overrideGraphics("error_bar_vertical", object, ...)
+  override("gsplot", "error_bar_vertical", object, ...)
 }
 
 
@@ -54,7 +54,7 @@ error_bar_vertical.default <- function(x, y, y.high, y.low, epsilon=0.1, ...){
 #' @export
 #' @rdname error_bar
 error_bar_horizontal <- function(object, ...) {
-  overrideGraphics("error_bar_horizontal", object, ...)
+  override("gsplot", "error_bar_horizontal", object, ...)
 }
 
 error_bar_horizontal.gsplot <- function(object,x, y, x.high, x.low, epsilon=0.1, ..., legend.name=NULL, side=c(1,2)){

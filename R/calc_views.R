@@ -67,7 +67,7 @@ group_views <- function(gsplot){
   views <- rep(list(view=c()),length(unique_sides))
   
   for (i in seq_len(length(unique_sides))){
-    views[[i]][['gs.config']][['side']] = unique_sides[[i]]
+    views[[i]][['window']][['side']] = unique_sides[[i]]
   }
   
   for (i in seq_len(length(gsplot))){
@@ -101,7 +101,7 @@ set_view_list <- function(views, var, na.action=NA, remove=TRUE){
     if (remove)
       views[[i]] <- lapply(views[[i]], function(x) remove_field(x, var))
     
-    views[[i]][['gs.config']][[var]] <- values
+    views[[i]][['window']][[var]] <- values
   }
   
   return(views)
@@ -126,15 +126,15 @@ set_view_lim <- function(views){
   for (i in names(data[[var]])){
     lim.name <- paste0(var,'lim')
     data.lim <- range(data[[var]][[i]], na.rm = T, na.action = NA)
-    usr.lim <- views[[as.numeric(i)]][['gs.config']][[lim.name]][1:2]
-    views[[as.numeric(i)]][['gs.config']][[lim.name]] <- ifelse(is.na(usr.lim), data.lim, usr.lim)
+    usr.lim <- views[[as.numeric(i)]][['window']][[lim.name]][1:2]
+    views[[as.numeric(i)]][['window']][[lim.name]] <- ifelse(is.na(usr.lim), data.lim, usr.lim)
   }
   var <- 'x'
   for (i in names(data[[var]])){
     lim.name <- paste0(var,'lim')
     data.lim <- range(data[[var]][[i]], na.rm = T, na.action = NA)
-    usr.lim <- views[[as.numeric(i)]][['gs.config']][[lim.name]][1:2]
-    views[[as.numeric(i)]][['gs.config']][[lim.name]] <- ifelse(is.na(usr.lim), data.lim, usr.lim)
+    usr.lim <- views[[as.numeric(i)]][['window']][[lim.name]][1:2]
+    views[[as.numeric(i)]][['window']][[lim.name]] <- ifelse(is.na(usr.lim), data.lim, usr.lim)
   }
   return(views)
 }

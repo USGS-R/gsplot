@@ -1,29 +1,22 @@
-overrideGraphics <- function(name, object, ...) {
+override <- function(package, name, object, ...) {
   if(!missing(object) && class(object) == "gsplot") {
     fun <- function(object, ...) {
       UseMethod(name, object)
     }
     fun(object, ...)
   } else {
-    params <- graphics_params(name, object, ...)
-    base.package <- package_fun(name)
+    params <- graphics_params(package, name, object, ...)
     
-    if(base.package == "gsplot"){
+    if(package == "gsplot"){
       do.call(paste0(name,".default"), params)
     } else {
-      do.call(getFromNamespace(name, base.package), params)
+      do.call(getFromNamespace(name, package), params)
     }
     
   }
 }
 
-package_fun <- function(name){
-  customFuns <- c("error_bar_horizontal","error_bar_vertical","bgCol","callouts")
-  base.package <- ifelse(name %in% customFuns, "gsplot", "graphics")
-  return(base.package)
-}
-
-graphics_params <- function(name, object, ...){
+graphics_params <- function(package, name, object, ...){
   params <- list(...)
   
   if (!missing(object)) {
@@ -33,8 +26,7 @@ graphics_params <- function(name, object, ...){
       params <- append(list(object), params)
   }
   
-  base.package <- package_fun(name)
-  defFun <- getFromNamespace(ifelse(existsFunction(paste0(name,".default")), paste0(name,".default"), name), base.package)
+  defFun <- getFromNamespace(ifelse(existsFunction(paste0(name,".default")), paste0(name,".default"), name), package)
   
   arg.names = names(formals(defFun))[which(!names(formals(defFun)) %in% names(params))]
   

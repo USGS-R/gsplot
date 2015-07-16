@@ -22,7 +22,7 @@
 #' gsNew
 #' @export
 points <- function(object, ...) {
-  overrideGraphics("points", object, ...)
+  override("graphics", "points", object, ...)
 }
 
 

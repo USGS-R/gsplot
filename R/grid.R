@@ -16,7 +16,7 @@
 #' gsNew <- grid(gsNew)
 #' gsNew
 grid <- function(object, ...) {
-  overrideGraphics("grid", object, ...)
+  override("graphics", "grid", object, ...)
 }
 
 

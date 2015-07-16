@@ -38,7 +38,7 @@
 #' gs
 #' 
 text <- function(object, ...) {
-  overrideGraphics("text", object, ...)
+  override("graphics","text", object, ...)
 }
 
 

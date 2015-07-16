@@ -29,7 +29,7 @@
 #' @export
 #' @rdname lines
 lines <- function(object, ...) {
-  overrideGraphics("lines", object, ...)
+  override("graphics", "lines", object, ...)
 }
 
 

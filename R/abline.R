@@ -23,7 +23,7 @@
 #' gsNew <- legend(gsNew, "topleft",title="Awesome!")
 #' gsNew
 abline <- function(object, ...) {
-  overrideGraphics("abline", object, ...)
+  override("graphics", "abline", object, ...)
 }
 
 

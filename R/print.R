@@ -32,22 +32,23 @@ print.gsplot <- function(x, ...){
   defaultPar <- par(no.readonly = TRUE)#, mar=legend_adjusted_margins(x))
   
   for (i in which(names(views) %in% 'view')){
-    view = views[[i]]
-    
+    plots = views[[i]]
+    plots[['window']] <- NULL
+    window = views[[i]][['window']]
     par(config("par")) 
     
-    plot.window(xlim = view$gs.config$xlim, ylim = view$gs.config$ylim, log = view$gs.config$log)
+    plot.window(xlim = window$xlim, ylim = window$ylim, log = window$log)
     
     # -- call functions -- 
-    to_gsplot(view, which(!names(view)  %in% 'gs.config'))
+    to_gsplot(plots)
 
-    if(!("axis" %in% names(view))){
-      axis(side=view$gs.config$side[1], config("axis"))
-      axis(side=view$gs.config$side[2], config("axis"))
+    if(!("axis" %in% names(plots))){ 
+      axis(side=window$side[1], config("axis"))
+      axis(side=window$side[2], config("axis"))
     }
 
-    mtext(text=view$gs.config$xlab, side=view$gs.config$side[1], line = 2)
-    mtext(text=view$gs.config$ylab, side=view$gs.config$side[2], line = 2)
+    mtext(text=window$xlab, side=window$side[1], line = 2)
+    mtext(text=window$ylab, side=window$side[2], line = 2)
     
     par(new=TRUE)
   }
@@ -59,8 +60,8 @@ print.gsplot <- function(x, ...){
   
 }
 
-to_gsplot <- function(x, which_i){
-  for (i in which_i){
+to_gsplot <- function(x){
+  for (i in seq_len(length(x))){
     do.call(names(x[i]),x[[i]])
   }
 }

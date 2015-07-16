@@ -24,7 +24,7 @@
 #' gsNew <- title(gsNew, main="Great Graph", col.main="grey", font.main=2, cex.main=2)
 #' gsNew
 title <- function(object, ...) {
-  overrideGraphics("title", object, ...)
+  override("graphics", "title", object, ...)
 }
 
 
