@@ -70,7 +70,7 @@
 #'  legend(x=1.5,y=4)
 #' usrDef
 legend <- function(object, ...){
-  overrideGraphics("legend", object, ...)
+  override("graphics", "legend", object, ...)
 }
 
 

@@ -19,7 +19,7 @@
 #' gsNew <- segments(gsNew, x0=2, y0=0.75, y1=1.25)
 #' gsNew
 segments <- function(object, ...) {
-  overrideGraphics("segments", object, ...)
+  override("graphics", "segments", object, ...)
 }
 
 

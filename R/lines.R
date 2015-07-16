@@ -19,7 +19,7 @@
 #' @export
 #' @rdname lines
 lines <- function(object, ...) {
-  overrideGraphics("lines", object, ...)
+  override("graphics", "lines", object, ...)
 }
 
 #' @param legend.name a character vector of length one to be used in the legend (if needed)
