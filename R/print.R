@@ -47,13 +47,13 @@ print.gsplot <- function(x, ...){
     par(config("par")) 
     
     plot.window(xlim = window$xlim, ylim = window$ylim, log = window$log)
-    
+
     # -- call functions -- 
     to_gsplot(plots)
 
     if(!("axis" %in% names(plots))){ 
-      axis(side=window$side[1], config("axis"))
-      axis(side=window$side[2], config("axis"))
+      Axis(side=window$side[1],x=window$xlim)
+      Axis(side=window$side[2],x=window$ylim)
     }
 
     mtext(text=window$xlab, side=window$side[1], line = 2)
