@@ -74,7 +74,7 @@ legend <- function(object, ...){
 }
 
 
-legend.gsplot <- function(object, location="topright", legend_offset=0.3, ...) {
+legend.gsplot <- function(object, ..., location="topright", legend_offset=0.3) {
   arguments <- list(...)
   
   if("x" %in% names(arguments)){
@@ -117,100 +117,112 @@ appendLegendPositionConfiguration <- function(location, gsConfig, arguments) {
 #' @param gsplot the gsplot to render legend
 
 draw_legend <- function(gsplot) {
-  par(xpd=TRUE)
+  
   legendParams <- gsplot[['legend']][['arguments']]
-  if(!is.null(legendParams)) {
-    smartLegend <- data.frame(text = character(), 
-                              symbol = numeric(), 
-                              color = character(), 
-                              line = numeric(), 
-                              size = numeric(),
-                              stringsAsFactors = FALSE)
-    getLegendItem <- function(newText, newSymbol, newColor, newLine, newSize) { 
-      if(!is.null(newText)) {
-        return(data.frame(text = newText, 
-                          symbol = newSymbol, 
-                          color = newColor, 
-                          line = newLine, 
-                          size = newSize,
-                          stringsAsFactors = FALSE))
-      } else {
-        return(NULL)
-      }
-    }
+  
+  if(!is.null(legendParams)){
+    location <- gsplot[['legend']][['arguments']]
     
-    #get legend entries for points
-    pts_i <- which(names(gsplot) %in% 'points')
-    for (i in pts_i){
-      pts <- gsplot[[i]]
-      
-      if(all((c("pch","col","cex") %in% names(pts[['arguments']])))){
-        smartLegend <- rbind(smartLegend, getLegendItem(pts[['gs.config']]$legend.name, pts[['arguments']]$pch, pts[['arguments']]$col, NA, pts[['arguments']]$cex))
-      } else {
-        pch <- ifelse("pch" %in% names(pts[['arguments']]), pts[['arguments']]$pch, par("pch"))
-        col <- ifelse("col" %in% names(pts[['arguments']]), pts[['arguments']]$col, par("col"))
-        cex <- ifelse("cex" %in% names(pts[['arguments']]), pts[['arguments']]$cex, par("cex"))
-        smartLegend <- rbind(smartLegend, getLegendItem(pts[['gs.config']]$legend.name, pch, col, NA, cex))
-      }
-      
-    }
-    
-    #get legend entries for lines
-    lines_i <- which(names(gsplot) %in% c('lines','abline'))
-    for (i in lines_i){
-      lines <- gsplot[[i]]
-      if(all((c("lty","col") %in% names(lines[['arguments']])))){
-        smartLegend <- rbind(smartLegend, getLegendItem(lines[['gs.config']]$legend.name, NA, lines[['arguments']]$col, lines[['arguments']]$lty, 1))
-      } else {
-        lty <- ifelse("lty" %in% names(lines[['arguments']]), lines[['arguments']]$lty, par("lty"))
-        col <- ifelse("col" %in% names(lines[['arguments']]), lines[['arguments']]$col, par("col"))
-        smartLegend <- rbind(smartLegend, getLegendItem(lines[['gs.config']]$legend.name, NA, col, lty, 1))
-      }
-      
-    }
-    
-    smartLegend <- unique(smartLegend)
-    
-    lineTypes <- c("blank", "solid", "dashed", "dotted", "dotdash", "longdash", "twodash")
-    
-    lineNums <- suppressWarnings(as.numeric(smartLegend$line))
-    smartLegend$line[!is.na(lineNums)] <- lineTypes[lineNums+1][!is.na(lineTypes[lineNums+1])]
-    
-    if(nrow(smartLegend) > 0){
-    
-      #only include pch if we have a non-NA entry for points
-      if(length(pts_i) > 0) {
-        legendParams <- append(legendParams, list(
-          pch=smartLegend$symbol,
-          pt.cex=smartLegend$size
-        ))
-      }
-      
-      #only include lty if we have a non-NA entry for lines
-      if(length(lines_i) > 0) {
-        legendParams <- append(legendParams, list(
-          lty=smartLegend$line
-        ))
-      }
-      
-      legendParams <- append(legendParams, list(
-        legend=smartLegend$text, 
-        col=smartLegend$color
-      ))
-      
-      #for above/below, dynamically set the number of columns
-      location <- gsplot[['legend']][['gs.config']][['location']]
-      if(location == "below" || location == "above") {
-        itemsPerCol <- 3 #TODO load this from config
-        cols <- NROW(smartLegend) %/% 3;
-        if(NROW(smartLegend) %% 3 > 0) {
-          cols <- cols + 1
+    if(location %in% c("above","below")){
+      par(xpd=TRUE)
+    }    
+  }
+  
+  if(!("legend" %in% names(legendParams))){
+  
+    if(!is.null(legendParams)) {
+      smartLegend <- data.frame(text = character(), 
+                                symbol = numeric(), 
+                                color = character(), 
+                                line = numeric(), 
+                                size = numeric(),
+                                stringsAsFactors = FALSE)
+      getLegendItem <- function(newText, newSymbol, newColor, newLine, newSize) { 
+        if(!is.null(newText)) {
+          return(data.frame(text = newText, 
+                            symbol = newSymbol, 
+                            color = newColor, 
+                            line = newLine, 
+                            size = newSize,
+                            stringsAsFactors = FALSE))
+        } else {
+          return(NULL)
         }
-        legendParams <- append(legendParams, list(
-          ncol=cols
-        ))
       }
-      legend(legendParams) 
+      
+      #get legend entries for points
+      pts_i <- which(names(gsplot) %in% 'points')
+      for (i in pts_i){
+        pts <- gsplot[[i]]
+        
+        if(all((c("pch","col","cex") %in% names(pts[['arguments']])))){
+          smartLegend <- rbind(smartLegend, getLegendItem(pts[['gs.config']]$legend.name, pts[['arguments']]$pch, pts[['arguments']]$col, NA, pts[['arguments']]$cex))
+        } else {
+          pch <- ifelse("pch" %in% names(pts[['arguments']]), pts[['arguments']]$pch, par("pch"))
+          col <- ifelse("col" %in% names(pts[['arguments']]), pts[['arguments']]$col, par("col"))
+          cex <- ifelse("cex" %in% names(pts[['arguments']]), pts[['arguments']]$cex, par("cex"))
+          smartLegend <- rbind(smartLegend, getLegendItem(pts[['gs.config']]$legend.name, pch, col, NA, cex))
+        }
+        
+      }
+      
+      #get legend entries for lines
+      lines_i <- which(names(gsplot) %in% c('lines','abline'))
+      for (i in lines_i){
+        lines <- gsplot[[i]]
+        if(all((c("lty","col") %in% names(lines[['arguments']])))){
+          smartLegend <- rbind(smartLegend, getLegendItem(lines[['gs.config']]$legend.name, NA, lines[['arguments']]$col, lines[['arguments']]$lty, 1))
+        } else {
+          lty <- ifelse("lty" %in% names(lines[['arguments']]), lines[['arguments']]$lty, par("lty"))
+          col <- ifelse("col" %in% names(lines[['arguments']]), lines[['arguments']]$col, par("col"))
+          smartLegend <- rbind(smartLegend, getLegendItem(lines[['gs.config']]$legend.name, NA, col, lty, 1))
+        }
+        
+      }
+      
+      smartLegend <- unique(smartLegend)
+      
+      lineTypes <- c("blank", "solid", "dashed", "dotted", "dotdash", "longdash", "twodash")
+      
+      lineNums <- suppressWarnings(as.numeric(smartLegend$line))
+      smartLegend$line[!is.na(lineNums)] <- lineTypes[lineNums+1][!is.na(lineTypes[lineNums+1])]
+      
+      if(nrow(smartLegend) > 0){
+      
+        #only include pch if we have a non-NA entry for points
+        if(length(pts_i) > 0) {
+          legendParams <- append(legendParams, list(
+            pch=smartLegend$symbol,
+            pt.cex=smartLegend$size
+          ))
+        }
+        
+        #only include lty if we have a non-NA entry for lines
+        if(length(lines_i) > 0) {
+          legendParams <- append(legendParams, list(
+            lty=smartLegend$line
+          ))
+        }
+        
+        legendParams <- append(legendParams, list(
+          legend=smartLegend$text, 
+          col=smartLegend$color
+        ))
+        
+        #for above/below, dynamically set the number of columns
+        location <- gsplot[['legend']][['gs.config']][['location']]
+        if(location == "below" || location == "above") {
+          itemsPerCol <- 3 #TODO load this from config
+          cols <- NROW(smartLegend) %/% 3;
+          if(NROW(smartLegend) %% 3 > 0) {
+            cols <- cols + 1
+          }
+          legendParams <- append(legendParams, list(
+            ncol=cols
+          ))
+        }
+        legend(legendParams) 
+      }
     }
   }
 }
