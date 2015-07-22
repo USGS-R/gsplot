@@ -9,15 +9,19 @@
 \arguments{
 \item{x}{gsplot object}
 
-\item{\dots}{stuff}
-}
-\value{
-modified gsplot object
+\item{\dots}{Further graphical parameters may also be supplied as arguments.}
 }
 \description{
-show gsplot
+Shows gsplot in the plot window.
 }
 \examples{
+gs <- gsplot() \%>\%
+   points(1, 2, legend.name="Cool points", xlim=c(0,NA)) \%>\%
+   lines(x=1:5, y=1:5, legend.name="Cool lines", ylab='taco night') \%>\%
+   legend(location="topleft")
+print(gs)
+
+# dropping 'print()' around the object works the same way (however, use 'print()' explicitly when in a loop)
 gs <- gsplot() \%>\%
    points(1, 2, legend.name="Cool points", xlim=c(0,NA)) \%>\%
    lines(x=1:5, y=1:5, legend.name="Cool lines", ylab='taco night') \%>\%
