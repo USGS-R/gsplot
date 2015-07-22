@@ -45,6 +45,7 @@ error_bar.gsplot <- function(object, x, y, y.high=0, y.low=0, x.high=0, x.low=0,
 #' @param y.high numeric upper y offset for error bar (this is added to y)
 #' @param x.low numeric lower x offset for error bar (this is subtracted from x)
 #' @param x.high numeric upper x offset for error bar (this is added to x)
+#' @param epsilon numeric width of the bar
 error_bar.default <- function(x, y, y.high=0, y.low=0, x.high=0, x.low=0, epsilon=0.1, ...){
   
   if(!all(is.na(y.high)) & !all(is.na(y.low))){
