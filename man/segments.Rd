@@ -11,14 +11,16 @@ segments(object, ...)
 
 \item{\dots}{Further graphical parameters may also be supplied as arguments. See 'Details'.}
 }
-\value{
-modified gsplot object
-}
 \description{
-segments stuff
+Creates line segments in the plot.
 }
 \details{
-Add additional functionality to points.
+Additional graphical parameter inputs:
+\itemize{
+ \item{\code{x0, y0}} {coordinates for the start of the segment}
+ \item{\code{x, y}} {coordinates for the end of the segment}
+ \item{\code{col, lty, lwd}} {parameters describing the color, type, and width of the segment, respectively}
+}
 }
 \examples{
 gs <- gsplot()

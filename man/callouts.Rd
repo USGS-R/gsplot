@@ -11,14 +11,18 @@ callouts(object, ...)
 
 \item{\dots}{Further graphical parameters may also be supplied as arguments. See 'Details'.}
 }
-\value{
-modified gsplot object
-}
 \description{
-callouts stuff
+Add callout lines and text to a plot.
 }
 \details{
-Add additional functionality to callouts.
+Additional graphical parameter inputs:
+\itemize{
+ \item{\code{x}} {numeric value for x-coordinate of callout}
+ \item{\code{y}} {numeric value for y-coordinate of callout}
+ \item{\code{labels}} {text to be added to callout}
+ \item{\code{length}} {relative (percentage of window width and height) distance for callout}
+ \item{\code{angle}} {callout line angle}
+}
 }
 \examples{
 gs <- gsplot()

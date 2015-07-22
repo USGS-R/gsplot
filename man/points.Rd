@@ -11,14 +11,19 @@ points(object, ...)
 
 \item{\dots}{Further graphical parameters may also be supplied as arguments. See 'Details'.}
 }
-\value{
-modified gsplot object
-}
 \description{
-Point stuff
+Creates points on gsplot.
 }
 \details{
-Add additional functionality to points.
+Additional graphical parameter inputs:
+\itemize{
+ \item{\code{x}} {vector indicating the x-coordinate(s) of the plot point(s)}
+ \item{\code{y}} {vector indicating the y-coordinate(s) of the plot point(s)}
+ \item{\code{xlim}} {vector containing the lower and upper limit for the x-axis}
+ \item{\code{ylim}} {vector containing the lower and upper limit for the y-axis}
+ \item{\code{col, pch}} {parameters describing the color and type of point, respectively}
+ \item{\code{legend.name}} {name that appears the legend, see \code{\link{legend}}}
+  }
 }
 \examples{
 gs <- gsplot()
