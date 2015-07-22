@@ -129,7 +129,7 @@ set_view_lim <- function(views){
     match.side <- as.character(views_with_side(views, view.side))
     data.lim <- range(data[[var]][match.side],na.rm = T, na.action = NA)
     usr.lim <- views[[as.numeric(i)]][['window']][[lim.name]][1:2]
-    views[[as.numeric(i)]][['window']][[lim.name]] <- ifelse(is.na(usr.lim), data.lim, usr.lim)
+    views[[as.numeric(i)]][['window']][[lim.name]] <- safe_ifelse(is.na(usr.lim), data.lim, usr.lim)
   }
   var <- 'x'
   for (i in names(data[[var]])){
@@ -138,7 +138,7 @@ set_view_lim <- function(views){
     match.side <- as.character(views_with_side(views, view.side))
     data.lim <- range(data[[var]][match.side],na.rm = T, na.action = NA)
     usr.lim <- views[[as.numeric(i)]][['window']][[lim.name]][1:2]
-    views[[as.numeric(i)]][['window']][[lim.name]] <- ifelse(is.na(usr.lim), data.lim, usr.lim)
+    views[[as.numeric(i)]][['window']][[lim.name]] <- safe_ifelse(is.na(usr.lim), data.lim, usr.lim)
   }
   return(views)
 }
@@ -164,8 +164,10 @@ summarize_args <- function(views, var, na.action,ignore='gs.config'){
   view_i <- which(names(views) %in% "view")
   values <- list()
   for (i in view_i){
-    x <- views[[i]][!names(views[[i]]) %in% ignore]
-    values[[i]] <- as.numeric(unname(unlist(sapply(x, function(x) strip_pts(x, var)))))
+    x <- views[[i]][!names(views[[i]]) %in% ignore] 
+    values.char <- unname(unlist(sapply(x, function(x) strip_pts(x, var)))) # values as characters (see "strip_pts")
+    action <- ifelse(class(x[['points']][[var[1]]])=="Date", "as.Date(values.char)", "as.numeric(values.char)")
+    values[[i]] <- eval(parse(text = action))
   }
   names(values) <- view_i
   return(values)
@@ -185,9 +187,16 @@ strip_pts <- function(list, var){
   
   for (v in var){
     if (v %in% names(list))
-      out <- c(out, list[[v]])
+      out <- c(out, as.character(list[[v]])) # "as.characters" so dates can be appended 
     else
       out <- c(out, NA)
   }
   return(out)
+}
+
+# prevents ifelse from returning numeric values for dates
+safe_ifelse <- function(cond, yes, no){ 
+  output <- ifelse(cond,yes,no)
+  class(output) <- ifelse(cond, class(yes), class(no))
+  return(output)
 }
