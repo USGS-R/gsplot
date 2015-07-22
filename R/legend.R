@@ -36,6 +36,16 @@
 #'  lines(x=c(1,2,5), y=c(1,8,5), legend.name="Lines 2", lwd=3) %>%  
 #'  legend(x=1.5,y=4)
 #' usrDef
+#' 
+#' gs <- gsplot() %>%
+#'  points(1:4, 1:4, col=c("red","black","blue","green"), cex=1:4, pch=15:18) %>%
+#'  legend(location = "topleft", pch=15:18,
+#'        legend=c("a","b","c","d"),col="red", title = "Shape" ) %>%
+#'  legend(x=1, y=2.5, pch=19, 
+#'        legend=c("1","2","3","4"),col=c("red","black","blue","green"), title = "Color") %>%
+#'  legend(location="bottomright",pch=19, legend=c("a1","a2","a3","a4"), 
+#'        pt.cex = 1:4, title = "Size", col="red")
+#' gs
 legend <- function(object, ...){
   override("graphics", "legend", object, ...)
 }
