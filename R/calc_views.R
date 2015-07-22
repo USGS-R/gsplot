@@ -125,18 +125,38 @@ set_view_lim <- function(views){
   var <- 'y'
   for (i in names(data[[var]])){
     lim.name <- paste0(var,'lim')
-    data.lim <- range(data[[var]][[i]], na.rm = T, na.action = NA)
+    view.side <- get_view_side(views, as.numeric(i), var)
+    match.side <- as.character(views_with_side(views, view.side))
+    data.lim <- range(data[[var]][match.side],na.rm = T, na.action = NA)
     usr.lim <- views[[as.numeric(i)]][['window']][[lim.name]][1:2]
     views[[as.numeric(i)]][['window']][[lim.name]] <- ifelse(is.na(usr.lim), data.lim, usr.lim)
   }
   var <- 'x'
   for (i in names(data[[var]])){
     lim.name <- paste0(var,'lim')
-    data.lim <- range(data[[var]][[i]], na.rm = T, na.action = NA)
+    view.side <- get_view_side(views, as.numeric(i), var)
+    match.side <- as.character(views_with_side(views, view.side))
+    data.lim <- range(data[[var]][match.side],na.rm = T, na.action = NA)
     usr.lim <- views[[as.numeric(i)]][['window']][[lim.name]][1:2]
     views[[as.numeric(i)]][['window']][[lim.name]] <- ifelse(is.na(usr.lim), data.lim, usr.lim)
   }
   return(views)
+}
+
+views_with_side <- function(views, side){
+  with.side = lapply(views, function(x) any(x[['window']][['side']] %in% side))
+  unname(which(unlist(with.side[names(with.side) == 'view'])))
+}
+
+get_view_side <- function(views, view_i, var){
+  i = which(names(views) %in% 'view')[view_i]
+  sides <- views[[i]][['window']][['side']]
+  if (var=='y')
+    return(sides[which(sides %% 2 == 0)])
+  else if (var=='x')
+    return(sides[which(sides %% 2 != 0)])
+  else
+    stop('view side undefined for ',var)
 }
 
 summarize_args <- function(views, var, na.action,ignore='gs.config'){
