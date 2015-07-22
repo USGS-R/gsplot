@@ -16,7 +16,7 @@
 #' gsNew <- legend(gsNew, location = "topleft",title="Awesome!")
 #' gsNew <- grid(gsNew)
 #' gsNew <- error_bar(gsNew, 1:3, y=c(3,1,2), y.high=c(0.5,0.25,1), y.low=0.1)
-#' gsNew <- error_bar(gsNew, x=1:3, y=c(3,1,2), x.low=.2, x.high=.2, col="red",lwd=3)
+#' gsNew <- error_bar(gsNew, x=1:3, y=c(3,1,2), x.low=c(.2,NA,.2), x.high=.2, col="red",lwd=3)
 #' gsNew <- title(gsNew, "Graphing Fun")
 #' gsNew
 error_bar <- function(object, ...) {
@@ -48,19 +48,23 @@ error_bar.gsplot <- function(object, x, y, y.high=0, y.low=0, x.high=0, x.low=0,
 #' @param epsilon numeric width of the bar
 error_bar.default <- function(x, y, y.high=0, y.low=0, x.high=0, x.low=0, epsilon=0.1, ...){
   
-  if(!all(is.na(y.high)) & !all(is.na(y.low))){
+  y.high[is.na(y.high)] <- 0
+  y.low[is.na(y.low)] <- 0
+  x.high[is.na(x.high)] <- 0
+  x.low[is.na(x.low)] <- 0
+  
+  if(!all(y.low == 0) && !all(y.high == 0)){
     segments(x, y-y.low,x, y+y.high, ...)
     segments(x-epsilon,y-y.low,x+epsilon,y-y.low, ...)
     segments(x-epsilon,y+y.high,x+epsilon,y+y.high, ...)    
   }
-  
-  if(!all(is.na(x.high)) & !all(is.na(x.low))){
+
+  if(!all(x.low == 0) && !all(x.high == 0)){
     segments(x-x.low, y, x+x.high, y, ...)
     segments(x-x.low, y-epsilon,x-x.low,y+epsilon, ...)
-    segments(x+x.high, y-epsilon,x+x.high,y+epsilon, ...)    
+    segments(x+x.high, y-epsilon,x+x.high,y+epsilon, ...) 
   }
 
-  
 }
 
 

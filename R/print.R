@@ -44,9 +44,9 @@ print.gsplot <- function(x, ...){
     plots[['window']] <- NULL
     window = views[[i]][['window']]
     
-    plot.window(xlim = window$xlim, ylim = window$ylim, log = window$log)
-    
     par(config("par")) 
+    
+    plot.window(xlim = window$xlim, ylim = window$ylim, log = window$log)
     
     # -- call functions -- 
     to_gsplot(plots)
@@ -65,7 +65,7 @@ print.gsplot <- function(x, ...){
   
   draw_legend(x)
 
-  par(defaultPar)
+  # par(defaultPar)
   
 }
 
