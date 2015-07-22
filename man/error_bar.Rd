@@ -41,7 +41,7 @@ gsNew <- abline(gsNew, b=1, a=0, legend.name="1:1")
 gsNew <- legend(gsNew, location = "topleft",title="Awesome!")
 gsNew <- grid(gsNew)
 gsNew <- error_bar(gsNew, 1:3, y=c(3,1,2), y.high=c(0.5,0.25,1), y.low=0.1)
-gsNew <- error_bar(gsNew, x=1:3, y=c(3,1,2), x.low=.2, x.high=.2, col="red",lwd=3)
+gsNew <- error_bar(gsNew, x=1:3, y=c(3,1,2), x.low=c(.2,NA,.2), x.high=.2, col="red",lwd=3)
 gsNew <- title(gsNew, "Graphing Fun")
 gsNew
 }

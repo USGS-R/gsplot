@@ -65,7 +65,7 @@ print.gsplot <- function(x, ...){
   
   draw_legend(x)
 
-  par(defaultPar)
+  # par(defaultPar)
   
 }
 
