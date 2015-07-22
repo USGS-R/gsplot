@@ -17,9 +17,13 @@ error_bar.default(x, y, y.high = 0, y.low = 0, x.high = 0, x.low = 0,
 
 \item{y}{value of data point on the y-axis}
 
-\item{y.high}{numeric upper offset for error bar (this is added to y)}
+\item{y.high}{numeric upper y offset for error bar (this is added to y)}
 
-\item{y.low}{numeric lower offset for error bar (this is subtracted from y)}
+\item{y.low}{numeric lower y offset for error bar (this is subtracted from y)}
+
+\item{x.high}{numeric upper x offset for error bar (this is added to x)}
+
+\item{x.low}{numeric lower x offset for error bar (this is subtracted from x)}
 
 \item{\dots}{Further graphical parameters may also be supplied as arguments. See 'Details'.}
 }
