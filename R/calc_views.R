@@ -121,25 +121,22 @@ set_view_lim <- function(views){
   views <- set_view_list(views, var = 'xlim', na.action=NA)
   views <- set_view_list(views, var = 'ylim', na.action=NA)
   
-  data <- list(y=summarize_args(views,c('y','y1','y0')), x=summarize_args(views,c('x','x1','x0')))
-  var <- 'y'
-  for (i in names(data[[var]])){
-    lim.name <- paste0(var,'lim')
-    view.side <- get_view_side(views, as.numeric(i), var)
-    match.side <- as.character(views_with_side(views, view.side))
-    data.lim <- range(data[[var]][match.side],na.rm = T, na.action = NA)
-    usr.lim <- views[[as.numeric(i)]][['window']][[lim.name]][1:2]
-    views[[as.numeric(i)]][['window']][[lim.name]] <- ifelse(is.na(usr.lim), data.lim, usr.lim)
+  data <- list(y=summarize_args(views,c('y','y1','y0'),ignore=c('window','gs.config')), 
+               x=summarize_args(views,c('x','x1','x0'),ignore=c('window','gs.config')))
+
+  for(var in c('y','x')){
+    for (i in names(data[[var]])){
+      lim.name <- paste0(var,'lim')
+      view.side <- get_view_side(views, as.numeric(i), var)
+      match.side <- as.character(views_with_side(views, view.side))
+      data.lim <- range(data[[var]][[match.side]][is.finite(data[[var]][[match.side]])])
+      usr.lim <- views[[as.numeric(i)]][['window']][[lim.name]][1:2]
+      views[[as.numeric(i)]][['window']][[lim.name]] <- data.lim
+      views[[as.numeric(i)]][['window']][[lim.name]][!is.na(usr.lim)] <- usr.lim[!is.na(usr.lim)]
+  
+    }
   }
-  var <- 'x'
-  for (i in names(data[[var]])){
-    lim.name <- paste0(var,'lim')
-    view.side <- get_view_side(views, as.numeric(i), var)
-    match.side <- as.character(views_with_side(views, view.side))
-    data.lim <- range(data[[var]][match.side],na.rm = T, na.action = NA)
-    usr.lim <- views[[as.numeric(i)]][['window']][[lim.name]][1:2]
-    views[[as.numeric(i)]][['window']][[lim.name]] <- ifelse(is.na(usr.lim), data.lim, usr.lim)
-  }
+
   return(views)
 }
 
@@ -165,7 +162,10 @@ summarize_args <- function(views, var, na.action,ignore='gs.config'){
   values <- list()
   for (i in view_i){
     x <- views[[i]][!names(views[[i]]) %in% ignore]
-    values[[i]] <- as.numeric(unname(unlist(sapply(x, function(x) strip_pts(x, var)))))
+    # values[[i]] <- unname(unlist(lapply(x, function(x) strip_pts(x, var))))
+    valStuff <- lapply(x, function(x) strip_pts(x, var))
+    values[[i]] <- unname(do.call(c,valStuff))
+
   }
   names(values) <- view_i
   return(values)
@@ -185,9 +185,9 @@ strip_pts <- function(list, var){
   
   for (v in var){
     if (v %in% names(list))
-      out <- c(out, list[[v]])
+      out <- append(out, list[[v]])
     else
-      out <- c(out, NA)
+      out <- append(out, NA)
   }
   return(out)
 }
