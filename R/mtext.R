@@ -21,7 +21,7 @@
 #' gsNew <- abline(gsNew, b=1, a=0, legend.name="1:1") 
 #' gsNew <- legend(gsNew, "topleft",title="Awesome!")
 #' gsNew <- title(gsNew, main="Great Graph")
-#' gsNew <- mtext(gsNew, text="More Stuff", side=1, line=2)
+#' gsNew <- mtext(gsNew, text="More Stuff", side=3, line=2)
 #' gsNew
 mtext <- function(object, ...) {
   override("graphics", "mtext", object, ...)
