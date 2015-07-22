@@ -2,31 +2,26 @@
 % Please edit documentation in R/lines.R
 \name{lines}
 \alias{lines}
-\alias{lines.gsplot}
 \title{gsplot lines}
 \usage{
 lines(object, ...)
-
-lines.gsplot(object, x, y = NULL, ..., legend.name = NULL, side = c(1, 2))
 }
 \arguments{
-\item{object}{a gsplot object}
-
-\item{x}{vector}
-
-\item{y}{vector}
-
-\item{legend.name}{a character vector of length one to be used in the legend (if needed)}
-
-\item{side}{the side(s) to use for axes (1,2,3,4 for sides, or 5,6,7,8 for outward offsets of those)}
+\item{object}{gsplot object}
 
 \item{\dots}{Further graphical parameters may also be supplied as arguments. See 'Details'.}
 }
-\value{
-modified gsplot object
-}
 \description{
-Point stuff
+Creating a line by specifying specific plot points.
+}
+\details{
+Additional graphical parameter inputs:
+\itemize{
+ \item{\code{x}} {vector of x-coordinates for points that make up the line}
+ \item{\code{y}} {vector of y-coordinates for points that make up the line}
+ \item{\code{legend.name}} {a character vector of length one to be used in the legend}
+ \item{\code{side}} {vector specifying the side(s) to use for axes (1,2,3,4 for sides, or 5,6,7,8 for outward offsets of those)}
+}
 }
 \examples{
 gsNew <- gsplot()
@@ -35,6 +30,7 @@ gsNew <- lines(gsNew, c(3,4,3), c(2,4,6), pch=6)
 gsNew <- points(gsNew, c(8,4,1.2), c(2,4.7,6), side=c(3,2))
 gsNew
 
+# Same example using the magrittr pipe '\%>\%' to connect operations within gsplot
 gsNewpipe <- gsplot() \%>\%
    lines(c(1,2), c(2,5)) \%>\%
    lines(c(3,4,3), c(2,4,6), pch=6) \%>\%

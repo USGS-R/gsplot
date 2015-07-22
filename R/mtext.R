@@ -1,12 +1,17 @@
 #' gsplot mtext
 #'
-#' mtext stuff
-#' 
-#' @details Add additional functionality to title.
+#' Allows text to be added to the plot margins. 
 #' 
 #' @param object gsplot object
 #' @param \dots Further graphical parameters may also be supplied as arguments. See 'Details'.
-#' @return modified gsplot object 
+#' 
+#' @details Additional graphical parameter inputs: 
+#' \itemize{
+#'  \item{\code{text}} {character string specifying the text to be placed in the margins}
+#'  \item{\code{side}} {numeric, specifies the side of the graph to place the text - bottom(1), left(2), top(3), or right(4)}
+#'  \item{\code{line}} {numeric, specifies the distance from the plot to place the text (in 'number of text lines')}
+#' }
+#'    
 #' @export
 #' @examples
 #' gs <- gsplot()
@@ -16,7 +21,7 @@
 #' gsNew <- abline(gsNew, b=1, a=0, legend.name="1:1") 
 #' gsNew <- legend(gsNew, "topleft",title="Awesome!")
 #' gsNew <- title(gsNew, main="Great Graph")
-#' gsNew <- mtext(gsNew, "More Stuff", side=3, line=2)
+#' gsNew <- mtext(gsNew, text="More Stuff", side=3, line=2)
 #' gsNew
 mtext <- function(object, ...) {
   override("graphics", "mtext", object, ...)

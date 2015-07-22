@@ -1,6 +1,6 @@
 #' gsplot
 #'
-#' Class stuff
+#' Used to change the class of inputs to "gsplot".
 #'
 #' @param x list
 #' @return gsplot 
@@ -9,7 +9,7 @@
 #' @importFrom stats setNames
 #' @importFrom methods existsFunction
 #' @examples
-#' gsplot()
+#' gsplot() 
 gsplot <- function(x=list()){
   UseMethod("gsplot", x)
 }

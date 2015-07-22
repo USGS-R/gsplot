@@ -13,7 +13,7 @@ gsplot(x = list())
 gsplot
 }
 \description{
-Class stuff
+Used to change the class of inputs to "gsplot".
 }
 \examples{
 gsplot()
