@@ -7,8 +7,8 @@
 \usage{
 error_bar(object, ...)
 
-error_bar.default(x, y, y.high = NA, y.low = NA, x.high = NA,
-  x.low = NA, epsilon = 0.1, ...)
+error_bar.default(x, y, y.high = 0, y.low = 0, x.high = 0, x.low = 0,
+  epsilon = 0.1, ...)
 }
 \arguments{
 \item{object}{gsplot object}
@@ -32,7 +32,7 @@ gsNew <- points(gs, y=c(3,1,2), x=1:3, xlim=c(0,NA),ylim=c(0,NA),
             col="blue", pch=18, legend.name="Points")
 gsNew <- lines(gsNew, c(3,4,3), c(2,4,6), legend.name="Lines")
 gsNew <- abline(gsNew, b=1, a=0, legend.name="1:1")
-#gsNew <- legend(gsNew, "topleft",title="Awesome!")
+gsNew <- legend(gsNew, "topleft",title="Awesome!")
 gsNew <- grid(gsNew)
 gsNew <- error_bar(gsNew, 1:3, y=c(3,1,2), y.high=c(0.5,0.25,1), y.low=0.1)
 gsNew <- error_bar(gsNew, x=1:3, y=c(3,1,2), x.low=.2, x.high=.2, col="red",lwd=3)
