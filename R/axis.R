@@ -52,8 +52,5 @@ axis.gsplot <- function(object, ..., side=c(1,2)) {
 
 
   return(gsplot(object))
-  
-#   object <- append(object, list(axes = list(side = side, at=at, labels=labels,
-#                                 tick=tick, line=line, pos=pos, outer=outer,...)))
-#   return(gsplot(object))
+
 }
