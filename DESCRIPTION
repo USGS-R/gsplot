@@ -1,8 +1,8 @@
 Package: gsplot
 Type: Package
 Title: Geological Survey Plotting
-Version: 0.1.1
-Date: 2015-06-24
+Version: 0.2.1
+Date: 2015-07-22
 Author: CIDA
 License: CC0
 Maintainer: cida top dog <cida@usgs.gov>
