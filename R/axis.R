@@ -14,7 +14,7 @@
 #' @rdname axis
 #' @export
 #' @examples
-#' \dontrun{
+#' 
 #' gs <- gsplot() %>%
 #'    points(x=1:5, y=1:5, legend.name="Stuff") %>%
 #'    lines(2:6, y=2:6, ylim=c(0,10)) %>%
@@ -27,7 +27,7 @@
 #'            col="blue", pch=18, legend.name="Points", xlab="Index") %>%
 #'    axis(side=c(3,4), labels=FALSE)
 #' gs
-#' }
+#' 
 axis <- function(object, ...) {
   override("graphics", "axis", object, ...)
 }

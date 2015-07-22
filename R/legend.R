@@ -91,13 +91,15 @@ draw_legend <- function(gsplot) {
                               symbol = numeric(), 
                               color = character(), 
                               line = numeric(), 
+                              size = numeric(),
                               stringsAsFactors = FALSE)
-    getLegendItem <- function(newText, newSymbol, newColor, newLine) { 
+    getLegendItem <- function(newText, newSymbol, newColor, newLine, newSize) { 
       if(!is.null(newText)) {
         return(data.frame(text = newText, 
                           symbol = newSymbol, 
                           color = newColor, 
                           line = newLine, 
+                          size = newSize,
                           stringsAsFactors = FALSE))
       } else {
         return(NULL)
@@ -109,12 +111,13 @@ draw_legend <- function(gsplot) {
     for (i in pts_i){
       pts <- gsplot[[i]]
       
-      if(all((c("pch","col") %in% names(pts[['arguments']])))){
-        smartLegend <- rbind(smartLegend, getLegendItem(pts[['gs.config']]$legend.name, pts[['arguments']]$pch, pts[['arguments']]$col, NA))
+      if(all((c("pch","col","cex") %in% names(pts[['arguments']])))){
+        smartLegend <- rbind(smartLegend, getLegendItem(pts[['gs.config']]$legend.name, pts[['arguments']]$pch, pts[['arguments']]$col, NA, pts[['arguments']]$cex))
       } else {
         pch <- ifelse("pch" %in% names(pts[['arguments']]), pts[['arguments']]$pch, par("pch"))
         col <- ifelse("col" %in% names(pts[['arguments']]), pts[['arguments']]$col, par("col"))
-        smartLegend <- rbind(smartLegend, getLegendItem(pts[['gs.config']]$legend.name, pch, col, NA))
+        cex <- ifelse("cex" %in% names(pts[['arguments']]), pts[['arguments']]$cex, par("cex"))
+        smartLegend <- rbind(smartLegend, getLegendItem(pts[['gs.config']]$legend.name, pch, col, NA, cex))
       }
       
     }
@@ -124,11 +127,11 @@ draw_legend <- function(gsplot) {
     for (i in lines_i){
       lines <- gsplot[[i]]
       if(all((c("lty","col") %in% names(lines[['arguments']])))){
-        smartLegend <- rbind(smartLegend, getLegendItem(lines[['gs.config']]$legend.name, NA, lines[['arguments']]$col, lines[['arguments']]$lty))
+        smartLegend <- rbind(smartLegend, getLegendItem(lines[['gs.config']]$legend.name, NA, lines[['arguments']]$col, lines[['arguments']]$lty, 1))
       } else {
         lty <- ifelse("lty" %in% names(lines[['arguments']]), lines[['arguments']]$lty, par("lty"))
         col <- ifelse("col" %in% names(lines[['arguments']]), lines[['arguments']]$col, par("col"))
-        smartLegend <- rbind(smartLegend, getLegendItem(lines[['gs.config']]$legend.name, NA, col, lty))
+        smartLegend <- rbind(smartLegend, getLegendItem(lines[['gs.config']]$legend.name, NA, col, lty, 1))
       }
       
     }
@@ -145,7 +148,8 @@ draw_legend <- function(gsplot) {
       #only include pch if we have a non-NA entry for points
       if(length(pts_i) > 0) {
         legendParams <- append(legendParams, list(
-          pch=smartLegend$symbol
+          pch=smartLegend$symbol,
+          pt.cex=smartLegend$size
         ))
       }
       
