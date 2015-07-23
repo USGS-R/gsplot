@@ -57,11 +57,11 @@ demoPlot
 
 ``` r
 library(gsplot)
-usrDef <- gsplot() %>% 
+usrDef <- gsplot(mar=c(4,4,4,4)) %>% 
      points(x=1, y=2, side=c(3,2), legend.name="Points 1", cex=3, xlab='cat') %>% 
-     points(x=3, y=4, side=c(1,4), legend.name="Points 2", pch=5, col="red") %>% 
+     points(x=3, y=4, side=c(1,4), legend.name="Points 2", pch=5, col="red", ylab='experiment') %>% 
      lines(x=c(3,4,3), y=c(2,4,6), legend.name="Lines 1", lty=5, col="orange") %>%
-     lines(x=c(1,2,5), y=c(1,8,5), legend.name="Lines 2", lwd=3, ylab='Science!') %>%  
+     lines(x=c(1,2,5), y=c(1,8,5), legend.name="Lines 2", lwd=3, ylab='Science!', xlab='dogs') %>%  
      legend(x=1.5,y=4)
 usrDef
 ```

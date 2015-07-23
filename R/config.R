@@ -103,8 +103,15 @@ config <- function(type,...){
     globalConfig[names(config_list[[type]])] <- NULL
     globalConfig <- append(globalConfig, config_list[[type]])
   }
-  globalConfig[names(list(...))] <- NULL
-  globalConfig <- append(globalConfig, list(...))
+  # really goofy, but I couldn't find a way to test for list that doesn't fail when it is not a list
+  if (length(expand.grid(...)) > 0 && is.list(list(...)[[1]])){ 
+    globalConfig[names(...)] <- NULL
+    globalConfig <- append(globalConfig, ...)
+  } else {
+    globalConfig[names(list(...))] <- NULL
+    globalConfig <- append(globalConfig, list(...))
+  }
+  
   
   return(globalConfig)
   

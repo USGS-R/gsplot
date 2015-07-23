@@ -44,7 +44,7 @@ print.gsplot <- function(x, ...){
     plots[['window']] <- NULL
     window = views[[i]][['window']]
     
-    par(config("par")) 
+    par(config("par", views$par))
     
     plot.window(xlim = window$xlim, ylim = window$ylim, log = window$log)
 
