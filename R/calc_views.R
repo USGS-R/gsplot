@@ -17,7 +17,7 @@ calc_views <- function(gsplot){
   
   views <- set_view_lab(views)
   
-  views <- set_view_order(views)
+  views <- set_view_order(views, config("orderToPlot")$order)
   
   return(views)
 }
@@ -86,6 +86,9 @@ set_view_lim <- function(views){
 
   data <- list(y=summarize_args(views,c('y','y1','y0'),ignore=c('window','gs.config')), 
                x=summarize_args(views,c('x','x1','x0'),ignore=c('window','gs.config')))
+  
+  definedSides <- unlist(unname(do.call(c,views)),recursive = FALSE)
+  definedSides <- unique(unname(unlist(definedSides[grep("side", names(definedSides))])))
 
   for(var in c('y','x')){
     for (i in names(data[[var]])){
@@ -93,6 +96,19 @@ set_view_lim <- function(views){
       view.side <- get_view_side(views, as.numeric(i), var)
       match.side <- as.character(views_with_side(views, view.side))
       data.var <- c_unname(data[[var]][match.side])
+      
+      if(all(is.na(data.var))){
+        if((view.side %% 2) == 0){ #even
+          otherSide <- c(2,4)[c(2,4) %in% definedSides[definedSides != view.side]]
+        } else { #odd
+          otherSide <- c(1,3)[c(1,3) %in% definedSides[definedSides != view.side]]
+        }
+        data.var <- c_unname(data[[var]][otherSide])
+        if(all(is.na(data.var))){ #So do data total
+          data.var <- c(0,1)
+        }
+      }
+      
       data.lim <- range(data.var[is.finite(data.var)])
       usr.lim <- views[[as.numeric(i)]][['window']][[lim.name]][1:2]
       views[[as.numeric(i)]][['window']][[lim.name]] <- data.lim

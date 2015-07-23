@@ -1,10 +1,10 @@
-set_view_order <- function(views){
+set_view_order <- function(views, order){
   #Start enforcing some order. Background color has to go in back...I'd also put grid in back:
   
   dataViews <- views[-which(names(views) %in% c("par","legend"))]
   otherViews <- views[which(names(views) %in% c("par","legend"))]
   
-  for(specialCall in c('grid','bgCol')){
+  for(specialCall in order){
     if(specialCall %in% names(do.call(c, unname(views)))){
       newView <- list()
       for(i in 1:length(dataViews)){
