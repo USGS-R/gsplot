@@ -6,16 +6,19 @@
 #' @param \dots Further graphical parameters may also be supplied as arguments. See 'Details'.
 #' @return gsplot 
 #' @export
+#' @rdname gsplot
 #' @examples
 #' gsplot() 
 gsplot <- function(x = NULL, ...) UseMethod("gsplot")
 
+#' @rdname gsplot
 #' @export
 gsplot.default <- function(...) {
   gsplot.list(list(par=list(...)))
 }
 
-#' @export
+#' @rdname gsplot
+#' @exportMethod gsplot
 gsplot.list <- function(x){
   class(x) <- "gsplot"
   invisible(x) 
