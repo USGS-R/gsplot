@@ -1,4 +1,4 @@
-
+gsconfig <- new.env(parent = emptyenv())
 
 #' @title Load gsplot config
 #'
@@ -12,62 +12,33 @@
 #'@export
 #' @importFrom graphics plot.xy
 #' @importFrom graphics par
+#' @importFrom yaml yaml.load_file
 loadConfig = function(filename) {
   
   if(missing(filename)){
+    filename <- system.file("extdata", "default.yaml", package = "gsplot")
+  }
 
-    graphTemplate <- list(
-      pch=19,
-      xaxs="i",
-      yaxs="i",
-      tcl=0.3,
-      mgp=c(1.5,.3,0),
-      lty=1,
-      lwd=1,
-      points=list(pch=6,col="red"),
-      lines=list(),
-      abline=list(col="grey"),
-      legend=list(),
-      axis=list(at=NULL, 
-                 labels=TRUE,
-                 tick=TRUE, 
-                 line=NA, 
-                 pos=NA, 
-                 outer=FALSE),
-      title=list(),
-      text=list(),
-      mtext=list(),
-      grid=list(col="grey",
-                lwd=1, lty=2),
-      segments=list(),
-      error_bar=list(),
-      arrows=list(),
-      callouts=list(col='black'),
-      bgCol=list(),
-      orderToPlot=list(order=c('grid','bgCol'))
-    )
-    
-  } else {
-    load(filename)
-  }
-  usrOptions <- do.call(c, unname(options("gsplot")))
-  #Need to respect user options but add the template if not in user options
-  
-  if(any((names(graphTemplate) %in% names(usrOptions)))){
-    for(type in names(graphTemplate)[names(graphTemplate) %in% names(usrOptions)]){
-      graphTemplate[[type]] <- NULL
-    }
-    graphTemplate <- append(usrOptions, graphTemplate)
-  }
-  
-  options("gsplot"=graphTemplate)
+  graphTemplate <- yaml.load_file(filename)
+
+  gsconfig$options <- graphTemplate
 }
 
-
-config <- function(type,...){
-  
-  loadConfig()
-  
+#' @title Get configuration for gsplot
+#'
+#' @description Gets config for gsplot, mostly used internally
+#' but exposed for use by gsplot users
+#'
+#' @param type string of gsplot config object to retrieve
+#' @param ... additional configuration to override what is pulled from config
+#'
+#' @examples
+#' config("par")
+#' 
+#' @importFrom graphics plot.xy
+#' @importFrom graphics par
+#' @export
+config <- function(type, ...){
   allowedTypes <- c("par","points","lines","axis","plot",
                     "abline","legend","title","text",
                     "mtext","grid","segments",
@@ -75,7 +46,11 @@ config <- function(type,...){
   
   type <- match.arg(type, choices = allowedTypes)
   
-  config_list <- options("gsplot")[[1]]
+  if (is.null(gsconfig$options)) {
+    loadConfig()
+  }
+  
+  config_list <- gsconfig$options
   
   globalConfig <- config_list[!(names(config_list) %in% allowedTypes[allowedTypes != "par"])]
 
@@ -114,8 +89,5 @@ config <- function(type,...){
     globalConfig <- append(globalConfig, list(...))
   }
   
-  
   return(globalConfig)
-  
 }
-
