@@ -129,7 +129,7 @@ summarize_args <- function(views, var, na.action,ignore='gs.config'){
   for (i in view_i){
     x <- views[[i]][!names(views[[i]]) %in% ignore]
     valStuff <- lapply(x, function(x) strip_pts(x, var))
-    values[[i]] <- unname(do.call(c,valStuff))
+    values[[i]] <- c_unname(valStuff)
 
   }
   names(values) <- view_i
