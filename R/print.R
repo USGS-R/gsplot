@@ -28,14 +28,16 @@ print.gsplot <- function(x, ...){
 
   gsOptions <- do.call(c, unname(options("gsplot")))
 
-  if(!("new" %in% names(gsOptions))){
+  
+  # -- set plot -- 
+  views = calc_views(x)
+  
+  if(!par()$new & !isTRUE(config("par", views$par)$new)){
     dev.hold()
     on.exit(dev.flush())
     plot.new()
   }
   
-  # -- set plot -- 
-  views = calc_views(x)
   
   defaultPar <- par(no.readonly = TRUE)#, mar=legend_adjusted_margins(x))
   
