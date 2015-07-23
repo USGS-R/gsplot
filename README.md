@@ -57,7 +57,7 @@ demoPlot
 
 ``` r
 library(gsplot)
-usrDef <- gsplot(mar=c(4,4,4,4)) %>% 
+usrDef <- gsplot(mar=c(4,4,4,4), xaxs='r', yaxs='r') %>% 
      points(x=1, y=2, side=c(3,2), legend.name="Points 1", cex=3, xlab='cat') %>% 
      points(x=3, y=4, side=c(1,4), legend.name="Points 2", pch=5, col="red", ylab='experiment') %>% 
      lines(x=c(3,4,3), y=c(2,4,6), legend.name="Lines 1", lty=5, col="orange") %>%
