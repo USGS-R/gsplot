@@ -1,4 +1,4 @@
-order_views <- function(views){
+set_view_order <- function(views){
   #Start enforcing some order. Background color has to go in back...I'd also put grid in back:
   if("legend" %in% names(views)){
     legendChunk <- views$legend

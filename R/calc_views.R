@@ -17,7 +17,7 @@ calc_views <- function(gsplot){
   
   views <- set_view_lab(views)
   
-  views <- order_views(views)
+  views <- set_view_order(views)
   
   return(views)
 }
@@ -74,14 +74,14 @@ set_view_log <- function(views){
 }
 
 set_view_lab <- function(views){
-  views <- set_view_list(views, var = 'ylab', na.action="")
-  set_view_list(views, var = 'xlab', na.action="")
+  views <- set_view_list(views, var = 'ylab', na.action="") %>% 
+    set_view_list(var = 'xlab', na.action="")
 }
 
 
 set_view_lim <- function(views){
-  views <- set_view_list(views, var = 'xlim', na.action=NA)
-  views <- set_view_list(views, var = 'ylim', na.action=NA)
+  views <- set_view_list(views, var = 'xlim', na.action=NA) %>% 
+    set_view_list(views, var = 'ylim', na.action=NA)
   
   data <- list(y=summarize_args(views,c('y','y1','y0'),ignore=c('window','gs.config')), 
                x=summarize_args(views,c('x','x1','x0'),ignore=c('window','gs.config')))
@@ -124,7 +124,6 @@ summarize_args <- function(views, var, na.action,ignore='gs.config'){
   values <- list()
   for (i in view_i){
     x <- views[[i]][!names(views[[i]]) %in% ignore]
-    # values[[i]] <- unname(unlist(lapply(x, function(x) strip_pts(x, var))))
     valStuff <- lapply(x, function(x) strip_pts(x, var))
     values[[i]] <- unname(do.call(c,valStuff))
 
