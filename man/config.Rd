@@ -9,7 +9,7 @@ config(type, ...)
 \arguments{
 \item{type}{string of gsplot config object to retrieve}
 
-\item{...}{additional configuration to override what is}
+\item{...}{additional configuration to override what is pulled from config}
 }
 \description{
 Gets config for gsplot, mostly used internally

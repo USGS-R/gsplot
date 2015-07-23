@@ -18,6 +18,7 @@ loadConfig = function(filename) {
   if(missing(filename)){
     filename <- system.file("extdata", "default.yaml", package = "gsplot")
   }
+
   graphTemplate <- yaml.load_file(filename)
 
   usrOptions <- do.call(c, unname(options("gsplot")))
@@ -51,7 +52,7 @@ config <- function(type, ...){
   allowedTypes <- c("par","points","lines","axis","plot",
                     "abline","legend","title","text",
                     "mtext","grid","segments",
-                    "error_bar","arrows","bgCol","callouts")
+                    "error_bar","arrows","bgCol","callouts","orderToPlot")
   
   type <- match.arg(type, choices = allowedTypes)
   
@@ -76,6 +77,7 @@ config <- function(type, ...){
                          error_bar=names(formals(error_bar.default)),
                          bgCol=names(formals(bgCol.default)),
                          callouts=names(formals(callouts.default)),
+                         orderToPlot='order',
                          formalsNames)
   
   formalsNames <- formalsNames[formalsNames != "..."]
@@ -97,4 +99,3 @@ config <- function(type, ...){
   
   return(globalConfig)
 }
-

@@ -33,3 +33,5 @@ arrows: NULL
 callouts:
   col: 'black'
 bgCol: NULL
+orderToPlot:
+  order: [grid, bgCol]
