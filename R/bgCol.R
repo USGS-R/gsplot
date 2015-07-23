@@ -9,12 +9,17 @@
 #' 
 #' @examples
 #' gs <- gsplot() %>%
-#'    bgCol(col="lightgrey") %>%
 #'    points(y=c(3,1,2), x=4:6, xlim=c(0,NA),legend.name="Points") %>%
 #'    lines( c(3,4,3), c(2,4,6), legend.name="Lines", side=c(3,4)) %>%
-#'    legend(location="topleft") 
+#'    legend(location="topleft") %>%
+#'    bgCol(col="lightgrey") 
 #'     
 #' gs
+#' 
+#' gsPlain <- gsplot()%>%
+#'    points(1,2) %>%
+#'    bgCol(col="lightgrey")
+#' gsPlain
 bgCol <- function(object, ...) {
   override("gsplot", "bgCol", object, ...)
 }
