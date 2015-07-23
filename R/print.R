@@ -25,9 +25,6 @@
 #'    legend(location="topleft")
 #' gs
 print.gsplot <- function(x, ...){
-
-  gsOptions <- do.call(c, unname(options("gsplot")))
-
   
   # -- set plot -- 
   views = calc_views(x)
