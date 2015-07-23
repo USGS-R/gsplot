@@ -1,0 +1,37 @@
+pch: 19
+xaxs: "i"
+yaxs: "i"
+tcl: 0.3
+mgp:
+  - 1.5
+  - 30
+lty: 1
+lwd: 1
+points:
+  pch: 6
+  col: "red"
+lines: NULL
+abline:
+  col: "grey"
+legend: NULL
+axis:
+  at: NULL
+  labels: TRUE
+  tick: TRUE 
+  line: NULL 
+  pos: NULL
+  outer: FALSE
+title: NULL
+text: NULL
+mtext: NULL
+grid:
+  col: "grey"
+  lwd: 1
+  lty: 2
+segments: NULL
+error_bar_horizontal: NULL
+error_bar_vertical: NULL
+arrows: NULL
+callouts:
+  col: 'black'
+bgCol: NULL

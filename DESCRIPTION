@@ -19,7 +19,8 @@ Imports:
     stats,
     graphics,
     utils,
-    methods
+    methods,
+    yaml
 Suggests:
     testthat,
     knitr

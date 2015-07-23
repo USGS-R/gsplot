@@ -12,44 +12,13 @@
 #'@export
 #' @importFrom graphics plot.xy
 #' @importFrom graphics par
+#' @importFrom yaml yaml.load_file
 loadConfig = function(filename) {
   
   if(missing(filename)){
-
-    graphTemplate <- list(
-      pch=19,
-      xaxs="i",
-      yaxs="i",
-      tcl=0.3,
-      mgp=c(1.5,.3,0),
-      lty=1,
-      lwd=1,
-      points=list(pch=6,col="red"),
-      lines=list(),
-      abline=list(col="grey"),
-      legend=list(),
-      axis=list(at=NULL, 
-                 labels=TRUE,
-                 tick=TRUE, 
-                 line=NA, 
-                 pos=NA, 
-                 outer=FALSE),
-      title=list(),
-      text=list(),
-      mtext=list(),
-      grid=list(col="grey",
-                lwd=1, lty=2),
-      segments=list(),
-      error_bar_horizontal=list(),
-      error_bar_vertical=list(),
-      arrows=list(),
-      callouts=list(col='black'),
-      bgCol=list()
-    )
-    
-  } else {
-    load(filename)
+    filename <- system.file("extdata", "default.yaml", package = "gsplot")
   }
+  graphTemplate <- yaml.load_file(filename)
   usrOptions <- do.call(c, unname(options("gsplot")))
   #Need to respect user options but add the template if not in user options
   
@@ -63,11 +32,8 @@ loadConfig = function(filename) {
   options("gsplot"=graphTemplate)
 }
 
-
+#' @export
 config <- function(type,...){
-  
-  loadConfig()
-  
   allowedTypes <- c("par","points","lines","axis","plot",
                     "abline","legend","title","text",
                     "mtext","grid","segments","error_bar_horizontal",
