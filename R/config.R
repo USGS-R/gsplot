@@ -1,4 +1,4 @@
-
+gsconfig <- new.env(parent = emptyenv())
 
 #' @title Load gsplot config
 #'
@@ -21,17 +21,7 @@ loadConfig = function(filename) {
 
   graphTemplate <- yaml.load_file(filename)
 
-  usrOptions <- do.call(c, unname(options("gsplot")))
-  #Need to respect user options but add the template if not in user options
-  
-  if(any((names(graphTemplate) %in% names(usrOptions)))){
-    for(type in names(graphTemplate)[names(graphTemplate) %in% names(usrOptions)]){
-      graphTemplate[[type]] <- NULL
-    }
-    graphTemplate <- append(usrOptions, graphTemplate)
-  }
-  
-  options("gsplot"=graphTemplate)
+  gsconfig$options <- graphTemplate
 }
 
 #' @title Get configuration for gsplot
@@ -56,9 +46,11 @@ config <- function(type, ...){
   
   type <- match.arg(type, choices = allowedTypes)
   
-  loadConfig()
+  if (is.null(gsconfig$options)) {
+    loadConfig()
+  }
   
-  config_list <- options("gsplot")[[1]]
+  config_list <- gsconfig$options
   
   globalConfig <- config_list[!(names(config_list) %in% allowedTypes[allowedTypes != "par"])]
 
