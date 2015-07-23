@@ -74,14 +74,14 @@ set_view_log <- function(views){
 }
 
 set_view_lab <- function(views){
-  views <- set_view_list(views, var = 'ylab', na.action="") %>% 
-    set_view_list(var = 'xlab', na.action="")
+  views <- set_view_list(views, var = 'ylab', na.action="")
+  set_view_list(views, var = 'xlab', na.action="")
 }
 
 
 set_view_lim <- function(views){
-  views <- set_view_list(views, var = 'xlim', na.action=NA) %>% 
-    set_view_list(views, var = 'ylim', na.action=NA)
+  views <- set_view_list(views, var = 'xlim', na.action=NA)
+  views <- set_view_list(views, var = 'ylim', na.action=NA)
   
   data <- list(y=summarize_args(views,c('y','y1','y0'),ignore=c('window','gs.config')), 
                x=summarize_args(views,c('x','x1','x0'),ignore=c('window','gs.config')))
@@ -91,7 +91,8 @@ set_view_lim <- function(views){
       lim.name <- paste0(var,'lim')
       view.side <- get_view_side(views, as.numeric(i), var)
       match.side <- as.character(views_with_side(views, view.side))
-      data.lim <- range(data[[var]][[match.side]][is.finite(data[[var]][[match.side]])])
+      data.var <- c_unname(data[[var]][match.side])
+      data.lim <- range(data.var[is.finite(data.var)])
       usr.lim <- views[[as.numeric(i)]][['window']][[lim.name]][1:2]
       views[[as.numeric(i)]][['window']][[lim.name]] <- data.lim
       views[[as.numeric(i)]][['window']][[lim.name]][!is.na(usr.lim)] <- usr.lim[!is.na(usr.lim)]
@@ -102,6 +103,9 @@ set_view_lim <- function(views){
   return(views)
 }
 
+c_unname <- function(list){
+  unname(do.call(c, list))
+}
 views_with_side <- function(views, side){
   with.side = lapply(views, function(x) any(x[['window']][['side']] %in% side))
   unname(which(unlist(with.side[names(with.side) == 'view'])))
