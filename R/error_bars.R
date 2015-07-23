@@ -53,18 +53,32 @@ error_bar.default <- function(x, y, y.high=0, y.low=0, x.high=0, x.low=0, epsilo
   x.high[is.na(x.high)] <- 0
   x.low[is.na(x.low)] <- 0
   
+  ep.y.low <- epsilon
+  ep.y.high <- epsilon
+  ep.x.low <- epsilon
+  ep.x.high <- epsilon
+  
+  if(length(epsilon) == 1){
+    ep.y.low <- rep(epsilon,length(y.low))
+    ep.y.high <- rep(epsilon,length(y.high))
+    ep.x.low <- rep(epsilon,length(x.low))
+    ep.x.high <- rep(epsilon,length(x.high))
+  } 
+  
+  ep.y.low[y.low == 0] <- 0
+  ep.y.high[y.high == 0] <- 0
+  ep.x.low[x.low == 0] <- 0
+  ep.x.high[x.high == 0] <- 0
+  
   if(!all(y.low == 0) && !all(y.high == 0)){
-    segments(x, y-y.low,x, y+y.high, ...)
-    segments(x-epsilon,y-y.low,x+epsilon,y-y.low, ...)
-    segments(x-epsilon,y+y.high,x+epsilon,y+y.high, ...)    
+    arrows(x0=x, y0=y, x1=x, y1=y-y.low, length=epsilon, angle=90, ...)
+    arrows(x0=x, y0=y, x1=x, y1=y+y.high, length=epsilon, angle=90, ...)
   }
 
   if(!all(x.low == 0) && !all(x.high == 0)){
-    segments(x-x.low, y, x+x.high, y, ...)
-    segments(x-x.low, y-epsilon,x-x.low,y+epsilon, ...)
-    segments(x+x.high, y-epsilon,x+x.high,y+epsilon, ...) 
+    arrows(x0=x, y0=y, x1=x+x.high, y1=y, length=epsilon, angle=90, ...)
+    arrows(x0=x, y0=y, x1=x-x.low, y1=y+y.high, length=epsilon, angle=90, ...)
   }
-
 }
 
 

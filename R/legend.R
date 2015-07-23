@@ -95,8 +95,11 @@ appendLegendPositionConfiguration <- function(location, gsConfig, arguments) {
 
 draw_legend <- function(gsplot) {
   
+  oldXPD <- par()$xpd
+  
   for(index in which(names(gsplot) %in% "legend")){
     legendParams <- gsplot[[index]][['arguments']]
+    
     
     par(xpd=TRUE)
     
@@ -200,6 +203,8 @@ draw_legend <- function(gsplot) {
       legend(legendParams)
     }
   }
+  
+  par(xpd=oldXPD)
 }
 
 legend_adjusted_margins <- function(gsPlot) {

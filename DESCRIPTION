@@ -1,11 +1,21 @@
 Package: gsplot
 Type: Package
 Title: Geological Survey Plotting
-Version: 0.1.1
-Date: 2015-06-24
-Author: CIDA
+Version: 0.2.1
+Date: 2015-07-22
+Authors@R: c( person("Jordan", "Read", role = "aut",
+    email = "jread@usgs.gov"),
+    person("Laura", "DeCicco", role = c("aut","cre"),
+    email = "ldecicco@usgs.gov"),
+    person("Jordan","Walker", role="aut",
+    email = "jiwalker@usgs.gov"),
+    person("Phethala","Thongsavanh",rol="aut",
+    email = "thongsav@usgs.gov "),
+    person("Megen","Hines", role="aut",
+    email = "mhines@usgs.gov"),
+    person("Lindsey","Carr", role="aut",
+    email = "lcarr@usgs.gov"))
 License: CC0
-Maintainer: cida top dog <cida@usgs.gov>
 Description: Workflow and plotting style defaults created for the U.S. Geological Survey.
 Depends:
     R (>= 3.0)
