@@ -17,45 +17,7 @@ calc_views <- function(gsplot){
   
   views <- set_view_lab(views)
   
-  #Start enforcing some order. Background color has to go in back...I'd also put grid in back:
-  if("legend" %in% names(views)){
-    legendChunk <- views$legend
-    views <- views[-which(names(views) %in% "legend")]
-  }
-   
-  
-  if("grid" %in% names(do.call(c, unname(views)))){
-    newView <- list()
-    for(i in 1:length(views)){
-      subView <- views[[i]]
-      if("grid" %in% names(subView)){
-        gridView <- subView$grid
-        otherViews <- subView[-which(names(subView) %in% "grid")]
-        subView <- append(list(grid=gridView), otherViews) 
-      }
-      newView <- append(newView, list(view=subView))
-    }
-    views <- newView
-
-  }
-  
-  if("bgCol" %in% names(do.call(c, unname(views)))){
-    newView <- list()
-    for(i in 1:length(views)){
-      subView <- views[[i]]
-      if("bgCol" %in% names(subView)){
-        bgColView <- subView$bgCol
-        otherViews <- subView[-which(names(subView) %in% "bgCol")]
-        subView <- append(list(bgCol=bgColView), otherViews)
-      }
-      newView <- append(newView, list(view=subView))
-    }
-    views <- newView
-  }
-  
-  if("legend" %in% names(views)){
-    views <- append(views, list(legend=legendChunk))
-  }
+  #views <- set_view_order(views)
   
   return(views)
 }
@@ -129,7 +91,8 @@ set_view_lim <- function(views){
       lim.name <- paste0(var,'lim')
       view.side <- get_view_side(views, as.numeric(i), var)
       match.side <- as.character(views_with_side(views, view.side))
-      data.lim <- range(data[[var]][[match.side]][is.finite(data[[var]][[match.side]])])
+      data.var <- c_unname(data[[var]][match.side])
+      data.lim <- range(data.var[is.finite(data.var)])
       usr.lim <- views[[as.numeric(i)]][['window']][[lim.name]][1:2]
       views[[as.numeric(i)]][['window']][[lim.name]] <- data.lim
       views[[as.numeric(i)]][['window']][[lim.name]][!is.na(usr.lim)] <- usr.lim[!is.na(usr.lim)]
@@ -140,6 +103,9 @@ set_view_lim <- function(views){
   return(views)
 }
 
+c_unname <- function(list){
+  unname(do.call(c, list))
+}
 views_with_side <- function(views, side){
   with.side = lapply(views, function(x) any(x[['window']][['side']] %in% side))
   unname(which(unlist(with.side[names(with.side) == 'view'])))
@@ -162,9 +128,8 @@ summarize_args <- function(views, var, na.action,ignore='gs.config'){
   values <- list()
   for (i in view_i){
     x <- views[[i]][!names(views[[i]]) %in% ignore]
-    # values[[i]] <- unname(unlist(lapply(x, function(x) strip_pts(x, var))))
     valStuff <- lapply(x, function(x) strip_pts(x, var))
-    values[[i]] <- unname(do.call(c,valStuff))
+    values[[i]] <- c_unname(valStuff)
 
   }
   names(values) <- view_i

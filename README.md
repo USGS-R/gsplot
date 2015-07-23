@@ -55,10 +55,18 @@ demoPlot
 
 ![](README_files/figure-markdown_github/unnamed-chunk-3-1.png)
 
-Disclaimer
-----------
+``` r
+library(gsplot)
+usrDef <- gsplot(mar=c(4,4,4,4), xaxs='r', yaxs='r') %>% 
+     points(x=1, y=2, side=c(3,2), legend.name="Points 1", cex=3, xlab='cat') %>% 
+     points(x=3, y=4, side=c(1,4), legend.name="Points 2", pch=5, col="red", ylab='experiment') %>% 
+     lines(x=c(3,4,3), y=c(2,4,6), legend.name="Lines 1", lty=5, col="orange") %>%
+     lines(x=c(1,2,5), y=c(1,8,5), legend.name="Lines 2", lwd=3, ylab='Science!', xlab='dogs') %>%  
+     legend(x=1.5,y=4)
+usrDef
+```
 
-This software is in the public domain because it contains materials that originally came from the U.S. Geological Survey, an agency of the United States Department of Interior. For more information, see the [official USGS copyright policy](http://www.usgs.gov/visual-id/credit_usgs.html#copyright/ "official USGS copyright policy")
+![](README_files/figure-markdown_github/unnamed-chunk-4-1.png) \#\#Disclaimer This software is in the public domain because it contains materials that originally came from the U.S. Geological Survey, an agency of the United States Department of Interior. For more information, see the [official USGS copyright policy](http://www.usgs.gov/visual-id/credit_usgs.html#copyright/ "official USGS copyright policy")
 
 Although this software program has been used by the U.S. Geological Survey (USGS), no warranty, expressed or implied, is made by the USGS or the U.S. Government as to the accuracy and functioning of the program and related program material nor shall the fact of distribution constitute any such warranty, and no responsibility is assumed by the USGS in connection therewith.
 

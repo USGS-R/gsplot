@@ -4,10 +4,12 @@
 \alias{gsplot}
 \title{gsplot}
 \usage{
-gsplot(x = list())
+gsplot(x = NULL, ...)
 }
 \arguments{
 \item{x}{list}
+
+\item{\dots}{Further graphical parameters may also be supplied as arguments. See 'Details'.}
 }
 \value{
 gsplot

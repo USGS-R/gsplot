@@ -71,17 +71,14 @@ error_bar.default <- function(x, y, y.high=0, y.low=0, x.high=0, x.low=0, epsilo
   ep.x.high[x.high == 0] <- 0
   
   if(!all(y.low == 0) && !all(y.high == 0)){
-    segments(x, y-y.low,x, y+y.high, ...)
-    segments(x-ep.y.low, y-y.low, x+ep.y.low,y-y.low, ...)
-    segments(x-ep.y.high,y+y.high,x+ep.y.high,y+y.high, ...)    
+    arrows(x0=x, y0=y, x1=x, y1=y-y.low, length=epsilon, angle=90, ...)
+    arrows(x0=x, y0=y, x1=x, y1=y+y.high, length=epsilon, angle=90, ...)
   }
 
   if(!all(x.low == 0) && !all(x.high == 0)){
-    segments(x-x.low, y, x+x.high, y, ...)
-    segments(x-x.low, y-ep.x.low,x-x.low,y+ep.x.low, ...)
-    segments(x+x.high, y-ep.x.high,x+x.high,y+ep.x.high, ...) 
+    arrows(x0=x, y0=y, x1=x+x.high, y1=y, length=epsilon, angle=90, ...)
+    arrows(x0=x, y0=y, x1=x-x.low, y1=y+y.high, length=epsilon, angle=90, ...)
   }
-
 }
 
 
