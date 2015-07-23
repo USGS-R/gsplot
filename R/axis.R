@@ -27,7 +27,6 @@
 #'            col="blue", pch=18, legend.name="Points", xlab="Index") %>%
 #'    axis(side=c(3,4), labels=FALSE)
 #' gs
-#' 
 axis <- function(object, ...) {
   override("graphics", "axis", object, ...)
 }
