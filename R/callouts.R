@@ -1,12 +1,19 @@
 #' gsplot callouts
 #'
-#' callouts stuff
+#' Add callout lines and text to a plot.
 #' 
-#' @details Add additional functionality to callouts.
+#' @details Additional graphical parameter inputs:
+#' \itemize{
+#'  \item{\code{x}} {numeric value for x-coordinate of callout}
+#'  \item{\code{y}} {numeric value for y-coordinate of callout}
+#'  \item{\code{labels}} {text to be added to callout}
+#'  \item{\code{length}} {relative (percentage of window width and height) distance for callout}
+#'  \item{\code{angle}} {callout line angle}
+#' }
 #' 
 #' @param object gsplot object
 #' @param \dots Further graphical parameters may also be supplied as arguments. See 'Details'.
-#' @return modified gsplot object 
+#'  
 #' @export
 #' @examples
 #' gs <- gsplot()
@@ -31,16 +38,13 @@ callouts.gsplot <- function(object, x, y, labels=NA, length=0.1, angle=30, ..., 
                                              gs.config=list(side = side))))
   return(gsplot(object))
 }
-#' default for adding callouts to a plot
-#' 
-#' add callout arrows and text to a plot
+#' Default for adding callouts to a plot.
 #' 
 #' @param x values for callout location
 #' @param y values for callout location
 #' @param labels text to be added to callout
 #' @param length relative (percentage of window width and height) distance for callout
 #' @param angle callout line angle
-#' 
 #' 
 #' @keywords internal
 #' @export

@@ -1,3 +1,6 @@
+#' @importFrom utils getFromNamespace
+#' @importFrom stats setNames
+#' @importFrom methods existsFunction
 override <- function(package, name, object, ...) {
   if(!missing(object) && class(object) == "gsplot") {
     fun <- function(object, ...) {
@@ -42,7 +45,7 @@ graphics_params <- function(package, name, object, ...){
   sort.i <- seq_len(length(params))
   match.i <- match(names(params), names(formals(defFun)))
   sort.i[!is.na(match.i)] <- match.i[!is.na(match.i)]
-  params <- params[sort(sort.i, index.return = T)$ix]
+  params <- params[sort(sort.i, index.return = TRUE)$ix]
   
   return(params)
 }

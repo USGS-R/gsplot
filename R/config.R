@@ -19,6 +19,7 @@ loadConfig = function(filename) {
     filename <- system.file("extdata", "default.yaml", package = "gsplot")
   }
   graphTemplate <- yaml.load_file(filename)
+
   usrOptions <- do.call(c, unname(options("gsplot")))
   #Need to respect user options but add the template if not in user options
   
@@ -32,14 +33,29 @@ loadConfig = function(filename) {
   options("gsplot"=graphTemplate)
 }
 
+#' @title Get configuration for gsplot
+#'
+#' @description Gets config for gsplot, mostly used internally
+#' but exposed for use by gsplot users
+#'
+#' @param type string of gsplot config object to retrieve
+#' @param ... additional configuration to override what is pulled from config
+#'
+#' @examples
+#' config("par")
+#' 
+#' @importFrom graphics plot.xy
+#' @importFrom graphics par
 #' @export
-config <- function(type,...){
+config <- function(type, ...){
   allowedTypes <- c("par","points","lines","axis","plot",
                     "abline","legend","title","text",
-                    "mtext","grid","segments","error_bar_horizontal",
-                    "error_bar_vertical","arrows","bgCol","callouts")
+                    "mtext","grid","segments",
+                    "error_bar","arrows","bgCol","callouts")
   
   type <- match.arg(type, choices = allowedTypes)
+  
+  loadConfig()
   
   config_list <- options("gsplot")[[1]]
   
@@ -57,8 +73,7 @@ config <- function(type,...){
                          mtext=names(formals(graphics::mtext)),
                          grid=names(formals(graphics::grid)),
                          segments=names(formals(graphics::segments)),
-                         error_bar_horizontal=names(formals(error_bar_horizontal.default)),
-                         error_bar_vertical=names(formals(error_bar_vertical.default)),
+                         error_bar=names(formals(error_bar.default)),
                          bgCol=names(formals(bgCol.default)),
                          callouts=names(formals(callouts.default)),
                          formalsNames)
@@ -71,10 +86,15 @@ config <- function(type,...){
     globalConfig[names(config_list[[type]])] <- NULL
     globalConfig <- append(globalConfig, config_list[[type]])
   }
-  globalConfig[names(list(...))] <- NULL
-  globalConfig <- append(globalConfig, list(...))
+  # really goofy, but I couldn't find a way to test for list that doesn't fail when it is not a list
+  if (length(expand.grid(...)) > 0 && is.list(list(...)[[1]])){ 
+    globalConfig[names(...)] <- NULL
+    globalConfig <- append(globalConfig, ...)
+  } else {
+    globalConfig[names(list(...))] <- NULL
+    globalConfig <- append(globalConfig, list(...))
+  }
   
   return(globalConfig)
-  
 }
 

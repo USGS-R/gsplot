@@ -11,14 +11,16 @@ segments(object, ...)
 
 \item{\dots}{Further graphical parameters may also be supplied as arguments. See 'Details'.}
 }
-\value{
-modified gsplot object
-}
 \description{
-segments stuff
+Creates line segments in the plot.
 }
 \details{
-Add additional functionality to points.
+Additional graphical parameter inputs:
+\itemize{
+ \item{\code{x0, y0}} {coordinates for the start of the segment}
+ \item{\code{x, y}} {coordinates for the end of the segment}
+ \item{\code{col, lty, lwd}} {parameters describing the color, type, and width of the segment, respectively}
+}
 }
 \examples{
 gs <- gsplot()
@@ -26,7 +28,7 @@ gsNew <- points(gs, y=1, x=2, xlim=c(0,NA),ylim=c(0,NA),
             col="blue", pch=18, legend.name="Points")
 gsNew <- lines(gsNew, c(3,4,3), c(2,4,6), legend.name="Lines")
 gsNew <- abline(gsNew, b=1, a=0, legend.name="1:1")
-gsNew <- legend(gsNew, "topleft",title="Awesome!")
+gsNew <- legend(gsNew, location="topleft",title="Awesome!")
 gsNew <- grid(gsNew)
 gsNew <- segments(gsNew, x0=2, y0=0.75, y1=1.25)
 gsNew

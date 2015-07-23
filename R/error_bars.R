@@ -13,75 +13,73 @@
 #'             col="blue", pch=18, legend.name="Points")
 #' gsNew <- lines(gsNew, c(3,4,3), c(2,4,6), legend.name="Lines")
 #' gsNew <- abline(gsNew, b=1, a=0, legend.name="1:1")
-#' #gsNew <- legend(gsNew, "topleft",title="Awesome!")
+#' gsNew <- legend(gsNew, location = "topleft",title="Awesome!")
 #' gsNew <- grid(gsNew)
-#' gsNew <- error_bar_vertical(gsNew, 1:3, y=c(3,1,2), y.high=c(0.5,0.25,1), y.low=0.1)
-#' gsNew <- error_bar_horizontal(gsNew, x=1:3, y=c(3,1,2), x.low=.2, x.high=.2, col="red",lwd=3)
+#' gsNew <- error_bar(gsNew, 1:3, y=c(3,1,2), y.high=c(0.5,0.25,1), y.low=0.1)
+#' gsNew <- error_bar(gsNew, x=1:3, y=c(3,1,2), x.low=c(.2,NA,.2), x.high=.2, col="red",lwd=3)
 #' gsNew <- title(gsNew, "Graphing Fun")
 #' gsNew
-error_bar_vertical <- function(object, ...) {
-  override("gsplot", "error_bar_vertical", object, ...)
+error_bar <- function(object, ...) {
+  override("gsplot", "error_bar", object, ...)
 }
 
 
-error_bar_vertical.gsplot <- function(object, x, y, y.high, y.low, epsilon=0.1, ..., legend.name=NULL, side=c(1,2)){
-  current_list <- config("error_bar_vertical")
+error_bar.gsplot <- function(object, x, y, y.high=0, y.low=0, x.high=0, x.low=0, epsilon=0.1, ..., legend.name=NULL, side=c(1,2)){
+  current_list <- config("error_bar")
   arguments <- list(...)
-  arguments <- append(list(x=x,y=y,y.high=y.high,y.low=y.low,epsilon=epsilon),arguments)
+  arguments <- append(list(x=x, y=y, y.high=y.high, y.low=y.low, x.high=x.high, x.low=x.low, epsilon=epsilon),arguments)
   indicesToAdd <- !(names(current_list) %in% names(arguments))
   arguments <- append(arguments, current_list[indicesToAdd])
   
-  object <- append(object,  list(error_bar_vertical = list(arguments = arguments, 
+  object <- append(object,  list(error_bar = list(arguments = arguments, 
                                                  gs.config=list(legend.name = legend.name, 
                                                                 side = side))))
   return(gsplot(object))
 }
 
-#' @export
+
 #' @rdname error_bar
 #' @param x value of data point on the x-axis
 #' @param y value of data point on the y-axis
-#' @param y.low numeric lower offset for error bar (this is subtracted from y)
-#' @param y.high numeric upper offset for error bar (this is added to y)
-error_bar_vertical.default <- function(x, y, y.high, y.low, epsilon=0.1, ...){
+#' @param y.low numeric lower y offset for error bar (this is subtracted from y)
+#' @param y.high numeric upper y offset for error bar (this is added to y)
+#' @param x.low numeric lower x offset for error bar (this is subtracted from x)
+#' @param x.high numeric upper x offset for error bar (this is added to x)
+#' @param epsilon numeric width of the bar
+error_bar.default <- function(x, y, y.high=0, y.low=0, x.high=0, x.low=0, epsilon=0.1, ...){
   
-  segments(x, y-y.low,x, y+y.high, ...)
-  segments(x-epsilon,y-y.low,x+epsilon,y-y.low, ...)
-  segments(x-epsilon,y+y.high,x+epsilon,y+y.high, ...)
+  y.high[is.na(y.high)] <- 0
+  y.low[is.na(y.low)] <- 0
+  x.high[is.na(x.high)] <- 0
+  x.low[is.na(x.low)] <- 0
   
+  ep.y.low <- epsilon
+  ep.y.high <- epsilon
+  ep.x.low <- epsilon
+  ep.x.high <- epsilon
+  
+  if(length(epsilon) == 1){
+    ep.y.low <- rep(epsilon,length(y.low))
+    ep.y.high <- rep(epsilon,length(y.high))
+    ep.x.low <- rep(epsilon,length(x.low))
+    ep.x.high <- rep(epsilon,length(x.high))
+  } 
+  
+  ep.y.low[y.low == 0] <- 0
+  ep.y.high[y.high == 0] <- 0
+  ep.x.low[x.low == 0] <- 0
+  ep.x.high[x.high == 0] <- 0
+  
+  if(!all(y.low == 0) && !all(y.high == 0)){
+    arrows(x0=x, y0=y, x1=x, y1=y-y.low, length=epsilon, angle=90, ...)
+    arrows(x0=x, y0=y, x1=x, y1=y+y.high, length=epsilon, angle=90, ...)
+  }
+
+  if(!all(x.low == 0) && !all(x.high == 0)){
+    arrows(x0=x, y0=y, x1=x+x.high, y1=y, length=epsilon, angle=90, ...)
+    arrows(x0=x, y0=y, x1=x-x.low, y1=y+y.high, length=epsilon, angle=90, ...)
+  }
 }
 
-#' @export
-#' @rdname error_bar
-error_bar_horizontal <- function(object, ...) {
-  override("gsplot", "error_bar_horizontal", object, ...)
-}
 
-error_bar_horizontal.gsplot <- function(object,x, y, x.high, x.low, epsilon=0.1, ..., legend.name=NULL, side=c(1,2)){
-  current_list <- config("error_bar_horizontal")
-  arguments <- list(...)
-  arguments <- append(list(x=x,y=y,x.high=x.high,x.low=x.low,epsilon=epsilon),arguments)
-  
-  indicesToAdd <- !(names(current_list) %in% names(arguments))
-  arguments <- append(arguments, current_list[indicesToAdd])
-  
-  object <- append(object,  list(error_bar_horizontal = list(arguments = arguments, 
-                                                           gs.config=list(legend.name = legend.name, 
-                                                                          side = side))))
-  return(gsplot(object))
-}
-
-#' @export
-#' @rdname error_bar
-#' @param x.low numeric lower offset for error bar (this is subtracted from x)
-#' @param x.high numeric upper offset for error bar (this is added to x)
-#' @param epsilon half-width of error bar edge
-
-error_bar_horizontal.default <- function(x, y, x.high, x.low, epsilon=0.1, ...){
-  
-  segments(x-x.low, y, x+x.high, y, ...)
-  segments(x-x.low, y-epsilon,x-x.low,y+epsilon, ...)
-  segments(x+x.high, y-epsilon,x+x.high,y+epsilon, ...)
-  
-}
 

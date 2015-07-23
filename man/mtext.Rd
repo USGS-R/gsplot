@@ -11,14 +11,16 @@ mtext(object, ...)
 
 \item{\dots}{Further graphical parameters may also be supplied as arguments. See 'Details'.}
 }
-\value{
-modified gsplot object
-}
 \description{
-mtext stuff
+Allows text to be added to the plot margins.
 }
 \details{
-Add additional functionality to title.
+Additional graphical parameter inputs:
+\itemize{
+ \item{\code{text}} {character string specifying the text to be placed in the margins}
+ \item{\code{side}} {numeric, specifies the side of the graph to place the text - bottom(1), left(2), top(3), or right(4)}
+ \item{\code{line}} {numeric, specifies the distance from the plot to place the text (in 'number of text lines')}
+}
 }
 \examples{
 gs <- gsplot()
@@ -26,9 +28,9 @@ gsNew <- points(gs, y=1, x=2, col="blue", pch=18, legend.name="Points")
 gsNew <- lines(gsNew, c(3,4,3), c(2,4,6), legend.name="Lines", ylab="Data!")
 gsNew <- text(gsNew, x=3.5, y=1.5, labels="Test")
 gsNew <- abline(gsNew, b=1, a=0, legend.name="1:1")
-gsNew <- legend(gsNew, "topleft",title="Awesome!")
+gsNew <- legend(gsNew, location="topleft",title="Awesome!")
 gsNew <- title(gsNew, main="Great Graph")
-gsNew <- mtext(gsNew, "More Stuff", side=1, line=2)
+gsNew <- mtext(gsNew, text="More Stuff", side=2, line=3)
 gsNew
 }
 

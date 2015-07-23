@@ -17,45 +17,7 @@ calc_views <- function(gsplot){
   
   views <- set_view_lab(views)
   
-  #Start enforcing some order. Background color has to go in back...I'd also put grid in back:
-  if("legend" %in% names(views)){
-    legendChunk <- views$legend
-    views <- views[-which(names(views) %in% "legend")]
-  }
-   
-  
-  if("grid" %in% names(do.call(c, unname(views)))){
-    newView <- list()
-    for(i in 1:length(views)){
-      subView <- views[[i]]
-      if("grid" %in% names(subView)){
-        gridView <- subView$grid
-        otherViews <- subView[-which(names(subView) %in% "grid")]
-        subView <- append(list(grid=gridView), otherViews) 
-      }
-      newView <- append(newView, list(view=subView))
-    }
-    views <- newView
-
-  }
-  
-  if("bgCol" %in% names(do.call(c, unname(views)))){
-    newView <- list()
-    for(i in 1:length(views)){
-      subView <- views[[i]]
-      if("bgCol" %in% names(subView)){
-        bgColView <- subView$bgCol
-        otherViews <- subView[-which(names(subView) %in% "bgCol")]
-        subView <- append(list(bgCol=bgColView), otherViews)
-      }
-      newView <- append(newView, list(view=subView))
-    }
-    views <- newView
-  }
-  
-  if("legend" %in% names(views)){
-    views <- append(views, list(legend=legendChunk))
-  }
+  views <- set_view_order(views)
   
   return(views)
 }
@@ -89,14 +51,14 @@ group_views <- function(gsplot){
 set_view_list <- function(views, var, na.action=NA, remove=TRUE){
   view_i <- which(names(views) %in% "view")
   for (i in view_i){
-    values <- do.call(rbind, lapply(views[[i]], function(x) strip_pts(x, var)))
+    values <- lapply(views[[i]], function(x) strip_pts(x, var))
     val.i <- which(!is.na(values)) # which row to use
     if (length(val.i) == 0){
       values = na.action
     } else {
       if (length(unique(rownames(values[val.i]))) > 1)
         warning('for view ', i,', more than one ',var,' specified. ', unique(rownames(values[val.i])))
-      values <- values[val.i]
+      values <- unname(values[val.i])[[1]]
     }
     if (remove)
       views[[i]] <- lapply(views[[i]], function(x) remove_field(x, var))
@@ -121,22 +83,43 @@ set_view_lim <- function(views){
   views <- set_view_list(views, var = 'xlim', na.action=NA)
   views <- set_view_list(views, var = 'ylim', na.action=NA)
   
-  data <- list(y=summarize_args(views,c('y','y1','y0')), x=summarize_args(views,c('x','x1','x0')))
-  var <- 'y'
-  for (i in names(data[[var]])){
-    lim.name <- paste0(var,'lim')
-    data.lim <- range(data[[var]][[i]], na.rm = T, na.action = NA)
-    usr.lim <- views[[as.numeric(i)]][['window']][[lim.name]][1:2]
-    views[[as.numeric(i)]][['window']][[lim.name]] <- ifelse(is.na(usr.lim), data.lim, usr.lim)
+  data <- list(y=summarize_args(views,c('y','y1','y0'),ignore=c('window','gs.config')), 
+               x=summarize_args(views,c('x','x1','x0'),ignore=c('window','gs.config')))
+
+  for(var in c('y','x')){
+    for (i in names(data[[var]])){
+      lim.name <- paste0(var,'lim')
+      view.side <- get_view_side(views, as.numeric(i), var)
+      match.side <- as.character(views_with_side(views, view.side))
+      data.var <- c_unname(data[[var]][match.side])
+      data.lim <- range(data.var[is.finite(data.var)])
+      usr.lim <- views[[as.numeric(i)]][['window']][[lim.name]][1:2]
+      views[[as.numeric(i)]][['window']][[lim.name]] <- data.lim
+      views[[as.numeric(i)]][['window']][[lim.name]][!is.na(usr.lim)] <- usr.lim[!is.na(usr.lim)]
+  
+    }
   }
-  var <- 'x'
-  for (i in names(data[[var]])){
-    lim.name <- paste0(var,'lim')
-    data.lim <- range(data[[var]][[i]], na.rm = T, na.action = NA)
-    usr.lim <- views[[as.numeric(i)]][['window']][[lim.name]][1:2]
-    views[[as.numeric(i)]][['window']][[lim.name]] <- ifelse(is.na(usr.lim), data.lim, usr.lim)
-  }
+
   return(views)
+}
+
+c_unname <- function(list){
+  unname(do.call(c, list))
+}
+views_with_side <- function(views, side){
+  with.side = lapply(views, function(x) any(x[['window']][['side']] %in% side))
+  unname(which(unlist(with.side[names(with.side) == 'view'])))
+}
+
+get_view_side <- function(views, view_i, var){
+  i = which(names(views) %in% 'view')[view_i]
+  sides <- views[[i]][['window']][['side']]
+  if (var=='y')
+    return(sides[which(sides %% 2 == 0)])
+  else if (var=='x')
+    return(sides[which(sides %% 2 != 0)])
+  else
+    stop('view side undefined for ',var)
 }
 
 summarize_args <- function(views, var, na.action,ignore='gs.config'){
@@ -145,7 +128,9 @@ summarize_args <- function(views, var, na.action,ignore='gs.config'){
   values <- list()
   for (i in view_i){
     x <- views[[i]][!names(views[[i]]) %in% ignore]
-    values[[i]] <- as.numeric(unname(unlist(sapply(x, function(x) strip_pts(x, var)))))
+    valStuff <- lapply(x, function(x) strip_pts(x, var))
+    values[[i]] <- c_unname(valStuff)
+
   }
   names(values) <- view_i
   return(values)
@@ -165,9 +150,9 @@ strip_pts <- function(list, var){
   
   for (v in var){
     if (v %in% names(list))
-      out <- c(out, list[[v]])
+      out <- append(out, list[[v]])
     else
-      out <- c(out, NA)
+      out <- append(out, NA)
   }
   return(out)
 }

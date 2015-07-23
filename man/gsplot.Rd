@@ -2,18 +2,26 @@
 % Please edit documentation in R/gsplot-class.R
 \name{gsplot}
 \alias{gsplot}
+\alias{gsplot.default}
+\alias{gsplot.list}
 \title{gsplot}
 \usage{
-gsplot(x = list())
+gsplot(x = NULL, ...)
+
+\method{gsplot}{default}(...)
+
+\method{gsplot}{list}(x)
 }
 \arguments{
 \item{x}{list}
+
+\item{\dots}{Further graphical parameters may also be supplied as arguments. See 'Details'.}
 }
 \value{
 gsplot
 }
 \description{
-Class stuff
+Used to change the class of inputs to "gsplot".
 }
 \examples{
 gsplot()

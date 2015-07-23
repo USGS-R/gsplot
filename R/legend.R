@@ -3,17 +3,18 @@
 #' If called with gsplot as first argument, will set the internal gsplot configuration
 #' for legends
 #'
-#' @param object a gsplot object
-#' @param \dots normal legend params should forward through
-#' @return modified gsplot object 
+#' @param object gsplot object
+#' @param \dots Further graphical parameters may also be supplied as arguments. See 'Details'.
+#' 
+#' @details Additional graphical parameter inputs:
+#' \itemize{
+#'  \item{\code{location}} {position of the legend, specified by x- and y-coordinates or by keyword ("bottomright", "bottom", "bottomleft", "left", "topleft", "top", "topright", "right", or "center")}
+#'  \item{\code{title}} {character string indicating the legend title}
+#' }
+#'  
 #' @export
 #' @importFrom graphics par
 #' @examples
-#' bottom <- gsplot() %>% 
-#'  points(x=1, y=2, side=c(3,2), legend.name="Points 1", pch=1, col="blue") %>% 
-#'  points(x=3, y=4, side=c(1,4), legend.name="Points 2", pch=5, col="red") %>% 
-#'  legend(location="bottom")
-#' bottom
 #' 
 #' topright <- gsplot() %>% 
 #'  lines(x=c(3,4,3), y=c(2,4,6), legend.name="Lines", lty=5, col="orange") %>% 
@@ -23,45 +24,11 @@
 #' topright
 #' 
 #' defaultLegend <- gsplot() %>% 
-#'  points(x=1, y=2, side=c(3,2)) %>% 
-#'  points(x=3, y=4, side=c(1,4)) %>% 
-#'  lines(x=c(3,4,3), y=c(2,4,6)) %>%
-#'  lines(x=c(1,2,5), y=c(1,8,5)) %>%  
+#'  points(x=1, y=2, side=c(3,2), legend.name="Points 1", pch=1, col="blue") %>%
+#'  points(x=3, y=4, side=c(1,4), legend.name="Points 2", pch=5, col="red") %>%  
 #'  legend()
 #' defaultLegend
-#' 
-#' above <- gsplot() %>% 
-#'  points(x=1, y=2, side=c(3,2), legend.name="Points 1", pch=1, col="blue") %>% 
-#'  points(x=3, y=4, side=c(1,4), legend.name="Points 2", pch=5, col="red") %>% 
-#'  lines(x=c(3,4,3), y=c(2,4,6), legend.name="Lines 1", lty=5, col="orange") %>%
-#'  lines(x=c(1,2,5), y=c(1,8,5), legend.name="Lines 2", lty=5, col="green") %>%  
-#'  legend(location="above")
-#' above
-#' 
-#' below <- gsplot() %>% 
-#'  points(x=1, y=2, side=c(3,2), legend.name="Points 1", pch=1, col="blue") %>% 
-#'  points(x=3, y=4, side=c(1,4), legend.name="Points 2", pch=5, col="red") %>% 
-#'  lines(x=c(3,4,3), y=c(2,4,6), legend.name="Lines 1", lty=5, col="orange") %>%
-#'  lines(x=c(1,2,5), y=c(1,8,5), legend.name="Lines 2", lty=5, col="green") %>% 
-#'  legend(location="below")
-#' below
-#' 
-#' toright <- gsplot() %>% 
-#'  points(x=1, y=2, side=c(3,2), legend.name="Points 1", pch=1, col="blue") %>% 
-#'  points(x=3, y=4, side=c(1,4), legend.name="Points 1", pch=1, col="blue") %>% 
-#'  lines(x=c(3,4,3), y=c(2,4,6), legend.name="Lines 1", lty=5) %>%
-#'  lines(x=c(1,2,5), y=c(1,8,5), legend.name="Lines 2", lty=5, col="green") %>% 
-#'  legend(location="toright")
-#' toright
-#' 
-#' toleft <- gsplot() %>% 
-#'  points(x=1, y=2, side=c(3,2), legend.name="Points 1", pch=1, col="blue") %>% 
-#'  points(x=3, y=4, side=c(1,4), legend.name="Points 2", pch=5, col="red") %>% 
-#'  lines(x=c(3,4,3), y=c(2,4,6), legend.name="Lines 1", lty=5, col="orange") %>%
-#'  lines(x=c(1,2,5), y=c(1,8,5), lty=5, col="green") %>% 
-#'  legend(location="below")
-#' toleft
-#' 
+#'  
 #' usrDef <- gsplot() %>% 
 #'  points(x=1, y=2, side=c(3,2), legend.name="Points 1", cex=3) %>% 
 #'  points(x=3, y=4, side=c(1,4), legend.name="Points 2", pch=5, col="red") %>% 
@@ -69,12 +36,22 @@
 #'  lines(x=c(1,2,5), y=c(1,8,5), legend.name="Lines 2", lwd=3) %>%  
 #'  legend(x=1.5,y=4)
 #' usrDef
+#' 
+#' gs <- gsplot() %>%
+#'  points(1:4, 1:4, col=c("red","black","blue","green"), cex=1:4, pch=15:18) %>%
+#'  legend(location = "topleft", pch=15:18,
+#'        legend=c("a","b","c","d"),col="red", title = "Shape" ) %>%
+#'  legend(x=1, y=2.5, pch=19, 
+#'        legend=c("1","2","3","4"),col=c("red","black","blue","green"), title = "Color") %>%
+#'  legend(location="bottomright",pch=19, legend=c("a1","a2","a3","a4"), 
+#'        pt.cex = 1:4, title = "Size", col="red")
+#' gs
 legend <- function(object, ...){
   override("graphics", "legend", object, ...)
 }
 
 
-legend.gsplot <- function(object, location="topright", legend_offset=0.3, ...) {
+legend.gsplot <- function(object, ..., location="topright", legend_offset=0.3) {
   arguments <- list(...)
   
   if("x" %in% names(arguments)){
@@ -117,98 +94,117 @@ appendLegendPositionConfiguration <- function(location, gsConfig, arguments) {
 #' @param gsplot the gsplot to render legend
 
 draw_legend <- function(gsplot) {
-  par(xpd=TRUE)
-  legendParams <- gsplot[['legend']][['arguments']]
-  if(!is.null(legendParams)) {
-    smartLegend <- data.frame(text = character(), 
-                              symbol = numeric(), 
-                              color = character(), 
-                              line = numeric(), 
-                              stringsAsFactors = FALSE)
-    getLegendItem <- function(newText, newSymbol, newColor, newLine) { 
-      if(!is.null(newText)) {
-        return(data.frame(text = newText, 
-                          symbol = newSymbol, 
-                          color = newColor, 
-                          line = newLine, 
-                          stringsAsFactors = FALSE))
-      } else {
-        return(NULL)
-      }
-    }
+  
+  oldXPD <- par()$xpd
+  
+  for(index in which(names(gsplot) %in% "legend")){
+    legendParams <- gsplot[[index]][['arguments']]
     
-    #get legend entries for points
-    pts_i <- which(names(gsplot) %in% 'points')
-    for (i in pts_i){
-      pts <- gsplot[[i]]
-      
-      if(all((c("pch","col") %in% names(pts[['arguments']])))){
-        smartLegend <- rbind(smartLegend, getLegendItem(pts[['gs.config']]$legend.name, pts[['arguments']]$pch, pts[['arguments']]$col, NA))
-      } else {
-        pch <- ifelse("pch" %in% names(pts[['arguments']]), pts[['arguments']]$pch, par("pch"))
-        col <- ifelse("col" %in% names(pts[['arguments']]), pts[['arguments']]$col, par("col"))
-        smartLegend <- rbind(smartLegend, getLegendItem(pts[['gs.config']]$legend.name, pch, col, NA))
-      }
-      
-    }
     
-    #get legend entries for lines
-    lines_i <- which(names(gsplot) %in% c('lines','abline'))
-    for (i in lines_i){
-      lines <- gsplot[[i]]
-      if(all((c("lty","col") %in% names(lines[['arguments']])))){
-        smartLegend <- rbind(smartLegend, getLegendItem(lines[['gs.config']]$legend.name, NA, lines[['arguments']]$col, lines[['arguments']]$lty))
-      } else {
-        lty <- ifelse("lty" %in% names(lines[['arguments']]), lines[['arguments']]$lty, par("lty"))
-        col <- ifelse("col" %in% names(lines[['arguments']]), lines[['arguments']]$col, par("col"))
-        smartLegend <- rbind(smartLegend, getLegendItem(lines[['gs.config']]$legend.name, NA, col, lty))
-      }
-      
-    }
+    par(xpd=TRUE)
     
-    smartLegend <- unique(smartLegend)
+    if(!("legend" %in% names(legendParams))){
     
-    lineTypes <- c("blank", "solid", "dashed", "dotted", "dotdash", "longdash", "twodash")
-    
-    lineNums <- suppressWarnings(as.numeric(smartLegend$line))
-    smartLegend$line[!is.na(lineNums)] <- lineTypes[lineNums+1][!is.na(lineTypes[lineNums+1])]
-    
-    if(nrow(smartLegend) > 0){
-    
-      #only include pch if we have a non-NA entry for points
-      if(length(pts_i) > 0) {
-        legendParams <- append(legendParams, list(
-          pch=smartLegend$symbol
-        ))
-      }
-      
-      #only include lty if we have a non-NA entry for lines
-      if(length(lines_i) > 0) {
-        legendParams <- append(legendParams, list(
-          lty=smartLegend$line
-        ))
-      }
-      
-      legendParams <- append(legendParams, list(
-        legend=smartLegend$text, 
-        col=smartLegend$color
-      ))
-      
-      #for above/below, dynamically set the number of columns
-      location <- gsplot[['legend']][['gs.config']][['location']]
-      if(location == "below" || location == "above") {
-        itemsPerCol <- 3 #TODO load this from config
-        cols <- NROW(smartLegend) %/% 3;
-        if(NROW(smartLegend) %% 3 > 0) {
-          cols <- cols + 1
+      if(!is.null(legendParams)) {
+        smartLegend <- data.frame(text = character(), 
+                                  symbol = numeric(), 
+                                  color = character(), 
+                                  line = numeric(), 
+                                  size = numeric(),
+                                  stringsAsFactors = FALSE)
+        getLegendItem <- function(newText, newSymbol, newColor, newLine, newSize) { 
+          if(!is.null(newText)) {
+            return(data.frame(text = newText, 
+                              symbol = newSymbol, 
+                              color = newColor, 
+                              line = newLine, 
+                              size = newSize,
+                              stringsAsFactors = FALSE))
+          } else {
+            return(NULL)
+          }
         }
-        legendParams <- append(legendParams, list(
-          ncol=cols
-        ))
+        
+        #get legend entries for points
+        pts_i <- which(names(gsplot) %in% 'points')
+        for (i in pts_i){
+          pts <- gsplot[[i]]
+          
+          if(all((c("pch","col","cex") %in% names(pts[['arguments']])))){
+            smartLegend <- rbind(smartLegend, getLegendItem(pts[['gs.config']]$legend.name, pts[['arguments']]$pch, pts[['arguments']]$col, NA, pts[['arguments']]$cex))
+          } else {
+            pch <- ifelse("pch" %in% names(pts[['arguments']]), pts[['arguments']]$pch, par("pch"))
+            col <- ifelse("col" %in% names(pts[['arguments']]), pts[['arguments']]$col, par("col"))
+            cex <- ifelse("cex" %in% names(pts[['arguments']]), pts[['arguments']]$cex, par("cex"))
+            smartLegend <- rbind(smartLegend, getLegendItem(pts[['gs.config']]$legend.name, pch, col, NA, cex))
+          }
+          
+        }
+        
+        #get legend entries for lines
+        lines_i <- which(names(gsplot) %in% c('lines','abline'))
+        for (i in lines_i){
+          lines <- gsplot[[i]]
+          if(all((c("lty","col") %in% names(lines[['arguments']])))){
+            smartLegend <- rbind(smartLegend, getLegendItem(lines[['gs.config']]$legend.name, NA, lines[['arguments']]$col, lines[['arguments']]$lty, 1))
+          } else {
+            lty <- ifelse("lty" %in% names(lines[['arguments']]), lines[['arguments']]$lty, par("lty"))
+            col <- ifelse("col" %in% names(lines[['arguments']]), lines[['arguments']]$col, par("col"))
+            smartLegend <- rbind(smartLegend, getLegendItem(lines[['gs.config']]$legend.name, NA, col, lty, 1))
+          }
+          
+        }
+        
+        smartLegend <- unique(smartLegend)
+        
+        lineTypes <- c("blank", "solid", "dashed", "dotted", "dotdash", "longdash", "twodash")
+        
+        lineNums <- suppressWarnings(as.numeric(smartLegend$line))
+        smartLegend$line[!is.na(lineNums)] <- lineTypes[lineNums+1][!is.na(lineTypes[lineNums+1])]
+        
+        if(nrow(smartLegend) > 0){
+        
+          #only include pch if we have a non-NA entry for points
+          if(length(pts_i) > 0) {
+            legendParams <- append(legendParams, list(
+              pch=smartLegend$symbol,
+              pt.cex=smartLegend$size
+            ))
+          }
+          
+          #only include lty if we have a non-NA entry for lines
+          if(length(lines_i) > 0) {
+            legendParams <- append(legendParams, list(
+              lty=smartLegend$line
+            ))
+          }
+          
+          legendParams <- append(legendParams, list(
+            legend=smartLegend$text, 
+            col=smartLegend$color
+          ))
+          
+          #for above/below, dynamically set the number of columns
+          location <- gsplot[['legend']][['gs.config']][['location']]
+          if(location == "below" || location == "above") {
+            itemsPerCol <- 3 #TODO load this from config
+            cols <- NROW(smartLegend) %/% 3;
+            if(NROW(smartLegend) %% 3 > 0) {
+              cols <- cols + 1
+            }
+            legendParams <- append(legendParams, list(
+              ncol=cols
+            ))
+          }
+          legend(legendParams) 
+        }
       }
-      legend(legendParams) 
+    } else {
+      legend(legendParams)
     }
   }
+  
+  par(xpd=oldXPD)
 }
 
 legend_adjusted_margins <- function(gsPlot) {

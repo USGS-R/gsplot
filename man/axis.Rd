@@ -22,12 +22,11 @@ Additional graphical parameter inputs:
  }
 }
 \examples{
-\dontrun{
 gs <- gsplot() \%>\%
    points(x=1:5, y=1:5, legend.name="Stuff") \%>\%
    lines(2:6, y=2:6, ylim=c(0,10)) \%>\%
    axis(side=c(3,4),labels=FALSE) \%>\%
-   legend("topright")
+   legend(location="topright")
 gs
 
 gs <- gsplot() \%>\%
@@ -35,6 +34,5 @@ gs <- gsplot() \%>\%
            col="blue", pch=18, legend.name="Points", xlab="Index") \%>\%
    axis(side=c(3,4), labels=FALSE)
 gs
-}
 }
 

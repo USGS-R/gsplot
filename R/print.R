@@ -1,16 +1,24 @@
 #' gsplot show
 #'
-#' show gsplot
+#' Shows gsplot in the plot window. 
 #'
 #' @param x gsplot object
-#' @param \dots stuff
-#' @return modified gsplot object 
+#' @param \dots Further graphical parameters may also be supplied as arguments.
+#' 
 #' @importFrom graphics mtext
 #' @importFrom graphics plot.new
 #' @importFrom graphics box
 #' @importFrom graphics plot.xy
 #' @export
 #' @examples
+#' gs <- gsplot() %>%
+#'    points(1, 2, legend.name="Cool points", xlim=c(0,NA)) %>%
+#'    lines(x=1:5, y=1:5, legend.name="Cool lines", ylab='taco night') %>%
+#'    legend(location="topleft")
+#' print(gs)
+#' 
+#' # dropping 'print()' around the object works the same way 
+#' # (however, use 'print()' explicitly when in a loop)
 #' gs <- gsplot() %>%
 #'    points(1, 2, legend.name="Cool points", xlim=c(0,NA)) %>%
 #'    lines(x=1:5, y=1:5, legend.name="Cool lines", ylab='taco night') %>%
@@ -35,16 +43,17 @@ print.gsplot <- function(x, ...){
     plots = views[[i]]
     plots[['window']] <- NULL
     window = views[[i]][['window']]
-    par(config("par")) 
+    
+    par(config("par", views$par))
     
     plot.window(xlim = window$xlim, ylim = window$ylim, log = window$log)
-    
+
     # -- call functions -- 
     to_gsplot(plots)
 
     if(!("axis" %in% names(plots))){ 
-      axis(side=window$side[1], config("axis"))
-      axis(side=window$side[2], config("axis"))
+      Axis(side=window$side[1],x=window$xlim)
+      Axis(side=window$side[2],x=window$ylim)
     }
 
     mtext(text=window$xlab, side=window$side[1], line = 2)
@@ -56,7 +65,7 @@ print.gsplot <- function(x, ...){
   
   draw_legend(x)
 
-  par(defaultPar)
+  # par(defaultPar)
   
 }
 
