@@ -1,6 +1,8 @@
 # History files
 .Rhistory
 .Rapp.history
+*.Rproj
+**.DS_Store
 
 # Example code in package build process
 *-Ex.R
@@ -11,4 +13,5 @@
 # produced vignettes
 vignettes/*.html
 vignettes/*.pdf
+tests/testthat/*.pdf
 .Rproj.user
