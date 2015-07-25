@@ -20,4 +20,11 @@ test_that("a more complicated par set", {
 test_that("par is a list",{
   gs <- gsplot(cex=1.2)
   expect_is(gs[['par']], 'list')
+  expect_is(par(), 'list')
+})
+
+test_that("graphics par behaves as expected",{
+  expect_is(par("usr")[c(1,2)], 'numeric')
+  expect_equal(par("usr")[c(1,2)],par()$usr[c(1,2)])
+  expect_equal(gsplot::par("usr","mar"), graphics::par("usr","mar"))
 })

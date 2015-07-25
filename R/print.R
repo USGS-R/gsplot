@@ -29,21 +29,19 @@ print.gsplot <- function(x, ...){
   # -- set plot -- 
   views = calc_views(x)
   
-  if(!par()$new & !isTRUE(config("par", views$par)$new)){
+  if(!isTRUE(x[['par']][['new']])){
     dev.hold()
     on.exit(dev.flush())
     plot.new()
   }
-  
-  
-  defaultPar <- par(no.readonly = TRUE)#, mar=legend_adjusted_margins(x))
+
   
   for (i in which(names(views) %in% 'view')){
     plots = views[[i]]
     plots[['window']] <- NULL
     window = views[[i]][['window']]
     
-    par(config("par", views$par))
+    par(views[['par']])
     
     plot.window(xlim = window$xlim, ylim = window$ylim, log = window$log)
 
