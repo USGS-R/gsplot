@@ -14,7 +14,7 @@ gsplot <- function(x = NULL, ...) UseMethod("gsplot")
 #' @rdname gsplot
 #' @export
 gsplot.default <- function(...) {
-  gsplot.list(list(par=list(...)))
+  par.gsplot(gsplot.list(list()), ...)
 }
 
 #' @rdname gsplot
