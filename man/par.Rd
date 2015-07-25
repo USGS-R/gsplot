@@ -18,7 +18,7 @@ to par in tag = value form, or by passing them as a list
 of tagged values.
 }
 \examples{
-gs2 <- gsplot(new=TRUE,fig=v,mar=c(5,4,1,2)) \%>\%
+gs2 <- gsplot(new=TRUE,mar=c(5,4,1,2)) \%>\%
   points(1, 2) \%>\%
   bgCol(col="white")
 gs2
