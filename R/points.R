@@ -26,9 +26,9 @@ points <- function(object, ...) {
 }
 
 
-points.gsplot <- function(object, x, y=NULL, ..., legend.name=NULL, side=c(1,2)){
+points.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
   current_list <- config("points")
-  arguments <- list(x=x, y=y, ...)
+  arguments <- list(...)
   
   indicesToAdd <- !(names(current_list) %in% names(arguments))
   arguments <- append(arguments, current_list[indicesToAdd])

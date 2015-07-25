@@ -41,3 +41,9 @@ test_that("testing content of gsplot list", {
   
 })
 
+test_that("override works w/ formulas",{
+  dev.off()
+  plot(-4:4, -4:4, type = "n") 
+  points(y~x, data=list(x=-3:3,y=-3:3))  # // no errors
+})
+
