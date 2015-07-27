@@ -122,6 +122,10 @@ set_view_lim <- function(views){
 c_unname <- function(list){
   unname(do.call(c, list))
 }
+
+unname_c <- function(list){
+  do.call(c, unname(list))
+}
 views_with_side <- function(views, side){
   with.side = lapply(views, function(x) any(x[['window']][['side']] %in% side))
   unname(which(unlist(with.side[names(with.side) == 'view'])))
@@ -167,8 +171,13 @@ strip_pts <- function(list, var){
   for (v in var){
     if (v %in% names(list))
       out <- append(out, list[[v]])
-    else
-      out <- append(out, NA)
+    else {
+      u.list <- unname_c(list)
+      if(v %in% names(u.list))
+        out <- append(out, u.list[[v]])
+      else
+        out <- append(out, NA)
+    }
   }
   return(out)
 }

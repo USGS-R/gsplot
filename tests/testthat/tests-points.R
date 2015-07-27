@@ -41,3 +41,20 @@ test_that("testing content of gsplot list", {
   
 })
 
+test_that("override works w/ formulas",{
+  dev.off()
+  plot(-4:4, -4:4, type = "n") 
+  points(y~x, data=list(x=-3:3,y=-3:3))  # // no errors
+})
+
+test_that("points.gsplot accepts formulas",{
+  gs <- gsplot() %>%
+       points(y~x, data=list(x=-3:3,y=-3:3))
+  views <- gsplot:::group_views(gs) %>% 
+    gsplot:::set_view_lim()
+  expect_equal(views$view$window$xlim, c(-3,3))
+  expect_equal(views$view$window$ylim, c(-3,3))
+  gs
+           
+})
+
