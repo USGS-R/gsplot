@@ -29,13 +29,20 @@ graphics_params <- function(package, name, object, ...){
       params <- append(list(object), params)
   }
   
+  if (length(params) == 0)
+    return(list())
+  
   defFun <- getFromNamespace(ifelse(existsFunction(paste0(name,".default")), paste0(name,".default"), name), package)
   
   arg.names = names(formals(defFun))[which(!names(formals(defFun)) %in% names(params))]
   
   if (is.null(names(params))){
     # // all are unnamed
-    names(params) <- arg.names[1:length(params)]
+    if (arg.names[seq_len(length(params))][1] == "..."){
+      # // special case where unnamed args go to ..., and should remain as characters (such as par("usr"))
+      return(params)
+    } 
+    names(params) <- arg.names[seq_len(length(params))]
   } else {
     names(params)[which(names(params) == "")] <- arg.names[seq_len(sum(names(params) == ""))]
   }
