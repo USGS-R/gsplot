@@ -51,16 +51,21 @@ legend <- function(object, ...){
 }
 
 
-legend.gsplot <- function(object, ..., location="topright", legend_offset=0.3) {
+legend.gsplot <- function(object, ..., location="topright", title="EXPLANATION", legend_offset=0.3) {
   arguments <- list(...)
+  
+#   current_list <- config("legend")  # grabbing yaml defaults
+#   title <- current_list$title
+#   location <- current_list$location
   
   if("x" %in% names(arguments)){
     location <- arguments$x
   }
   
-  gsConfig <- list(location = location, legend_offset = legend_offset)
+  gsConfig <- list(location = location, legend_offset = legend_offset, title = title)
   
   arguments <- appendLegendPositionConfiguration(location, gsConfig, arguments)
+  arguments <- append(arguments, list(title=title))
   
   object <- append(object, list(legend = list(arguments = arguments, gs.config = gsConfig)))
   
