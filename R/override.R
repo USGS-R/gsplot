@@ -25,17 +25,31 @@ graphics_params <- function(package, name, object, ...){
   if (!missing(object)) {
     if (!is.null(names(object)))
       params <- append(object, params)
-    else 
+    else {
       params <- append(list(object), params)
+    }
+  } else {
+    object = c() # replace w/ empty
   }
   
-  defFun <- getFromNamespace(ifelse(existsFunction(paste0(name,".default")), paste0(name,".default"), name), package)
+  if (length(params) == 0)
+    return(list())
+  
+  # // is there a method for this class?
+  defFun <- getS3method(name,class(object),optional=TRUE) # will be NULL when object is missing
+  if (is.null(defFun)){
+    defFun <- getFromNamespace(ifelse(existsFunction(paste0(name,".default")), paste0(name,".default"), name), package)
+  }
   
   arg.names = names(formals(defFun))[which(!names(formals(defFun)) %in% names(params))]
   
   if (is.null(names(params))){
     # // all are unnamed
-    names(params) <- arg.names[1:length(params)]
+    if (arg.names[seq_len(length(params))][1] == "..."){
+      # // special case where unnamed args go to ..., and should remain as characters (such as par("usr"))
+      return(params)
+    } 
+    names(params) <- arg.names[seq_len(length(params))]
   } else {
     names(params)[which(names(params) == "")] <- arg.names[seq_len(sum(names(params) == ""))]
   }
