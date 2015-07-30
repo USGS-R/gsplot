@@ -32,10 +32,15 @@ Additional graphical parameter inputs:
 \examples{
 gs <- gsplot() \%>\%
    points(x=c(1:5, 3.5), y=c(1:5, 6), legend.name="Stuff") \%>\%
-   lines(2:6, y=2:6, ylim=c(0,10)) \%>\%
+   lines(x=2:6, y=2:6, ylim=c(0,10)) \%>\%
    axis(side=c(1,2),labels=TRUE) \%>\%
    legend("topright") \%>\%
    rect(xleft=3.4, xright=3.6, ybottom=5, ytop=7, density=NA, border='purple', lty=2, lwd=3)
+gs
+
+gs <- gsplot() \%>\%
+   lines(x=10:20, y=c(10:15, 25, 17:20), xlim=c(0,30), ylim=c(0,30), col='darkgreen', legend.name="Some data") \%>\%
+   rect(xleft=15, xright=17, ybottom=21, ytop=27, density=10, angle=130, col='darkblue')
 gs
 }
 

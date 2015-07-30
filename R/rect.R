@@ -31,8 +31,8 @@
 #' gs
 #' 
 #' gs <- gsplot() %>%
-#'    lines(x=10:20, y=c(10:15, 25, 17:20), xlim=c(0,30), ylim=c(0,30), col='darkgreen', legend.name="Some data") %>% %>%
-#'    rect(xleft=15, xright=17, ybottom=21, ytop=27, density=10, angle=130, col='darkblue') %>%
+#'    lines(x=10:20, y=c(10:15, 25, 17:20), xlim=c(0,30), ylim=c(0,30), col='darkgreen', legend.name="Some data") %>%
+#'    rect(xleft=15, xright=17, ybottom=21, ytop=27, density=10, angle=130, col='darkblue')
 #' gs
 rect <- function(object, ...) {
   override("graphics", "rect", object, ...)
