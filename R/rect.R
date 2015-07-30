@@ -51,4 +51,6 @@ rect.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
                                                               side = side))))
   
   return(gsplot(object))
+
 }
+
