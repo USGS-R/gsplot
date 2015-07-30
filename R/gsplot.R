@@ -48,27 +48,3 @@ NULL
 #' head(MaumeeDV)
 NULL
 
-#' Example Unit Data
-#'
-#' Example data representing data from the Maumee River at Waterville OH (discharge)
-#'
-#' @name MaumeeUV
-#' @docType data
-#' @examples 
-#' \dontrun{
-#' 
-#' library(dataRetrieval)
-#' 
-#' sites <-c("04193490","04193500")
-#' 
-#' begin <- "1981-10-01"
-#' end <- "2011-09-30"
-#' 
-#' pCodes <- c("00060","00010","00400")
-#' statCd <- c("00003", "00008")
-#' 
-#' MaumeeUV <- readNWISuv(sites[2],"00060")
-#' MaumeeUV <- renameNWISColumns(MaumeeUV)
-#' }
-#' head(MaumeeUV)
-NULL
