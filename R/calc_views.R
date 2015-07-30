@@ -83,6 +83,7 @@ set_view_lim <- function(views){
   views <- set_view_list(views, var = 'xlim', na.action=NA)
   views <- set_view_list(views, var = 'ylim', na.action=NA)
   
+
   data <- list(y=summarize_args(views,c('y','y1','y0'),ignore=c('window','gs.config')), 
                x=summarize_args(views,c('x','x1','x0'),ignore=c('window','gs.config')))
   
@@ -114,6 +115,7 @@ set_view_lim <- function(views){
       views[[as.numeric(i)]][['window']][[lim.name]][!is.na(usr.lim)] <- usr.lim[!is.na(usr.lim)]
   
     }
+
   }
 
   return(views)
@@ -150,7 +152,6 @@ summarize_args <- function(views, var, na.action,ignore='gs.config'){
     x <- views[[i]][!names(views[[i]]) %in% ignore]
     valStuff <- lapply(x, function(x) strip_pts(x, var))
     values[[i]] <- c_unname(valStuff)
-
   }
   names(values) <- view_i
   return(values)
