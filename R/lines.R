@@ -33,17 +33,10 @@ lines <- function(object, ...) {
 }
 
 
-lines.gsplot <- function(object, x, y=NULL, ..., legend.name=NULL, side=c(1,2)){
-  
-  current_list <- config("lines")
-  arguments <- list(x=x, y=y, ...)
-  
-  indicesToAdd <- !(names(current_list) %in% names(arguments))
-  arguments <- append(arguments, current_list[indicesToAdd])
-  
-  object <- append(object,  list(lines = list(arguments = arguments, 
-                                               gs.config=list(legend.name = legend.name, 
-                                                              side = side))))
-  
-  return(gsplot(object))
+lines.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
+  fun.name <- "lines"
+  to.gsplot <- list(list(arguments = set_args(fun.name, ...), 
+                         gs.config=list(legend.name = legend.name, side = side))) %>% 
+    setNames(fun.name)
+  return(gsplot(append(object, to.gsplot)))
 }
