@@ -43,7 +43,7 @@ config <- function(type, ...){
                     "abline","legend","title","text",
                     "mtext","grid","segments",
                     "error_bar","arrows","bgCol","callouts",
-                    "rect", "orderToPlot")
+                    "rect", "polygon", "orderToPlot")
   
   type <- match.arg(type, choices = allowedTypes)
   
@@ -71,6 +71,7 @@ config <- function(type, ...){
                          bgCol=names(formals(bgCol.default)),
                          callouts=names(formals(callouts.default)),
                          rect=names(formals(graphics::rect)),
+                         polygon=names(formals(graphics::polygon)),
                          orderToPlot='order',
                          formalsNames)
   
