@@ -29,14 +29,9 @@ title <- function(object, ...) {
 
 
 title.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
-  current_list <- config("title")
-  arguments <- list(...)
-  
-  indicesToAdd <- !(names(current_list) %in% names(arguments))
-  arguments <- append(arguments, current_list[indicesToAdd])
-  
-  object <- append(object,  list(title = list(arguments = arguments, 
-                                               gs.config=list(legend.name = legend.name, 
-                                                              side = side))))
-  return(gsplot(object))
+  fun.name <- "title"
+  to.gsplot <- list(list(arguments = set_args(fun.name, ...), 
+                         gs.config=list(legend.name = legend.name, side = side))) %>% 
+    setNames(fun.name)
+  return(gsplot(append(object, to.gsplot)))
 }
