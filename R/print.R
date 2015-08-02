@@ -48,10 +48,8 @@ print.gsplot <- function(x, ...){
     # -- call functions -- 
     to_gsplot(plots)
 
-    if(!("axis" %in% names(plots))){ 
-      Axis(side=window$side[1],x=window$xlim)
-      Axis(side=window$side[2],x=window$ylim)
-    }
+    Axis(side=window$side[1],x=window$xlim)
+    Axis(side=window$side[2],x=window$ylim)
 
     mtext(text=window$xlab, side=window$side[1], line = 2)
     mtext(text=window$ylab, side=window$side[2], line = 2)
@@ -61,6 +59,7 @@ print.gsplot <- function(x, ...){
   box()
   
   draw_legend(x)
+  draw_axis(x)
 
   # par(defaultPar)
   

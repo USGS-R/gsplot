@@ -36,7 +36,7 @@ gs <- gsplot() \%>\%
    axis(side=c(1,2),labels=TRUE) \%>\%
    legend("topright") \%>\%
    rect(xleft=3.4, xright=3.6, ybottom=5,
-        ytop=7, density=NA, border='purple',
+        ytop=7, density=NULL, border='purple',
         lty=2, lwd=3)
 gs
 
@@ -45,7 +45,8 @@ gs <- gsplot() \%>\%
          xlim=c(0,30), ylim=c(0,30), col='darkgreen',
          legend.name="Some data") \%>\%
    rect(xleft=15, xright=17, ybottom=21, ytop=27,
-         density=10, angle=130, col='darkblue')
+         density=10, angle=130, col='darkblue') \%>\%
+   legend()
 gs
 }
 
