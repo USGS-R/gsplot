@@ -4,7 +4,8 @@
 \alias{callouts.default}
 \title{Default for adding callouts to a plot.}
 \usage{
-callouts.default(x, y, labels, length, angle, ...)
+callouts.default(x, y = NULL, labels = NA, length = 0.1, angle = 30,
+  ...)
 }
 \arguments{
 \item{x}{values for callout location}
