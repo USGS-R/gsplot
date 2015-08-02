@@ -32,7 +32,12 @@ gs
 gs <- gsplot() \%>\%
    points(y=c(3,1,2), x=1:3, xlim=c(0,NA),ylim=c(0,NA),
            col="blue", pch=18, legend.name="Points", xlab="Index") \%>\%
-   axis(side=c(3,4), labels=FALSE)
+   axis(side=4, labels=FALSE)
+gs
+
+gs <- gsplot() \%>\%
+   points(1:10, 1:10, xaxs="i", yaxs="i") \%>\%
+   axis(side=1, at = seq(0,10,by=0.1),labels=FALSE, tcl=-0.2)
 gs
 }
 
