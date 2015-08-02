@@ -14,6 +14,7 @@
 #' @param object gsplot object
 #' @param \dots Further graphical parameters may also be supplied as arguments. See 'Details'.
 #'  
+#' @rdname callouts
 #' @export
 #' @examples
 #' gs <- gsplot()
@@ -43,6 +44,7 @@ callouts.gsplot <- function(object, ..., side=c(1,2)){
 #' @param angle callout line angle
 #' @param \dots Further graphical parameters may also be supplied as arguments. See 'Details'.
 #' 
+#' @rdname callouts
 #' @export
 callouts.default <- function(x, y=NULL, labels=NA, length=0.1, angle=30, ...){
   
