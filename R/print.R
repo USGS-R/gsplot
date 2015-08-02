@@ -59,6 +59,7 @@ print.gsplot <- function(x, ...){
   box()
   
   draw_legend(x)
+  draw_axis(x)
 
   # par(defaultPar)
   

@@ -24,34 +24,39 @@
 #' gs <- gsplot() %>%
 #'    points(y=c(3,1,2), x=1:3, xlim=c(0,NA),ylim=c(0,NA),
 #'            col="blue", pch=18, legend.name="Points", xlab="Index") %>%
-#'    axis(side=c(3,4), labels=FALSE)
+#'    axis(side=4, labels=FALSE)
+#' gs
+#' 
+#' gs <- gsplot() %>%
+#'    points(1:10, 1:10, xaxs="i", yaxs="i") %>%
+#'    axis(side=1, at = seq(0,10,by=0.1),labels=FALSE, tcl=-0.2)
 #' gs
 axis <- function(object, ...) {
   override("graphics", "axis", object, ...)
 }
 
-axis.gsplot <- function(object, ..., side=c(1,2)) {
+axis.gsplot <- function(object, ...) {
   
   current_list <- config("axis")
   arguments <- list(...)
   
   indicesToAdd <- !(names(current_list) %in% names(arguments))
   arguments <- append(arguments, current_list[indicesToAdd])
-
-  arguments1 <- append(arguments, list(side=side[1]))
-  object <- append(object,  list(axis = list(arguments = arguments1,
-                                             gs.config=list(side = side))))
-  
-  if(length(side) > 1){
-    arguments2 <- append(arguments, list(side=side[2]))    
-    object <- append(object,  list(axis = list(arguments = arguments2, 
-                                               gs.config=list(side = side))))   
+  sides <- arguments$side
+  arguments[["side"]] <- NULL
+  for(i in sides){
+    arguments1 <- append(arguments, list(side=i))
+    object <- append(object,  list(axis = list(arguments = arguments1,
+                                               gs.config=list())))    
   }
-
-
+  
   return(gsplot(object))
   
-#   object <- append(object, list(axes = list(side = side, at=at, labels=labels,
-#                                 tick=tick, line=line, pos=pos, outer=outer,...)))
-#   return(gsplot(object))
+}
+
+draw_axis <- function(gsplot) {
+  for(index in which(names(gsplot) %in% "axis")){
+    axisParams <- gsplot[[index]][['arguments']]
+    axis(axisParams)
+  }
 }
