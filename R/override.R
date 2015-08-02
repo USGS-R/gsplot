@@ -19,7 +19,7 @@ override <- function(package, name, object, ...) {
   }
 }
 
-graphics_params <- function(package, name, object, ...){
+graphics_params <- function(package, name, object, ..., use.default=paste0(name,'.default')){
   params <- list(...)
   
   if (!missing(object)) {
@@ -38,7 +38,7 @@ graphics_params <- function(package, name, object, ...){
   # // is there a method for this class?
   defFun <- getS3method(name,class(object),optional=TRUE) # will be NULL when object is missing
   if (is.null(defFun)){
-    defFun <- getFromNamespace(ifelse(existsFunction(paste0(name,".default")), paste0(name,".default"), name), package)
+    defFun <- getFromNamespace(ifelse(existsFunction(use.default), use.default, name), package)
   }
   
   arg.names = names(formals(defFun))[which(!names(formals(defFun)) %in% names(params))]
