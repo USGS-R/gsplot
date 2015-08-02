@@ -29,8 +29,8 @@ callouts <- function(object, ...) {
 callouts.gsplot <- function(object, ..., side=c(1,2)){
   
   fun.name <- "callouts"
-  to.gsplot <- list(list(arguments = set_args(fun.name, ...), 
-                         gs.config=list(legend.name = legend.name, side = side))) %>% 
+  to.gsplot <- list(list(arguments = set_args(fun.name, package='gsplot', ...), 
+                         gs.config=list(side = side))) %>% 
     setNames(fun.name)
   return(gsplot(append(object, to.gsplot)))
 }
@@ -41,8 +41,8 @@ callouts.gsplot <- function(object, ..., side=c(1,2)){
 #' @param labels text to be added to callout
 #' @param length relative (percentage of window width and height) distance for callout
 #' @param angle callout line angle
+#' @param \dots Further graphical parameters may also be supplied as arguments. See 'Details'.
 #' 
-#' @keywords internal
 #' @export
 callouts.default <- function(x, y=NULL, labels=NA, length=0.1, angle=30, ...){
   

@@ -17,9 +17,10 @@ callouts.default(x, y = NULL, labels = NA, length = 0.1, angle = 30,
 \item{length}{relative (percentage of window width and height) distance for callout}
 
 \item{angle}{callout line angle}
+
+\item{\dots}{Further graphical parameters may also be supplied as arguments. See 'Details'.}
 }
 \description{
 Default for adding callouts to a plot.
 }
-\keyword{internal}
 
