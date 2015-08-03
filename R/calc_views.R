@@ -19,6 +19,8 @@ calc_views <- function(gsplot){
   
   views <- set_view_order(views, config("orderToPlot")$order)
   
+  views <- set_window(views)
+  
   return(views)
 }
 
@@ -181,4 +183,30 @@ strip_pts <- function(list, var){
     }
   }
   return(out)
+}
+
+set_window <- function(list){
+  
+  listOut <- list
+  
+  for(j in names(list)[(names(list) == "view")]){
+    
+    window <- list[[j]][['window']]
+    plots <- list[[j]]
+    plots[['window']] <- NULL
+    
+    var <- c("axes","ann") #Add panel.first, panel.last, asp, and "main","sub","frame.plot"...without breaking title
+
+    for(i in names(plots)){
+      for(k in var[var %in% names(plots[[i]])]){
+        window[[k]] <- plots[[i]][[k]]
+        plots[[i]][[k]] <- NULL
+      }
+    }
+    
+    listOut[[j]] <- plots
+    listOut[[j]][['window']] <- window
+  }
+  
+  return(listOut)
 }
