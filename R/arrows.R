@@ -1,6 +1,6 @@
 #' gsplot arrows
 #'
-#' Creates an arrow pointing at a specified plot location.
+#' Creates an arrow pointing at a specified plot location.   See \code{\link[graphics]{arrows}} for more details.
 #' 
 #' @param object gsplot object
 #' @param \dots Further graphical parameters may also be supplied as arguments. See 'Details'.

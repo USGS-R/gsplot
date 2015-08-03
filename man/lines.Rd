@@ -12,7 +12,7 @@ lines(object, ...)
 \item{\dots}{Further graphical parameters may also be supplied as arguments. See 'Details'.}
 }
 \description{
-Creating a line by specifying specific plot points.
+Creating a line by specifying specific plot points.  See \code{\link[graphics]{lines}} for more details.
 }
 \details{
 Additional graphical parameter inputs:

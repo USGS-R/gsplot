@@ -42,7 +42,6 @@ callouts.gsplot <- function(object, ..., side=c(1,2)){
 #' @param labels text to be added to callout
 #' @param length relative (percentage of window width and height) distance for callout
 #' @param angle callout line angle
-#' @param \dots Further graphical parameters may also be supplied as arguments. See 'Details'.
 #' 
 #' @rdname callouts
 #' @export

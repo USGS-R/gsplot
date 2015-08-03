@@ -1,6 +1,6 @@
 #' gsplot segments
 #'
-#' Creates line segments in the plot. 
+#' Creates line segments in the plot.  See \code{\link[graphics]{segments}} for more details.
 #' 
 #' @details Additional graphical parameter inputs:
 #' \itemize{

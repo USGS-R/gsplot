@@ -1,8 +1,8 @@
 #' gsplot text
 #'
-#' Adding text inside of the plotting area.
+#' Adding text inside of the plotting area.  See \code{\link[graphics]{text}} for more details.
 #' 
-#' @details Often used with \code{\link{arrows}} to label a feature on the plot. Additional graphical parameter inputs:
+#' @details Additional graphical parameter inputs:
 #' \itemize{
 #'  \item{\code{x}} {numeric vector specifying x-coordinate(s) of text position(s)} 
 #'  \item{\code{y}} {numeric vector specifying y-coordinate(s) of text position(s)}

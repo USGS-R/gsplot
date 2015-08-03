@@ -3,7 +3,7 @@
 #' par can be used to set or query graphical parameters. 
 #' Parameters can be set by specifying them as arguments 
 #' to par in tag = value form, or by passing them as a list 
-#' of tagged values.
+#' of tagged values. See \code{\link[graphics]{par}} for more details.
 #' 
 #' @param object gsplot object
 #' @param \dots Further graphical parameters may also be supplied as arguments. See \code{\link[graphics]{par}}

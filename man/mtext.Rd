@@ -12,7 +12,7 @@ mtext(object, ...)
 \item{\dots}{Further graphical parameters may also be supplied as arguments. See 'Details'.}
 }
 \description{
-Allows text to be added to the plot margins.
+Allows text to be added to the plot margins.  See \code{\link[graphics]{mtext}} for more details.
 }
 \details{
 Additional graphical parameter inputs:
