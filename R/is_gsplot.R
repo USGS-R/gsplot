@@ -28,20 +28,7 @@
 #' gs
 #' is.gsplot(gs)
 is.gsplot <- function(object){
-  
-  arguments <- names(object)
-  duplicates <- arguments[duplicated(arguments)]
-  
-  if (class(object) == "gsplot"){
-    class <- "Valid"	
-    
-    if (!"par" %in% duplicates) {
-      par_arguments <- "Valid"
-    } else { par_arguments <- "Invalid" }
-    
-  } else { class <- "Invalid" }
-  
-  validity <- rbind(class, par_arguments)
-  return(validity)
+
+  return(class(object) == "gsplot")
     
 }
