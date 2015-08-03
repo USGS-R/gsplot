@@ -64,37 +64,40 @@ error_bar.default <- function(x, y, y.high=0, y.low=0, x.high=0, x.low=0, epsilo
   x.high[is.na(x.high)] <- 0
   x.low[is.na(x.low)] <- 0
   
-  ep.y.low <- epsilon
-  ep.y.high <- epsilon
-  ep.x.low <- epsilon
-  ep.x.high <- epsilon
-  
-  if(length(epsilon) == 1){
-    ep.y.low <- rep(epsilon,length(y.low))
-    ep.y.high <- rep(epsilon,length(y.high))
-    ep.x.low <- rep(epsilon,length(x.low))
-    ep.x.high <- rep(epsilon,length(x.high))
-  } 
-  
-  ep.y.low[y.low == 0] <- 0
-  ep.y.high[y.high == 0] <- 0
-  ep.x.low[x.low == 0] <- 0
-  ep.x.high[x.high == 0] <- 0
-  
   if(!all(y.low == 0)){
-    arrows(x0=x, y0=y, x1=x, y1=y-y.low, length=epsilon, angle=90, ...)
+    y.low.coord <- y-y.low
+    errorIndex <- (y-y.low.coord) != 0
+    y.low.coord <- y.low.coord[errorIndex]
+    y.error <- y[errorIndex]
+    x.error <- x[errorIndex]
+    arrows(x0=x.error, y0=y.error, x1=x.error, y1=y.low.coord, length=epsilon, angle=90, ...)
   }
   
   if(!all(y.high == 0)){
-    arrows(x0=x, y0=y, x1=x, y1=y+y.high, length=epsilon, angle=90, ...)
+    y.high.coord <- y+y.high
+    errorIndex <- (y-y.high.coord) != 0
+    y.high.coord <- y.high.coord[errorIndex]
+    y.error <- y[errorIndex]
+    x.error <- x[errorIndex]
+    arrows(x0=x.error, y0=y.error, x1=x.error, y1=y.high.coord, length=epsilon, angle=90, ...)
   }
 
   if(!all(x.low == 0)){
-    arrows(x0=x, y0=y, x1=x+x.high, y1=y, length=epsilon, angle=90, ...)
+    x.low.coord <- x-x.low
+    errorIndex <- (x-x.low.coord) != 0
+    x.low.coord <- x.low.coord[errorIndex]
+    x.error <- x[errorIndex]
+    y.error <- y[errorIndex]
+    arrows(x0=x.error, y0=y.error, x1=x.low.coord, y1=y.error, length=epsilon, angle=90, ...)
   }
   
   if(!all(x.high == 0)){
-    arrows(x0=x, y0=y, x1=x-x.low, y1=y+y.high, length=epsilon, angle=90, ...)
+    x.high.coord <- x+x.high
+    errorIndex <- (x-x.high.coord) != 0
+    x.high.coord <- x.high.coord[errorIndex]
+    x.error <- x[errorIndex]
+    y.error <- y[errorIndex]
+    arrows(x0=x.error, y0=y.error, x1=x.high.coord, y1=y.error, length=epsilon, angle=90, ...)
   }
 }
 
