@@ -14,6 +14,7 @@
 #' @param object gsplot object
 #' @param \dots Further graphical parameters may also be supplied as arguments. See 'Details'.
 #'  
+#' @rdname callouts
 #' @export
 #' @examples
 #' gs <- gsplot()
@@ -26,17 +27,13 @@ callouts <- function(object, ...) {
 }
 
 
-callouts.gsplot <- function(object, x, y, labels=NA, length=0.1, angle=30, ..., side=c(1,2)){
-  current_list <- config("callouts")
-  arguments <- list(...)
+callouts.gsplot <- function(object, ..., side=c(1,2)){
   
-  indicesToAdd <- !(names(current_list) %in% names(arguments))
-  arguments <- append(list(x=x, y=y, labels=labels, length=length, angle=angle), arguments)
-  arguments <- append(arguments, current_list[indicesToAdd]) 
-  
-  object <- append(object,  list(callouts = list(arguments = arguments, 
-                                             gs.config=list(side = side))))
-  return(gsplot(object))
+  fun.name <- "callouts"
+  to.gsplot <- list(list(arguments = set_args(fun.name, package='gsplot', ...), 
+                         gs.config=list(side = side))) %>% 
+    setNames(fun.name)
+  return(gsplot(append(object, to.gsplot)))
 }
 #' Default for adding callouts to a plot.
 #' 
@@ -46,9 +43,9 @@ callouts.gsplot <- function(object, x, y, labels=NA, length=0.1, angle=30, ..., 
 #' @param length relative (percentage of window width and height) distance for callout
 #' @param angle callout line angle
 #' 
-#' @keywords internal
+#' @rdname callouts
 #' @export
-callouts.default <- function(x, y, labels, length, angle, ...){
+callouts.default <- function(x, y=NULL, labels=NA, length=0.1, angle=30, ...){
   
   stopifnot(angle >= 0, angle <= 360)
   # // to do: possibly support angle and length as vectors equal in length to x 

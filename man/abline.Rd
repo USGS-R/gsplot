@@ -12,7 +12,7 @@ abline(object, ...)
 \item{\dots}{Further graphical parameters may also be supplied as arguments. See 'Details'.}
 }
 \description{
-Creates straight lines on the existing gsplot object.
+Creates straight lines on the existing gsplot object. See \code{\link[graphics]{abline}} for more details.
 }
 \details{
 Additional graphical parameter inputs:

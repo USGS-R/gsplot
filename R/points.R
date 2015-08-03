@@ -1,6 +1,6 @@
 #' gsplot points
 #'
-#' Creates points on gsplot. 
+#' Creates points on gsplot.   See \code{\link[graphics]{points}} for more details.
 #' 
 #' @details Additional graphical parameter inputs:
 #' \itemize{
@@ -25,16 +25,10 @@ points <- function(object, ...) {
   override("graphics", "points", object, ...)
 }
 
-
 points.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
-  current_list <- config("points")
-  arguments <- list(...)
-  
-  indicesToAdd <- !(names(current_list) %in% names(arguments))
-  arguments <- append(arguments, current_list[indicesToAdd])
-  
-  object <- append(object,  list(points = list(arguments = arguments, 
-                                            gs.config=list(legend.name = legend.name, 
-                                            side = side))))
-  return(gsplot(object))
+  fun.name <- "points"
+  to.gsplot <- list(list(arguments = set_args(fun.name, ...), 
+                         gs.config=list(legend.name = legend.name, side = side))) %>% 
+    setNames(fun.name)
+  return(gsplot(append(object, to.gsplot)))
 }

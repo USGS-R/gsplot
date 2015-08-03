@@ -12,7 +12,7 @@ segments(object, ...)
 \item{\dots}{Further graphical parameters may also be supplied as arguments. See 'Details'.}
 }
 \description{
-Creates line segments in the plot.
+Creates line segments in the plot.  See \code{\link[graphics]{segments}} for more details.
 }
 \details{
 Additional graphical parameter inputs:

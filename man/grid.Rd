@@ -12,7 +12,7 @@ grid(object, ...)
 \item{\dots}{Further graphical parameters may also be supplied as arguments}
 }
 \description{
-Adds grid lines to the plot background.
+Adds grid lines to the plot background. See \code{\link[graphics]{grid}} for more details.
 }
 \examples{
 gs <- gsplot()

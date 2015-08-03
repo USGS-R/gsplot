@@ -44,5 +44,16 @@ gsNew <- error_bar(gsNew, 1:3, y=c(3,1,2), y.high=c(0.5,0.25,1), y.low=0.1)
 gsNew <- error_bar(gsNew, x=1:3, y=c(3,1,2), x.low=c(.2,NA,.2), x.high=.2, col="red",lwd=3)
 gsNew <- title(gsNew, "Graphing Fun")
 gsNew
+
+yData <- rnorm(100,mean=10000, sd=1000)
+gs <- gsplot() \%>\%
+   points(1:100, yData, log="y") \%>\%
+   error_bar(50:60, yData[50:60], y.high=250)
+gs
+
+gs <- gsplot() \%>\%
+   points(1:10, 1:10) \%>\%
+   error_bar(5, 5, y.high=1)
+gs
 }
 
