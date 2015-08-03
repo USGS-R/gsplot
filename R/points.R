@@ -1,6 +1,6 @@
 #' gsplot points
 #'
-#' Creates points on gsplot. 
+#' Creates points on gsplot.   See \code{\link[graphics]{points}} for more details.
 #' 
 #' @details Additional graphical parameter inputs:
 #' \itemize{

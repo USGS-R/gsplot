@@ -12,7 +12,7 @@ axis(object, ...)
 \item{\dots}{Further graphical parameters may also be supplied as arguments. See 'Details'.}
 }
 \description{
-Formats axes for the plotting region.
+Formats axes for the plotting region.  See \code{\link[graphics]{axis}} for more details.
 }
 \details{
 Additional graphical parameter inputs:
@@ -38,6 +38,11 @@ gs
 gs <- gsplot() \%>\%
    points(1:10, 1:10, xaxs="i", yaxs="i") \%>\%
    axis(side=1, at = seq(0,10,by=0.1),labels=FALSE, tcl=-0.2)
+gs
+
+gs <- gsplot()\%>\%
+   points(1:100, rnorm(100,mean=10000, sd=1000), log="y") \%>\%
+   axis(side=c(3,4), labels=FALSE)
 gs
 }
 

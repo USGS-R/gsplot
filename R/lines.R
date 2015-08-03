@@ -1,6 +1,6 @@
 #' gsplot lines
 #'
-#' Creating a line by specifying specific plot points. 
+#' Creating a line by specifying specific plot points.  See \code{\link[graphics]{lines}} for more details. 
 #' 
 #' @param object gsplot object
 #' @param \dots Further graphical parameters may also be supplied as arguments. See 'Details'.

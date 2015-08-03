@@ -12,7 +12,7 @@ rect(object, ...)
 \item{\dots}{Further graphical parameters may also be supplied as arguments. See 'Details'.}
 }
 \description{
-Add single or multiple rectangles to the plotting region.
+Add single or multiple rectangles to the plotting region.  See \code{\link[graphics]{rect}} for more details.
 }
 \details{
 Additional graphical parameter inputs:

@@ -1,6 +1,6 @@
 #' gsplot mtext
 #'
-#' Allows text to be added to the plot margins. 
+#' Allows text to be added to the plot margins.  See \code{\link[graphics]{mtext}} for more details.
 #' 
 #' @param object gsplot object
 #' @param \dots Further graphical parameters may also be supplied as arguments. See 'Details'.

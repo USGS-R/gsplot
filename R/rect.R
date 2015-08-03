@@ -1,6 +1,6 @@
 #' gsplot rect
 #'
-#' Add single or multiple rectangles to the plotting region.
+#' Add single or multiple rectangles to the plotting region.  See \code{\link[graphics]{rect}} for more details.
 #'
 #' @param object gsplot object
 #' @param \dots Further graphical parameters may also be supplied as arguments. See 'Details'.

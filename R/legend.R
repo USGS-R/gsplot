@@ -1,7 +1,7 @@
 #' gsplot legend
 #'
 #' If called with gsplot as first argument, will set the internal gsplot configuration
-#' for legends
+#' for legends. See \code{\link[graphics]{legend}} for more details.
 #'
 #' @param object gsplot object
 #' @param \dots Further graphical parameters may also be supplied as arguments. See 'Details'.

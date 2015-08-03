@@ -1,6 +1,6 @@
 #' gsplot title
 #'
-#' Adds a title to the plot. 
+#' Adds a title to the plot.  See \code{\link[graphics]{title}} for more details.
 #' 
 #' @details Additional graphical parameter inputs:
 #' \itemize{

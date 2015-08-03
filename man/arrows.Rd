@@ -12,7 +12,7 @@ arrows(object, ...)
 \item{\dots}{Further graphical parameters may also be supplied as arguments. See 'Details'.}
 }
 \description{
-Creates an arrow pointing at a specified plot location.
+Creates an arrow pointing at a specified plot location.   See \code{\link[graphics]{arrows}} for more details.
 }
 \details{
 Often used with \code{\link{text}} to label a feature on the plot. Additional graphical parameter inputs:

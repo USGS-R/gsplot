@@ -1,6 +1,6 @@
 #' gsplot grid
 #'
-#' Adds grid lines to the plot background. 
+#' Adds grid lines to the plot background. See \code{\link[graphics]{grid}} for more details.
 #' 
 #' @param object gsplot object
 #' @param \dots Further graphical parameters may also be supplied as arguments

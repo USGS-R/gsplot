@@ -24,8 +24,6 @@ callouts.default(x, y = NULL, labels = NA, length = 0.1, angle = 30,
 \item{angle}{callout line angle}
 
 \item{\dots}{Further graphical parameters may also be supplied as arguments. See 'Details'.}
-
-\item{\dots}{Further graphical parameters may also be supplied as arguments. See 'Details'.}
 }
 \description{
 Add callout lines and text to a plot.

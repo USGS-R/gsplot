@@ -12,7 +12,7 @@ points(object, ...)
 \item{\dots}{Further graphical parameters may also be supplied as arguments. See 'Details'.}
 }
 \description{
-Creates points on gsplot.
+Creates points on gsplot.   See \code{\link[graphics]{points}} for more details.
 }
 \details{
 Additional graphical parameter inputs:

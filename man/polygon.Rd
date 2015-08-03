@@ -12,7 +12,7 @@ polygon(object, ...)
 \item{\dots}{Further graphical parameters may also be supplied as arguments. See 'Details'.}
 }
 \description{
-Plot a polygon by specifying vertices.
+Plot a polygon by specifying vertices. See \code{\link[graphics]{polygon}} for more details.
 }
 \details{
 Additional graphical parameter inputs:
