@@ -19,6 +19,17 @@
 #' gsNew <- error_bar(gsNew, x=1:3, y=c(3,1,2), x.low=c(.2,NA,.2), x.high=.2, col="red",lwd=3)
 #' gsNew <- title(gsNew, "Graphing Fun")
 #' gsNew
+#' 
+#' yData <- rnorm(100,mean=10000, sd=1000) 
+#' gs <- gsplot() %>%
+#'    points(1:100, yData, log="y") %>%
+#'    error_bar(50:60, yData[50:60], y.high=250) 
+#' gs
+#' 
+#' gs <- gsplot() %>%
+#'    points(1:10, 1:10) %>%
+#'    error_bar(5, 5, y.high=1) 
+#' gs 
 error_bar <- function(object, ...) {
   override("gsplot", "error_bar", object, ...)
 }
@@ -70,13 +81,19 @@ error_bar.default <- function(x, y, y.high=0, y.low=0, x.high=0, x.low=0, epsilo
   ep.x.low[x.low == 0] <- 0
   ep.x.high[x.high == 0] <- 0
   
-  if(!all(y.low == 0) && !all(y.high == 0)){
+  if(!all(y.low == 0)){
     arrows(x0=x, y0=y, x1=x, y1=y-y.low, length=epsilon, angle=90, ...)
+  }
+  
+  if(!all(y.high == 0)){
     arrows(x0=x, y0=y, x1=x, y1=y+y.high, length=epsilon, angle=90, ...)
   }
 
-  if(!all(x.low == 0) && !all(x.high == 0)){
+  if(!all(x.low == 0)){
     arrows(x0=x, y0=y, x1=x+x.high, y1=y, length=epsilon, angle=90, ...)
+  }
+  
+  if(!all(x.high == 0)){
     arrows(x0=x, y0=y, x1=x-x.low, y1=y+y.high, length=epsilon, angle=90, ...)
   }
 }
