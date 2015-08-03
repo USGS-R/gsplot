@@ -2,9 +2,9 @@ context("lines")
 
 context("lines arguments")
 test_that("setting params works as expected",{
-  expect_equal(gsplot:::graphics_params("graphics","lines", c(0,0), c(2,5)), list(x=c(0,0), y=c(2,5)))
-  expect_equal(gsplot:::graphics_params("graphics","lines", x=c(0,0), y=c(2,5)), list(x=c(0,0), y=c(2,5)))
-  expect_equal(gsplot:::graphics_params("graphics","lines", y=c(2,5), x=c(0,0)), list(x=c(0,0), y=c(2,5)))
+  expect_equal(gsplot:::function_args("graphics","lines", c(0,0), c(2,5)), list(x=c(0,0), y=c(2,5)))
+  expect_equal(gsplot:::function_args("graphics","lines", x=c(0,0), y=c(2,5)), list(x=c(0,0), y=c(2,5)))
+  expect_equal(gsplot:::function_args("graphics","lines", y=c(2,5), x=c(0,0)), list(x=c(0,0), y=c(2,5)))
 })
 
 test_that("graphics examples work", {

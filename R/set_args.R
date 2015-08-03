@@ -1,9 +1,19 @@
-set_args <- function(fun.name, ...){
+#' set argument list for a given function
+#' 
+#' extracts default arguments, user-specified arguments, and gsplot config arguments  
+#' into a function-ready list.
+#' 
+#' @param fun.name the name of the function to generate an arg list for
+#' @param \dots user arguments to be used for the list
+#' @param package the package to use to get the function from (defaults to 'graphics')
+#' 
+#' @keywords internal
+set_args <- function(fun.name, ..., package='graphics'){
   
-  current_list <- config(fun.name)
-  arguments <- graphics_params(package = 'graphics', name=fun.name, ...)
+  config_args <- config(fun.name)
+  user_args <- function_args(name=fun.name, package=package, ...)
   
-  indicesToAdd <- !(names(current_list) %in% names(arguments))
-  arguments <- append(arguments, current_list[indicesToAdd])
+  indicesToAdd <- !(names(config_args) %in% names(user_args))
+  arguments <- append(user_args, config_args[indicesToAdd])
   return(arguments)
 }
