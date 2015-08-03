@@ -33,7 +33,7 @@
 #' gs
 #' 
 #' gs <- gsplot() %>%
-#'    points(1:5, c(1,10,100,1000,10000), log="y", las=1) %>%
+#'    points(1:5, c(1,10,100,1000,10000), log="y", las=1, axes=FALSE) %>%
 #'    title("Title") %>%
 #'    axis(side=c(4), labels=FALSE) %>%
 #'    axis(side=c(2,4), labels=FALSE, n.minor=4)
