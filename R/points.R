@@ -9,7 +9,9 @@
 #'  \item{\code{xlim}} {vector containing the lower and upper limit for the x-axis}
 #'  \item{\code{ylim}} {vector containing the lower and upper limit for the y-axis}
 #'  \item{\code{col, pch}} {parameters describing the color and type of point, respectively}
-#'  \item{\code{legend.name}} {name that appears the legend, see \code{\link{legend}}}
+#'  \item{\code{legend.name}} {name that appears in the legend, see \code{\link{legend}}}
+#'  \item{\code{error_bar}} {add error bars to the defined points, see \code{\link{error_bar}}}
+#'  \item{\code{callouts}} {add callouts and text to the defined points, see \code{\link{callouts}}}
 #'   }
 #' 
 #' @param object gsplot object
@@ -20,6 +22,12 @@
 #' gsNew <- points(gs, y=1, x=2, col="blue", pch=18)
 #' gsNew <- points(gsNew, c(3,4,3), c(2,4,6), ylim=c(0,10))
 #' gsNew
+#' 
+#' gs <- gsplot() %>% 
+#'          points(x=1:5, y=1:5, xlim=c(0,10), ylim=c(0,10), 
+#'                callouts=list(labels=c(rep(NA, 4), "oh")), 
+#'                error_bar=list(y.high=1))
+#' gs
 #' @export
 points <- function(object, ...) {
   override("graphics", "points", object, ...)
@@ -27,7 +35,18 @@ points <- function(object, ...) {
 
 points.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
   fun.name <- "points"
-  to.gsplot <- list(list(arguments = set_args(fun.name, ...), 
+  arguments <- list(...)
+  
+  if ("callouts" %in% names(arguments)){
+    object <- callouts(object, x=arguments$x, y=arguments$y, arguments$callouts)
+    arguments <- arguments[names(arguments) != "callouts"]
+  }
+  if ("error_bar" %in% names(arguments)){
+    object <- error_bar(object, x=arguments$x, y=arguments$y, arguments$error_bar)
+    arguments <- arguments[names(arguments) != "error_bar"]
+  }
+  
+  to.gsplot <- list(list(arguments = do.call(set_args, c(fun.name, arguments)), 
                          gs.config=list(legend.name = legend.name, side = side))) %>% 
     setNames(fun.name)
   return(gsplot(append(object, to.gsplot)))
