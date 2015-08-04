@@ -28,5 +28,10 @@ gs <- gsplot() \%>\%
    lines(x=1:5, y=1:5, legend.name="Cool lines", ylab='taco night') \%>\%
    legend(location="topleft")
 gs
+
+gs <- gsplot() \%>\%
+   points(1, 2) \%>\%
+   lines(x=1:5, y=1:5, side=c(3,4))
+gs
 }
 

@@ -24,6 +24,11 @@
 #'    lines(x=1:5, y=1:5, legend.name="Cool lines", ylab='taco night') %>%
 #'    legend(location="topleft")
 #' gs
+#' 
+#' gs <- gsplot() %>%
+#'    points(1, 2) %>%
+#'    lines(x=1:5, y=1:5, side=c(3,4)) 
+#' gs
 print.gsplot <- function(x, ...){
   
   # -- set plot -- 
@@ -48,16 +53,31 @@ print.gsplot <- function(x, ...){
     # -- call functions -- 
     to_gsplot(plots)
 
-    Axis(side=window$side[1],x=window$xlim)
-    Axis(side=window$side[2],x=window$ylim)
-
-    mtext(text=window$xlab, side=window$side[1], line = 2)
-    mtext(text=window$ylab, side=window$side[2], line = 2)
+    if("axes" %in% names(window)){
+      if(window$axes){
+      Axis(side=window$side[1],x=window$xlim)
+      Axis(side=window$side[2],x=window$ylim)        
+      }
+    } else {
+      Axis(side=window$side[1],x=window$xlim)
+      Axis(side=window$side[2],x=window$ylim)      
+    }
+    
+    if("ann" %in% names(window)){
+      if(window$ann){
+      mtext(text=window$xlab, side=window$side[1], line = 2)
+      mtext(text=window$ylab, side=window$side[2], line = 2)        
+      }
+    } else { # Get these in yaml....
+      mtext(text=window$xlab, side=window$side[1], line = 2)
+      mtext(text=window$ylab, side=window$side[2], line = 2)
+    }
     
     par(new=TRUE)
   }
-  box()
   
+  box()
+
   draw_legend(x)
   draw_axis(x)
 
