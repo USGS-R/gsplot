@@ -23,8 +23,10 @@ Additional graphical parameter inputs:
  \item{\code{ylim}} {vector containing the lower and upper limit for the y-axis}
  \item{\code{col, pch}} {parameters describing the color and type of point, respectively}
  \item{\code{legend.name}} {name that appears in the legend, see \code{\link{legend}}}
- \item{\code{error_bar}} {add error bars to the defined points, see \code{\link{error_bar}}}
- \item{\code{callouts}} {add callouts and text to the defined points, see \code{\link{callouts}}}
+ \item{\code{error_bar}} {add error bars to the defined points, see \code{\link{error_bar}}
+ for arguments, must add arguments as a list}
+ \item{\code{callouts}} {add callouts and text to the defined points, see \code{\link{callouts}}
+ for arguments, must add arguments as a list}
   }
 }
 \examples{
