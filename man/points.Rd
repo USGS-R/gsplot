@@ -22,7 +22,9 @@ Additional graphical parameter inputs:
  \item{\code{xlim}} {vector containing the lower and upper limit for the x-axis}
  \item{\code{ylim}} {vector containing the lower and upper limit for the y-axis}
  \item{\code{col, pch}} {parameters describing the color and type of point, respectively}
- \item{\code{legend.name}} {name that appears the legend, see \code{\link{legend}}}
+ \item{\code{legend.name}} {name that appears in the legend, see \code{\link{legend}}}
+ \item{\code{error_bar}} {add error bars to the defined points, see \code{\link{error_bar}}}
+ \item{\code{callouts}} {add callouts and text to the defined points, see \code{\link{callouts}}}
   }
 }
 \examples{
@@ -30,5 +32,11 @@ gs <- gsplot()
 gsNew <- points(gs, y=1, x=2, col="blue", pch=18)
 gsNew <- points(gsNew, c(3,4,3), c(2,4,6), ylim=c(0,10))
 gsNew
+
+gs <- gsplot() \%>\%
+         points(x=1:5, y=1:5, xlim=c(0,10), ylim=c(0,10),
+               callouts=list(labels=c(rep(NA, 4), "oh")),
+               error_bar=list(y.high=1))
+gs
 }
 
