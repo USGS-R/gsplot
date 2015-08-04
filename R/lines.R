@@ -11,6 +11,10 @@
 #'  \item{\code{y}} {vector of y-coordinates for points that make up the line}
 #'  \item{\code{legend.name}} {a character vector of length one to be used in the legend}
 #'  \item{\code{side}} {vector specifying the side(s) to use for axes (1,2,3,4 for sides, or 5,6,7,8 for outward offsets of those)}
+#'  \item{\code{error_bar}} {add error bars to the defined line, see \code{\link{error_bar}} 
+#'  for arguments, must add arguments as a list}
+#'  \item{\code{callouts}} {add callouts and text to the defined line, see \code{\link{callouts}} 
+#'  for arguments, must add arguments as a list}
 #' }  
 #'    
 #' @examples
@@ -26,6 +30,11 @@
 #'    lines(c(3,4,3), c(2,4,6), pch=6) %>%
 #'    points(c(8,4,1.2), c(2,4.7,6), side=c(3,2))
 #' gsNewpipe
+#' 
+#' gs <- gsplot() %>%
+#'    lines(x=c(1,2), y=c(4,2), xlim=c(0, 5), ylim=c(0,5),
+#'        callouts=list(labels=c(NA, "data"), col="blue"))
+#' gs
 #' @export
 #' @rdname lines
 lines <- function(object, ...) {
@@ -35,7 +44,18 @@ lines <- function(object, ...) {
 
 lines.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
   fun.name <- "lines"
-  to.gsplot <- list(list(arguments = set_args(fun.name, ...), 
+  arguments <- list(...)
+  
+  if ("callouts" %in% names(arguments)){
+    object <- callouts(object, x=arguments$x, y=arguments$y, arguments$callouts)
+    arguments <- arguments[names(arguments) != "callouts"]
+  }
+  if ("error_bar" %in% names(arguments)){
+    object <- error_bar(object, x=arguments$x, y=arguments$y, arguments$error_bar)
+    arguments <- arguments[names(arguments) != "error_bar"]
+  }
+  
+  to.gsplot <- list(list(arguments = do.call(set_args, c(fun.name, arguments)),  
                          gs.config=list(legend.name = legend.name, side = side))) %>% 
     setNames(fun.name)
   return(gsplot(append(object, to.gsplot)))
