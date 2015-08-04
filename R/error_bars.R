@@ -35,17 +35,12 @@ error_bar <- function(object, ...) {
 }
 
 
-error_bar.gsplot <- function(object, x, y, y.high=0, y.low=0, x.high=0, x.low=0, epsilon=0.1, ..., legend.name=NULL, side=c(1,2)){
-  current_list <- config("error_bar")
-  arguments <- list(...)
-  arguments <- append(list(x=x, y=y, y.high=y.high, y.low=y.low, x.high=x.high, x.low=x.low, epsilon=epsilon),arguments)
-  indicesToAdd <- !(names(current_list) %in% names(arguments))
-  arguments <- append(arguments, current_list[indicesToAdd])
-  
-  object <- append(object,  list(error_bar = list(arguments = arguments, 
-                                                 gs.config=list(legend.name = legend.name, 
-                                                                side = side))))
-  return(gsplot(object))
+error_bar.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
+  fun.name <- "error_bar"
+  to.gsplot <- list(list(arguments = set_args(fun.name, package='gsplot', ...), 
+                         gs.config=list(side = side))) %>% 
+    setNames(fun.name)
+  return(gsplot(append(object, to.gsplot)))
 }
 
 
