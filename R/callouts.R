@@ -47,6 +47,10 @@ callouts.gsplot <- function(object, ..., side=c(1,2)){
 #' @export
 callouts.default <- function(x, y=NULL, labels=NA, length=0.1, angle=30, ...){
   
+  x <- x[!is.na(labels)]
+  y <- y[!is.na(labels)]
+  labels <- labels[!is.na(labels)]
+  
   stopifnot(angle >= 0, angle <= 360)
   # // to do: possibly support angle and length as vectors equal in length to x 
   x.usr <- par("usr")[c(1,2)]
