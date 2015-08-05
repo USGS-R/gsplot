@@ -53,30 +53,23 @@ print.gsplot <- function(x, ...){
     # -- call functions -- 
     to_gsplot(plots)
 
-    if("axes" %in% names(window)){
-      if(window$axes){
+
+    if(window$axes){
       Axis(side=window$side[1],x=window$xlim)
       Axis(side=window$side[2],x=window$ylim)        
-      }
-    } else {
-      Axis(side=window$side[1],x=window$xlim)
-      Axis(side=window$side[2],x=window$ylim)      
     }
-    
-    if("ann" %in% names(window)){
-      if(window$ann){
+
+    if(window$ann){
       mtext(text=window$xlab, side=window$side[1], line = 2)
       mtext(text=window$ylab, side=window$side[2], line = 2)        
-      }
-    } else { # Get these in yaml....
-      mtext(text=window$xlab, side=window$side[1], line = 2)
-      mtext(text=window$ylab, side=window$side[2], line = 2)
     }
     
     par(new=TRUE)
   }
   
-  box()
+  if(window$frame.plot){
+    box()
+  }
 
   draw_legend(x)
   draw_axis(x)

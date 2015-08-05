@@ -40,5 +40,11 @@ gs <- gsplot() \%>\%
                callouts=list(labels=c(rep(NA, 4), "oh")),
                error_bar=list(y.high=1))
 gs
+
+gs2 <- gsplot() \%>\%
+         points(1:5, c(1,10,100,1000,10000), log="y", las=1) \%>\%
+         axis(side=c(2,4), labels=FALSE, n.minor=4)
+
+gs2
 }
 

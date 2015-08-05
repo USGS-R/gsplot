@@ -21,7 +21,7 @@
 #' 
 #' @examples
 #' gs <- gsplot()
-#' gsNew <- points(gs, y=1, x=2, col="blue", pch=18)
+#' gsNew <- points(gs, y=1, x=2, col="blue", pch=18,frame.plot=FALSE)
 #' gsNew <- points(gsNew, c(3,4,3), c(2,4,6), ylim=c(0,10))
 #' gsNew
 #' 
@@ -30,6 +30,12 @@
 #'                callouts=list(labels=c(rep(NA, 4), "oh")), 
 #'                error_bar=list(y.high=1))
 #' gs
+#' 
+#' gs2 <- gsplot() %>%
+#'          points(1:5, c(1,10,100,1000,10000), log="y", las=1) %>%
+#'          axis(side=c(2,4), labels=FALSE, n.minor=4)
+#'          
+#' gs2
 #' @export
 points <- function(object, ...) {
   override("graphics", "points", object, ...)
@@ -47,7 +53,7 @@ points.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
     object <- error_bar(object, x=arguments$x, y=arguments$y, arguments$error_bar)
     arguments <- arguments[names(arguments) != "error_bar"]
   }
-  
+
   to.gsplot <- list(list(arguments = do.call(set_args, c(fun.name, arguments)), 
                          gs.config=list(legend.name = legend.name, side = side))) %>% 
     setNames(fun.name)
