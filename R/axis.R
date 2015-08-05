@@ -28,14 +28,12 @@
 #' gs
 #' 
 #' gs <- gsplot() %>%
-#'    points(1:10, 1:10, xaxs="i", yaxs="i") %>%
+#'    points(1:10, 1:10, xaxs="r", yaxs="r") %>%
 #'    axis(side=1, at = seq(0,10,by=0.1),labels=FALSE, tcl=0.15)
 #' gs
 #' 
 #' gs <- gsplot() %>%
-#'    points(1:5, c(1,10,100,1000,10000), log="y", las=1, axes=FALSE) %>%
-#'    title("Title") %>%
-#'    axis(side=c(4), labels=FALSE) %>%
+#'    points(1:5, c(1,10,100,1000,10000), log="y", las=1) %>%
 #'    axis(side=c(2,4), labels=FALSE, n.minor=4)
 #' gs
 axis <- function(object, ...) {
