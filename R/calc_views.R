@@ -43,7 +43,10 @@ group_views <- function(gsplot){
       views[[view_i]] <- append(views[[view_i]], to_draw)
     } else {
       # // if field isn't associated with a side(s), it is moved up to top level (e.g., legend)
-      views[[names(gsplot[i])]] <- gsplot[[i]]
+      newList <- list()
+      var <- names(gsplot[i])
+      newList[[var]] <- gsplot[[i]]
+      views <- append(views, newList)
     }
   }
   
@@ -188,25 +191,35 @@ strip_pts <- function(list, var){
 set_window <- function(list){
   
   listOut <- list
+  pars <- list[['par']]
   
-  for(j in names(list)[(names(list) == "view")]){
+  for(j in which(names(list) == "view")){
     
     window <- list[[j]][['window']]
     plots <- list[[j]]
     plots[['window']] <- NULL
     
-    var <- c("axes","ann") #Add panel.first, panel.last, asp, and "main","sub","frame.plot"...without breaking title
-
+    var <- c("axes","ann","frame.plot") #Add panel.first, panel.last, asp, and "main","sub","frame.plot"...without breaking title
+    varPar <- c("xaxs","yaxs","xaxt","yaxt","las")
+    
+    window[var] <- TRUE
+    
     for(i in names(plots)){
-      for(k in var[var %in% names(plots[[i]])]){
-        window[[k]] <- plots[[i]][[k]]
+      for(k in var){
+        if(k %in% names(plots[[i]])){
+          window[[k]] <- plots[[i]][[k]]
+        } 
         plots[[i]][[k]] <- NULL
       }
+      pars[varPar[varPar %in% names(plots[[i]])]] <- plots[[i]][names(plots[[i]]) %in% varPar]
+      plots[[i]][names(plots[[i]]) %in% varPar] <- NULL
     }
     
     listOut[[j]] <- plots
     listOut[[j]][['window']] <- window
   }
+  
+  listOut[['par']] <- pars
   
   return(listOut)
 }
