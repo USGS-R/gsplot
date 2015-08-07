@@ -61,7 +61,7 @@ points.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
   if (is.null(to.gsplot$points$arguments$y)){
     to.gsplot$points$arguments$y <- to.gsplot$points$arguments$x
     to.gsplot$points$arguments$x <- seq(length(to.gsplot$points$arguments$x))
-    to.gsplot$points$arguments$xlab <- "Index"
+    if (is.null(to.gsplot$points$arguments$xlab)) to.gsplot$points$arguments$xlab <- "Index" 
   }
   
   return(gsplot(append(object, to.gsplot)))
