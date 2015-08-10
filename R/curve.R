@@ -47,18 +47,26 @@ curve.gsplot <- function(object, ..., xname="x", legend.name=NULL, side=c(1,2)){
   
   current_list <- config("curve")
   
-#   sexpr <- substitute(expr)
-#   if (is.name(sexpr)) {
-#     expr <- call(as.character(sexpr), as.name(xname))
-#   } else {
-#     if ( !( (is.call(sexpr) || is.expression(sexpr)) &&
-#             xname %in% all.vars(sexpr) ))
-#       stop(gettextf("'expr' must be a function, or a call or an expression containing '%s'", xname), domain = NA)
-#     expr <- sexpr
-#   }
-#   arguments <- append(expr, list(...))  
-  arguments <- list(...)
+
+  sexpr <- substitute(...)
+  if (is.name(sexpr)) {
+    expr <- call(as.character(sexpr), as.name(xname))
+  }
+  else {
+    if (!((is.call(sexpr) || is.expression(sexpr)) && xname %in% 
+          all.vars(sexpr))) 
+      stop(gettextf("'expr' must be a function, or a call or an expression containing '%s'", 
+                    xname), domain = NA)
+    expr <- sexpr
+  }
+  x <- seq.int(from, to, length.out = n)
+  ll <- list(x = x)
+  names(ll) <- xname
+  y <- eval(expr, envir = ll, enclos = parent.frame())
+  lines(x = x, y = y, type = type, ...)
   
+  arguments <- list(...)
+
   indicesToAdd <- !(names(current_list) %in% names(arguments))
   arguments <- append(arguments, current_list[indicesToAdd])
   

@@ -37,7 +37,7 @@ gs <- gsplot() \%>\%
    lines(x=2:6, y=2:6, ylim=c(0,10)) \%>\%
    axis(side=c(1,2),labels=TRUE) \%>\%
    legend("topright")
- # curve(x^3, col=blue, add=TRUE)
+   curve(x^3, col=blue, add=TRUE)
 gs
 
 gs <- gsplot() \%>\%
@@ -45,7 +45,7 @@ gs <- gsplot() \%>\%
          xlim=c(0,30), ylim=c(0,30), col='darkgreen',
          legend.name="Some data") \%>\%
    legend()
- # curve(sin(x), from=0, to= ) \%>\%
+   curve(sin(x), from=0, to= ) \%>\%
 gs
 }
 
