@@ -36,16 +36,13 @@ gs <- gsplot() \%>\%
    points(x=c(1:5, 3.5), y=c(1:5, 6), legend.name="Stuff") \%>\%
    lines(x=2:6, y=2:6, ylim=c(0,10)) \%>\%
    axis(side=c(1,2),labels=TRUE) \%>\%
+   curve(x^3, from=0, to=10, col="blue", legend.name="x^3") \%>\%
    legend("topright")
- # curve(x^3, col=blue, add=TRUE)
 gs
 
 gs <- gsplot() \%>\%
-   lines(x=10:20, y=c(10:15, 25, 17:20),
-         xlim=c(0,30), ylim=c(0,30), col='darkgreen',
-         legend.name="Some data") \%>\%
+   curve(sin(x), from=-2*pi, to=2*pi, legend.name="sin(x)") \%>\%
    legend()
- # curve(sin(x), from=0, to= ) \%>\%
 gs
 }
 

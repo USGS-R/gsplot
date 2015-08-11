@@ -28,44 +28,30 @@
 #'    points(x=c(1:5, 3.5), y=c(1:5, 6), legend.name="Stuff") %>%
 #'    lines(x=2:6, y=2:6, ylim=c(0,10)) %>%
 #'    axis(side=c(1,2),labels=TRUE) %>%
+#'    curve(x^3, from=0, to=10, col="blue", legend.name="x^3") %>%
 #'    legend("topright")
-#'    curve(x^3, col=blue, add=TRUE)
 #' gs
 #' 
 #' gs <- gsplot() %>%
-#'    lines(x=10:20, y=c(10:15, 25, 17:20), 
-#'          xlim=c(0,30), ylim=c(0,30), col='darkgreen', 
-#'          legend.name="Some data") %>%
+#'    curve(sin(x), from=-2*pi, to=2*pi, legend.name="sin(x)") %>%
 #'    legend()
-#'    curve(sin(x), from=0, to= ) %>%
 #' gs
 curve <- function(object, ...) {
   override("graphics", "curve", object, ...)
 }
 
-curve.gsplot <- function(object, ..., xname="x", legend.name=NULL, side=c(1,2)){
+curve.gsplot <- function(object, expr, ..., legend.name=NULL, side=c(1,2)){
   
-  current_list <- config("curve")
+  arguments <- list(substitute(expr), ...)
+  expr <- arguments[which(names(arguments)=="")]
+  increment <- (arguments$to-arguments$from)/10000
+  x <- seq(arguments$from, arguments$to, by=increment)
+  y <- eval(parse(text=expr))
   
-#   sexpr <- substitute(expr)
-#   if (is.name(sexpr)) {
-#     expr <- call(as.character(sexpr), as.name(xname))
-#   } else {
-#     if ( !( (is.call(sexpr) || is.expression(sexpr)) &&
-#             xname %in% all.vars(sexpr) ))
-#       stop(gettextf("'expr' must be a function, or a call or an expression containing '%s'", xname), domain = NA)
-#     expr <- sexpr
-#   }
-#   arguments <- append(expr, list(...))  
-  arguments <- list(...)
+  arguments <- arguments[which(names(arguments)!="" & names(arguments)!="from" & names(arguments)!="to")]
+  arguments <- append(list(x=x, y=y), arguments)
   
-  indicesToAdd <- !(names(current_list) %in% names(arguments))
-  arguments <- append(arguments, current_list[indicesToAdd])
-  
-  object <- append(object,  list(curve = list(arguments = arguments, 
-                                              gs.config=list(legend.name = legend.name, 
-                                                             side = side))))
-  
-  return(gsplot(object))
-  
+  object <- lines(object, arguments, legend.name=legend.name, side=side)
+
+  return(object)
 }
