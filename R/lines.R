@@ -58,5 +58,12 @@ lines.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
   to.gsplot <- list(list(arguments = do.call(set_args, c(fun.name, arguments)),  
                          gs.config=list(legend.name = legend.name, side = side))) %>% 
     setNames(fun.name)
+  
+  if (all(names(to.gsplot$lines$arguments) != "formula") && is.null(to.gsplot$lines$arguments$y)){
+    to.gsplot$lines$arguments$y <- to.gsplot$lines$arguments$x
+    to.gsplot$lines$arguments$x <- seq(length(to.gsplot$lines$arguments$x))
+    if (is.null(to.gsplot$lines$arguments$xlab)) to.gsplot$lines$arguments$xlab <- "Index" 
+  }
+  
   return(gsplot(append(object, to.gsplot)))
 }
