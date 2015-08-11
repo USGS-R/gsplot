@@ -42,17 +42,11 @@ symbols <- function(object, ...) {
 
 symbols.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
   
-  current_list <- config("symbols")
-  arguments <- list(...)
+  fun.name <- "symbols"
+  to.gsplot <- list(list(arguments = set_args(fun.name, ...), 
+                         gs.config=list(legend.name = legend.name, side = side))) %>% 
+    setNames(fun.name)
   
-  indicesToAdd <- !(names(current_list) %in% names(arguments))
-  arguments <- append(arguments, current_list[indicesToAdd])
-  
-  object <- append(object,  list(symbols = list(arguments = arguments, 
-                                             gs.config=list(legend.name = legend.name, 
-                                                            side = side))))
-  
-  return(gsplot(object))
-  
+  return(gsplot(append(object, to.gsplot)))
 }
 
