@@ -116,14 +116,16 @@ draw_legend <- function(gsplot) {
                                   color = character(), 
                                   line = numeric(), 
                                   size = numeric(),
+                                  ptbgcolor = character(),
                                   stringsAsFactors = FALSE)
-        getLegendItem <- function(newText, newSymbol, newColor, newLine, newSize) { 
+        getLegendItem <- function(newText, newSymbol, newColor, newLine, newSize, newPtbgcolor) { 
           if(!is.null(newText)) {
             return(data.frame(text = newText, 
                               symbol = newSymbol, 
                               color = newColor, 
                               line = newLine, 
                               size = newSize,
+                              ptbgcolor = newPtbgcolor,
                               stringsAsFactors = FALSE))
           } else {
             return(NULL)
@@ -135,13 +137,15 @@ draw_legend <- function(gsplot) {
         for (i in pts_i){
           pts <- gsplot[[i]]
           
-          if(all((c("pch","col","cex") %in% names(pts[['arguments']])))){
-            smartLegend <- rbind(smartLegend, getLegendItem(pts[['gs.config']]$legend.name, pts[['arguments']]$pch, pts[['arguments']]$col, NA, pts[['arguments']]$cex))
+          if(all((c("pch","col","cex", "pt.bg") %in% names(pts[['arguments']])))){
+            smartLegend <- rbind(smartLegend, getLegendItem(pts[['gs.config']]$legend.name, pts[['arguments']]$pch, 
+                                                            pts[['arguments']]$col, NA, pts[['arguments']]$cex, pts[['arguments']]$pt.bg))
           } else {
             pch <- ifelse("pch" %in% names(pts[['arguments']]), pts[['arguments']]$pch, par("pch"))
             col <- ifelse("col" %in% names(pts[['arguments']]), pts[['arguments']]$col, par("col"))
             cex <- ifelse("cex" %in% names(pts[['arguments']]), pts[['arguments']]$cex, par("cex"))
-            smartLegend <- rbind(smartLegend, getLegendItem(pts[['gs.config']]$legend.name, pch, col, NA, cex))
+            pt.bg <- ifelse("bg" %in% names(pts[['arguments']]), pts[['arguments']]$bg, par("bg"))
+            smartLegend <- rbind(smartLegend, getLegendItem(pts[['gs.config']]$legend.name, pch, col, NA, cex, pt.bg))
           }
           
         }
@@ -173,7 +177,8 @@ draw_legend <- function(gsplot) {
           if(length(pts_i) > 0) {
             legendParams <- append(legendParams, list(
               pch=smartLegend$symbol,
-              pt.cex=smartLegend$size
+              pt.cex=smartLegend$size, 
+              pt.bg=smartLegend$ptbgcolor
             ))
           }
           
