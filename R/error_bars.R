@@ -35,25 +35,9 @@ error_bar <- function(object, ...) {
 }
 
 
-error_bar.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
-  fun.name <- "error_bar"
-  to.gsplot <- list(list(arguments = set_args(fun.name, package='gsplot', ...), 
-                         gs.config=list(side = side))) %>% 
-    setNames(fun.name)
-  return(gsplot(append(object, to.gsplot)))
-}
+error_bar.gsplot <- function(object, x, y, ..., y.high=0, y.low=0, x.high=0, x.low=0, 
+                             epsilon=0.1, legend.name=NULL, side=c(1,2)){
 
-
-#' @rdname error_bar
-#' @param x value of data point on the x-axis
-#' @param y value of data point on the y-axis
-#' @param y.low numeric lower y offset for error bar (this is subtracted from y)
-#' @param y.high numeric upper y offset for error bar (this is added to y)
-#' @param x.low numeric lower x offset for error bar (this is subtracted from x)
-#' @param x.high numeric upper x offset for error bar (this is added to x)
-#' @param epsilon numeric width of the bar
-error_bar.default <- function(x, y, y.high=0, y.low=0, x.high=0, x.low=0, epsilon=0.1, ...){
-  
   y.high[is.na(y.high)] <- 0
   y.low[is.na(y.low)] <- 0
   x.high[is.na(x.high)] <- 0
@@ -65,7 +49,7 @@ error_bar.default <- function(x, y, y.high=0, y.low=0, x.high=0, x.low=0, epsilo
     y.low.coord <- y.low.coord[errorIndex]
     y.error <- y[errorIndex]
     x.error <- x[errorIndex]
-    arrows(x0=x.error, y0=y.error, x1=x.error, y1=y.low.coord, length=epsilon, angle=90, ...)
+    object <- arrows(object, x0=x.error, y0=y.error, x1=x.error, y1=y.low.coord, length=epsilon, angle=90, ...)
   }
   
   if(!all(y.high == 0)){
@@ -74,16 +58,16 @@ error_bar.default <- function(x, y, y.high=0, y.low=0, x.high=0, x.low=0, epsilo
     y.high.coord <- y.high.coord[errorIndex]
     y.error <- y[errorIndex]
     x.error <- x[errorIndex]
-    arrows(x0=x.error, y0=y.error, x1=x.error, y1=y.high.coord, length=epsilon, angle=90, ...)
+    object <- arrows(object, x0=x.error, y0=y.error, x1=x.error, y1=y.high.coord, length=epsilon, angle=90, ...)
   }
-
+  
   if(!all(x.low == 0)){
     x.low.coord <- x-x.low
     errorIndex <- (x-x.low.coord) != 0
     x.low.coord <- x.low.coord[errorIndex]
     x.error <- x[errorIndex]
     y.error <- y[errorIndex]
-    arrows(x0=x.error, y0=y.error, x1=x.low.coord, y1=y.error, length=epsilon, angle=90, ...)
+    object <- arrows(object, x0=x.error, y0=y.error, x1=x.low.coord, y1=y.error, length=epsilon, angle=90, ...)
   }
   
   if(!all(x.high == 0)){
@@ -92,8 +76,11 @@ error_bar.default <- function(x, y, y.high=0, y.low=0, x.high=0, x.low=0, epsilo
     x.high.coord <- x.high.coord[errorIndex]
     x.error <- x[errorIndex]
     y.error <- y[errorIndex]
-    arrows(x0=x.error, y0=y.error, x1=x.high.coord, y1=y.error, length=epsilon, angle=90, ...)
+    object <- arrows(object, x0=x.error, y0=y.error, x1=x.high.coord, y1=y.error, length=epsilon, angle=90, ...)
   }
+
+  return(object)
+    
 }
 
 
