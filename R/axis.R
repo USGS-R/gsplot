@@ -23,17 +23,21 @@
 #' 
 #' gs <- gsplot() %>%
 #'    points(y=c(3,1,2), x=1:3, xlim=c(0,NA),ylim=c(0,NA)) %>%
-#'    axis(side=c(3,4), labels=FALSE) %>%
+#'    axis(side=c(4), labels=FALSE) %>%
 #'    axis(side=c(1,3), n.minor=4, labels=FALSE)
 #' gs
 #' 
 #' gs <- gsplot() %>%
-#'    points(1:10, 1:10, xaxs="r", yaxs="r") %>%
-#'    axis(side=1, at = seq(0,10,by=0.1),labels=FALSE, tcl=0.15)
+#'    points(1:10, 1:10) %>%
+#'    axis(1, at = seq(0,10,by=0.1),labels=FALSE, tcl=0.15)
 #' gs
 #' 
 #' gs <- gsplot() %>%
 #'    points(1:5, c(1,10,100,1000,10000), log="y", las=1) %>%
+#'    axis(side=c(2,4), labels=FALSE, n.minor=4)
+#' gs
+#' gs <- gsplot() %>%
+#'    lines(1:5, c(1,10,100,1000,10000), log="y", axes=FALSE) %>%
 #'    axis(side=c(2,4), labels=FALSE, n.minor=4)
 #' gs
 axis <- function(object, ...) {
@@ -42,17 +46,21 @@ axis <- function(object, ...) {
 
 axis.gsplot <- function(object, ..., n.minor=0, tcl.minor=0.15) {
   
-  current_list <- config("axis")
-  arguments <- list(...)
+  fun.name <- "axis"
   
-  indicesToAdd <- !(names(current_list) %in% names(arguments))
-  arguments <- append(arguments, current_list[indicesToAdd])
-  sides <- arguments$side
-  arguments[["side"]] <- NULL
+  user_args <- function_args(name=fun.name, package="graphics", ...)
+  
+  sides <- user_args$side
+  user_args[["side"]] <- NULL
+  
   for(i in sides){
-    arguments1 <- append(arguments, list(side=i))
-    object <- append(object,  list(axis = list(arguments = arguments1,
-                                      gs.config=list(n.minor=n.minor, tcl.minor=tcl.minor))))    
+    arguments1 <- append(list(side=i), user_args)
+    
+    to.gsplot <- list(list(arguments = do.call(set_args, c(fun.name, arguments1)),  
+                           gs.config=list(n.minor=n.minor, tcl.minor=tcl.minor))) %>% 
+      setNames(fun.name)
+    
+    object <- append(object, to.gsplot)
   }
   
   return(gsplot(object))
@@ -77,6 +85,7 @@ draw_axis <- function(gsplot) {
       }
       axisParams$at <- newAT
       axisParams$tcl <- gsplot[[index]][['gs.config']]$tcl.minor
+      axisParams$labels <- FALSE
       axis(axisParams)
     }
     

@@ -28,6 +28,7 @@ calc_views <- function(gsplot){
 group_views <- function(gsplot){
   unique_sides <- unique(lapply(gsplot, function(x) x[['gs.config']][['side']]))
   unique_sides <- unique_sides[!sapply(unique_sides, is.null)]
+  
   views <- rep(list(view=c()),length(unique_sides))
   
   for (i in seq_len(length(unique_sides))){
@@ -37,10 +38,26 @@ group_views <- function(gsplot){
   for (i in seq_len(length(gsplot))){
     draw_sides <- gsplot[[i]][['gs.config']][['side']]
     if (!is.null(draw_sides)){
-      # // to do: verify sides are in order: x then y
-      view_i <- which(sapply(unique_sides, function(x) x[1] == draw_sides[1] & x[2] == draw_sides[2]))
-      to_draw <- setNames(list(gsplot[[i]][['arguments']]), names(gsplot[i]))
-      views[[view_i]] <- append(views[[view_i]], to_draw)
+      if(length(draw_sides) == 1){
+        view_i <- which(sapply(unique_sides, function(x) x[1] == draw_sides))
+        to_draw <- setNames(list(gsplot[[i]][['arguments']]), names(gsplot[i]))
+        
+        if(draw_sides %% 2 == 0){
+          draw_sides <- c(1,draw_sides)
+        } else {
+          draw_sides <- c(draw_sides,2)
+        }
+        
+        views[[view_i]] <- list(window=list(side=draw_sides))
+        views[[view_i]] <- append(views[[view_i]], to_draw)           
+      } else {
+        # // to do: verify sides are in order: x then y
+        view_i <- which(sapply(unique_sides, function(x) x[1] == draw_sides[1] & x[2] == draw_sides[2]))
+        to_draw <- setNames(list(gsplot[[i]][['arguments']]), names(gsplot[i]))
+        views[[view_i]] <- append(views[[view_i]], to_draw)        
+      }
+      
+
     } else {
       # // if field isn't associated with a side(s), it is moved up to top level (e.g., legend)
       newList <- list()
