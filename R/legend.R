@@ -155,11 +155,11 @@ draw_legend <- function(gsplot) {
         for (i in lines_i){
           lines <- gsplot[[i]]
           if(all((c("lty","col") %in% names(lines[['arguments']])))){
-            smartLegend <- rbind(smartLegend, getLegendItem(lines[['gs.config']]$legend.name, NA, lines[['arguments']]$col, lines[['arguments']]$lty, 1))
+            smartLegend <- rbind(smartLegend, getLegendItem(lines[['gs.config']]$legend.name, NA, lines[['arguments']]$col, lines[['arguments']]$lty, 1, NA))
           } else {
             lty <- ifelse("lty" %in% names(lines[['arguments']]), lines[['arguments']]$lty, par("lty"))
             col <- ifelse("col" %in% names(lines[['arguments']]), lines[['arguments']]$col, par("col"))
-            smartLegend <- rbind(smartLegend, getLegendItem(lines[['gs.config']]$legend.name, NA, col, lty, 1))
+            smartLegend <- rbind(smartLegend, getLegendItem(lines[['gs.config']]$legend.name, NA, col, lty, 1, NA))
           }
           
         }
