@@ -2,30 +2,12 @@
 % Please edit documentation in R/error_bars.R
 \name{error_bar}
 \alias{error_bar}
-\alias{error_bar.default}
 \title{gsplot error bars}
 \usage{
 error_bar(object, ...)
-
-error_bar.default(x, y, y.high = 0, y.low = 0, x.high = 0, x.low = 0,
-  epsilon = 0.1, ...)
 }
 \arguments{
 \item{object}{gsplot object}
-
-\item{x}{value of data point on the x-axis}
-
-\item{y}{value of data point on the y-axis}
-
-\item{y.high}{numeric upper y offset for error bar (this is added to y)}
-
-\item{y.low}{numeric lower y offset for error bar (this is subtracted from y)}
-
-\item{x.high}{numeric upper x offset for error bar (this is added to x)}
-
-\item{x.low}{numeric lower x offset for error bar (this is subtracted from x)}
-
-\item{epsilon}{numeric width of the bar}
 
 \item{\dots}{Further graphical parameters may also be supplied as arguments. See 'Details'.}
 }
