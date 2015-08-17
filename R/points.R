@@ -46,11 +46,11 @@ points.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
   arguments <- list(...)
   
   if ("callouts" %in% names(arguments)){
-    object <- callouts(object, x=arguments$x, y=arguments$y, arguments$callouts)
+    object <- callouts(object, x=arguments[[1]], y=arguments[[2]], arguments$callouts)
     arguments <- arguments[names(arguments) != "callouts"]
   }
   if ("error_bar" %in% names(arguments)){
-    object <- error_bar(object, x=arguments$x, y=arguments$y, arguments$error_bar)
+    object <- error_bar(object, x=arguments[[1]], y=arguments[[2]], arguments$error_bar)
     arguments <- arguments[names(arguments) != "error_bar"]
   }
 
