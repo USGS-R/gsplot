@@ -44,8 +44,13 @@ points <- function(object, ...) {
 points.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
   fun.name <- "points"
   arguments <- list(...)
-  arguments_gsplot <- arguments[!names(arguments) %in% c("callouts", "error_bar")]
   
+  if (is.null(names(arguments))){
+    arguments_gsplot <- arguments
+  } else {
+    arguments_gsplot <- arguments[!names(arguments) %in% c("callouts", "error_bar")]
+  }
+                             
   to.gsplot <- list(list(arguments = do.call(set_args, c(fun.name, arguments_gsplot)), 
                          gs.config=list(legend.name = legend.name, side = side))) %>% 
     setNames(fun.name)
