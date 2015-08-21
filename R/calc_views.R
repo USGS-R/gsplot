@@ -233,6 +233,18 @@ set_window <- function(list){
       plots[[i]][names(plots[[i]]) %in% varPar] <- NULL
     }
     
+    for (h in which(names(list) == "axis")) {
+      if(list[[h]][['arguments']][['side']] %in% window[['side']]) {
+        reverse <- list[[h]][['gs.config']][['reverse']]
+        if (!is.null(reverse) && reverse ) {
+          sideToReverse <- list[[h]][['arguments']][['side']]
+          axes <- c('x','y','x','y')
+          axisReverse <- paste0(axes[sideToReverse], "lim")
+          window[[axisReverse]] <- rev(window[[axisReverse]])
+        }
+      }
+    }
+    
     listOut[[j]] <- plots
     listOut[[j]][['window']] <- window
   }

@@ -44,7 +44,7 @@ axis <- function(object, ...) {
   override("graphics", "axis", object, ...)
 }
 
-axis.gsplot <- function(object, ..., n.minor=0, tcl.minor=0.15) {
+axis.gsplot <- function(object, ..., n.minor=0, tcl.minor=0.15, reverse=NULL) {
   
   fun.name <- "axis"
   
@@ -57,7 +57,8 @@ axis.gsplot <- function(object, ..., n.minor=0, tcl.minor=0.15) {
     arguments1 <- append(list(side=i), user_args)
     
     to.gsplot <- list(list(arguments = do.call(set_args, c(fun.name, arguments1)),  
-                           gs.config=list(n.minor=n.minor, tcl.minor=tcl.minor))) %>% 
+                           gs.config=list(n.minor=n.minor, tcl.minor=tcl.minor, 
+                                          reverse=reverse))) %>% 
       setNames(fun.name)
     
     object <- append(object, to.gsplot)
