@@ -238,10 +238,9 @@ set_window <- function(list){
         reverse <- list[[h]][['gs.config']][['reverse']]
         if (!is.null(reverse) && reverse ) {
           sideToReverse <- list[[h]][['arguments']][['side']]
-          axes <- c('x','y','x','y')
-          axisReverse <- paste0(axes[sideToReverse], "lim")
+          axes <- ifelse(sideToReverse %% 2 == 0, 'y', 'x')
+          axisReverse <- paste0(axes, "lim")
           window[[axisReverse]] <- rev(window[[axisReverse]])
-          
         }
       }
     }
