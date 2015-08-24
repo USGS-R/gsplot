@@ -241,6 +241,7 @@ set_window <- function(list){
           axes <- c('x','y','x','y')
           axisReverse <- paste0(axes[sideToReverse], "lim")
           window[[axisReverse]] <- rev(window[[axisReverse]])
+          
         }
       }
     }
