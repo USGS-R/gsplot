@@ -27,16 +27,25 @@ callouts <- function(object, ...) {
 }
 
 
-callouts.gsplot <- function(object, x, y=NULL, ..., labels=NA, length=0.1, angle=30, side=c(1,2)){
+callouts.gsplot <- function(object, ..., side=c(1,2)){
   
-  args <- c(...)
-  if (length(args) != 0) {
-    for (i in 1:length(args)) {
-      assign(names(args)[i], value=args[[i]])
-    }
-    args <- args[!names(args) %in% c("labels")]
-  }
-
+  fun.name <- "callouts"
+  to.gsplot <- list(list(arguments = set_args(fun.name, package='gsplot', ...), 
+                         gs.config=list(side = side))) %>% 
+    setNames(fun.name)
+  return(gsplot(append(object, to.gsplot)))
+}
+#' Default for adding callouts to a plot.
+#' 
+#' @param x values for callout location
+#' @param y values for callout location
+#' @param labels text to be added to callout
+#' @param length relative (percentage of window width and height) distance for callout
+#' @param angle callout line angle
+#' 
+#' @rdname callouts
+#' @export
+callouts.default <- function(x, y=NULL, labels=NA, length=0.1, angle=30, ...){
   
   x <- x[!is.na(labels)]
   y <- y[!is.na(labels)]
@@ -65,8 +74,7 @@ callouts.gsplot <- function(object, x, y=NULL, ..., labels=NA, length=0.1, angle
     pos = 1
   }
   
-  object <- segments(object, x0=x, y0=y, x1=x1, y1=y1, args)
-  object <- text(object, x=x1, y=y1, labels=labels, pos=pos, args)
+  segments(x0=x, y0=y, x1=x1, y1=y1, ...)
+  text(x=x1, y=y1, labels=labels, pos=pos,...)
   
-  return(object)
 }
