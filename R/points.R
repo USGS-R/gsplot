@@ -45,16 +45,13 @@ points.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
   fun.name <- "points"
   arguments <- list(...)
   
-  if ("callouts" %in% names(arguments)){
-    object <- callouts(object, x=arguments$x, y=arguments$y, arguments$callouts)
-    arguments <- arguments[names(arguments) != "callouts"]
+  if (is.null(names(arguments))){
+    arguments_gsplot <- arguments
+  } else {
+    arguments_gsplot <- arguments[!names(arguments) %in% c("callouts", "error_bar")]
   }
-  if ("error_bar" %in% names(arguments)){
-    object <- error_bar(object, x=arguments$x, y=arguments$y, arguments$error_bar)
-    arguments <- arguments[names(arguments) != "error_bar"]
-  }
-
-  to.gsplot <- list(list(arguments = do.call(set_args, c(fun.name, arguments)), 
+                             
+  to.gsplot <- list(list(arguments = do.call(set_args, c(fun.name, arguments_gsplot)), 
                          gs.config=list(legend.name = legend.name, side = side))) %>% 
     setNames(fun.name)
   
@@ -62,6 +59,15 @@ points.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
     to.gsplot$points$arguments$y <- to.gsplot$points$arguments$x
     to.gsplot$points$arguments$x <- seq(length(to.gsplot$points$arguments$x))
     if (is.null(to.gsplot$points$arguments$xlab)) to.gsplot$points$arguments$xlab <- "Index" 
+  }
+  
+  if ("callouts" %in% names(arguments)){
+    object <- callouts(object, x=to.gsplot$points$arguments$x, 
+                       y=to.gsplot$points$arguments$y, arguments$callouts)
+  }
+  if ("error_bar" %in% names(arguments)){
+    object <- error_bar(object, x=to.gsplot$points$arguments$x, 
+                        y=to.gsplot$points$arguments$y, arguments$error_bar)
   }
   
   return(gsplot(append(object, to.gsplot)))

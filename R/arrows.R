@@ -33,10 +33,10 @@ arrows <- function(object, ...) {
 
 
 arrows.gsplot <- function(object, x0, y0, x1 = x0, y1 = y0, length = 0.25, angle = 30,
-                          code = 2, ..., legend.name=NULL, side=c(1,2)){
+                          ..., code = 2, legend.name=NULL, side=c(1,2)){
   current_list <- config("arrows")
-  arguments <- list(x0=x0, y0=y0, x1 = x1, y1 = y1, length = length, angle = angle,
-                    code = code, ...)
+  arguments <- append(list(x0=x0, y0=y0, x1 = x1, y1 = y1, length = length, angle = angle, 
+                           code = code), c(...))
   
   indicesToAdd <- !(names(current_list) %in% names(arguments))
   arguments <- append(arguments, current_list[indicesToAdd])

@@ -2,33 +2,17 @@
 % Please edit documentation in R/callouts.R
 \name{callouts}
 \alias{callouts}
-\alias{callouts.default}
 \title{gsplot callouts}
 \usage{
 callouts(object, ...)
-
-callouts.default(x, y = NULL, labels = NA, length = 0.1, angle = 30,
-  ...)
 }
 \arguments{
 \item{object}{gsplot object}
-
-\item{x}{values for callout location}
-
-\item{y}{values for callout location}
-
-\item{labels}{text to be added to callout}
-
-\item{length}{relative (percentage of window width and height) distance for callout}
-
-\item{angle}{callout line angle}
 
 \item{\dots}{Further graphical parameters may also be supplied as arguments. See 'Details'.}
 }
 \description{
 Add callout lines and text to a plot.
-
-Default for adding callouts to a plot.
 }
 \details{
 Additional graphical parameter inputs:

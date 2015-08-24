@@ -59,7 +59,7 @@ callouts.default <- function(x, y=NULL, labels=NA, length=0.1, angle=30, ...){
   y.usr <- par("usr")[c(3,4)]
   if (par("xlog"))
     y.usr <- 10^y.usr
-
+  
   xrange <- diff(x.usr)
   yrange <- diff(y.usr)
   x1 = x + length * xrange * cos(2*pi*(angle/360));
