@@ -39,7 +39,7 @@ demoPlot
 
 ## Data manipulation
 
-Data from Maumee River will be used to showcase the workflow and features that `gsplot` offers. First, the data is manipulated to extract the timeseries as four separate variables - dates (formatted as yyyy-mm-dd), flow (discharge in cubic feet per second), pH, and Wtemp (water temperature in degrees Farenheit). Additionally, the USGS site IDs for the sampling stations are identified. 
+Data from Maumee River will be used to showcase the workflow and features that `gsplot` offers. First, the data is manipulated to extract the timeseries as four separate variables - dates (formatted as yyyy-mm-dd), flow (discharge in cubic feet per second), pH, and Wtemp (water temperature in degrees Celcius). Additionally, the USGS site IDs for the sampling stations are identified. 
 
 ```{r echo=TRUE, message=FALSE}
 library(gsplot)
@@ -62,7 +62,7 @@ First, `gsplot` is used to create a simple timeseries graph for discharge, and a
 site <- '04193500'
 demoPlot <- gsplot() %>% 
   lines(dates[[site]], flow[[site]], col="royalblue") %>%
-  title(main=paste("Site", site), ylab="Flow") %>%
+  title(main=paste("Site", site), ylab="Flow, ft3/s") %>%
   grid()
 demoPlot
 
@@ -77,7 +77,7 @@ This data may be better represented using a log scale due to the range of flow v
 site <- '04193500'
 demoPlot <- gsplot() %>% 
   lines(dates[[site]], flow[[site]], col="royalblue", log='y') %>%
-  title(main=paste("Site", site), ylab="Flow") %>%
+  title(main=paste("Site", site), ylab="Flow, ft3/s") %>%
   grid(equilogs=FALSE)
 demoPlot
 
@@ -92,13 +92,13 @@ What if you wanted to see if there was any relationship between the pH and water
 site <- '04193490'
 plot1 <- gsplot() %>% 
   points(Wtemp[[site]], pH[[site]], col="black")%>%
-  title(main=paste("Site", site), xlab="water temp", ylab="pH")
+  title(main=paste("Site", site), xlab="Water Temperature (deg C)", ylab="pH")
 plot2 <- gsplot() %>% 
   lines(dates[[site]], pH[[site]], col="seagreen")%>%
   title(main="", xlab="time", ylab="pH")
 plot3 <- gsplot() %>% 
   lines(dates[[site]], Wtemp[[site]], col="orangered")%>%
-  title(main="", xlab="time", ylab="water temp")
+  title(main="", xlab="time", ylab="Water Temperature (deg C)")
 
 layout(matrix(c(1,2,3), byrow=TRUE, nrow=3))
 plot1
@@ -116,9 +116,9 @@ For timeseries, it is sometimes helpful to plot data on the same graph to make c
 site <- '04193490'
 demoPlot <- gsplot(mar=c(7.1, 4.1, 4.1, 2.1)) %>% 
   lines(dates[[site]], Wtemp[[site]], col="orangered", 
-        legend.name="water temperature (F)", ylab='water temp') %>%
+        legend.name="Water Temperature", ylab='Water Temperature (deg C)') %>%
   lines(dates[[site]], pH[[site]], col="seagreen", side=4, 
-        legend.name="pH (pH Units)", ylab='pH') %>%
+        legend.name="pH", ylab='pH (pH Units)') %>%
   title(main=paste("Site", site), xlab='time') %>% 
   legend(location="below")
 demoPlot
@@ -135,7 +135,7 @@ Oftentimes, data is plot and observations regarding missing or abnormal data are
 site <- '04193490'
 demoPlot <- gsplot() %>% 
   lines(dates[[site]], Wtemp[[site]], col="orangered") %>% 
-  title(main=paste("Site", site), xlab='time', ylab='water temp')
+  title(main=paste("Site", site), xlab='time', ylab='Water Temperature (deg C)')
 demoPlot
 ```
 
