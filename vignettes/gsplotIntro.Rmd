@@ -33,3 +33,115 @@ demoPlot
 
 ```
 
+## Overview
+
+`gsplot` uses similar plotting graphics to R base graphics, but allows users to execute them in a more intuitive manner. Additionally, as the complexity of the plot features increase, `gpslot` code is simplistic compared to that of base graphics. `gsplot` also includes features not present in base graphics that are useful when working with USGS data, such as `callouts` (combines `segments` and `text` into a single call), `error_bar` (allows an error to be given as `y.high`, `y.low`, `x.high`, and `x.low` and automatically builds an error bar), and the argument `legend.name` (an argument within `points`, `lines`, etc. which does not require colors, linetypes, and other par information to be redefined within the `legend` call).
+
+## Data manipulation
+
+Data from Maumee River will be used to showcase the workflow and features that `gsplot` offers. First, the data is manipulated to extract the timeseries as four separate variables - dates (formatted as yyyy-mm-dd), flow (discharge in cubic feet per second), pH, and Wtemp (water temperature in degrees Farenheit). Additionally, the USGS site IDs for the sampling stations are identified. 
+
+```{r echo=TRUE, message=FALSE}
+library(gsplot)
+MaumeeDV <- MaumeeDV
+
+sites <- unique(MaumeeDV$site_no)
+dates <- sapply(sites, function(x) MaumeeDV$Date[which(MaumeeDV$site_no==x)], USE.NAMES=TRUE)
+flow <- sapply(sites, function(x) MaumeeDV$Flow[which(MaumeeDV$site_no==x)], USE.NAMES=TRUE)
+pH <- sapply(sites, function(x) MaumeeDV$pH_Median[which(MaumeeDV$site_no==x)], USE.NAMES=TRUE)
+Wtemp <- sapply(sites, function(x) MaumeeDV$Wtemp[which(MaumeeDV$site_no==x)], USE.NAMES=TRUE)
+
+```
+
+
+## Simple timeseries
+
+First, `gsplot` is used to create a simple timeseries graph for discharge, and a grid is added to help with data readability.
+
+```{r echo=TRUE, fig.cap="Fig. 1 Simple flow timeseries using `gsplot`.", fig.width=6, fig.height=6}
+site <- '04193500'
+demoPlot <- gsplot() %>% 
+  lines(dates[[site]], flow[[site]], col="royalblue") %>%
+  title(main=paste("Site", site), ylab="Flow") %>%
+  grid()
+demoPlot
+
+```
+
+
+## Simple timeseries using a log scale
+
+This data may be better represented using a log scale due to the range of flow values. Thus, the yaxis is easily turned into a logged scale by inserting the code `log='y'`. To make sure that the grid lines correspond to the logged axis, the code `equilogs=FALSE` is used to let gridlines be drawn at unequal distances from each other.  
+
+```{r echo=TRUE, fig.cap="Fig. 2 Simple flow timeseries with a logged y-axis using `gsplot`.", fig.width=6, fig.height=6}
+site <- '04193500'
+demoPlot <- gsplot() %>% 
+  lines(dates[[site]], flow[[site]], col="royalblue", log='y') %>%
+  title(main=paste("Site", site), ylab="Flow") %>%
+  grid(equilogs=FALSE)
+demoPlot
+
+```
+
+
+## Multiple plots in one figure
+
+What if you wanted to see if there was any relationship between the pH and water temperature? Consider the following three graphs: pH vs water temperature, pH timeseries, water temperature timeseries. To view these three plots at one time, use `layout` to "append" the three different plots.  
+
+```{r echo=TRUE, fig.cap="Fig. 3 (a) pH vs water temperature, (b) pH timeseries, (c) water temperature timeseries.", fig.width=6, fig.height=6}
+site <- '04193490'
+plot1 <- gsplot() %>% 
+  points(Wtemp[[site]], pH[[site]], col="black")%>%
+  title(main=paste("Site", site), xlab="water temp", ylab="pH")
+plot2 <- gsplot() %>% 
+  lines(dates[[site]], pH[[site]], col="seagreen")%>%
+  title(main="", xlab="time", ylab="pH")
+plot3 <- gsplot() %>% 
+  lines(dates[[site]], Wtemp[[site]], col="orangered")%>%
+  title(main="", xlab="time", ylab="water temp")
+
+layout(matrix(c(1,2,3), byrow=TRUE, nrow=3))
+plot1
+plot2
+plot3
+
+```
+
+
+## Compare timeseries of different units
+
+For timeseries, it is sometimes helpful to plot data on the same graph to make comparisons; however, it becomes difficult when the data differ in units. Thus, a second y-axis can easily be added to plot the second timeseries. In this example, we can compare the water temperature and pH timeseries to identify relationships over time. pH is plot using the secondary y-axis by specifying `side=4`. 
+
+```{r echo=TRUE, fig.cap="Fig. 4 Water temperature timeseries on primary y-axis with pH timeseries on secondary y-axis.", fig.width=6, fig.height=6}
+site <- '04193490'
+demoPlot <- gsplot(mar=c(7.1, 4.1, 4.1, 2.1)) %>% 
+  lines(dates[[site]], Wtemp[[site]], col="orangered", 
+        legend.name="water temperature (F)", ylab='water temp') %>%
+  lines(dates[[site]], pH[[site]], col="seagreen", side=4, 
+        legend.name="pH (pH Units)", ylab='pH') %>%
+  title(main=paste("Site", site), xlab='time') %>% 
+  legend(location="below")
+demoPlot
+
+```
+
+
+## Adding to the plot retroactively
+
+Oftentimes, data is plot and observations regarding missing or abnormal data are made afterwards. `gsplot` makes it easy to add to any plot retroactively by using the plot object (`demoPlot` in this example) in the call for the plot feature. 
+
+```{r echo=TRUE, fig.cap="Fig. 5 Initial plot of water temperature timeseries.", fig.width=6, fig.height=6}
+# initially plot the data
+site <- '04193490'
+demoPlot <- gsplot() %>% 
+  lines(dates[[site]], Wtemp[[site]], col="orangered") %>% 
+  title(main=paste("Site", site), xlab='time', ylab='water temp')
+demoPlot
+```
+
+```{r echo=TRUE, fig.cap="Fig. 6 Plot of water temperature timeseries with 'Missing Data' callout retroactively added.", fig.width=6, fig.height=6}
+# notice the missing data from ~ 1991 through ~2011 and add a callout
+demoPlot <- callouts(demoPlot, x=as.Date("2000-01-01"), y=10,labels="Missing Data")
+demoPlot
+
+```
