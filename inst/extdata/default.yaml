@@ -2,14 +2,17 @@ xaxs: "r"
 yaxs: "r"
 tcl: 0.3
 mgp: [1.5, 0.3, 0.0]
-lty: 1
-lwd: 1
 points:
   pch: 6
   col: "red"
-lines: NULL
+lines: 
+  col: "black"
+  lty: 1
+  lwd: 1
 abline:
   col: "grey"
+  lty: 1
+  lwd: 1
 legend: 
   title: "EXPLANATION"
   location: "topright"
