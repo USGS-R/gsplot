@@ -10,3 +10,19 @@ context("legend")
 #  bottom
         
 #})
+
+test_that("gsplot legend works", {
+  
+  gs <- gsplot() 
+  
+  expect_is(gs, "gsplot")
+  
+  gs <- points(gs, x=1, y=2, side=c(3,2), legend.name="Points 1", pch=1, col="blue") %>% 
+    points(x=3, y=4, side=c(1,4), legend.name="Points 2", pch=5, col="red") %>%  
+    legend(location="bottomright")
+
+  expect_equal(gs$legend$gs.config$location, "bottomright")
+  
+  
+})
+
