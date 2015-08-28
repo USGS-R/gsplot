@@ -7,7 +7,7 @@
 \usage{
 callouts(object, ...)
 
-callouts.default(x, y = NULL, labels = NA, length = 0.1, angle = 30,
+callouts.default(x, y = NULL, labels = NA, length = 0.1, angle = "auto",
   ...)
 }
 \arguments{
