@@ -141,9 +141,11 @@ set_view_lim <- function(views){
       usr.axs <- data[[paste0(var, 'axs')]][[as.numeric(i)]]
       view.index <- which(!names(views[[as.numeric(i)]]) %in% c('window', 'gsplot'))[which(!is.na(usr.axs))]
       
-      if (any(!is.na(usr.axs)) && usr.axs[which(!is.na(usr.axs))] == 'o') { 
-        buffer.lim <- views[[as.numeric(i)]][['window']][[lim.name]][[which(is.na(usr.lim))]] 
-        views[[as.numeric(i)]][['window']][[lim.name]][[which(is.na(usr.lim))]] <-   1.04*buffer.lim
+      if (any(!is.na(usr.axs)) && usr.axs[which(!is.na(usr.axs))] == 'o') {
+        buffer <- 0.04*views[[as.numeric(i)]][['window']][[lim.name]][[2]] #4% buffer based on upper limit
+        buffer.lim <- views[[as.numeric(i)]][['window']][[lim.name]][[which(is.na(usr.lim))]]
+        buffer.lim <- ifelse(which(is.na(usr.lim)) == 1, buffer.lim - buffer, buffer.lim + buffer)
+        views[[as.numeric(i)]][['window']][[lim.name]][[which(is.na(usr.lim))]] <- buffer.lim
         views[[as.numeric(i)]][[view.index]][[paste0(var, 'axs')]] <- NULL
         views[['par']][[paste0(var, 'axs')]] <- 'i'
       }
