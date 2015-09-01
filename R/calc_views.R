@@ -107,10 +107,11 @@ set_view_lim <- function(views){
   
 
   data <- list(y=summarize_args(views,c('y','y1','y0'),ignore=c('window','gs.config')), 
-               x=summarize_args(views,c('x','x1','x0'),ignore=c('window','gs.config')),
-               yaxs=summarize_args(views,c('yaxs'),ignore=c('window','gs.config')),
-               xaxs=summarize_args(views,c('xaxs'),ignore=c('window','gs.config')))
+               x=summarize_args(views,c('x','x1','x0'),ignore=c('window','gs.config')))
   
+  axis.style <- list(yaxs=summarize_args(views,c('yaxs'),ignore=c('window','gs.config')),
+                     xaxs=summarize_args(views,c('xaxs'),ignore=c('window','gs.config')))
+               
   definedSides <- unlist(unname(do.call(c,views)),recursive = FALSE)
   definedSides <- unique(unname(unlist(definedSides[grep("side", names(definedSides))])))
 
@@ -138,14 +139,14 @@ set_view_lim <- function(views){
       views[[as.numeric(i)]][['window']][[lim.name]] <- data.lim
       views[[as.numeric(i)]][['window']][[lim.name]][!is.na(usr.lim)] <- usr.lim[!is.na(usr.lim)]
       
-      usr.axs <- data[[paste0(var, 'axs')]][[as.numeric(i)]]
-      view.index <- which(!names(views[[as.numeric(i)]]) %in% c('window', 'gsplot'))[which(!is.na(usr.axs))]
+      usr.axs <- axis.style[[paste0(var, 'axs')]][[as.numeric(i)]]
       
       if (any(!is.na(usr.axs)) && usr.axs[which(!is.na(usr.axs))] == 'o') {
         buffer <- 0.04*views[[as.numeric(i)]][['window']][[lim.name]][[2]] #4% buffer based on upper limit
         buffer.lim <- views[[as.numeric(i)]][['window']][[lim.name]][[which(is.na(usr.lim))]]
         buffer.lim <- ifelse(which(is.na(usr.lim)) == 1, buffer.lim - buffer, buffer.lim + buffer)
         views[[as.numeric(i)]][['window']][[lim.name]][[which(is.na(usr.lim))]] <- buffer.lim
+        view.index <- which(!names(views[[as.numeric(i)]]) %in% c('window', 'gsplot'))[which(!is.na(usr.axs))]
         views[[as.numeric(i)]][[view.index]][[paste0(var, 'axs')]] <- NULL
         views[['par']][[paste0(var, 'axs')]] <- 'i'
       }
