@@ -146,6 +146,9 @@ set_view_lim <- function(views){
       usr.axs <- axs[[axs.name]][[n.i]]
       
       if (!is.na(usr.axs) && usr.axs == 'o') {
+        if (all(!is.na(usr.lim)))
+          stop('no NA given to distinguish buffered limit')
+        
         view.i <- which(!names(views[[n.i]]) %in% c('window', 'gs.config'))
         buffer <- lim_buffer(views[[n.i]][['window']], lim.name)
         lim <- views[[n.i]][['window']][[lim.name]][[which(is.na(usr.lim))]]
