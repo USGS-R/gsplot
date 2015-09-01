@@ -148,7 +148,7 @@ set_view_lim <- function(views){
           stop('no NA given to distinguish buffered limit')
         
         view.i <- which(!names(views[[n.i]]) %in% c('window', 'gs.config'))
-        buffer <- lim_buffer(views[[n.i]][['window']], lim.name)
+        buffer <- 0.04*diff(views[[n.i]][['window']][[lim.name]])
         lim <- views[[n.i]][['window']][[lim.name]][[which(is.na(usr.lim))]]
         buffered.lim <- ifelse(which(is.na(usr.lim)) == 1, lim - buffer, lim + buffer)
         views[[n.i]][['window']][[lim.name]][[which(is.na(usr.lim))]] <- buffered.lim
@@ -163,14 +163,7 @@ set_view_lim <- function(views){
   return(views)
 }
 
-lim_buffer <- function(window, lim.name, buffer=0.04){
-  # needs to read window[['log']] and use a different action if grepl(substr(lim.name,1,1), window[['log']])
-  if (grepl(substr(lim.name,1,1), window[['log']]))
-    stop('logged buffer not implemented')
-  
-  return(0.04*diff(window[[lim.name]]))
-  
-}
+
 c_unname <- function(list){
   unname(do.call(c, list))
 }
