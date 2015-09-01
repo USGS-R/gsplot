@@ -31,7 +31,7 @@ Additional graphical parameter inputs:
 }
 \examples{
 gs <- gsplot()
-gsNew <- points(gs, y=1, x=2, col="blue", pch=18)
+gsNew <- points(gs, y=1, x=2, col="blue", pch=18,frame.plot=FALSE)
 gsNew <- points(gsNew, c(3,4,3), c(2,4,6), ylim=c(0,10))
 gsNew
 
