@@ -138,10 +138,8 @@ set_view_lim <- function(views){
       data.lim <- range(data.var[is.finite(data.var)])
       usr.lim <- views[[n.i]][['window']][[lim.name]][1:2]
       views[[n.i]][['window']][[lim.name]] <- data.lim
-      
-      if (any(!is.na(usr.lim))){
-        views[[n.i]][['window']][[lim.name]][!is.na(usr.lim)] <- usr.lim[!is.na(usr.lim)]
-      }
+      views[[n.i]][['window']][[lim.name]][!is.na(usr.lim)] <- usr.lim[!is.na(usr.lim)]
+    
       
       usr.axs <- axs[[axs.name]][[n.i]]
       
