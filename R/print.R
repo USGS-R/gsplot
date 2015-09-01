@@ -32,7 +32,7 @@
 print.gsplot <- function(x, ...){
   
   # -- set plot -- 
-  views = calc_views(x)
+  views = x
   
   if(!isTRUE(x[['par']][['new']])){
     dev.hold()
@@ -71,8 +71,8 @@ print.gsplot <- function(x, ...){
     box()
   }
 
-  draw_legend(x)
-  draw_axis(x)
+  #draw_legend(x) # these need to be baked into calc_views!!!
+  #draw_axis(x)
 
   # par(defaultPar)
   
