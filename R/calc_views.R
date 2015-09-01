@@ -138,12 +138,15 @@ set_view_lim <- function(views){
       data.lim <- range(data.var[is.finite(data.var)])
       usr.lim <- views[[n.i]][['window']][[lim.name]][1:2]
       views[[n.i]][['window']][[lim.name]] <- data.lim
-      views[[n.i]][['window']][[lim.name]][!is.na(usr.lim)] <- usr.lim[!is.na(usr.lim)]
+      
+      if (any(!is.na(usr.lim))){
+        views[[n.i]][['window']][[lim.name]][!is.na(usr.lim)] <- usr.lim[!is.na(usr.lim)]
+      }
       
       usr.axs <- axs[[axs.name]][[n.i]]
       
-      if (any(!is.na(usr.axs)) && usr.axs[which(!is.na(usr.axs))] == 'o') {
-        view.i <- which(!names(views[[n.i]]) %in% c('window', 'gsplot'))[which(!is.na(usr.axs))]
+      if (!is.na(usr.axs) && usr.axs == 'o') {
+        view.i <- which(!names(views[[n.i]]) %in% c('window', 'gs.config'))
         buffer <- lim_buffer(views[[n.i]][['window']], lim.name)
         lim <- views[[n.i]][['window']][[lim.name]][[which(is.na(usr.lim))]]
         buffered.lim <- ifelse(which(is.na(usr.lim)) == 1, lim - buffer, lim + buffer)
