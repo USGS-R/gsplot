@@ -63,11 +63,20 @@ set_sides <- function(sides){
   } 
   return(sides)
 }
+
+which_reals <- function(values, na.action){
+  
+  if (is.na(na.action))
+    return(which(!is.na(values)))
+  else
+    return(which(!is.na(values) & values != na.action)) # which row to use. goofy because values != NA is always NA, not logical
+  
+}
 set_view_list <- function(views, var, na.action=NA, remove=TRUE, ignore=NULL){
   view_i <- which(names(views) %in% "view")
   for (i in view_i){
     values <- lapply(views[[i]][!names(views[[i]]) %in% ignore], function(x) strip_pts(x, var))
-    val.i <- which(!is.na(values) & values != na.action) # which row to use
+    val.i <- which_reals(values, na.action)
     if (length(val.i) == 0){
       values = na.action
     } else {
