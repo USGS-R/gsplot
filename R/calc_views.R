@@ -105,9 +105,9 @@ set_view_lim <- function(views){
   views <- set_view_list(views, var = 'xlim', na.action=NA)
   views <- set_view_list(views, var = 'ylim', na.action=NA)
   
-
   data <- list(y=summarize_args(views,c('y','y1','y0'),ignore=c('window','gs.config')), 
                x=summarize_args(views,c('x','x1','x0'),ignore=c('window','gs.config')))
+
   axs <- list(yaxs=summarize_args(views,c('yaxs'),ignore=c('window','gs.config')),
               xaxs=summarize_args(views,c('xaxs'),ignore=c('window','gs.config')))
   
