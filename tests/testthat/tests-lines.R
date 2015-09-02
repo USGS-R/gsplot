@@ -18,15 +18,12 @@ test_that("graphics examples work", {
 test_that("testing content of gsplot list", {
   
   gs <- gsplot(list())
-  
   expect_is(gs,"gsplot")
   
   gs <- lines(gs, c(0,0), c(2,5))
   
-  expect_true(gs$lines$arguments$y[1]==2)
+  expect_equal(gs$view$lines$y[1], 2)
   
-  expect_false(gs$lines$arguments$y[1]==34)
-  
-  
+  expect_less_than(gs$view$lines$y[1], 34)
   
 })
