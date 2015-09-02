@@ -71,10 +71,8 @@ print.gsplot <- function(x, ...){
     box()
   }
 
-  #draw_legend(x) # these need to be baked into calc_views!!!
-  #draw_axis(x)
-
-  # par(defaultPar)
+  draw_legend(views)
+  draw_axis(views)
   
 }
 
