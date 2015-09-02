@@ -102,8 +102,8 @@ set_view_lab <- function(views){
 
 
 set_view_lim <- function(views){
-  views <- set_view_list(views, var = 'xlim', na.action=NA, ignore='window')
-  views <- set_view_list(views, var = 'ylim', na.action=NA, ignore='window')
+  views <- set_view_list(views, var = 'xlim', na.action=NA, ignore='window', remove=FALSE)
+  views <- set_view_list(views, var = 'ylim', na.action=NA, ignore='window', remove=FALSE)
   
 
   data <- list(y=summarize_args(views,c('y','y1','y0'),ignore=c('window','gs.config')), 
