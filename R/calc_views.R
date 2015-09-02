@@ -33,32 +33,16 @@ group_views <- function(gsplot){
   tail.nm <- names(gsplot[length(gsplot)])
   gsplot[[length(gsplot)]] <- NULL
   views <- gsplot # existing
-  # if tail has sides, do x, else
-  
-  add_sides <- tail.gs[['gs.config']][['side']]
-  existing_sides <- lapply(views, function(x) x[['window']][['side']])
-  unique_sides <- unique(append(existing_sides[!sapply(existing_sides, is.null)], list(view=add_sides)))
-  unique_sides <- unique_sides[!sapply(unique_sides, is.null)]
+  add_sides <- set_sides(tail.gs[['gs.config']][['side']])
     
   if (!is.null(add_sides)){
     to_draw <- setNames(list(tail.gs[['arguments']]), tail.nm)
-    if(length(views(views)) == 0){
-      
-      
-#       if(add_sides %% 2 == 0){
-#         add_sides <- c(1,add_sides)
-#       } else {
-#         add_sides <- c(add_sides,2)
-#       }
-      
+    # // to do: verify sides are in order: x then y
+    view_i <- views_with_side(views,side = add_sides)
+    if (!is.null(view_i))
+      views[[view_i]] <- append(views[[view_i]], to_draw)
+    else
       views <- append(list(view = append(list(window=list(side=add_sides)), to_draw)), views)
-    } else {
-      # // to do: verify sides are in order: x then y
-      view_i <- which(sapply(unique_sides, function(x) x[1] == add_sides[1] & x[2] == add_sides[2]))
-      views[[view_i]] <- append(views[[view_i]], to_draw)        
-    }
-  
-
   } else {
     # // if field isn't associated with a side(s), it is moved up to top level (e.g., legend)
     newList <- list()
@@ -66,10 +50,15 @@ group_views <- function(gsplot){
     newList[[var]] <- tail.gs
     views <- append(views, newList)
   }
-  
   return(views)
 }
 
+set_sides <- function(sides){
+  if (length(sides)==1){
+    ifelse(sides %% 2 == 0, c(1,sides), c(sides,2))
+  } 
+  return(sides)
+}
 set_view_list <- function(views, var, na.action=NA, remove=TRUE){
   view_i <- which(names(views) %in% "view")
   for (i in view_i){
@@ -176,7 +165,11 @@ unname_c <- function(list){
 }
 views_with_side <- function(views, side){
   with.side = lapply(views, function(x) any(x[['window']][['side']] %in% side))
-  unname(which(unlist(with.side[names(with.side) == 'view'])))
+  view.match = unname(unlist(with.side[names(with.side) == 'view']))
+  if (is.null(view.match) || !any(view.match))
+    return(NULL)
+  else
+    return(which(view.match))
 }
 
 get_view_side <- function(views, view_i, var){
