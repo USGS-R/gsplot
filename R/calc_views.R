@@ -38,10 +38,10 @@ group_views <- function(gsplot){
   if (!is.null(add_sides)){
     to_draw <- setNames(list(tail.gs[['arguments']]), tail.nm)
     # // to do: verify sides are in order: x then y
-    side.1 <- views_with_side(views, add_sides[1])
-    side.2 <- views_with_side(views, add_sides[2])
-    if (!is.null(side.1) && !is.null(side.2) && side.2==side.1)
-      views[[view_i]] <- append(views[[view_i]], to_draw)
+    view.1 <- views_with_side(views, add_sides[1])
+    view.2 <- views_with_side(views, add_sides[2])
+    if (!is.null(view.1) && !is.null(view.2) && view.2==view.1)
+      views[[view.1]] <- append(views[[view.1]], to_draw)
     else
       views <- append(list(view = append(list(window=list(side=add_sides)), to_draw)), views)
   } else {
@@ -51,6 +51,7 @@ group_views <- function(gsplot){
     newList[[var]] <- tail.gs
     views <- append(views, newList)
   }
+
   return(views)
 }
 
@@ -60,10 +61,10 @@ set_sides <- function(sides){
   } 
   return(sides)
 }
-set_view_list <- function(views, var, na.action=NA, remove=TRUE){
+set_view_list <- function(views, var, na.action=NA, remove=TRUE, ignore=NULL){
   view_i <- which(names(views) %in% "view")
   for (i in view_i){
-    values <- lapply(views[[i]], function(x) strip_pts(x, var))
+    values <- lapply(views[[i]][!names(views[[i]]) %in% ignore], function(x) strip_pts(x, var))
     val.i <- which(!is.na(values)) # which row to use
     if (length(val.i) == 0){
       values = na.action
@@ -92,8 +93,8 @@ set_view_lab <- function(views){
 
 
 set_view_lim <- function(views){
-  views <- set_view_list(views, var = 'xlim', na.action=NA)
-  views <- set_view_list(views, var = 'ylim', na.action=NA)
+  views <- set_view_list(views, var = 'xlim', na.action=NA, ignore='window')
+  views <- set_view_list(views, var = 'ylim', na.action=NA, ignore='window')
   
 
   data <- list(y=summarize_args(views,c('y','y1','y0'),ignore=c('window','gs.config')), 
@@ -208,7 +209,6 @@ remove_field <- function(list, var){
 
 strip_pts <- function(list, var){
   out <- c()
-  
   for (v in var){
     if (v %in% names(list))
       out <- append(out, list[[v]])
