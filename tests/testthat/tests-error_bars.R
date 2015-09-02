@@ -2,7 +2,7 @@ context("error_bar")
 
 test_that("testing content of gsplot list for multiple error bars defined", {
   
-  gs <- gsplot(list())
+  gs <- gsplot()
   
   expect_is(gs,"gsplot")
   
@@ -15,7 +15,7 @@ test_that("testing content of gsplot list for multiple error bars defined", {
 
 test_that("testing content of gsplot list for NA given", {
   
-  gs <- gsplot(list())
+  gs <- gsplot()
   
   expect_is(gs,"gsplot")
   
@@ -30,7 +30,7 @@ test_that("testing content of gsplot list for NA given", {
 
 test_that("testing content of gsplot list for embedded error bar", {
   
-  gs <- gsplot(list())
+  gs <- gsplot()
   
   expect_is(gs,"gsplot")
   

@@ -26,7 +26,7 @@ test_that("setting non-formal params works as expected",{
 
 test_that("testing content of gsplot list", {
   
-  gs <- gsplot(list())
+  gs <- gsplot()
   
   expect_is(gs,"gsplot")
   
