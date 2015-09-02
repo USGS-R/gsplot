@@ -117,14 +117,13 @@ draw_legend <- function(gsplot) {
         for (v in seq_len(length(views))){
           for (i in 1:length(names(views[[v]])) ) {
             
-            plotElement <- names(views[[v]])[[i]]
+            plotElement <- names(views[[v]][i])
             
-            params <- gsplot[[i]]$gs.config[which(names(gsplot[[i]]$gs.config) == "legend.name")]
-            if (length(params) == 0 || is.null(params$legend.name)) {next}
+            params <- c('legend'=views[[v]][[i]][['legend.name']])
+            if (is.null(params)) {next}
             
-            names(params)[which(names(params) %in% "legend.name")] <- 'legend' 
-            params <- append(params, gsplot[[i]]$arguments[which(names(gsplot[[i]]$arguments) %in% names(formals(graphics::legend))[-c(1,2)])])
-            type <- gsplot[[i]]$arguments$type
+            params <- append(params, views[[v]][[i]][which(names(views[[v]][[i]]) %in% names(formals(graphics::legend))[-c(1,2)])])
+            type <- views[[v]][[i]][['arguments$type']]
             
             if (plotElement == "points") {
               names(params)[which(names(params) %in% "bg")] <- 'pt.bg'
