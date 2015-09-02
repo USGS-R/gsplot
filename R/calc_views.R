@@ -17,7 +17,7 @@ calc_views <- function(gsplot){
   
   views <- set_view_lab(views)
   
-  views <- set_view_order(views, config("orderToPlot")$order)
+  #views <- set_view_order(views, config("orderToPlot")$order)
   
   views <- set_window(views)
   
