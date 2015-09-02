@@ -38,8 +38,9 @@ group_views <- function(gsplot){
   if (!is.null(add_sides)){
     to_draw <- setNames(list(tail.gs[['arguments']]), tail.nm)
     # // to do: verify sides are in order: x then y
-    view_i <- views_with_side(views,side = add_sides)
-    if (!is.null(view_i))
+    side.1 <- views_with_side(views, add_sides[1])
+    side.2 <- views_with_side(views, add_sides[2])
+    if (!is.null(side.1) && !is.null(side.2) && side.2==side.1)
       views[[view_i]] <- append(views[[view_i]], to_draw)
     else
       views <- append(list(view = append(list(window=list(side=add_sides)), to_draw)), views)
