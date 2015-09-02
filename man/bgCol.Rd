@@ -24,7 +24,7 @@ gs <- gsplot() \%>\%
 gs
 
 gsPlain <- gsplot()\%>\%
-   points(1,2) \%>\%
+   points(1:100, rnorm(100,mean=10000, sd=1000), log="y") \%>\%
    bgCol(col="lightgrey")
 gsPlain
 }

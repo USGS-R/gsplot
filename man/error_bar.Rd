@@ -2,30 +2,12 @@
 % Please edit documentation in R/error_bars.R
 \name{error_bar}
 \alias{error_bar}
-\alias{error_bar.default}
 \title{gsplot error bars}
 \usage{
 error_bar(object, ...)
-
-error_bar.default(x, y, y.high = 0, y.low = 0, x.high = 0, x.low = 0,
-  epsilon = 0.1, ...)
 }
 \arguments{
 \item{object}{gsplot object}
-
-\item{x}{value of data point on the x-axis}
-
-\item{y}{value of data point on the y-axis}
-
-\item{y.high}{numeric upper y offset for error bar (this is added to y)}
-
-\item{y.low}{numeric lower y offset for error bar (this is subtracted from y)}
-
-\item{x.high}{numeric upper x offset for error bar (this is added to x)}
-
-\item{x.low}{numeric lower x offset for error bar (this is subtracted from x)}
-
-\item{epsilon}{numeric width of the bar}
 
 \item{\dots}{Further graphical parameters may also be supplied as arguments. See 'Details'.}
 }
@@ -44,5 +26,16 @@ gsNew <- error_bar(gsNew, 1:3, y=c(3,1,2), y.high=c(0.5,0.25,1), y.low=0.1)
 gsNew <- error_bar(gsNew, x=1:3, y=c(3,1,2), x.low=c(.2,NA,.2), x.high=.2, col="red",lwd=3)
 gsNew <- title(gsNew, "Graphing Fun")
 gsNew
+
+yData <- rnorm(100,mean=10000, sd=1000)
+gs <- gsplot() \%>\%
+   points(1:100, yData, log="y") \%>\%
+   error_bar(50:60, yData[50:60], y.high=250)
+gs
+
+gs <- gsplot() \%>\%
+   points(1:10, 1:10) \%>\%
+   error_bar(5, 5, y.high=1)
+gs
 }
 

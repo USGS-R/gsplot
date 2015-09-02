@@ -31,8 +31,9 @@ demoPlot <- gsplot() %>%
          col="blue", pch=18, legend.name="Points", xlab="Index") %>%
   lines(c(3,4,3), c(2,4,6), legend.name="Lines", ylab="Data") %>%
   abline(b=1, a=0, legend.name="1:1") %>%
+  axis(side=c(3,4), labels=FALSE) %>%
   legend(location="topleft",title="Awesome!") %>%
-  grid() %>%
+  # grid() %>%
   error_bar(x=1:3, y=c(3,1,2), y.high=c(0.5,0.25,1), y.low=0.1) %>%
   error_bar(x=1:3, y=c(3,1,2), x.low=.2, x.high=.2, col="red",lwd=3) %>%
   callouts(x=1, y=2.8, lwd=2, angle=250, labels="Weird data") %>%
@@ -45,12 +46,13 @@ demoPlot
 ``` r
 library(gsplot)
 
-demoPlot <- gsplot() %>%
+gs <- gsplot() %>%
   points(y=c(3,1,2,4,5), x=c(1:3,8,80), col="blue", pch=18, legend.name="Points") %>%
   lines(c(3,4,3), c(2,4,6), legend.name="Lines", ylab="logged y axis", xlab="logged x axis", log='xy') %>%
   callouts(x=8, y=4, lwd=2, angle=45, labels="Not sure about this one") %>%
-  title("logged axes")
-demoPlot
+  title("logged axes") %>%
+  axis(side=c(1,2,3,4), labels=FALSE, n.minor=4)
+gs
 ```
 
 ![](README_files/figure-markdown_github/unnamed-chunk-3-1.png)

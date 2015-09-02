@@ -12,7 +12,7 @@ title(object, ...)
 \item{\dots}{Further graphical parameters may also be supplied as arguments. See 'Details'.}
 }
 \description{
-Adds a title to the plot.
+Adds a title to the plot.  See \code{\link[graphics]{title}} for more details.
 }
 \details{
 Additional graphical parameter inputs:

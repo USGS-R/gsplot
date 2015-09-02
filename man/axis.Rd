@@ -12,7 +12,7 @@ axis(object, ...)
 \item{\dots}{Further graphical parameters may also be supplied as arguments. See 'Details'.}
 }
 \description{
-Formats axes for the plotting region.
+Formats axes for the plotting region.  See \code{\link[graphics]{axis}} for more details.
 }
 \details{
 Additional graphical parameter inputs:
@@ -30,9 +30,23 @@ gs <- gsplot() \%>\%
 gs
 
 gs <- gsplot() \%>\%
-   points(y=c(3,1,2), x=1:3, xlim=c(0,NA),ylim=c(0,NA),
-           col="blue", pch=18, legend.name="Points", xlab="Index") \%>\%
-   axis(side=c(3,4), labels=FALSE)
+   points(y=c(3,1,2), x=1:3, xlim=c(0,NA),ylim=c(0,NA)) \%>\%
+   axis(side=c(4), labels=FALSE) \%>\%
+   axis(side=c(1,3), n.minor=4, labels=FALSE)
+gs
+
+gs <- gsplot() \%>\%
+   points(1:10, 1:10) \%>\%
+   axis(1, at = seq(0,10,by=0.1),labels=FALSE, tcl=0.15)
+gs
+
+gs <- gsplot() \%>\%
+   points(1:5, c(1,10,100,1000,10000), log="y", las=1) \%>\%
+   axis(side=c(2,4), labels=FALSE, n.minor=4)
+gs
+gs <- gsplot() \%>\%
+   lines(1:5, c(1,10,100,1000,10000), log="y", axes=FALSE) \%>\%
+   axis(side=c(2,4), labels=FALSE, n.minor=4)
 gs
 }
 

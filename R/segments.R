@@ -1,6 +1,6 @@
 #' gsplot segments
 #'
-#' Creates line segments in the plot. 
+#' Creates line segments in the plot.  See \code{\link[graphics]{segments}} for more details.
 #' 
 #' @details Additional graphical parameter inputs:
 #' \itemize{
@@ -30,7 +30,7 @@ segments <- function(object, ...) {
 
 segments.gsplot <- function(object, x0, y0, x1=x0, y1=y0, ..., legend.name=NULL, side=c(1,2)){
   current_list <- config("segments")
-  arguments <- list(x0=x0, y0=y0, x1=x1, y1=y1, ...)
+  arguments <- append(list(x0=x0, y0=y0, x1=x1, y1=y1), c(...))
   
   indicesToAdd <- !(names(current_list) %in% names(arguments))
   arguments <- append(arguments, current_list[indicesToAdd])

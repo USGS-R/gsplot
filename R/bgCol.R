@@ -17,7 +17,7 @@
 #' gs
 #' 
 #' gsPlain <- gsplot()%>%
-#'    points(1,2) %>%
+#'    points(1:100, rnorm(100,mean=10000, sd=1000), log="y") %>%
 #'    bgCol(col="lightgrey")
 #' gsPlain
 bgCol <- function(object, ...) {
@@ -40,7 +40,23 @@ bgCol.gsplot <- function(object, col, ..., legend.name=NULL, side=c(1,2)){
 
 bgCol.default <- function(col,...){
   
-  rect(par("usr")[1],par("usr")[3],par("usr")[2],par("usr")[4],col = col,...)
+  if(par()$xlog){
+    x1 <- 10^(par("usr")[1])
+    x2 <- 10^(par("usr")[2])
+  } else {
+    x1 <- par("usr")[1]
+    x2 <- par("usr")[2]  
+  }
+  
+  if(par()$ylog){
+    y1 <- 10^(par("usr")[3])
+    y2 <- 10^(par("usr")[4])    
+  } else {
+    y1 <- par("usr")[3]
+    y2 <- par("usr")[4]  
+  }
+  
+  rect(x1,y1,x2,y2,col = col,...)
   
 }
 

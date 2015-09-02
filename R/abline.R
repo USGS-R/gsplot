@@ -1,6 +1,6 @@
 #' gsplot abline
 #'
-#' Creates straight lines on the existing gsplot object.  
+#' Creates straight lines on the existing gsplot object. See \code{\link[graphics]{abline}} for more details. 
 #' 
 #' @param object gsplot object
 #' @param \dots Further graphical parameters may also be supplied as arguments. See 'Details'.

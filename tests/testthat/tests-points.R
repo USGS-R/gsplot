@@ -15,13 +15,13 @@ test_that("graphics examples work", {
 
 context("points arguments")
 test_that("setting params works as expected",{
-  expect_equal(gsplot:::graphics_params("graphics","points", 5, y = NULL), list(x=5, y=NULL))
-  expect_equal(gsplot:::graphics_params("graphics","points", y=5, x=0), list(x=0, y=5))
+  expect_equal(gsplot:::function_args("graphics","points", 5, y = NULL), list(x=5, y=NULL))
+  expect_equal(gsplot:::function_args("graphics","points", y=5, x=0), list(x=0, y=5))
 })
 
 test_that("setting non-formal params works as expected",{
-  expect_equal(gsplot:::graphics_params("graphics","points", y=5, x=0, col='blue'), list(x=0, y=5, col='blue'))
-  expect_equal(gsplot:::graphics_params("graphics","points", y=5, x=0, lty=2, col='red'), list(x=0, y=5, lty=2, col='red'))
+  expect_equal(gsplot:::function_args("graphics","points", y=5, x=0, col='blue'), list(x=0, y=5, col='blue'))
+  expect_equal(gsplot:::function_args("graphics","points", y=5, x=0, lty=2, col='red'), list(x=0, y=5, lty=2, col='red'))
 })
 
 test_that("testing content of gsplot list", {
@@ -39,5 +39,22 @@ test_that("testing content of gsplot list", {
   expect_equal(gs$points$arguments$pch,18)
     
   
+})
+
+test_that("override works w/ formulas",{
+  dev.off()
+  plot(-4:4, -4:4, type = "n") 
+  points(y~x, data=list(x=-3:3,y=-3:3))  # // no errors
+})
+
+test_that("points.gsplot accepts formulas",{
+  gs <- gsplot() %>%
+       points(y~x, data=list(x=-3:3,y=-3:3))
+  views <- gsplot:::group_views(gs) %>% 
+    gsplot:::set_view_lim()
+  expect_equal(views$view$window$xlim, c(-3,3))
+  expect_equal(views$view$window$ylim, c(-3,3))
+  gs
+           
 })
 

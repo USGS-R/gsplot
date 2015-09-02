@@ -14,6 +14,7 @@
 #' @param object gsplot object
 #' @param \dots Further graphical parameters may also be supplied as arguments. See 'Details'.
 #'  
+#' @rdname callouts
 #' @export
 #' @examples
 #' gs <- gsplot()
@@ -26,17 +27,13 @@ callouts <- function(object, ...) {
 }
 
 
-callouts.gsplot <- function(object, x, y, labels=NA, length=0.1, angle=30, ..., side=c(1,2)){
-  current_list <- config("callouts")
-  arguments <- list(...)
+callouts.gsplot <- function(object, ..., side=c(1,2)){
   
-  indicesToAdd <- !(names(current_list) %in% names(arguments))
-  arguments <- append(list(x=x, y=y, labels=labels, length=length, angle=angle), arguments)
-  arguments <- append(arguments, current_list[indicesToAdd]) 
-  
-  object <- append(object,  list(callouts = list(arguments = arguments, 
-                                             gs.config=list(side = side))))
-  return(gsplot(object))
+  fun.name <- "callouts"
+  to.gsplot <- list(list(arguments = set_args(fun.name, package='gsplot', ...), 
+                         gs.config=list(side = side))) %>% 
+    setNames(fun.name)
+  return(gsplot(append(object, to.gsplot)))
 }
 #' Default for adding callouts to a plot.
 #' 
@@ -46,23 +43,53 @@ callouts.gsplot <- function(object, x, y, labels=NA, length=0.1, angle=30, ..., 
 #' @param length relative (percentage of window width and height) distance for callout
 #' @param angle callout line angle
 #' 
-#' @keywords internal
+#' @rdname callouts
 #' @export
-callouts.default <- function(x, y, labels, length, angle, ...){
+callouts.default <- function(x, y=NULL, labels=NA, length=0.1, angle='auto', ...){
   
-  stopifnot(angle >= 0, angle <= 360)
+  x <- x[!is.na(labels)]
+  y <- y[!is.na(labels)]
+  labels <- labels[!is.na(labels)]
+  
   # // to do: possibly support angle and length as vectors equal in length to x 
   x.usr <- par("usr")[c(1,2)]
   if (par("xlog"))
     x.usr <- 10^x.usr
   y.usr <- par("usr")[c(3,4)]
-  if (par("xlog"))
+  if (par("ylog"))
     y.usr <- 10^y.usr
-
+  
   xrange <- diff(x.usr)
   yrange <- diff(y.usr)
-  x1 = x + length * xrange * cos(2*pi*(angle/360));
-  y1 = y + length * yrange * sin(2*pi*(angle/360));
+  
+  try.angle <- function() {
+    x1 = x + length * xrange * cos(2*pi*(angle/360));
+    y1 = y + length * yrange * sin(2*pi*(angle/360));
+    return(c(x1,y1))
+  }
+  
+  if (angle=='auto') {
+    angle <- 30
+    x.y <- try.angle()
+    
+    if(x.y[2] > y.usr[2]){
+      angle <- 330
+      x.y <- try.angle()
+      if(x.y[1] > x.usr[2]){angle <- 210}
+    }
+    
+    if(x.y[1] > x.usr[2]) {
+      angle <- 210
+      x.y <- try.angle()
+      if(x.y[2] < y.usr[1]){angle <- 150}
+    }
+  }
+  
+  stopifnot(angle >= 0, angle <= 360)
+  x.y <- try.angle()
+  x1 <- x.y[1]
+  y1 <- x.y[2]
+  
   if (angle >= 315 | angle <= 45){
     pos = 4
   } else if (angle > 45 & angle <= 135) {

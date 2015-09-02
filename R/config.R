@@ -42,7 +42,9 @@ config <- function(type, ...){
   allowedTypes <- c("par","points","lines","axis","plot",
                     "abline","legend","title","text",
                     "mtext","grid","segments",
-                    "error_bar","arrows","bgCol","callouts","orderToPlot")
+                    "error_bar","arrows","bgCol","callouts",
+                    "rect", "polygon", "symbols", 
+                    "curve", "orderToPlot")
   
   type <- match.arg(type, choices = allowedTypes)
   
@@ -69,6 +71,10 @@ config <- function(type, ...){
                          error_bar=names(formals(error_bar.default)),
                          bgCol=names(formals(bgCol.default)),
                          callouts=names(formals(callouts.default)),
+                         rect=names(formals(graphics::rect)),
+                         polygon=names(formals(graphics::polygon)),
+                         symbols=names(formals(graphics::symbols)),
+                         curve=names(formals(graphics::curve)),
                          orderToPlot='order',
                          formalsNames)
   

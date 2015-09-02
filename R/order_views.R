@@ -1,8 +1,8 @@
 set_view_order <- function(views, order){
   #Start enforcing some order. Background color has to go in back...I'd also put grid in back:
   
-  dataViews <- views[-which(names(views) %in% c("par","legend"))]
-  otherViews <- views[which(names(views) %in% c("par","legend"))]
+  dataViews <- views[-which(names(views) %in% c("par","legend", "axis"))]
+  otherViews <- views[which(names(views) %in% c("par","legend", "axis"))]
   
   for(specialCall in order){
     if(specialCall %in% names(do.call(c, unname(views)))){
@@ -22,7 +22,6 @@ set_view_order <- function(views, order){
   }
 
   views <- append(dataViews, otherViews)
-
   
   return(views)
 }

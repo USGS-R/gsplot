@@ -13,7 +13,7 @@ legend(object, ...)
 }
 \description{
 If called with gsplot as first argument, will set the internal gsplot configuration
-for legends
+for legends. See \code{\link[graphics]{legend}} for more details.
 }
 \details{
 Additional graphical parameter inputs:

@@ -1,8 +1,8 @@
 #' gsplot text
 #'
-#' Adding text inside of the plotting area.
+#' Adding text inside of the plotting area.  See \code{\link[graphics]{text}} for more details.
 #' 
-#' @details Often used with \code{\link{arrows}} to label a feature on the plot. Additional graphical parameter inputs:
+#' @details Additional graphical parameter inputs:
 #' \itemize{
 #'  \item{\code{x}} {numeric vector specifying x-coordinate(s) of text position(s)} 
 #'  \item{\code{y}} {numeric vector specifying y-coordinate(s) of text position(s)}
@@ -43,14 +43,9 @@ text <- function(object, ...) {
 
 
 text.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
-  current_list <- config("text")
-  arguments <- list(...)
-  
-  indicesToAdd <- !(names(current_list) %in% names(arguments))
-  arguments <- append(arguments, current_list[indicesToAdd])
-  
-  object <- append(object,  list(text = list(arguments = arguments, 
-                                              gs.config=list(legend.name = legend.name, 
-                                                             side = side))))
-  return(gsplot(object))
+  fun.name <- "text"
+  to.gsplot <- list(list(arguments = set_args(fun.name, ...), 
+                         gs.config=list(legend.name = legend.name, side = side))) %>% 
+    setNames(fun.name)
+  return(gsplot(append(object, to.gsplot)))
 }

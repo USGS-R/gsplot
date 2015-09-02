@@ -19,6 +19,8 @@ calc_views <- function(gsplot){
   
   views <- set_view_order(views, config("orderToPlot")$order)
   
+  views <- set_window(views)
+  
   return(views)
 }
 
@@ -26,6 +28,7 @@ calc_views <- function(gsplot){
 group_views <- function(gsplot){
   unique_sides <- unique(lapply(gsplot, function(x) x[['gs.config']][['side']]))
   unique_sides <- unique_sides[!sapply(unique_sides, is.null)]
+  
   views <- rep(list(view=c()),length(unique_sides))
   
   for (i in seq_len(length(unique_sides))){
@@ -35,13 +38,32 @@ group_views <- function(gsplot){
   for (i in seq_len(length(gsplot))){
     draw_sides <- gsplot[[i]][['gs.config']][['side']]
     if (!is.null(draw_sides)){
-      # // to do: verify sides are in order: x then y
-      view_i <- which(sapply(unique_sides, function(x) x[1] == draw_sides[1] & x[2] == draw_sides[2]))
-      to_draw <- setNames(list(gsplot[[i]][['arguments']]), names(gsplot[i]))
-      views[[view_i]] <- append(views[[view_i]], to_draw)
+      if(length(draw_sides) == 1){
+        view_i <- which(sapply(unique_sides, function(x) x[1] == draw_sides))
+        to_draw <- setNames(list(gsplot[[i]][['arguments']]), names(gsplot[i]))
+        
+        if(draw_sides %% 2 == 0){
+          draw_sides <- c(1,draw_sides)
+        } else {
+          draw_sides <- c(draw_sides,2)
+        }
+        
+        views[[view_i]] <- list(window=list(side=draw_sides))
+        views[[view_i]] <- append(views[[view_i]], to_draw)           
+      } else {
+        # // to do: verify sides are in order: x then y
+        view_i <- which(sapply(unique_sides, function(x) x[1] == draw_sides[1] & x[2] == draw_sides[2]))
+        to_draw <- setNames(list(gsplot[[i]][['arguments']]), names(gsplot[i]))
+        views[[view_i]] <- append(views[[view_i]], to_draw)        
+      }
+      
+
     } else {
       # // if field isn't associated with a side(s), it is moved up to top level (e.g., legend)
-      views[[names(gsplot[i])]] <- gsplot[[i]]
+      newList <- list()
+      var <- names(gsplot[i])
+      newList[[var]] <- gsplot[[i]]
+      views <- append(views, newList)
     }
   }
   
@@ -83,15 +105,20 @@ set_view_lim <- function(views){
   views <- set_view_list(views, var = 'xlim', na.action=NA)
   views <- set_view_list(views, var = 'ylim', na.action=NA)
   
+
   data <- list(y=summarize_args(views,c('y','y1','y0'),ignore=c('window','gs.config')), 
                x=summarize_args(views,c('x','x1','x0'),ignore=c('window','gs.config')))
+  axs <- list(yaxs=summarize_args(views,c('yaxs'),ignore=c('window','gs.config')),
+              xaxs=summarize_args(views,c('xaxs'),ignore=c('window','gs.config')))
   
-  definedSides <- unlist(unname(do.call(c,views)),recursive = FALSE)
+  definedSides <- unlist(c_unname(views),recursive = FALSE)
   definedSides <- unique(unname(unlist(definedSides[grep("side", names(definedSides))])))
 
   for(var in c('y','x')){
     for (i in names(data[[var]])){
+      n.i <- as.numeric(i)
       lim.name <- paste0(var,'lim')
+      axs.name <- paste0(var, 'axs')
       view.side <- get_view_side(views, as.numeric(i), var)
       match.side <- as.character(views_with_side(views, view.side))
       data.var <- c_unname(data[[var]][match.side])
@@ -109,18 +136,43 @@ set_view_lim <- function(views){
       }
       
       data.lim <- range(data.var[is.finite(data.var)])
-      usr.lim <- views[[as.numeric(i)]][['window']][[lim.name]][1:2]
-      views[[as.numeric(i)]][['window']][[lim.name]] <- data.lim
-      views[[as.numeric(i)]][['window']][[lim.name]][!is.na(usr.lim)] <- usr.lim[!is.na(usr.lim)]
+      usr.lim <- views[[n.i]][['window']][[lim.name]][1:2]
+      views[[n.i]][['window']][[lim.name]] <- data.lim
+      views[[n.i]][['window']][[lim.name]][!is.na(usr.lim)] <- usr.lim[!is.na(usr.lim)]
+      
+      usr.axs <- axs[[axs.name]][[n.i]]
+      
+      if (any(!is.na(usr.axs)) && usr.axs[which(!is.na(usr.axs))] == 'o') {
+        view.i <- which(!names(views[[n.i]]) %in% c('window', 'gsplot'))[which(!is.na(usr.axs))]
+        buffer <- lim_buffer(views[[n.i]][['window']], lim.name)
+        lim <- views[[n.i]][['window']][[lim.name]][[which(is.na(usr.lim))]]
+        buffered.lim <- ifelse(which(is.na(usr.lim)) == 1, lim - buffer, lim + buffer)
+        views[[n.i]][['window']][[lim.name]][[which(is.na(usr.lim))]] <- buffered.lim
+        views[[n.i]][[view.i]][[axs.name]] <- NULL
+        views[['par']][[axs.name]] <- 'i'
+      }
   
     }
+
   }
 
   return(views)
 }
 
+lim_buffer <- function(window, lim.name, buffer=0.04){
+  # needs to read window[['log']] and use a different action if grepl(substr(lim.name,1,1), window[['log']])
+  if (grepl(substr(lim.name,1,1), window[['log']]))
+    stop('logged buffer not implemented')
+  
+  return(0.04*diff(window[[lim.name]]))
+  
+}
 c_unname <- function(list){
   unname(do.call(c, list))
+}
+
+unname_c <- function(list){
+  do.call(c, unname(list))
 }
 views_with_side <- function(views, side){
   with.side = lapply(views, function(x) any(x[['window']][['side']] %in% side))
@@ -146,7 +198,6 @@ summarize_args <- function(views, var, na.action,ignore='gs.config'){
     x <- views[[i]][!names(views[[i]]) %in% ignore]
     valStuff <- lapply(x, function(x) strip_pts(x, var))
     values[[i]] <- c_unname(valStuff)
-
   }
   names(values) <- view_i
   return(values)
@@ -167,8 +218,61 @@ strip_pts <- function(list, var){
   for (v in var){
     if (v %in% names(list))
       out <- append(out, list[[v]])
-    else
-      out <- append(out, NA)
+    else {
+      u.list <- unname_c(list)
+      if(v %in% names(u.list))
+        out <- append(out, u.list[[v]])
+      else
+        out <- append(out, NA)
+    }
   }
   return(out)
+}
+
+set_window <- function(list){
+  
+  listOut <- list
+  pars <- list[['par']]
+  
+  for(j in which(names(list) == "view")){
+    
+    window <- list[[j]][['window']]
+    plots <- list[[j]]
+    plots[['window']] <- NULL
+    
+    var <- c("axes","ann","frame.plot") #Add panel.first, panel.last, asp, and "main","sub","frame.plot"...without breaking title
+    varPar <- c("xaxs","yaxs","xaxt","yaxt","las")
+    
+    window[var] <- TRUE
+    
+    for(i in names(plots)){
+      for(k in var){
+        if(k %in% names(plots[[i]])){
+          window[[k]] <- plots[[i]][[k]]
+        } 
+        plots[[i]][[k]] <- NULL
+      }
+      pars[varPar[varPar %in% names(plots[[i]])]] <- plots[[i]][names(plots[[i]]) %in% varPar]
+      plots[[i]][names(plots[[i]]) %in% varPar] <- NULL
+    }
+    
+    for (h in which(names(list) == "axis")) {
+      if(list[[h]][['arguments']][['side']] %in% window[['side']]) {
+        reverse <- list[[h]][['gs.config']][['reverse']]
+        if (!is.null(reverse) && reverse ) {
+          sideToReverse <- list[[h]][['arguments']][['side']]
+          axes <- ifelse(sideToReverse %% 2 == 0, 'y', 'x')
+          axisReverse <- paste0(axes, "lim")
+          window[[axisReverse]] <- rev(window[[axisReverse]])
+        }
+      }
+    }
+    
+    listOut[[j]] <- plots
+    listOut[[j]][['window']] <- window
+  }
+  
+  listOut[['par']] <- pars
+  
+  return(listOut)
 }

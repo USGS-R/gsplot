@@ -12,7 +12,7 @@ points(object, ...)
 \item{\dots}{Further graphical parameters may also be supplied as arguments. See 'Details'.}
 }
 \description{
-Creates points on gsplot.
+Creates points on gsplot.   See \code{\link[graphics]{points}} for more details.
 }
 \details{
 Additional graphical parameter inputs:
@@ -22,13 +22,29 @@ Additional graphical parameter inputs:
  \item{\code{xlim}} {vector containing the lower and upper limit for the x-axis}
  \item{\code{ylim}} {vector containing the lower and upper limit for the y-axis}
  \item{\code{col, pch}} {parameters describing the color and type of point, respectively}
- \item{\code{legend.name}} {name that appears the legend, see \code{\link{legend}}}
+ \item{\code{legend.name}} {name that appears in the legend, see \code{\link{legend}}}
+ \item{\code{error_bar}} {add error bars to the defined points, see \code{\link{error_bar}}
+ for arguments, must add arguments as a list}
+ \item{\code{callouts}} {add callouts and text to the defined points, see \code{\link{callouts}}
+ for arguments, must add arguments as a list}
   }
 }
 \examples{
 gs <- gsplot()
-gsNew <- points(gs, y=1, x=2, col="blue", pch=18)
+gsNew <- points(gs, y=1, x=2, col="blue", pch=18,frame.plot=FALSE)
 gsNew <- points(gsNew, c(3,4,3), c(2,4,6), ylim=c(0,10))
 gsNew
+
+gs <- gsplot() \%>\%
+         points(x=1:5, y=1:5, xlim=c(0,10), ylim=c(0,10),
+               callouts=list(labels=c(rep(NA, 4), "oh")),
+               error_bar=list(y.high=1))
+gs
+
+gs2 <- gsplot() \%>\%
+         points(1:5, c(1,10,100,1000,10000), log="y", las=1) \%>\%
+         axis(side=c(2,4), labels=FALSE, n.minor=4)
+
+gs2
 }
 

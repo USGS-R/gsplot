@@ -1,17 +1,21 @@
-pch: 19
-xaxs: "i"
-yaxs: "i"
+xaxs: "r"
+yaxs: "r"
 tcl: 0.3
 mgp: [1.5, 0.3, 0.0]
-lty: 1
-lwd: 1
 points:
   pch: 6
   col: "red"
-lines: NULL
+lines: 
+  col: "black"
+  lty: 1
+  lwd: 1
 abline:
   col: "grey"
-legend: NULL
+  lty: 1
+  lwd: 1
+legend: 
+  title: "EXPLANATION"
+  location: "topright"
 axis:
   at: NULL
   labels: TRUE
@@ -27,8 +31,12 @@ grid:
   lwd: 1
   lty: 2
 segments: NULL
-error_bar_horizontal: NULL
-error_bar_vertical: NULL
+error_bar:
+  y.high: 0 
+  y.low: 0 
+  x.high: 0
+  x.low: 0
+  epsilon: 0.1
 arrows: NULL
 callouts:
   col: 'black'
