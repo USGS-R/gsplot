@@ -67,7 +67,7 @@ set_view_list <- function(views, var, na.action=NA, remove=TRUE, ignore=NULL){
   view_i <- which(names(views) %in% "view")
   for (i in view_i){
     values <- lapply(views[[i]][!names(views[[i]]) %in% ignore], function(x) strip_pts(x, var))
-    val.i <- unname(which(!is.na(values))) # which row to use
+    val.i <- which(!is.na(values) & values != na.action) # which row to use
     if (length(val.i) == 0){
       values = na.action
     } else {
