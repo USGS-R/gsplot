@@ -41,7 +41,7 @@ group_views <- function(gsplot){
     view.1 <- views_with_side(views, add_sides[1])
     view.2 <- views_with_side(views, add_sides[2])
     if (!is.null(view.1) && !is.null(view.2) && any(view.2==view.1)){
-      v.i = view.2[which(view.2==view.1)]
+      v.i = view.2[which(view.2 %in% view.1)]
       views[[v.i]] <- append(views[[v.i]], to_draw)
     } else{
       views <- append(list(view = append(list(window=list(side=add_sides)), to_draw)), views)
@@ -59,7 +59,10 @@ group_views <- function(gsplot){
 
 set_sides <- function(sides){
   if (length(sides)==1){
-    ifelse(sides %% 2 == 0, c(1,sides), c(sides,2))
+    if(sides %% 2 == 0)
+      sides = c(1,sides)
+    else 
+      sides = c(sides,2)
   } 
   return(sides)
 }
