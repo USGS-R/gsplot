@@ -40,10 +40,12 @@ group_views <- function(gsplot){
     # // to do: verify sides are in order: x then y
     view.1 <- views_with_side(views, add_sides[1])
     view.2 <- views_with_side(views, add_sides[2])
-    if (!is.null(view.1) && !is.null(view.2) && view.2==view.1)
-      views[[view.1]] <- append(views[[view.1]], to_draw)
-    else
+    if (!is.null(view.1) && !is.null(view.2) && any(view.2==view.1)){
+      v.i = view.2[which(view.2==view.1)]
+      views[[v.i]] <- append(views[[v.i]], to_draw)
+    } else{
       views <- append(list(view = append(list(window=list(side=add_sides)), to_draw)), views)
+    }
   } else {
     # // if field isn't associated with a side(s), it is moved up to top level (e.g., legend)
     newList <- list()
@@ -65,13 +67,11 @@ set_view_list <- function(views, var, na.action=NA, remove=TRUE, ignore=NULL){
   view_i <- which(names(views) %in% "view")
   for (i in view_i){
     values <- lapply(views[[i]][!names(views[[i]]) %in% ignore], function(x) strip_pts(x, var))
-    val.i <- which(!is.na(values)) # which row to use
+    val.i <- unname(which(!is.na(values))) # which row to use
     if (length(val.i) == 0){
       values = na.action
     } else {
-      if (length(unique(rownames(values[val.i]))) > 1)
-        warning('for view ', i,', more than one ',var,' specified. ', unique(rownames(values[val.i])))
-      values <- unname(values[val.i])[[1]]
+      values <- unname_c(values[val.i])
     }
     if (remove)
       views[[i]] <- lapply(views[[i]], function(x) remove_field(x, var))
