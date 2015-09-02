@@ -115,7 +115,7 @@ draw_legend <- function(gsplot) {
         smartLegend <- data.frame(row.names=names(formals(graphics::legend)), stringsAsFactors = FALSE)	
         views = views(gsplot)
         for (v in seq_len(length(views))){
-          for (i in 1:length(names(views[[v]])) ) {
+          for (i in seq_len(length(names(views[[v]])))) {
             
             plotElement <- names(views[[v]][i])
             
