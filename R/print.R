@@ -51,7 +51,7 @@ print.gsplot <- function(x, ...){
     plot.window(xlim = window$xlim, ylim = window$ylim, log = window$log)
 
     # -- call functions -- 
-    to_gsplot(plots)
+    to_gsplot(lapply(plots, function(x) x[!names(x) %in% 'legend.name']))
 
 
     if(window$axes){
