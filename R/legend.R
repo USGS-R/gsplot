@@ -154,7 +154,7 @@ draw_legend <- function(gsplot) {
         }
         
         #take out any calls with all NA, and add overall legend calls from legendParams
-        indices <- which(sapply(seq(1:length(smartLegend)), function(x) {!all(is.na(smartLegend[[x]]))}))
+        indices <- unlist(sapply(seq_len(length(smartLegend)), function(x) {!all(is.na(smartLegend[[x]]))}))
         legendParams <- append(legendParams, smartLegend[indices])
         
         # change any numeric linetypes to character
