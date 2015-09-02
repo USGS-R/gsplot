@@ -37,6 +37,7 @@ group_views <- function(gsplot){
     
   if (!is.null(add_sides)){
     to_draw <- setNames(list(tail.gs[['arguments']]), tail.nm)
+    attr(to_draw, 'legend.name') <- tail.gs[['gs.config']][['legend.name']]
     # // to do: verify sides are in order: x then y
     view.1 <- views_with_side(views, add_sides[1])
     view.2 <- views_with_side(views, add_sides[2])

@@ -71,7 +71,7 @@ print.gsplot <- function(x, ...){
     box()
   }
 
-  #draw_legend(views)
+  draw_legend(views)
   draw_axis(views)
   
 }
