@@ -63,41 +63,56 @@ callouts.default <- function(x, y=NULL, labels=NA, length=0.1, angle='auto', ...
   yrange <- diff(y.usr)
   
   try.angle <- function() {
-    x1 = x + length * xrange * cos(2*pi*(angle/360));
-    y1 = y + length * yrange * sin(2*pi*(angle/360));
+    x1 = x[i] + length[i] * xrange * cos(2*pi*(angle.loop/360));
+    y1 = y[i] + length[i] * yrange * sin(2*pi*(angle.loop/360));
     return(c(x1,y1))
   }
   
-  if (angle=='auto') {
-    angle <- 30
+  num.callouts <- max(length(x), length(y)) #determine how many points are given for callouts
+  if (length(angle) < num.callouts) {angle <- rep(angle, num.callouts)} #duplicate angles if only one given
+  if (length(length) < num.callouts) {length <- rep(length, num.callouts)} #duplicate lengths if only one given
+  if (length(x[!is.na(x)])==1) {x <- rep(x[1], num.callouts)}  #duplicate x values if only one given
+  if (length(y[!is.na(y)])==1) {y <- rep(y[1], num.callouts)}  #duplicate y values if only one given
+  x1 <- c()
+  y1 <- c()
+  pos <- c()
+  
+  for (i in 1:num.callouts) {
+    
+    angle.loop <- angle[i]
+    
+    if (angle.loop=='auto') {
+      angle.loop <- 30
+      x.y <- try.angle()
+      
+      if(x.y[2] > y.usr[2]){
+        angle.loop <- 330
+        x.y <- try.angle()
+        if(x.y[1] > x.usr[2]){angle.loop <- 210}
+      }
+      
+      if(x.y[1] > x.usr[2]) {
+        angle.loop <- 210
+        x.y <- try.angle()
+        if(x.y[2] < y.usr[1]){angle.loop <- 150}
+      }
+    }
+    
+    stopifnot(angle.loop >= 0, angle.loop <= 360)
     x.y <- try.angle()
+    x1[i] <- x.y[1]
+    y1[i] <- x.y[2]
     
-    if(x.y[2] > y.usr[2]){
-      angle <- 330
-      x.y <- try.angle()
-      if(x.y[1] > x.usr[2]){angle <- 210}
+    if (angle.loop >= 315 | angle.loop <= 45){
+      pos[i] = 4
+    } else if (angle.loop > 45 & angle.loop <= 135) {
+      pos[i] = 3
+    } else if (angle.loop > 135 & angle.loop <= 225){
+      pos[i] = 2
+    } else {
+      pos[i] = 1
     }
     
-    if(x.y[1] > x.usr[2]) {
-      angle <- 210
-      x.y <- try.angle()
-      if(x.y[2] < y.usr[1]){angle <- 150}
-    }
-  }
-  
-  stopifnot(angle >= 0, angle <= 360)
-  x.y <- try.angle()
-  x1 <- x.y[1]
-  y1 <- x.y[2]
-  
-  if (angle >= 315 | angle <= 45){
-    pos = 4
-  } else if (angle > 45 & angle <= 135) {
-    pos = 3
-  } else if (angle > 135 & angle <= 225){
-    pos = 2
-  } else {
-    pos = 1
   }
   
   segments(x0=x, y0=y, x1=x1, y1=y1, ...)
