@@ -84,9 +84,13 @@ callouts.default <- function(x, y=NULL, labels=NA, length=0.1, angle='auto', ...
     good.y1 <- y1 >= y.usr[1] & y1 <= y.usr[2]
     good.x1 <- x1 >= x.usr[1] & x1 <= x.usr[2]
     good.pt <- good.y1 & good.x1
-    angle <- auto.angle[apply(good.pt, 1, function(z){
-      ifelse(!any(z), 1, min(which(z)))
-    })]
+    if (!is.null(dim(good.pt))){
+      angle <- auto.angle[apply(good.pt, 1, function(z){
+        ifelse(!any(z), 1, min(which(z)))
+      })]
+    } else { 
+      angle <- auto.angle[ifelse(!any(good.pt), 1, min(which(good.pt)))]
+    }
     x1 <- x + length * xrange * cos(2*pi*(angle/360))
     y1 <- y + length * yrange * sin(2*pi*(angle/360))
   }
