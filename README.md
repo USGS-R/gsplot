@@ -76,7 +76,7 @@ plotting order
 library(gsplot)
 gs <- gsplot() %>% 
      lines(x=1:2, y=2:1, lwd=3, xlab='cat', col='red', legend.name="Lines 1") %>% 
-     lines(x=1:2, y=1:2, lwd=3, col='blue', legend.name="Lines 1") %>% 
+     lines(x=1:2, y=1:2, lwd=3, col='blue', legend.name="Lines 2") %>% 
      legend()
 gs
 ```
