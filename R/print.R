@@ -41,7 +41,7 @@ print.gsplot <- function(x, ...){
   }
 
   
-  for (i in rev(which(names(views) %in% 'view'))){
+  for (i in which(names(views) %in% 'view')){
     plots = views[[i]]
     plots[['window']] <- NULL
     window = views[[i]][['window']]

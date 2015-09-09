@@ -28,11 +28,16 @@ views <- function(gsplot){
   gsplot[names(gsplot) %in% 'view']
 }
 
+non_views <- function(gsplot){
+  gsplot[!names(gsplot) %in% 'view']
+}
+
 group_views <- function(gsplot){
   tail.gs <- gsplot[[length(gsplot)]]
   tail.nm <- names(gsplot[length(gsplot)])
   gsplot[[length(gsplot)]] <- NULL
-  views <- gsplot # existing
+  views <- views(gsplot) # existing
+  non.views <- non_views(gsplot)
   add_sides <- set_sides(tail.gs[['gs.config']][['side']])
     
   if (!is.null(add_sides)){
@@ -42,18 +47,18 @@ group_views <- function(gsplot){
     view.2 <- views_with_side(views, add_sides[2])
     if (!is.null(view.1) && !is.null(view.2) && any(view.2==view.1)){
       v.i = view.2[which(view.2 %in% view.1)]
-      views[[v.i]] <- append(to_draw, views[[v.i]])
+      views[[v.i]] <- append(views[[v.i]], to_draw)
     } else{
-      views <- append(list(view = append(to_draw, list(window=list(side=add_sides)))), views)
+      views <- append(views, list(view = append(to_draw, list(window=list(side=add_sides)))))
     }
   } else {
     # // if field isn't associated with a side(s), it is moved up to top level (e.g., legend)
     newList <- list()
     newList[[tail.nm]] <- tail.gs
-    views <- append(views, newList)
+    non.views <- append(non.views, newList)
   }
 
-  return(views)
+  return(append(views, non.views))
 }
 
 set_sides <- function(sides){
