@@ -10,7 +10,7 @@ test_that("testing content of gsplot list for bgCol", {
     points(1:10, col="black")  %>% 
     bgCol(col="coral2")
   
-  expect_true(any(names(gs) %in% "bgCol"))
+  expect_true(any(names(gs[['view']]) %in% "bgCol"))
   
 })
 

@@ -113,48 +113,51 @@ draw_legend <- function(gsplot) {
       if(!is.null(legendParams)) {
         
         smartLegend <- data.frame(row.names=names(formals(graphics::legend)), stringsAsFactors = FALSE)	
-        
-        for (i in 1:length(names(gsplot)) ) {
-          
-          plotElement <- names(gsplot)[[i]]
-          
-          params <- gsplot[[i]]$gs.config[which(names(gsplot[[i]]$gs.config) == "legend.name")]
-          if (length(params) == 0 || is.null(params$legend.name)) {next}
-          
-          names(params)[which(names(params) %in% "legend.name")] <- 'legend' 
-          params <- append(params, gsplot[[i]]$arguments[which(names(gsplot[[i]]$arguments) %in% names(formals(graphics::legend))[-c(1,2)])])
-          type <- gsplot[[i]]$arguments$type
-          
-          if (plotElement == "points") {
-            names(params)[which(names(params) %in% "bg")] <- 'pt.bg'
-            names(params)[which(names(params) %in% "cex")] <- 'pt.cex'
-            names(params)[which(names(params) %in% "lwd")] <- 'pt.lwd'
-            if (!is.null(type) && type %in% c("l", "o", "b", "c", "s", "S", "h")) {
-              if (all(!names(params) %in% c("lty"))) {params <- append(params, list(lty=par("lty")))}
-            } 
+        views = views(gsplot)
+        for (v in seq_len(length(views))){
+          for (i in seq_len(length(names(views[[v]])))) {
+            
+            plotElement <- names(views[[v]][i])
+            
+            params <- c('legend'=views[[v]][[i]][['legend.name']])
+            if (is.null(params)) {next}
+            
+            params <- append(params, views[[v]][[i]][which(names(views[[v]][[i]]) %in% names(formals(graphics::legend))[-c(1,2)])])
+            type <- views[[v]][[i]][['arguments$type']]
+            
+            if (plotElement == "points") {
+              names(params)[which(names(params) %in% "bg")] <- 'pt.bg'
+              names(params)[which(names(params) %in% "cex")] <- 'pt.cex'
+              names(params)[which(names(params) %in% "lwd")] <- 'pt.lwd'
+              if (!is.null(type) && type %in% c("l", "o", "b", "c", "s", "S", "h")) {
+                if (all(!names(params) %in% c("lty"))) {params <- append(params, list(lty=par("lty")))}
+              } 
+            }
+            if (plotElement == "lines" && !is.null(type) && type %in% c("p", "o", "b", "c")) {
+              if (all(!names(params) %in% c("pch"))) {params <- append(params, list(pch=par("pch")))}
+              params <- append(params, list(pt.lwd=params$lwd))
+              if (type == "p") {params <- params[-which(names(params) %in% c('lty', 'lwd'))]}
+              names(params)[which(names(params) %in% "bg")] <- 'pt.bg'
+              names(params)[which(names(params) %in% "cex")] <- 'pt.cex'
+            }  
+            if (plotElement %in% c("rect", "polygon")) {
+              names(params)[which(names(params) %in% "col")] <- 'fill'
+            }
+            
+            ifelse(length(smartLegend) == 0, smartLegendNames <- row.names(smartLegend), smartLegendNames <- names(smartLegend))
+            newsmartLegend <- match(smartLegendNames, names(params))
+            newsmartLegend[which(!is.na(newsmartLegend))] <- params[newsmartLegend[which(!is.na(newsmartLegend))]]
+            names(newsmartLegend) <- smartLegendNames
+            
+            smartLegend <- rbind(smartLegend, as.data.frame(newsmartLegend, stringsAsFactors = FALSE))
+            
           }
-          if (plotElement == "lines" && !is.null(type) && type %in% c("p", "o", "b", "c")) {
-            if (all(!names(params) %in% c("pch"))) {params <- append(params, list(pch=par("pch")))}
-            params <- append(params, list(pt.lwd=params$lwd))
-            if (type == "p") {params <- params[-which(names(params) %in% c('lty', 'lwd'))]}
-            names(params)[which(names(params) %in% "bg")] <- 'pt.bg'
-            names(params)[which(names(params) %in% "cex")] <- 'pt.cex'
-          }  
-          if (plotElement %in% c("rect", "polygon")) {
-            names(params)[which(names(params) %in% "col")] <- 'fill'
-          }
-          
-          ifelse(length(smartLegend) == 0, smartLegendNames <- row.names(smartLegend), smartLegendNames <- names(smartLegend))
-          newsmartLegend <- match(smartLegendNames, names(params))
-          newsmartLegend[which(!is.na(newsmartLegend))] <- params[newsmartLegend[which(!is.na(newsmartLegend))]]
-          names(newsmartLegend) <- smartLegendNames
-          
-          smartLegend <- rbind(smartLegend, as.data.frame(newsmartLegend, stringsAsFactors = FALSE))
-          
         }
         
+        
+        
         #take out any calls with all NA, and add overall legend calls from legendParams
-        indices <- which(sapply(seq(1:length(smartLegend)), function(x) {!all(is.na(smartLegend[[x]]))}))
+        indices <- unlist(sapply(seq_len(length(smartLegend)), function(x) {!all(is.na(smartLegend[[x]]))}))
         legendParams <- append(legendParams, smartLegend[indices])
         
         # change any numeric linetypes to character

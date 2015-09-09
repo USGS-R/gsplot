@@ -26,17 +26,17 @@ test_that("setting non-formal params works as expected",{
 
 test_that("testing content of gsplot list", {
   
-  gs <- gsplot(list())
+  gs <- gsplot()
   
   expect_is(gs,"gsplot")
   
   gs <- points(gs, y=1, x=2, col="blue", pch=18)
   
-  expect_true(gs$points$arguments$x == 2)
+  expect_equal(gs$view$points$x, 2)
   
-  expect_false(gs$points$arguments$col=="green")
+  expect_false(gs$view$points$col=="green")
   
-  expect_equal(gs$points$arguments$pch,18)
+  expect_equal(gs$view$points$pch,18)
     
   
 })
@@ -50,10 +50,8 @@ test_that("override works w/ formulas",{
 test_that("points.gsplot accepts formulas",{
   gs <- gsplot() %>%
        points(y~x, data=list(x=-3:3,y=-3:3))
-  views <- gsplot:::group_views(gs) %>% 
-    gsplot:::set_view_lim()
-  expect_equal(views$view$window$xlim, c(-3,3))
-  expect_equal(views$view$window$ylim, c(-3,3))
+  expect_equal(gs$view$window$xlim, c(-3,3))
+  expect_equal(gs$view$window$ylim, c(-3,3))
   gs
            
 })
