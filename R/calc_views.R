@@ -74,10 +74,10 @@ which_reals <- function(values, na.value){
     return(which(!is.na(values) & values != na.value)) # which row to use. goofy because values != NA is always NA, not logical
   
 }
-set_view_window <- function(views, var, na.value=NA, remove=TRUE, ignore=NULL){
+set_view_window <- function(views, param, na.value=NA, remove=TRUE, ignore=NULL){
   view_i <- which(names(views) %in% "view")
   for (i in view_i){
-    values <- lapply(views[[i]][!names(views[[i]]) %in% ignore], function(x) strip_pts(x, var))
+    values <- lapply(views[[i]][!names(views[[i]]) %in% ignore], function(x) strip_pts(x, param))
     val.i <- which_reals(values, na.value)
     if (length(val.i) == 0){
       values = na.value
@@ -85,27 +85,27 @@ set_view_window <- function(views, var, na.value=NA, remove=TRUE, ignore=NULL){
       values <- unname_c(values[val.i])
     }
     if (remove)
-      views[[i]] <- lapply(views[[i]], function(x) remove_field(x, var))
+      views[[i]] <- lapply(views[[i]], function(x) remove_field(x, param))
     
-    views[[i]][['window']][[var]] <- values
+    views[[i]][['window']][[param]] <- values
   }
   
   return(views)
 }
 
 set_view_log <- function(views){
-  set_view_window(views, var = 'log', na.value="")
+  set_view_window(views, param = 'log', na.value="")
 }
 
 set_view_lab <- function(views){
-  views <- set_view_window(views, var = 'ylab', na.value="")
-  set_view_window(views, var = 'xlab', na.value="")
+  views <- set_view_window(views, param = 'ylab', na.value="")
+  set_view_window(views, param = 'xlab', na.value="")
 }
 
 
 set_view_lim <- function(views){
-  views <- set_view_window(views, var = 'xlim', na.value=NA, ignore='window', remove=FALSE)
-  views <- set_view_window(views, var = 'ylim', na.value=NA, ignore='window', remove=FALSE)
+  views <- set_view_window(views, param = 'xlim', na.value=NA, ignore='window', remove=FALSE)
+  views <- set_view_window(views, param = 'ylim', na.value=NA, ignore='window', remove=FALSE)
   
   data <- list(y=summarize_args(views,c('y','y1','y0'),ignore=c('window','gs.config')), 
                x=summarize_args(views,c('x','x1','x0'),ignore=c('window','gs.config')))
@@ -116,14 +116,14 @@ set_view_lim <- function(views){
   definedSides <- unlist(c_unname(views),recursive = FALSE)
   definedSides <- unique(unname(unlist(definedSides[grep("side", names(definedSides))])))
 
-  for(var in c('y','x')){
-    for (i in names(data[[var]])){
+  for(param in c('y','x')){
+    for (i in names(data[[param]])){
       n.i <- as.numeric(i)
-      lim.name <- paste0(var,'lim')
-      axs.name <- paste0(var, 'axs')
-      view.side <- get_view_side(views, as.numeric(i), var)
+      lim.name <- paste0(param,'lim')
+      axs.name <- paste0(param, 'axs')
+      view.side <- get_view_side(views, as.numeric(i), param)
       match.side <- as.character(views_with_side(views, view.side))
-      data.var <- c_unname(data[[var]][match.side])
+      data.var <- c_unname(data[[param]][match.side])
       
       if(!is.null(data.var) && all(is.na(data.var))){
         if((view.side %% 2) == 0){ #even
@@ -131,7 +131,7 @@ set_view_lim <- function(views){
         } else { #odd
           otherSide <- c(1,3)[c(1,3) %in% definedSides[definedSides != view.side]]
         }
-        data.var <- c_unname(data[[var]][otherSide])
+        data.var <- c_unname(data[[param]][otherSide])
         if(all(is.na(data.var))){ #So do data total
           data.var <- c(0,1)
         }
@@ -182,42 +182,42 @@ views_with_side <- function(views, side){
     return(which(view.match))
 }
 
-get_view_side <- function(views, view_i, var){
+get_view_side <- function(views, view_i, param){
   i = which(names(views) %in% 'view')[view_i]
   sides <- views[[i]][['window']][['side']]
-  if (var=='y')
+  if (param=='y')
     return(sides[which(sides %% 2 == 0)])
-  else if (var=='x')
+  else if (param=='x')
     return(sides[which(sides %% 2 != 0)])
   else
-    stop('view side undefined for ',var)
+    stop('view side undefined for ',param)
 }
 
-summarize_args <- function(views, var, na.value,ignore='gs.config'){
+summarize_args <- function(views, param, na.value,ignore='gs.config'){
   
   view_i <- which(names(views) %in% "view")
   values <- list()
   for (i in view_i){
     x <- views[[i]][!names(views[[i]]) %in% ignore]
-    valStuff <- lapply(x, function(x) strip_pts(x, var))
+    valStuff <- lapply(x, function(x) strip_pts(x, param))
     values[[i]] <- c_unname(valStuff)
   }
   names(values) <- view_i
   return(values)
 }
 
-remove_field <- function(list, var){
+remove_field <- function(list, param){
  
-  for (v in var){
+  for (v in param){
     if (v %in% names(list))
       list[[v]] <- NULL
   }
   return(list)
 }
 
-strip_pts <- function(list, var){
+strip_pts <- function(list, param){
   out <- c()
-  for (v in var){
+  for (v in param){
     if (v %in% names(list))
       out <- append(out, list[[v]])
     else {
@@ -242,13 +242,13 @@ set_window <- function(list){
     plots <- list[[j]]
     plots[['window']] <- NULL
     
-    var <- c("axes","ann","frame.plot") #Add panel.first, panel.last, asp, and "main","sub","frame.plot"...without breaking title
+    param <- c("axes","ann","frame.plot") #Add panel.first, panel.last, asp, and "main","sub","frame.plot"...without breaking title
     varPar <- c("xaxs","yaxs","xaxt","yaxt","las")
     
-    window[var] <- TRUE
+    window[param] <- TRUE
     
     for(i in names(plots)){
-      for(k in var){
+      for(k in param){
         if(k %in% names(plots[[i]])){
           window[[k]] <- plots[[i]][[k]]
         } 
