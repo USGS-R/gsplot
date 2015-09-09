@@ -30,7 +30,8 @@ Imports:
     graphics,
     utils,
     methods,
-    yaml
+    yaml,
+    lazyeval
 Suggests:
     testthat,
     knitr
