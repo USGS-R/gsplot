@@ -108,9 +108,9 @@ set_view_lim <- function(views){
   views <- set_view_list(views, var = 'xlim', na.action=NA, ignore='window', remove=FALSE)
   views <- set_view_list(views, var = 'ylim', na.action=NA, ignore='window', remove=FALSE)
   
-
   data <- list(y=summarize_args(views,c('y','y1','y0'),ignore=c('window','gs.config')), 
                x=summarize_args(views,c('x','x1','x0'),ignore=c('window','gs.config')))
+
   axs <- list(yaxs=summarize_args(views,c('yaxs'),ignore=c('window','gs.config')),
               xaxs=summarize_args(views,c('xaxs'),ignore=c('window','gs.config')))
   
@@ -142,12 +142,16 @@ set_view_lim <- function(views){
       usr.lim <- views[[n.i]][['window']][[lim.name]][1:2]
       views[[n.i]][['window']][[lim.name]] <- data.lim
       views[[n.i]][['window']][[lim.name]][!is.na(usr.lim)] <- usr.lim[!is.na(usr.lim)]
+    
       
       usr.axs <- axs[[axs.name]][[n.i]]
       
-      if (any(!is.na(usr.axs)) && usr.axs[which(!is.na(usr.axs))] == 'o') {
-        view.i <- which(!names(views[[n.i]]) %in% c('window', 'gsplot'))[which(!is.na(usr.axs))]
-        buffer <- lim_buffer(views[[n.i]][['window']], lim.name)
+      if (!is.na(usr.axs) && usr.axs == 'o') {
+        if (all(!is.na(usr.lim)))
+          stop('no NA given to distinguish buffered limit')
+        
+        view.i <- which(!names(views[[n.i]]) %in% c('window', 'gs.config'))
+        buffer <- 0.04*diff(views[[n.i]][['window']][[lim.name]])
         lim <- views[[n.i]][['window']][[lim.name]][[which(is.na(usr.lim))]]
         buffered.lim <- ifelse(which(is.na(usr.lim)) == 1, lim - buffer, lim + buffer)
         views[[n.i]][['window']][[lim.name]][[which(is.na(usr.lim))]] <- buffered.lim
@@ -162,14 +166,7 @@ set_view_lim <- function(views){
   return(views)
 }
 
-lim_buffer <- function(window, lim.name, buffer=0.04){
-  # needs to read window[['log']] and use a different action if grepl(substr(lim.name,1,1), window[['log']])
-  if (grepl(substr(lim.name,1,1), window[['log']]))
-    stop('logged buffer not implemented')
-  
-  return(0.04*diff(window[[lim.name]]))
-  
-}
+
 c_unname <- function(list){
   unname(do.call(c, list))
 }
