@@ -68,7 +68,7 @@ config <- function(type, ...){
                          mtext=names(formals(graphics::mtext)),
                          grid=names(formals(graphics::grid)),
                          segments=names(formals(graphics::segments)),
-                         error_bar=names(formals(error_bar.default)),
+                         error_bar=c('x', 'y', '...', 'y.high', 'y.low', 'x.high', 'x.low', 'epsilon'),
                          bgCol=names(formals(bgCol.default)),
                          callouts=names(formals(callouts.default)),
                          rect=names(formals(graphics::rect)),
