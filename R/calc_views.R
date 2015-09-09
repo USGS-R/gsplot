@@ -49,8 +49,7 @@ group_views <- function(gsplot){
   } else {
     # // if field isn't associated with a side(s), it is moved up to top level (e.g., legend)
     newList <- list()
-    var <- tail.nm
-    newList[[var]] <- tail.gs
+    newList[[tail.nm]] <- tail.gs
     views <- append(views, newList)
   }
 
@@ -67,21 +66,21 @@ set_sides <- function(sides){
   return(sides)
 }
 
-which_reals <- function(values, na.action){
+which_reals <- function(values, na.value){
   
-  if (is.na(na.action))
+  if (is.na(na.value))
     return(which(!is.na(values)))
   else
-    return(which(!is.na(values) & values != na.action)) # which row to use. goofy because values != NA is always NA, not logical
+    return(which(!is.na(values) & values != na.value)) # which row to use. goofy because values != NA is always NA, not logical
   
 }
-set_view_list <- function(views, var, na.action=NA, remove=TRUE, ignore=NULL){
+set_view_window <- function(views, var, na.value=NA, remove=TRUE, ignore=NULL){
   view_i <- which(names(views) %in% "view")
   for (i in view_i){
     values <- lapply(views[[i]][!names(views[[i]]) %in% ignore], function(x) strip_pts(x, var))
-    val.i <- which_reals(values, na.action)
+    val.i <- which_reals(values, na.value)
     if (length(val.i) == 0){
-      values = na.action
+      values = na.value
     } else {
       values <- unname_c(values[val.i])
     }
@@ -95,18 +94,18 @@ set_view_list <- function(views, var, na.action=NA, remove=TRUE, ignore=NULL){
 }
 
 set_view_log <- function(views){
-  set_view_list(views, var = 'log', na.action="")
+  set_view_window(views, var = 'log', na.value="")
 }
 
 set_view_lab <- function(views){
-  views <- set_view_list(views, var = 'ylab', na.action="")
-  set_view_list(views, var = 'xlab', na.action="")
+  views <- set_view_window(views, var = 'ylab', na.value="")
+  set_view_window(views, var = 'xlab', na.value="")
 }
 
 
 set_view_lim <- function(views){
-  views <- set_view_list(views, var = 'xlim', na.action=NA, ignore='window', remove=FALSE)
-  views <- set_view_list(views, var = 'ylim', na.action=NA, ignore='window', remove=FALSE)
+  views <- set_view_window(views, var = 'xlim', na.value=NA, ignore='window', remove=FALSE)
+  views <- set_view_window(views, var = 'ylim', na.value=NA, ignore='window', remove=FALSE)
   
   data <- list(y=summarize_args(views,c('y','y1','y0'),ignore=c('window','gs.config')), 
                x=summarize_args(views,c('x','x1','x0'),ignore=c('window','gs.config')))
@@ -194,7 +193,7 @@ get_view_side <- function(views, view_i, var){
     stop('view side undefined for ',var)
 }
 
-summarize_args <- function(views, var, na.action,ignore='gs.config'){
+summarize_args <- function(views, var, na.value,ignore='gs.config'){
   
   view_i <- which(names(views) %in% "view")
   values <- list()
