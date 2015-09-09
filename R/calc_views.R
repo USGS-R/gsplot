@@ -17,70 +17,73 @@ calc_views <- function(gsplot){
   
   views <- set_view_lab(views)
   
-  views <- set_view_order(views, config("orderToPlot")$order)
+  #views <- set_view_order(views, config("orderToPlot")$order)
   
   views <- set_window(views)
   
   return(views)
 }
 
+views <- function(gsplot){
+  gsplot[names(gsplot) %in% 'view']
+}
 
 group_views <- function(gsplot){
-  unique_sides <- unique(lapply(gsplot, function(x) x[['gs.config']][['side']]))
-  unique_sides <- unique_sides[!sapply(unique_sides, is.null)]
-  
-  views <- rep(list(view=c()),length(unique_sides))
-  
-  for (i in seq_len(length(unique_sides))){
-    views[[i]][['window']][['side']] = unique_sides[[i]]
-  }
-  
-  for (i in seq_len(length(gsplot))){
-    draw_sides <- gsplot[[i]][['gs.config']][['side']]
-    if (!is.null(draw_sides)){
-      if(length(draw_sides) == 1){
-        view_i <- which(sapply(unique_sides, function(x) x[1] == draw_sides))
-        to_draw <- setNames(list(gsplot[[i]][['arguments']]), names(gsplot[i]))
-        
-        if(draw_sides %% 2 == 0){
-          draw_sides <- c(1,draw_sides)
-        } else {
-          draw_sides <- c(draw_sides,2)
-        }
-        
-        views[[view_i]] <- list(window=list(side=draw_sides))
-        views[[view_i]] <- append(views[[view_i]], to_draw)           
-      } else {
-        # // to do: verify sides are in order: x then y
-        view_i <- which(sapply(unique_sides, function(x) x[1] == draw_sides[1] & x[2] == draw_sides[2]))
-        to_draw <- setNames(list(gsplot[[i]][['arguments']]), names(gsplot[i]))
-        views[[view_i]] <- append(views[[view_i]], to_draw)        
-      }
-      
-
-    } else {
-      # // if field isn't associated with a side(s), it is moved up to top level (e.g., legend)
-      newList <- list()
-      var <- names(gsplot[i])
-      newList[[var]] <- gsplot[[i]]
-      views <- append(views, newList)
+  tail.gs <- gsplot[[length(gsplot)]]
+  tail.nm <- names(gsplot[length(gsplot)])
+  gsplot[[length(gsplot)]] <- NULL
+  views <- gsplot # existing
+  add_sides <- set_sides(tail.gs[['gs.config']][['side']])
+    
+  if (!is.null(add_sides)){
+    to_draw <- setNames(list(c(tail.gs[['arguments']], legend.name=tail.gs[['gs.config']][['legend.name']])), tail.nm)
+    # // to do: verify sides are in order: x then y
+    view.1 <- views_with_side(views, add_sides[1])
+    view.2 <- views_with_side(views, add_sides[2])
+    if (!is.null(view.1) && !is.null(view.2) && any(view.2==view.1)){
+      v.i = view.2[which(view.2 %in% view.1)]
+      views[[v.i]] <- append(to_draw, views[[v.i]])
+    } else{
+      views <- append(list(view = append(to_draw, list(window=list(side=add_sides)))), views)
     }
+  } else {
+    # // if field isn't associated with a side(s), it is moved up to top level (e.g., legend)
+    newList <- list()
+    var <- tail.nm
+    newList[[var]] <- tail.gs
+    views <- append(views, newList)
   }
-  
+
   return(views)
 }
 
-set_view_list <- function(views, var, na.action=NA, remove=TRUE){
+set_sides <- function(sides){
+  if (length(sides)==1){
+    if(sides %% 2 == 0)
+      sides = c(1,sides)
+    else 
+      sides = c(sides,2)
+  } 
+  return(sides)
+}
+
+which_reals <- function(values, na.action){
+  
+  if (is.na(na.action))
+    return(which(!is.na(values)))
+  else
+    return(which(!is.na(values) & values != na.action)) # which row to use. goofy because values != NA is always NA, not logical
+  
+}
+set_view_list <- function(views, var, na.action=NA, remove=TRUE, ignore=NULL){
   view_i <- which(names(views) %in% "view")
   for (i in view_i){
-    values <- lapply(views[[i]], function(x) strip_pts(x, var))
-    val.i <- which(!is.na(values)) # which row to use
+    values <- lapply(views[[i]][!names(views[[i]]) %in% ignore], function(x) strip_pts(x, var))
+    val.i <- which_reals(values, na.action)
     if (length(val.i) == 0){
       values = na.action
     } else {
-      if (length(unique(rownames(values[val.i]))) > 1)
-        warning('for view ', i,', more than one ',var,' specified. ', unique(rownames(values[val.i])))
-      values <- unname(values[val.i])[[1]]
+      values <- unname_c(values[val.i])
     }
     if (remove)
       views[[i]] <- lapply(views[[i]], function(x) remove_field(x, var))
@@ -102,8 +105,8 @@ set_view_lab <- function(views){
 
 
 set_view_lim <- function(views){
-  views <- set_view_list(views, var = 'xlim', na.action=NA)
-  views <- set_view_list(views, var = 'ylim', na.action=NA)
+  views <- set_view_list(views, var = 'xlim', na.action=NA, ignore='window', remove=FALSE)
+  views <- set_view_list(views, var = 'ylim', na.action=NA, ignore='window', remove=FALSE)
   
   data <- list(y=summarize_args(views,c('y','y1','y0'),ignore=c('window','gs.config')), 
                x=summarize_args(views,c('x','x1','x0'),ignore=c('window','gs.config')))
@@ -123,7 +126,7 @@ set_view_lim <- function(views){
       match.side <- as.character(views_with_side(views, view.side))
       data.var <- c_unname(data[[var]][match.side])
       
-      if(all(is.na(data.var))){
+      if(!is.null(data.var) && all(is.na(data.var))){
         if((view.side %% 2) == 0){ #even
           otherSide <- c(2,4)[c(2,4) %in% definedSides[definedSides != view.side]]
         } else { #odd
@@ -139,12 +142,16 @@ set_view_lim <- function(views){
       usr.lim <- views[[n.i]][['window']][[lim.name]][1:2]
       views[[n.i]][['window']][[lim.name]] <- data.lim
       views[[n.i]][['window']][[lim.name]][!is.na(usr.lim)] <- usr.lim[!is.na(usr.lim)]
+    
       
       usr.axs <- axs[[axs.name]][[n.i]]
       
-      if (any(!is.na(usr.axs)) && usr.axs[which(!is.na(usr.axs))] == 'o') {
-        view.i <- which(!names(views[[n.i]]) %in% c('window', 'gsplot'))[which(!is.na(usr.axs))]
-        buffer <- lim_buffer(views[[n.i]][['window']], lim.name)
+      if (!is.na(usr.axs) && usr.axs == 'o') {
+        if (all(!is.na(usr.lim)))
+          stop('no NA given to distinguish buffered limit')
+        
+        view.i <- which(!names(views[[n.i]]) %in% c('window', 'gs.config'))
+        buffer <- 0.04*diff(views[[n.i]][['window']][[lim.name]])
         lim <- views[[n.i]][['window']][[lim.name]][[which(is.na(usr.lim))]]
         buffered.lim <- ifelse(which(is.na(usr.lim)) == 1, lim - buffer, lim + buffer)
         views[[n.i]][['window']][[lim.name]][[which(is.na(usr.lim))]] <- buffered.lim
@@ -159,14 +166,7 @@ set_view_lim <- function(views){
   return(views)
 }
 
-lim_buffer <- function(window, lim.name, buffer=0.04){
-  # needs to read window[['log']] and use a different action if grepl(substr(lim.name,1,1), window[['log']])
-  if (grepl(substr(lim.name,1,1), window[['log']]))
-    stop('logged buffer not implemented')
-  
-  return(0.04*diff(window[[lim.name]]))
-  
-}
+
 c_unname <- function(list){
   unname(do.call(c, list))
 }
@@ -176,7 +176,11 @@ unname_c <- function(list){
 }
 views_with_side <- function(views, side){
   with.side = lapply(views, function(x) any(x[['window']][['side']] %in% side))
-  unname(which(unlist(with.side[names(with.side) == 'view'])))
+  view.match = unname(unlist(with.side[names(with.side) == 'view']))
+  if (is.null(view.match) || !any(view.match))
+    return(NULL)
+  else
+    return(which(view.match))
 }
 
 get_view_side <- function(views, view_i, var){
@@ -214,7 +218,6 @@ remove_field <- function(list, var){
 
 strip_pts <- function(list, var){
   out <- c()
-  
   for (v in var){
     if (v %in% names(list))
       out <- append(out, list[[v]])
