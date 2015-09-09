@@ -47,6 +47,13 @@ callouts.gsplot <- function(object, ..., side=c(1,2)){
 #' @export
 callouts.default <- function(x, y=NULL, labels=NA, length=0.1, angle='auto', ...){
   
+  if (is.null(y)) {
+    warning("y=NULL not currently supported in callouts.default")
+    return()
+  }
+  
+  stopifnot(angle=='auto' | (angle >= 0 & angle <= 360))
+  
   x <- x[!is.na(labels)]
   y <- y[!is.na(labels)]
   labels <- labels[!is.na(labels)]
@@ -62,44 +69,37 @@ callouts.default <- function(x, y=NULL, labels=NA, length=0.1, angle='auto', ...
   xrange <- diff(x.usr)
   yrange <- diff(y.usr)
   
-  try.angle <- function() {
-    x1 = x + length * xrange * cos(2*pi*(angle/360));
-    y1 = y + length * yrange * sin(2*pi*(angle/360));
-    return(c(x1,y1))
-  }
-  
-  if (angle=='auto') {
-    angle <- 30
-    x.y <- try.angle()
-    
-    if(x.y[2] > y.usr[2]){
-      angle <- 330
-      x.y <- try.angle()
-      if(x.y[1] > x.usr[2]){angle <- 210}
-    }
-    
-    if(x.y[1] > x.usr[2]) {
-      angle <- 210
-      x.y <- try.angle()
-      if(x.y[2] < y.usr[1]){angle <- 150}
-    }
-  }
-  
-  stopifnot(angle >= 0, angle <= 360)
-  x.y <- try.angle()
-  x1 <- x.y[1]
-  y1 <- x.y[2]
-  
-  if (angle >= 315 | angle <= 45){
-    pos = 4
-  } else if (angle > 45 & angle <= 135) {
-    pos = 3
-  } else if (angle > 135 & angle <= 225){
-    pos = 2
+  if (angle != "auto") {
+    x1 <- x + length * xrange * cos(2*pi*(angle/360))
+    y1 <- y + length * yrange * sin(2*pi*(angle/360))
   } else {
-    pos = 1
+    auto.angle <- c(30, 330, 150, 210)
+    x1 <- sapply(auto.angle, function(a) {
+      x + length * xrange * cos(2*pi*(a/360))
+    })
+    y1 <- sapply(auto.angle, function(a) {
+      y + length * yrange * sin(2*pi*(a/360))
+    })
+    
+    good.y1 <- y1 >= y.usr[1] & y1 <= y.usr[2]
+    good.x1 <- x1 >= x.usr[1] & x1 <= x.usr[2]
+    good.pt <- good.y1 & good.x1
+    if (!is.null(dim(good.pt))){
+      angle <- auto.angle[apply(good.pt, 1, function(z){
+        ifelse(!any(z), 1, min(which(z)))
+      })]
+    } else { 
+      angle <- auto.angle[ifelse(!any(good.pt), 1, min(which(good.pt)))]
+    }
+    x1 <- x + length * xrange * cos(2*pi*(angle/360))
+    y1 <- y + length * yrange * sin(2*pi*(angle/360))
   }
-  
+    
+  pos <- rep(1, length(angle))  
+  pos[angle >= 315 | angle <= 45] <- 4
+  pos[angle > 45 & angle <= 135] <- 3
+  pos[angle > 135 & angle <= 225] <- 2
+
   segments(x0=x, y0=y, x1=x1, y1=y1, ...)
   text(x=x1, y=y1, labels=labels, pos=pos,...)
   

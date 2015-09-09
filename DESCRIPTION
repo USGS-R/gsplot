@@ -13,7 +13,7 @@ Authors@R: c( person("Jordan", "Read", role = "aut",
     email = "thongsav@usgs.gov "),
     person("Megen","Hines", role="aut",
     email = "mhines@usgs.gov"),
-    person("Lindsey","Carr", role="aut",
+    person("Lindsay","Carr", role="aut",
     email = "lcarr@usgs.gov"))
 License: CC0
 Description: Workflow and plotting style defaults created for the U.S. Geological Survey.
