@@ -68,6 +68,16 @@ usrDef <- gsplot(mar=c(4,4,4,4), xaxs='r', yaxs='r') %>%
      legend(x=1.5,y=4)
 usrDef
 ```
+
+plotting order
+```{r echo=TRUE, warning=FALSE, message=FALSE}
+library(gsplot)
+gs <- gsplot() %>% 
+     lines(x=1:2, y=2:1, lwd=3, xlab='cat', col='red', legend.name="Lines 1") %>% 
+     lines(x=1:2, y=1:2, lwd=3, col='blue', legend.name="Lines 2") %>% 
+     legend()
+gs
+```
 ##Disclaimer
 This software is in the public domain because it contains materials that originally came from the U.S. Geological Survey, an agency of the United States Department of Interior. For more information, see the [official USGS copyright policy](http://www.usgs.gov/visual-id/credit_usgs.html#copyright/ "official USGS copyright policy")
 
