@@ -42,9 +42,9 @@ group_views <- function(gsplot){
     view.2 <- views_with_side(views, add_sides[2])
     if (!is.null(view.1) && !is.null(view.2) && any(view.2==view.1)){
       v.i = view.2[which(view.2 %in% view.1)]
-      views[[v.i]] <- append(views[[v.i]], to_draw)
+      views[[v.i]] <- append(to_draw, views[[v.i]])
     } else{
-      views <- append(list(view = append(list(window=list(side=add_sides)), to_draw)), views)
+      views <- append(list(view = append(to_draw, list(window=list(side=add_sides)))), views)
     }
   } else {
     # // if field isn't associated with a side(s), it is moved up to top level (e.g., legend)
@@ -126,7 +126,7 @@ set_view_lim <- function(views){
       match.side <- as.character(views_with_side(views, view.side))
       data.var <- c_unname(data[[var]][match.side])
       
-      if(all(is.na(data.var))){
+      if(!is.null(data.var) && all(is.na(data.var))){
         if((view.side %% 2) == 0){ #even
           otherSide <- c(2,4)[c(2,4) %in% definedSides[definedSides != view.side]]
         } else { #odd
