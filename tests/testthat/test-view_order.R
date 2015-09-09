@@ -7,7 +7,7 @@ test_that("plotting order within a single view is retained", {
   gs <- points(gs, c(0,3), c(2,4)) %>% 
     lines(c(0,3), c(2,4))
   
-  expect_equal(gs$view,c('points','lines'))
+  expect_equal(names(gs$view),c('points','lines','window'))
 })
 
 test_that("multiple view order is retained", {
