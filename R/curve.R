@@ -23,6 +23,7 @@
 #'    
 #' @rdname curve
 #' @export
+#' @importFrom lazyeval lazy lazy_eval
 #' @examples
 #' gs <- gsplot() %>%
 #'    points(x=c(1:5, 3.5), y=c(1:5, 6), legend.name="Stuff") %>%
@@ -42,16 +43,19 @@ curve <- function(object, ...) {
 
 curve.gsplot <- function(object, expr, ..., legend.name=NULL, side=c(1,2)){
   
-  arguments <- list(substitute(expr), ...)
-  expr <- arguments[which(names(arguments)=="")]
+  expr <- lazy(expr)
+  arguments = set_args('curve',...)
+  dots = lazy_dots(...)
+  
   increment <- (arguments$to-arguments$from)/10000
   x <- seq(arguments$from, arguments$to, by=increment)
-  y <- eval(parse(text=expr))
+  y <- lazy_eval(expr, data.frame(x=x))
+  arguments = set_args(fun.name = 'lines', x=x, y=y,  lazy_eval(dots[!names(dots) %in% c('from','to')]))
   
-  arguments <- arguments[which(names(arguments)!="" & names(arguments)!="from" & names(arguments)!="to")]
-  arguments <- append(list(x=x, y=y), arguments)
+  to.gsplot <- list(list(arguments = arguments, gs.config=list(legend.name = legend.name, side = side))) %>% 
+    setNames('lines')
   
-  object <- lines(object, arguments, legend.name=legend.name, side=side)
+  object <- gsplot(append(object, to.gsplot))
 
   return(object)
 }
