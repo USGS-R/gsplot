@@ -44,15 +44,11 @@ points <- function(object, ...) {
 
 points.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
   fun.name <- "points"
-  dots <- lazy_dots(...)
-  embeds <- sapply(dots, function(x) is_in_package(x$expr[[1]]))
-  embedded.funs <- dots[[which(embeds)]]
-  dots[[which(embeds)]] <- NULL
-  arguments <- list(lazy_eval(dots))
-  
-                             
-  to.gsplot <- list(list(arguments = set_args(fun.name, lazy_eval(dots)), 
-                         gs.config=list(legend.name = legend.name, side = side))) %>% 
+  dots = separate_args(...)
+  args = dots$args
+  e.fun = dots$e.fun
+  arguments = set_args(fun.name, lazy_eval(args))
+  to.gsplot <- list(list(arguments = arguments, gs.config=list(legend.name = legend.name, side = side))) %>% 
     setNames(fun.name)
   
   if (all(names(to.gsplot$points$arguments) != "formula") && is.null(to.gsplot$points$arguments[['y']])){
@@ -61,5 +57,11 @@ points.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
     if (is.null(to.gsplot$points$arguments$xlab)) to.gsplot$points$arguments$xlab <- "Index" 
   }
  
+  if (!is.null(e.fun)){
+    object <- gsplot(append(object, to.gsplot)) # append initial call
+    embed.args = set_args(e.fun,c(arguments, dots$e.args), package = 'gsplot')
+    to.gsplot <- list(list(arguments = embed.args, gs.config=list(legend.name = NULL, side = side))) %>% 
+      setNames(e.fun)
+  }
   return(gsplot(append(object, to.gsplot)))
 }
