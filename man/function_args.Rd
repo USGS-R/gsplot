@@ -5,7 +5,7 @@
 \title{get matched argument list for a given function}
 \usage{
 function_args(package, name, object, ..., use.default = paste0(name,
-  ".default"))
+  ".default"), drop = FALSE)
 }
 \arguments{
 \item{package}{the package to use to get the function from}
@@ -15,6 +15,8 @@ function_args(package, name, object, ..., use.default = paste0(name,
 \item{object}{the first argument, which may have a class to match functions to}
 
 \item{use.default}{use different function name other than <function>.default (optional)}
+
+\item{drop}{boolean for dropping all non-formal args passed in with \dots}
 
 \item{\dots}{user arguments to be used for the list}
 }

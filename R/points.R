@@ -36,6 +36,9 @@
 #'          axis(side=c(2,4), labels=FALSE, n.minor=4)
 #'          
 #' gs2
+#' 
+#' gs <- points(gsplot(), c(0,3), c(2,4), callouts(labels=c('dogs','cats')))
+#' gs
 #' @importFrom lazyeval lazy_dots lazy_eval
 #' @export
 points <- function(object, ...) {
@@ -53,7 +56,7 @@ points.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
 
   object <- gsplot(append(object, to.gsplot)) # append initial call
   if (!is.null(e.fun)){
-    embed.args = set_args(e.fun,c(arguments[!names(arguments) %in% names(dots$e.args)], dots$e.args), package = 'gsplot')
+    embed.args = set_inherited_args(e.fun, arguments, dots$e.args)
     object <- do.call(e.fun, append(list(object=object), embed.args))
   }
   return(object)

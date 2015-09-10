@@ -18,5 +18,7 @@ test_that("usr args aren't overidden", {
   
   gs <- lines(gsplot(), c(0,3), c(2,4), callouts(labels=c('dogs','cats'), col='yellow'))
   expect_equal(gs$view$callouts$col, 'yellow')
+  gs <- points(gsplot(), c(0,3), c(2,4), callouts(labels=c('dogs','cats'), col='yellow'))
+  expect_equal(gs$view$callouts$col, 'yellow')
   
 })

@@ -7,9 +7,10 @@
 #' @param object the first argument, which may have a class to match functions to
 #' @param \dots user arguments to be used for the list
 #' @param use.default use different function name other than <function>.default (optional)
+#' @param drop boolean for dropping all non-formal args passed in with \dots
 #' 
 #' @keywords internal
-function_args <- function(package, name, object, ..., use.default=paste0(name,'.default')){
+function_args <- function(package, name, object, ..., use.default=paste0(name,'.default'), drop=FALSE){
   params <- list(...)
   
   if (!missing(object)) {
@@ -50,6 +51,9 @@ function_args <- function(package, name, object, ..., use.default=paste0(name,'.
   match.i <- match(names(params), names(formals(defFun)))
   sort.i[!is.na(match.i)] <- match.i[!is.na(match.i)]
   params <- params[sort(sort.i, index.return = TRUE)$ix]
+  
+  if (drop)
+    params = params[names(params) %in% names(formals(defFun))]
   
   return(params)
 }
