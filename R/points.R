@@ -45,8 +45,9 @@ points <- function(object, ...) {
 points.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
   fun.name <- "points"
   dots <- lazy_dots(...)
-  embeds = sapply(dots, function(x) x$expr[[1]]) # need to match to namespace
-  arguments <- list(...)
+  embeds = sapply(dots, function(x) find(as.character(x$expr[[1]]), mode = 'function') == paste0('package:',packageName())) # need to match to namespace
+  dots[[which(embeds)]] <- NULL
+  arguments <- list(lazy_eval(dots))
   
   if (is.null(names(arguments))){
     arguments_gsplot <- arguments
