@@ -9,19 +9,17 @@ is_in_package <- function(x){
 separate_args <- function(...){
   
   dots <- lazy_dots(...)
-  args = list(args=dots,e.fun=c(),e.args=c())
+  args = list(args=dots)
 
   embeds <- unname(sapply(dots, function(x) is_in_package(x$expr)))
-  if (sum(embeds) > 1)
-    stop('only one embedded function is currently supported')
-  else if (sum(embeds) == 0)
+  
+  if (sum(embeds) == 0)
     return(args)
   
-  embedded.funs <- dots[[which(embeds)]]
-  dots[[which(embeds)]] <- NULL
-  args$args = dots
-  args$e.fun = as.character(embedded.funs$expr[[1]])
-  embedded.funs$expr[[1]] <- NULL
-  args$e.args = embedded.funs$expr
+  embedded.funs <- dots[which(embeds)]
+  args$args = dots[which(!embeds)]
+  fun.names = sapply(embedded.funs, function(x) as.character(x$expr[[1]]))
+  args$e.funs = lapply(embedded.funs, function(x) {x$expr[[1]] <- NULL; return(x$expr)}) %>% 
+    setNames(fun.names)
   return(args)
 }

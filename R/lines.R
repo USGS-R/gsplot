@@ -53,8 +53,11 @@ lines.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
   
   object <- gsplot(append(object, to.gsplot)) # append initial call
   if (!is.null(e.fun)){
-    embed.args = set_inherited_args(e.fun, arguments, dots$e.args)
-    object <- do.call(e.fun, append(list(object=object), embed.args))
+    for (i in seq_len(length(e.fun))){
+      fun.name = names(e.fun)[i]
+      embed.args = set_inherited_args(fun.name, arguments, e.fun[[i]])
+      object <- do.call(fun.name, append(list(object=object), embed.args))
+    }
   }
   return(object)
 }
