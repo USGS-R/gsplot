@@ -36,6 +36,7 @@
 #'          axis(side=c(2,4), labels=FALSE, n.minor=4)
 #'          
 #' gs2
+#' @importFrom lazyeval lazy_dots
 #' @export
 points <- function(object, ...) {
   override("graphics", "points", object, ...)
@@ -43,6 +44,8 @@ points <- function(object, ...) {
 
 points.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
   fun.name <- "points"
+  dots <- lazy_dots(...)
+  embeds = sapply(dots, function(x) x$expr[[1]]) # need to match to namespace
   arguments <- list(...)
   
   if (is.null(names(arguments))){
