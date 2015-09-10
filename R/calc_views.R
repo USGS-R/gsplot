@@ -223,15 +223,13 @@ remove_field <- function(list, param){
 strip_pts <- function(list, param){
   out <- c()
   for (v in param){
-    if (v %in% names(list))
+    if (v %in% names(list) && inherits(list[[v]], 'numeric'))
       out <- append(out, list[[v]])
-    else {
-      u.list <- unname_c(list)
-      if(v %in% names(u.list))
-        out <- append(out, u.list[[v]])
-      else
-        out <- append(out, NA)
-    }
+    u.list <- unname_c(list)
+    if(v %in% names(u.list))
+      out <- append(out, u.list[[v]])
+    else
+      out <- append(out, NA)
   }
   return(out)
 }

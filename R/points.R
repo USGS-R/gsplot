@@ -36,7 +36,7 @@
 #'          axis(side=c(2,4), labels=FALSE, n.minor=4)
 #'          
 #' gs2
-#' @importFrom lazyeval lazy_dots
+#' @importFrom lazyeval lazy_dots lazy_eval
 #' @export
 points <- function(object, ...) {
   override("graphics", "points", object, ...)
@@ -50,18 +50,11 @@ points.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
   arguments = set_args(fun.name, lazy_eval(args))
   to.gsplot <- list(list(arguments = arguments, gs.config=list(legend.name = legend.name, side = side))) %>% 
     setNames(fun.name)
-  
-  if (all(names(to.gsplot$points$arguments) != "formula") && is.null(to.gsplot$points$arguments[['y']])){
-    to.gsplot$points$arguments$y <- to.gsplot$points$arguments$x
-    to.gsplot$points$arguments$x <- seq(length(to.gsplot$points$arguments$x))
-    if (is.null(to.gsplot$points$arguments$xlab)) to.gsplot$points$arguments$xlab <- "Index" 
-  }
- 
+
+  object <- gsplot(append(object, to.gsplot)) # append initial call
   if (!is.null(e.fun)){
-    object <- gsplot(append(object, to.gsplot)) # append initial call
     embed.args = set_args(e.fun,c(arguments, dots$e.args), package = 'gsplot')
-    to.gsplot <- list(list(arguments = embed.args, gs.config=list(legend.name = NULL, side = side))) %>% 
-      setNames(e.fun)
+    object <- do.call(e.fun, append(list(object=object), embed.args))
   }
-  return(gsplot(append(object, to.gsplot)))
+  return(object)
 }

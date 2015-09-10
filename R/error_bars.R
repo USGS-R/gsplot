@@ -91,5 +91,8 @@ error_bar.gsplot <- function(object, x, y, ..., y.high=0, y.low=0, x.high=0, x.l
     
 }
 
+error_bar.default <- function(x, y, y.high, y.low, x.high, x.low, epsilon=0.1, ...){
+  return()
+}
 
 
