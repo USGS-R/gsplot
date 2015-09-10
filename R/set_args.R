@@ -17,3 +17,9 @@ set_args <- function(fun.name, ..., package='graphics'){
   arguments <- append(user_args, config_args[indicesToAdd])
   return(arguments)
 }
+
+set_inherited_args <- function(fun.name, inherited.args, ..., package='gsplot'){
+  # // shed non-formals
+  inherited.args = function_args(package, fun.name, inherited.args, drop=TRUE)
+  return(c(inherited.args, set_args(fun.name, ..., package = package)))
+}

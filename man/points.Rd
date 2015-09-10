@@ -46,5 +46,8 @@ gs2 <- gsplot() \%>\%
          axis(side=c(2,4), labels=FALSE, n.minor=4)
 
 gs2
+
+gs <- points(gsplot(), c(0,3), c(2,4), callouts(labels=c('dogs','cats')))
+gs
 }
 

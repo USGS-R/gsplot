@@ -28,3 +28,12 @@ test_that("testing content of gsplot list", {
    expect_less_than(gs$view$lines$y[1], 34)
   
 })
+
+test_that("curve function uses lines", {
+  
+  gs <- gsplot() %>%
+    curve(sin(x), from=-2*pi, to=2*pi, legend.name="sin(x)", col='red')
+  
+  expect_equal(gs$view$lines$col, 'red')
+  
+})

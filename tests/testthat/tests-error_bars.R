@@ -30,12 +30,9 @@ test_that("testing content of gsplot list for NA given", {
 
 test_that("testing content of gsplot list for embedded error bar", {
   
-  gs <- gsplot()
   
-  expect_is(gs,"gsplot")
-  
-  gs <- points(gs, c(0,3), c(2,4),  
-               error_bar=list(x.low=c(NA,1))) 
+  gs <- points(gsplot(), c(0,3), c(2,4),  
+               error_bar(x.low=c(NA,1))) 
   
   expect_true(all(names(gs[['view']]) != "error_bar"))
   
