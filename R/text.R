@@ -43,9 +43,5 @@ text <- function(object, ...) {
 
 
 text.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
-  fun.name <- "text"
-  to.gsplot <- list(list(arguments = set_args(fun.name, ...), 
-                         gs.config=list(legend.name = legend.name, side = side))) %>% 
-    setNames(fun.name)
-  return(gsplot(append(object, to.gsplot)))
+  set_window_args(object, fun.name='text', ..., legend.name=legend.name, side=side)
 }

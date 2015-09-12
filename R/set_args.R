@@ -21,8 +21,11 @@ set_args <- function(fun.name, ..., package='graphics'){
 set_window_args <- function(object, fun.name, ..., legend.name=NULL, side=c(1,2), package='graphics'){
   dots = separate_args(...)
   args = dots$args
+  if (!is.null(args))
+    arguments = set_args(fun.name, lazy_eval(args), package=package)
+  else
+    arguments = set_args(fun.name, package=package)
   e.fun = dots$e.fun
-  arguments = set_args(fun.name, lazy_eval(args), package=package)
   to.gsplot <- list(list(arguments = arguments, gs.config=list(legend.name = legend.name, side = side))) %>% 
     setNames(fun.name)
   
