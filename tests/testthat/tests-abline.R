@@ -38,3 +38,13 @@ test_that("segments gsplot",{
   expect_equal(names(gs$view), c("points","arrows","segments","window"))
   
 })
+
+test_that("arrows gsplot",{
+  x <- stats::runif(12); y <- stats::rnorm(12)
+  i <- order(x, y); x <- x[i]; y <- y[i]
+  gs = points(gsplot(), x, y, main = "arrows(.) and segments(.)")
+  ## draw arrows from point to point :
+  s <- seq(length(x)-1)  # one shorter than data
+  gs = arrows(gs, x[s], y[s], x[s+1], y[s+1], col= 1:3)
+  expect_equal(gs$view$arrows$col, 1:3) 
+})

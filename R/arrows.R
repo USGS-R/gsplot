@@ -32,17 +32,6 @@ arrows <- function(object, ...) {
 }
 
 
-arrows.gsplot <- function(object, x0, y0, x1 = x0, y1 = y0, length = 0.25, angle = 30,
-                          ..., code = 2, legend.name=NULL, side=c(1,2)){
-  current_list <- config("arrows")
-  arguments <- append(list(x0=x0, y0=y0, x1 = x1, y1 = y1, length = length, angle = angle, 
-                           code = code), c(...))
-  
-  indicesToAdd <- !(names(current_list) %in% names(arguments))
-  arguments <- append(arguments, current_list[indicesToAdd])
-  
-  object <- append(object,  list(arrows = list(arguments = arguments, 
-                                               gs.config=list(legend.name = legend.name, 
-                                                              side = side))))
-  return(gsplot(object))
+arrows.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
+  set_window_args(object, fun.name='arrows', ..., legend.name=legend.name, side=side)
 }

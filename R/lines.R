@@ -43,21 +43,5 @@ lines <- function(object, ...) {
 
 
 lines.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
-  fun.name <- "lines"
-  dots = separate_args(...)
-  args = dots$args
-  e.fun = dots$e.fun
-  arguments = set_args(fun.name, lazy_eval(args))
-  to.gsplot <- list(list(arguments = arguments, gs.config=list(legend.name = legend.name, side = side))) %>% 
-    setNames(fun.name)
-  
-  object <- gsplot(append(object, to.gsplot)) # append initial call
-  if (!is.null(e.fun)){
-    for (i in seq_len(length(e.fun))){
-      fun.name = names(e.fun)[i]
-      embed.args = set_inherited_args(fun.name, arguments, e.fun[[i]])
-      object <- do.call(fun.name, append(list(object=object), embed.args))
-    }
-  }
-  return(object)
+  set_window_args(object, fun.name='lines', ..., legend.name=legend.name, side=side)
 }

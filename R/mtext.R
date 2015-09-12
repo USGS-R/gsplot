@@ -29,24 +29,5 @@ mtext <- function(object, ...) {
 
 
 mtext.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
-  current_list <- config("mtext")
-  arguments <- list(...)
-  
-  indicesToAdd <- !(names(current_list) %in% names(arguments))
-  arguments <- append(arguments, current_list[indicesToAdd])
-
-  
-  if(length(side) == 1){
-    arguments <- append(arguments, list(side=side))
-    if (side %% 2 == 0){
-      side <- c(1, side)
-    } else {
-      side <- c(side, 2)
-    }
-  }
-  
-  object <- append(object,  list(mtext = list(arguments = arguments, 
-                                             gs.config=list(legend.name = legend.name, 
-                                                            side = side))))
-  return(gsplot(object))
+  set_window_args(object, fun.name='mtext', ..., legend.name=legend.name, side=side)
 }

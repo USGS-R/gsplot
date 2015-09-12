@@ -1,5 +1,5 @@
 is_in_package <- function(x){
-  if (is.symbol(x))
+  if (is.null(x) || is.symbol(x))
     return(FALSE)
   
   isTRUE(find(as.character(x[[1]]), mode = 'function') == paste0('package:',packageName()))
@@ -11,6 +11,8 @@ separate_args <- function(...){
   dots <- lazy_dots(...)
   args = list(args=dots)
 
+  if(length(args[[1]]) == 0)
+    return()
   embeds <- unname(sapply(dots, function(x) is_in_package(x$expr)))
   
   if (sum(embeds) == 0)
