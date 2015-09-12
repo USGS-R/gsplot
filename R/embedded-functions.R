@@ -1,5 +1,5 @@
 is_in_package <- function(x){
-  if (is.symbol(x))
+  if (is.null(x) || is.symbol(x))
     return(FALSE)
   
   isTRUE(find(as.character(x[[1]]), mode = 'function') == paste0('package:',packageName()))
