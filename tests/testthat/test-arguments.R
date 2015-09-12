@@ -8,3 +8,11 @@ test_that("setting params with class match works as expected",{
   expect_is(gsplot:::function_args("grDevices","points", x~y, use.default='xy.coords')[[1]], 
                'formula')
 })
+
+context("is gsplot")
+
+test_that("is gsplot",{
+  
+  expect_true(is.gsplot(gsplot()))
+  
+})
