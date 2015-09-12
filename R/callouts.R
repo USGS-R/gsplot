@@ -29,11 +29,7 @@ callouts <- function(object, ...) {
 
 callouts.gsplot <- function(object, ..., side=c(1,2)){
   
-  fun.name <- "callouts"
-  to.gsplot <- list(list(arguments = set_args(fun.name, package='gsplot', ...), 
-                         gs.config=list(side = side))) %>% 
-    setNames(fun.name)
-  return(gsplot(append(object, to.gsplot)))
+  set_window_args(object, fun.name='callouts', ..., legend.name=NULL, side=side, package='gsplot')
 }
 #' Default for adding callouts to a plot.
 #' 

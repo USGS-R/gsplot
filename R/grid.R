@@ -21,11 +21,5 @@ grid <- function(object, ...) {
 
 
 grid.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
-  fun.name <- "grid"
-  arguments <- list(...)
-  
-  to.gsplot <- list(list(arguments = do.call(set_args, c(fun.name, arguments)), 
-                         gs.config=list(legend.name = legend.name, side = side))) %>% 
-    setNames(fun.name)
-  return(gsplot(append(object, to.gsplot)))
+  set_window_args(object, fun.name='grid', ..., legend.name=legend.name, side=side)
 }

@@ -18,6 +18,25 @@ set_args <- function(fun.name, ..., package='graphics'){
   return(arguments)
 }
 
+set_window_args <- function(object, fun.name, ..., legend.name=NULL, side=c(1,2), package='graphics'){
+  dots = separate_args(...)
+  args = dots$args
+  e.fun = dots$e.fun
+  arguments = set_args(fun.name, lazy_eval(args), package=package)
+  to.gsplot <- list(list(arguments = arguments, gs.config=list(legend.name = legend.name, side = side))) %>% 
+    setNames(fun.name)
+  
+  object <- gsplot(append(object, to.gsplot)) # append initial call
+  if (!is.null(e.fun)){
+    for (i in seq_len(length(e.fun))){
+      fun.name = names(e.fun)[i]
+      embed.args = set_inherited_args(fun.name, arguments, e.fun[[i]])
+      object <- do.call(fun.name, append(list(object=object), embed.args))
+    }
+  }
+  return(object)
+  
+}
 set_inherited_args <- function(fun.name, inherited.args, ..., package='gsplot'){
   # // shed non-formals
   inherited.args = function_args(package, fun.name, inherited.args, drop=TRUE)

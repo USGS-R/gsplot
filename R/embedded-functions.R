@@ -11,6 +11,8 @@ separate_args <- function(...){
   dots <- lazy_dots(...)
   args = list(args=dots)
 
+  if(length(args[[1]]) == 0)
+    return()
   embeds <- unname(sapply(dots, function(x) is_in_package(x$expr)))
   
   if (sum(embeds) == 0)
