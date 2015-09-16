@@ -25,17 +25,8 @@ bgCol <- function(object, ...) {
 }
 
 
-bgCol.gsplot <- function(object, col, ..., legend.name=NULL, side=c(1,2)){
-  current_list <- config("bgCol")
-  arguments <- list(...)
-  arguments <- append(list(col=col),arguments)
-  indicesToAdd <- !(names(current_list) %in% names(arguments))
-  arguments <- append(arguments, current_list[indicesToAdd])
-  
-  object <- append(object,  list(bgCol = list(arguments = arguments, 
-                                 gs.config=list(legend.name = legend.name, 
-                                                side = side))))
-  return(gsplot(object))
+bgCol.gsplot <- function(object, ..., side=c(1,2)){
+  set_window_args(object, fun.name="bgCol", ..., legend.name=NULL, side=side, package='gsplot')
 }
 
 bgCol.default <- function(col,...){

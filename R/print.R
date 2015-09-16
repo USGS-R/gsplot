@@ -32,7 +32,7 @@
 print.gsplot <- function(x, ...){
   
   # -- set plot -- 
-  views = calc_views(x)
+  views = x
   
   if(!isTRUE(x[['par']][['new']])){
     dev.hold()
@@ -51,7 +51,7 @@ print.gsplot <- function(x, ...){
     plot.window(xlim = window$xlim, ylim = window$ylim, log = window$log)
 
     # -- call functions -- 
-    to_gsplot(plots)
+    to_gsplot(lapply(plots, function(x) x[!names(x) %in% 'legend.name']))
 
 
     if(window$axes){
@@ -71,10 +71,8 @@ print.gsplot <- function(x, ...){
     box()
   }
 
-  draw_legend(x)
-  draw_axis(x)
-
-  # par(defaultPar)
+  draw_legend(views)
+  draw_axis(views)
   
 }
 

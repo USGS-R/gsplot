@@ -36,39 +36,15 @@
 #'          axis(side=c(2,4), labels=FALSE, n.minor=4)
 #'          
 #' gs2
+#' 
+#' gs <- points(gsplot(), c(0,3), c(2,4), callouts(labels=c('dogs','cats')))
+#' gs
+#' @importFrom lazyeval lazy_dots lazy_eval
 #' @export
 points <- function(object, ...) {
   override("graphics", "points", object, ...)
 }
 
 points.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
-  fun.name <- "points"
-  arguments <- list(...)
-  
-  if (is.null(names(arguments))){
-    arguments_gsplot <- arguments
-  } else {
-    arguments_gsplot <- arguments[!names(arguments) %in% c("callouts", "error_bar")]
-  }
-                             
-  to.gsplot <- list(list(arguments = do.call(set_args, c(fun.name, arguments_gsplot)), 
-                         gs.config=list(legend.name = legend.name, side = side))) %>% 
-    setNames(fun.name)
-  
-  if (all(names(to.gsplot$points$arguments) != "formula") && is.null(to.gsplot$points$arguments[['y']])){
-    to.gsplot$points$arguments$y <- to.gsplot$points$arguments$x
-    to.gsplot$points$arguments$x <- seq(length(to.gsplot$points$arguments$x))
-    if (is.null(to.gsplot$points$arguments$xlab)) to.gsplot$points$arguments$xlab <- "Index" 
-  }
-  
-  if ("callouts" %in% names(arguments)){
-    object <- callouts(object, x=to.gsplot$points$arguments$x, 
-                       y=to.gsplot$points$arguments$y, arguments$callouts)
-  }
-  if ("error_bar" %in% names(arguments)){
-    object <- error_bar(object, x=to.gsplot$points$arguments$x, 
-                        y=to.gsplot$points$arguments$y, arguments$error_bar)
-  }
-  
-  return(gsplot(append(object, to.gsplot)))
+  set_window_args(object, fun.name='points', ..., legend.name=legend.name, side=side)
 }
