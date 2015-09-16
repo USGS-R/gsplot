@@ -51,7 +51,7 @@ legend <- function(object, ...){
 }
 
 
-legend.gsplot <- function(object, ..., location="topright", title="EXPLANATION", legend_offset=0.3) {
+legend.gsplot <- function(object, ..., location="topright", legend_offset=0.3) {
   arguments <- list(...)
   
 #   current_list <- config("legend")  # grabbing yaml defaults
