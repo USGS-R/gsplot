@@ -123,7 +123,7 @@ draw_legend <- function(gsplot) {
             if (is.null(params)) {next}
             
             params <- append(params, views[[v]][[i]][which(names(views[[v]][[i]]) %in% names(formals(graphics::legend))[-c(1,2)])])
-            type <- views[[v]][[i]][['arguments$type']]
+            type <- views[[v]][[i]][['type']]
             
             if (plotElement == "points") {
               names(params)[which(names(params) %in% "bg")] <- 'pt.bg'
