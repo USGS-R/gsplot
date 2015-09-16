@@ -40,14 +40,15 @@ print.gsplot <- function(x, ...){
     plot.new()
   }
 
-  
+  top.par <- par(no.readonly=T)
   for (i in which(names(views) %in% 'view')){
+    par(top.par)
     plots = views[[i]]
     plots[['window']] <- NULL
     window = views[[i]][['window']]
     
     par(views[['par']])
-    top.par <- par(no.readonly=T)
+    
     par(window[['par']])
     plot.window(xlim = window$xlim, ylim = window$ylim, log = window$log)
 
@@ -64,7 +65,7 @@ print.gsplot <- function(x, ...){
       mtext(text=window$xlab, side=window$side[1], line = 2)
       mtext(text=window$ylab, side=window$side[2], line = 2)        
     }
-    par(top.par)
+    
     par(new=TRUE)
   }
   
