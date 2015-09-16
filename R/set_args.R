@@ -26,7 +26,7 @@ set_window_args <- function(object, fun.name, ..., legend.name=NULL, side=c(1,2)
   else
     arguments = set_args(fun.name, package=package)
   e.fun = dots$e.fun
-  to.gsplot <- list(list(arguments = append(formal_arguments(arguments, def.funs), window_arguments(arguments, def.funs)),
+  to.gsplot <- list(list(arguments = append(formal_arguments(arguments, def.funs, names(config(fun.name))), window_arguments(arguments, def.funs)),
                          gs.config=list(legend.name = legend.name, side = side, par=par_arguments(arguments, def.funs)))) %>% 
     setNames(fun.name)
   

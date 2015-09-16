@@ -7,12 +7,12 @@ par_arguments <- function(arguments, def.funs){
     NULL
 }
 
-formal_arguments <- function(arguments, def.funs){
+formal_arguments <- function(arguments, def.funs, keep.names=NULL){
   if (length(def.funs) > 1)
-    formal_names <- unique(unlist(lapply(def.funs, function(x)names(formals(x)))))
+    formal.names <- unique(unlist(lapply(def.funs, function(x)names(formals(x)))))
   else 
-    formal_names <- names(formals(def.funs))
-  args = arguments[names(arguments) %in% formal_names]
+    formal.names <- names(formals(def.funs))
+  args = arguments[names(arguments) %in% formal.names | names(arguments) %in% keep.names]
   if (length(args) > 0)
     return(args)
   else 
