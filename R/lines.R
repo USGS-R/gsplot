@@ -43,5 +43,7 @@ lines <- function(object, ...) {
 
 
 lines.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
-  set_window_args(object, fun.name='lines', ..., legend.name=legend.name, side=side)
+  window.args <- set_window_args(object, fun.name='lines', ..., legend.name=legend.name, side=side)
+  current.args <- window.args$view[[which(names(window.args$view) %in% 'window') - 1]]
+  set_legend_args(object, fun.name='lines', current.args)
 }
