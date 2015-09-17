@@ -46,7 +46,5 @@ points <- function(object, ...) {
 }
 
 points.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
-  object <- set_window_args(object, fun.name='points', ..., legend.name=legend.name, side=side)
-  current.args <- object$view[[which(names(object$view) %in% 'window') - 1]] #most recently added feature
-  set_legend_args(object, fun.name='points', current.args)
+  set_window_args(object, fun.name='points', ..., legend.name=legend.name, side=side, def.funs = c(graphics::plot.xy, graphics::points.default))
 }

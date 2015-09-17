@@ -40,14 +40,16 @@ print.gsplot <- function(x, ...){
     plot.new()
   }
 
-  
+  top.par <- par(no.readonly=T)
   for (i in which(names(views) %in% 'view')){
+    par(top.par)
     plots = views[[i]]
     plots[['window']] <- NULL
     window = views[[i]][['window']]
     
     par(views[['par']])
     
+    par(window[['par']])
     plot.window(xlim = window$xlim, ylim = window$ylim, log = window$log)
 
     # -- call functions -- 

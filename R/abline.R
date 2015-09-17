@@ -28,5 +28,5 @@ abline <- function(object, ...) {
 
 
 abline.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
-  set_window_args(object, fun.name='abline', ..., legend.name=legend.name, side=side)
+  set_window_args(object, fun.name='abline', ..., legend.name=legend.name, side=side, def.funs=c(graphics::abline, graphics::plot.xy))
 }

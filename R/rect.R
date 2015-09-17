@@ -45,6 +45,6 @@ rect <- function(object, ...) {
 }
 
 rect.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
-  set_window_args(object, fun.name="rect", ..., legend.name=legend.name, side=side)
+  set_window_args(object, fun.name="rect", ..., legend.name=legend.name, side=side, def.funs=graphics::rect)
 }
 

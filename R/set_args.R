@@ -18,7 +18,7 @@ set_args <- function(fun.name, ..., package='graphics'){
   return(arguments)
 }
 
-set_window_args <- function(object, fun.name, ..., legend.name=NULL, side=c(1,2), package='graphics'){
+set_window_args <- function(object, fun.name, ..., legend.name=NULL, side=c(1,2), package='graphics', def.funs = getFromNamespace(paste0(fun.name,'.default'), package)){
   dots = separate_args(...)
   args = dots$args
   if (!is.null(args))
@@ -26,7 +26,8 @@ set_window_args <- function(object, fun.name, ..., legend.name=NULL, side=c(1,2)
   else
     arguments = set_args(fun.name, package=package)
   e.fun = dots$e.fun
-  to.gsplot <- list(list(arguments = arguments, gs.config=list(legend.name = legend.name, side = side))) %>% 
+  to.gsplot <- list(list(arguments = append(formal_arguments(arguments, def.funs, names(config(fun.name))), window_arguments(arguments, def.funs)),
+                         gs.config=list(legend.name = legend.name, side = side, par=par_arguments(arguments, def.funs)))) %>% 
     setNames(fun.name)
   
   object <- gsplot(append(object, to.gsplot)) # append initial call

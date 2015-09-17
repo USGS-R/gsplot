@@ -48,8 +48,9 @@ group_views <- function(gsplot){
     if (!is.null(view.1) && !is.null(view.2) && any(view.2==view.1)){
       v.i = view.2[which(view.2 %in% view.1)]
       views[[v.i]] <- append(views[[v.i]], to_draw)
+      views[[v.i]][['window']][['par']] <- append_replace(views[[v.i]][['window']][['par']], tail.gs[['gs.config']][['par']])
     } else{
-      views <- append(views, list(view = append(to_draw, list(window=list(side=add_sides)))))
+      views <- append(views, list(view = append(to_draw, list(window=list(side=add_sides,par=tail.gs[['gs.config']][['par']])))))
     }
   } else {
     # // if field isn't associated with a side(s), it is moved up to top level (e.g., legend)
@@ -61,6 +62,13 @@ group_views <- function(gsplot){
   return(append(views, non.views))
 }
 
+append_replace <- function(old.list, new.list){
+  out.list <- old.list
+  out.list[names(old.list) %in% names(new.list)] <- new.list[names(out.list[names(old.list) %in% names(new.list)])]
+  new.list[names(new.list) %in% names(old.list)] <- NULL
+  out.list <- append(out.list, new.list)
+  return(out.list)
+}
 set_sides <- function(sides){
   if (length(sides)==1){
     if(sides %% 2 == 0)
