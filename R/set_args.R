@@ -50,7 +50,7 @@ set_inherited_args <- function(fun.name, inherited.args, ..., package='gsplot'){
 set_legend_args <- function(object, fun.name, ...) {
   paramsAll <- c(...)
   
- # if (is.null(params)) {next}
+  # if (is.null(params)) {next}
   
   names(paramsAll)[which(names(paramsAll)=='legend.name')] <- 'legend'
   default.args <- formals(graphics::legend)
@@ -67,35 +67,35 @@ set_legend_args <- function(object, fun.name, ...) {
     names.index <- which(names(usr.args) %in% pt.names)
     pt.names.index <- which(pt.names %in% names(usr.args))
     names(usr.args)[names.index] <- paste0("pt.", pt.names)[pt.names.index]
-
+    
     fun.specific <- list(fill=NA,
                          col=par("col"),
                          border=NA,
                          lty=1,
                          pch=1,
                          density=NA,
-                         text.width=NA,
-                         text.font=NA)
+                         text.width=1,
+                         text.font=1)
     
-
   } else if (fun.name == "lines") {
-    params <- append(params, list(pt.lwd=paramsAll$lwd, 
-                                  pt.bg=paramsAll$bg,
-                                  pt.cex=paramsAll$cex,
-                                  lty=paramsAll$lty))
+    pt.names <- c("lwd","bg","cex")
+    names.index <- which(names(usr.args) %in% pt.names)
+    pt.names.index <- which(pt.names %in% names(usr.args))
     
-    fun.specific <- list(fill=NULL,
+    fun.specific <- list(fill=NA,
                          border=NA,
                          density=NA,
-                         text.width=NA,
-                         text.font=NA)
+                         text.width=1,
+                         text.font=1)
     
   }
   
   legend.params[match(names(usr.args), names(legend.params))] <- usr.args
   legend.params[match(names(fun.specific), names(legend.params))] <- fun.specific
-  object[['legend']] <- append(object[['legend']], list(arguments = legend.params))
-
-  #object <- gsplot(object)
+  
+  object <- append(object, list(legend.args=legend.params))
+  #object[['legend']] <- append(object[['legend']], list(arguments = legend.params))
+  
+  object <- gsplot(object)
   return(object)
 }
