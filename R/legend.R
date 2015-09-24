@@ -54,15 +54,12 @@ legend <- function(object, ...){
 legend.gsplot <- function(object, ..., location="topright", legend_offset=0.3) {
   arguments <- list(...)
   
-  #   current_list <- config("legend")  # grabbing yaml defaults
-  #   title <- current_list$title
-  #   location <- current_list$location
+  gsConfig <- list(location = location, legend_offset = legend_offset, ...)
   
   if("x" %in% names(arguments)){
-    location <- arguments$x
+    gsConfig$location <- gsConfig$x
+    gsConfig$x <- NULL
   }
-  
-  gsConfig <- list(location = location, legend_offset = legend_offset)
   
   #object[['legend']] <- append(object[['legend']], list(gs.config = gsConfig))
   object <- append(object, list(legend = list(gs.config = gsConfig)))
@@ -70,22 +67,25 @@ legend.gsplot <- function(object, ..., location="topright", legend_offset=0.3) {
   return(gsplot(object))
 }
 
-appendLegendPositionConfiguration <- function(location, gsConfig, arguments) {
+appendLegendPositionConfiguration <- function(gsConfig) {
   #TODO support explicit x/y coords
   legend_offset <- gsConfig$legend_offset
+  location <- gsConfig$location
+  gsConfig$legend_offset <- NULL
+  gsConfig$location <- NULL
   
   if(location == "below") {
-    return(append(arguments, list(x = "bottom", y = NULL, inset=c(0, -legend_offset), bty="n")))
+    return(append(gsConfig, list(x = "bottom", y = NULL, inset=c(0, -legend_offset), bty="n")))
   } else if(location == "above") {
-    return(append(arguments, list(x = "top", y = NULL, inset=c(0, -legend_offset), bty="n")))
+    return(append(gsConfig, list(x = "top", y = NULL, inset=c(0, -legend_offset), bty="n")))
   } else if(location == "toright") {
-    return(append(arguments, list(x = "right", y = NULL, inset=c(-legend_offset, 0), bty="n")))
+    return(append(gsConfig, list(x = "right", y = NULL, inset=c(-legend_offset, 0), bty="n")))
   } else if(location == "toleft") {
-    return(append(arguments, list(x = "left", y = NULL, inset=c(-legend_offset, 0), bty="n")))
-  } else if("x" %in% names(arguments)){
-    return(arguments)
+    return(append(gsConfig, list(x = "left", y = NULL, inset=c(-legend_offset, 0), bty="n")))
+  } else if("x" %in% names(gsConfig)){
+    return(gsConfig)
   } else {
-    return(append(arguments, list(x = location)))
+    return(append(gsConfig, list(x = location)))
   }
 }
 
@@ -99,33 +99,40 @@ appendLegendPositionConfiguration <- function(location, gsConfig, arguments) {
 draw_legend <- function(gsplot) {
   
   oldXPD <- par()$xpd
+  oldBg <- par('bg')
   
   for(index in which(names(gsplot) %in% "legend")){
-    
     
     par(xpd=TRUE)
     
     default.args <- formals(graphics::legend)
-    overall.legend <- c("x", "y", "bty", "bg", "box.lty", "box.lwd", "box.col",
-                        "xjust", "yjust", "merge", "trace", "plot", "ncol",
+    
+    overall.legend <- c("x", "y", "bty", "bg", "box.lty", "box.lwd", "box.col", "cex","xjust", 
+                        "yjust", "adj", "text.width", "merge", "trace", "plot", "ncol",
                         "horiz", "title", "inset", "title.col", "title.adj", "xpd")
+    
     not.overall <- default.args[-which(names(default.args) %in% overall.legend)]
     legendParamsALL <- vector("list", length(not.overall))
     names(legendParamsALL) <- names(not.overall)
     
     for(i in which(names(gsplot) %in% 'legend.args')) {
-      legendParams <- gsplot[[i]]
-      orderedParams <- legendParams[match(names(legendParamsALL), names(legendParams))] #might not need - could be in set_legend_args    
+      orderedParams <- gsplot[[i]][match(names(legendParamsALL), names(gsplot[[i]]))] #might not need - could be in set_legend_args    
       for (j in seq_along(legendParamsALL)) {
         legendParamsALL[[j]] <- c(legendParamsALL[[j]], orderedParams[[j]])
       }
     }
+    overallLegendArgs <- appendLegendPositionConfiguration(gsplot[['legend']][['gs.config']])
+    legendParamsALL <- append(legendParamsALL, overallLegendArgs)
+    legendOrdered <- legendParamsALL[na.omit(match(names(default.args), names(legendParamsALL)))]
+
+    #switch??
+    if(any(names(overallLegendArgs) %in% c("bg"))) {
+      par(bg=overallLegendArgs$bg)
+    }
     
-    location <- gsplot[['legend']][['gs.config']][['location']]
-    gsConfig <- gsplot[['legend']][['gs.config']]
-    legendParamsALL <- appendLegendPositionConfiguration(location, gsConfig, legendParamsALL)
+    legendOrdered <- lapply(legendOrdered, function(x) {unname(sapply(x, function(x) {eval(x)}))})
     
-    legendParamsALL <- append(legendParamsALL, default.args[which(!names(default.args) %in% names(legendParamsALL))])
+    #legendParamsALL <- append(legendParamsALL, default.args[which(!names(default.args) %in% names(legendParamsALL))])
     
     #     if(!("legend" %in% names(legendParams))){
     #       
@@ -210,6 +217,7 @@ draw_legend <- function(gsplot) {
   }
   
   par(xpd=oldXPD)
+  par(bg=oldBg)
 }
 
 legend_adjusted_margins <- function(gsPlot) {

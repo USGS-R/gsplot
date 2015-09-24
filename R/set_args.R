@@ -50,52 +50,83 @@ set_inherited_args <- function(fun.name, inherited.args, ..., package='gsplot'){
 set_legend_args <- function(object, fun.name, ...) {
   paramsAll <- c(...)
   
-  # if (is.null(params)) {next}
+  if(any(names(paramsAll) %in% "legend.name")) {
   
-  names(paramsAll)[which(names(paramsAll)=='legend.name')] <- 'legend'
-  default.args <- formals(graphics::legend)
-  overall.legend <- c("x", "y", "bty", "bg", "box.lty", "box.lwd", "box.col",
-                      "xjust", "yjust", "merge", "trace", "plot", "ncol",
-                      "horiz", "title", "inset", "title.col", "title.adj", "xpd")  
-  legend.params <- default.args[-which(names(default.args) %in% overall.legend)]
-  
-  usr.args <- paramsAll[which(names(paramsAll) %in% names(legend.params))] 
-  
-  
-  if (fun.name == "points") {
-    pt.names <- c("lwd","bg","cex")
-    names.index <- which(names(usr.args) %in% pt.names)
-    pt.names.index <- which(pt.names %in% names(usr.args))
-    names(usr.args)[names.index] <- paste0("pt.", pt.names)[pt.names.index]
+    names(paramsAll)[which(names(paramsAll)=='legend.name')] <- 'legend'
+    default.args <- formals(graphics::legend)
+    overall.legend <- c("x", "y", "bty", "bg", "box.lty", "box.lwd", "box.col", "cex","xjust", 
+                        "yjust", "adj", "text.width", "merge", "trace", "plot", "ncol", 
+                        "horiz", "title", "inset", "title.col", "title.adj", "xpd")  
+    legend.params <- default.args[-which(names(default.args) %in% overall.legend)]
     
-    fun.specific <- list(fill=NA,
-                         col=par("col"),
-                         border=NA,
-                         lty=1,
-                         pch=1,
-                         density=NA,
-                         text.width=1,
-                         text.font=1)
+    usr.args <- paramsAll[which(names(paramsAll) %in% names(legend.params))] 
     
-  } else if (fun.name == "lines") {
-    pt.names <- c("lwd","bg","cex")
-    names.index <- which(names(usr.args) %in% pt.names)
-    pt.names.index <- which(pt.names %in% names(usr.args))
     
-    fun.specific <- list(fill=NA,
-                         border=NA,
-                         density=NA,
-                         text.width=1,
-                         text.font=1)
+    if (fun.name == "points") {
+      pt.names <- c("lwd","bg","cex")
+      names.index <- which(names(usr.args) %in% pt.names)
+      pt.names.index <- which(pt.names %in% names(usr.args))
+      names(usr.args)[names.index] <- paste0("pt.", pt.names)[pt.names.index]
+      
+      fun.specific <- list(fill=quote(par("bg")),
+                           border=quote(par("bg")),
+                           lty=NA,
+                           lwd=NA,
+                           pch=1,
+                           density=NA,
+                           pt.bg=quote(par("bg")),
+                           pt.cex=par("cex"),
+                           pt.lwd=par("lwd"),
+                           text.col=par("col"),
+                           text.font=1)
+      
+      add.args <- fun.specific[!names(fun.specific) %in% names(paramsAll)]
+      
+    } else if (fun.name == "lines") {
+      pt.names <- c("lwd","bg","cex")
+      names.index <- which(names(usr.args) %in% pt.names)
+      pt.names.index <- which(pt.names %in% names(usr.args))
+      
+      fun.specific <- list(fill=quote(par("bg")),
+                           border=quote(par("bg")),
+                           pch=NA,
+                           density=NA,
+                           pt.bg=quote(par("bg")),
+                           pt.cex=NA,
+                           pt.lwd=NA,
+                           text.col=par("col"),
+                           text.font=1)
+      
+      add.args <- fun.specific[!names(fun.specific) %in% names(usr.args)]
+      
+    } else if (fun.name %in% c("polygon", "rect")) {
+      chg.names <- c("col")
+      names.index <- which(names(usr.args) %in% chg.names)
+      names(usr.args)[names.index] <- "fill"
+      
+      fun.specific <- list(fill=quote(par("bg")),
+                           #col=quote(par("bg")),
+                           border=par("fg"),
+                           lty=1,
+                           lwd=par("lwd"),
+                           pch=NA,
+                           #density=NA,
+                           pt.cex=NA,
+                           pt.lwd=NA,
+                           text.col=par("col"),
+                           text.font=1)
+      
+      add.args <- fun.specific[!names(fun.specific) %in% names(usr.args)]
+    }
     
+    legend.params[match(names(usr.args), names(legend.params))] <- usr.args
+    legend.params[match(names(add.args), names(legend.params))] <- add.args
+    
+    object <- append(object, list(legend.args=legend.params))
+    #object[['legend']] <- append(object[['legend']], list(arguments = legend.params))
+    
+    object <- gsplot(object)
   }
   
-  legend.params[match(names(usr.args), names(legend.params))] <- usr.args
-  legend.params[match(names(fun.specific), names(legend.params))] <- fun.specific
-  
-  object <- append(object, list(legend.args=legend.params))
-  #object[['legend']] <- append(object[['legend']], list(arguments = legend.params))
-  
-  object <- gsplot(object)
   return(object)
 }
