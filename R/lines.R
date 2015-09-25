@@ -44,7 +44,9 @@ lines <- function(object, ...) {
 
 lines.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
   object <- set_window_args(object, fun.name='lines', ..., legend.name=legend.name, side=side, def.funs=c(graphics::plot.xy, graphics::lines.default))
-  current.args <- object$view[[which(names(object$view) %in% 'window') - 1]]
+  views <- lapply(object[which(names(object)=="view")], function(x) {all(x$window$side == side)})
+  correctView <- object[[which(unname(unlist(views)))]]
+  current.args <- correctView[[which(names(correctView) %in% 'window') - 1]]
   set_legend_args(object, fun.name='lines', current.args)
 }
 
