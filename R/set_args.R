@@ -61,12 +61,24 @@ set_legend_args <- function(object, fun.name, ...) {
     
     usr.args <- paramsAll[which(names(paramsAll) %in% names(legend.params))] 
     
+    type <- paramsAll[['type']]
     
     if (fun.name == "points") {
       pt.names <- c("lwd","bg","cex")
       names.index <- which(names(usr.args) %in% pt.names)
       pt.names.index <- which(pt.names %in% names(usr.args))
       names(usr.args)[names.index] <- paste0("pt.", pt.names)[pt.names.index]
+      
+      if(!is.null(type) && type %in% c('l','b','o')){
+        if(is.null(usr.args$lwd)){usr.args$lwd <- 1}
+        if(is.null(usr.args$lty)){usr.args$lty <- 1}
+      } else if(!is.null(type) && type %in% c('c','h','s','S')){
+        usr.args$pch <- NA
+        if(is.null(usr.args$lwd)){usr.args$lwd <- 1}
+        if(is.null(usr.args$lty)){usr.args$lty <- 1}
+      } else if(!is.null(type) && type %in% c('n')){
+        usr.args$pch <- NA
+      }
       
       fun.specific <- list(fill=quote(par("bg")),
                            border=quote(par("bg")),
@@ -80,12 +92,24 @@ set_legend_args <- function(object, fun.name, ...) {
                            text.col=par("col"),
                            text.font=1)
       
-      add.args <- fun.specific[!names(fun.specific) %in% names(paramsAll)]
+      add.args <- fun.specific[!names(fun.specific) %in% names(usr.args)]
       
     } else if (fun.name == "lines") {
       pt.names <- c("lwd","bg","cex")
       names.index <- which(names(usr.args) %in% pt.names)
       pt.names.index <- which(pt.names %in% names(usr.args))
+      
+      if(!is.null(type) && type %in% c('l','b','o')){
+        if(is.null(usr.args$pch)){usr.args$pch <- 1}
+        if(is.null(usr.args$pt.bg)){usr.args$pt.bg <- quote(par("bg"))}
+        if(is.null(usr.args$pt.cex)){usr.args$pt.cex <- quote(par("cex"))}
+        if(is.null(usr.args$pt.lwd)){usr.args$pt.lwd <- quote(par("lwd"))}
+      } else if(!is.null(type) && type %in% c('c','h','s','S')){
+        usr.args$pch <- NA
+      } else if(!is.null(type) && type %in% c('n')){
+        usr.args$lty <- NA
+        usr.args$lwd <- NA
+      }
       
       fun.specific <- list(fill=quote(par("bg")),
                            border=quote(par("bg")),
@@ -93,7 +117,7 @@ set_legend_args <- function(object, fun.name, ...) {
                            lwd=1,
                            pch=NA,
                            density=NA,
-                           pt.bg=quote(par("bg")),
+                           pt.bg=NA,
                            pt.cex=NA,
                            pt.lwd=NA,
                            text.col=par("col"),
@@ -106,11 +130,13 @@ set_legend_args <- function(object, fun.name, ...) {
       names.index <- which(names(usr.args) %in% chg.names)
       names(usr.args)[names.index] <- "fill"
       
+      #these aren't shown in the legend (they appear as a line through the fill box)
+      usr.args$lty <- NA
+      usr.args$lwd <- NA
+      
       fun.specific <- list(fill=quote(par("bg")),
                            #col=quote(par("bg")),
                            border=par("fg"),
-                           lty=NA,
-                           lwd=NA,
                            pch=NA,
                            #density=NA,
                            pt.cex=NA,
@@ -133,28 +159,7 @@ set_legend_args <- function(object, fun.name, ...) {
   return(object)
 }
 
-# still need to consider/add????
-#
-# type <- views[[v]][[i]][['type']]
-# if (plotElement == "points") {
-#   names(params)[which(names(params) %in% "bg")] <- 'pt.bg'
-#   names(params)[which(names(params) %in% "cex")] <- 'pt.cex'
-#   names(params)[which(names(params) %in% "lwd")] <- 'pt.lwd'
-#   if (!is.null(type) && type %in% c("l", "o", "b", "c", "s", "S", "h")) {
-#     if (all(!names(params) %in% c("lty"))) {params <- append(params, list(lty=par("lty")))}
-#   } 
-# }
-# if (plotElement == "lines" && !is.null(type) && type %in% c("p", "o", "b", "c")) {
-#   if (all(!names(params) %in% c("pch"))) {params <- append(params, list(pch=par("pch")))}
-#   params <- append(params, list(pt.lwd=params$lwd))
-#   if (type == "p") {params <- params[-which(names(params) %in% c('lty', 'lwd'))]}
-#   names(params)[which(names(params) %in% "bg")] <- 'pt.bg'
-#   names(params)[which(names(params) %in% "cex")] <- 'pt.cex'
-# }  
-# if (plotElement %in% c("rect", "polygon")) {
-#   names(params)[which(names(params) %in% "col")] <- 'fill'
-# }
-
+ 
 # MAKE THIS A FUNCTION???
 # change any numeric linetypes to character
 # lineTypes <- c("blank", "solid", "dashed", "dotted", "dotdash", "longdash", "twodash")
