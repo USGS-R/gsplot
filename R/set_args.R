@@ -135,10 +135,9 @@ set_legend_args <- function(object, fun.name, ...) {
       usr.args$lwd <- NA
       
       fun.specific <- list(fill=quote(par("bg")),
-                           #col=quote(par("bg")),
                            border=par("fg"),
                            pch=NA,
-                           #density=NA,
+                           density=NA,
                            pt.cex=NA,
                            pt.lwd=NA,
                            text.col=par("col"),
@@ -150,21 +149,17 @@ set_legend_args <- function(object, fun.name, ...) {
     legend.params[match(names(usr.args), names(legend.params))] <- usr.args
     legend.params[match(names(add.args), names(legend.params))] <- add.args
     
+    if(!is.character(legend.params$lty)){
+      lineTypes <- c("blank", "solid", "dashed", "dotted", "dotdash", "longdash", "twodash")
+      legend.params$lty <- ifelse(is.numeric(legend.params$lty), 
+                                  lineTypes[legend.params$lty + 1], 
+                                  as.character(legend.params$lty))
+    }
+    
     object <- append(object, list(legend.args=legend.params))
-    #object[['legend']] <- append(object[['legend']], list(arguments = legend.params))
     
     object <- gsplot(object)
   }
   
   return(object)
 }
-
- 
-# MAKE THIS A FUNCTION???
-# change any numeric linetypes to character
-# lineTypes <- c("blank", "solid", "dashed", "dotted", "dotdash", "longdash", "twodash")
-# if (any(legendParams$lty %in% c(as.character(1:6)))) { 
-#   ltyIndices <- which(legendParams$lty %in% c(as.character(1:6)))
-#   legendParams$lty[ltyIndices] <- sapply(as.numeric(legendParams$lty[ltyIndices]), function(x) lineTypes[x+1])
-# }
-
