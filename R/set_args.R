@@ -89,6 +89,8 @@ set_legend_args <- function(object, fun.name, ...) {
       
       fun.specific <- list(fill=quote(par("bg")),
                            border=quote(par("bg")),
+                           lty=1,
+                           lwd=1,
                            pch=NA,
                            density=NA,
                            pt.bg=quote(par("bg")),
@@ -107,8 +109,8 @@ set_legend_args <- function(object, fun.name, ...) {
       fun.specific <- list(fill=quote(par("bg")),
                            #col=quote(par("bg")),
                            border=par("fg"),
-                           lty=1,
-                           lwd=par("lwd"),
+                           lty=NA,
+                           lwd=NA,
                            pch=NA,
                            #density=NA,
                            pt.cex=NA,
@@ -130,3 +132,34 @@ set_legend_args <- function(object, fun.name, ...) {
   
   return(object)
 }
+
+# still need to consider/add????
+#
+# type <- views[[v]][[i]][['type']]
+# if (plotElement == "points") {
+#   names(params)[which(names(params) %in% "bg")] <- 'pt.bg'
+#   names(params)[which(names(params) %in% "cex")] <- 'pt.cex'
+#   names(params)[which(names(params) %in% "lwd")] <- 'pt.lwd'
+#   if (!is.null(type) && type %in% c("l", "o", "b", "c", "s", "S", "h")) {
+#     if (all(!names(params) %in% c("lty"))) {params <- append(params, list(lty=par("lty")))}
+#   } 
+# }
+# if (plotElement == "lines" && !is.null(type) && type %in% c("p", "o", "b", "c")) {
+#   if (all(!names(params) %in% c("pch"))) {params <- append(params, list(pch=par("pch")))}
+#   params <- append(params, list(pt.lwd=params$lwd))
+#   if (type == "p") {params <- params[-which(names(params) %in% c('lty', 'lwd'))]}
+#   names(params)[which(names(params) %in% "bg")] <- 'pt.bg'
+#   names(params)[which(names(params) %in% "cex")] <- 'pt.cex'
+# }  
+# if (plotElement %in% c("rect", "polygon")) {
+#   names(params)[which(names(params) %in% "col")] <- 'fill'
+# }
+
+# MAKE THIS A FUNCTION???
+# change any numeric linetypes to character
+# lineTypes <- c("blank", "solid", "dashed", "dotted", "dotdash", "longdash", "twodash")
+# if (any(legendParams$lty %in% c(as.character(1:6)))) { 
+#   ltyIndices <- which(legendParams$lty %in% c(as.character(1:6)))
+#   legendParams$lty[ltyIndices] <- sapply(as.numeric(legendParams$lty[ltyIndices]), function(x) lineTypes[x+1])
+# }
+
