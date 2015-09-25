@@ -125,12 +125,11 @@ draw_legend <- function(gsplot) {
     legendParamsALL <- append(legendParamsALL, overallLegendArgs)
     legendOrdered <- legendParamsALL[na.omit(match(names(default.args), names(legendParamsALL)))]
 
-    #switch??
     if(any(names(overallLegendArgs) %in% c("bg"))) {
       par(bg=overallLegendArgs$bg)
     }
     
-    legendOrdered <- lapply(legendOrdered, function(x) {unname(sapply(x, function(x) {eval(x)}))})
+    legendComplete <- lapply(legendOrdered, function(x) {unname(sapply(x, function(x) {eval(x)}))})
     
     #legendParamsALL <- append(legendParamsALL, default.args[which(!names(default.args) %in% names(legendParamsALL))])
     
@@ -213,7 +212,7 @@ draw_legend <- function(gsplot) {
     #     } else {
     #       legend(legendParams)
     #     }
-    legend(legendParamsALL)
+    legend(legendComplete)
   }
   
   par(xpd=oldXPD)
