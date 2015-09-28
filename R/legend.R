@@ -105,49 +105,54 @@ draw_legend <- function(gsplot) {
     
     par(xpd=TRUE)
     
-    default.args <- formals(graphics::legend)
+    if (any(names(gsplot) == "legend.args")) {
     
-    overall.legend <- c("x", "y", "bty", "bg", "box.lty", "box.lwd", "box.col", "cex","xjust", 
-                        "yjust", "adj", "text.width", "merge", "trace", "plot", "ncol",
-                        "horiz", "title", "inset", "title.col", "title.adj", "xpd")
-    
-    not.overall <- default.args[-which(names(default.args) %in% overall.legend)]
-    legendParamsALL <- vector("list", length(not.overall))
-    names(legendParamsALL) <- names(not.overall)
-    
-    for(i in which(names(gsplot) %in% 'legend.args')) {
-      orderedParams <- gsplot[[i]][match(names(legendParamsALL), names(gsplot[[i]]))] #might not need - could be in set_legend_args    
-      for (j in seq_along(legendParamsALL)) {
-        legendParamsALL[[j]] <- c(legendParamsALL[[j]], orderedParams[[j]])
+      default.args <- formals(graphics::legend)
+      
+      overall.legend <- c("x", "y", "bty", "bg", "box.lty", "box.lwd", "box.col", "cex","xjust", 
+                          "yjust", "adj", "text.width", "merge", "trace", "plot", "ncol",
+                          "horiz", "title", "inset", "title.col", "title.adj", "xpd")
+      
+      not.overall <- default.args[-which(names(default.args) %in% overall.legend)]
+      legendParamsALL <- vector("list", length(not.overall))
+      names(legendParamsALL) <- names(not.overall)
+      
+      for(i in which(names(gsplot) %in% 'legend.args')) {
+        orderedParams <- gsplot[[i]][match(names(legendParamsALL), names(gsplot[[i]]))] #might not need - could be in set_legend_args    
+        for (j in seq_along(legendParamsALL)) {
+          legendParamsALL[[j]] <- c(legendParamsALL[[j]], orderedParams[[j]])
+        }
       }
-    }
-    
-    #for above/below, dynamically set the number of columns
-    location <- gsplot[['legend']][['gs.config']][['location']]
-    if(location == "below" || location == "above") {
-      itemsPerCol <- 3 #TODO load this from config
-      cols <- length(legendParamsALL$legend) %/% 3;
-      if(length(legendParamsALL$legend) %% 3 > 0) {
-        cols <- cols + 1
+      
+      #for above/below, dynamically set the number of columns
+      location <- gsplot[['legend']][['gs.config']][['location']]
+      if(location == "below" || location == "above") {
+        itemsPerCol <- 3 #TODO load this from config
+        cols <- length(legendParamsALL$legend) %/% 3;
+        if(length(legendParamsALL$legend) %% 3 > 0) {
+          cols <- cols + 1
+        }
+        legendParamsALL <- append(legendParamsALL, list(ncol=cols))
       }
-      legendParamsALL <- append(legendParamsALL, list(ncol=cols))
+      
+      
+      overallLegendArgs <- appendLegendPositionConfiguration(gsplot[['legend']][['gs.config']])
+      legendParamsALL <- append(legendParamsALL, overallLegendArgs)
+      legendOrdered <- legendParamsALL[na.omit(match(names(default.args), names(legendParamsALL)))]
+  
+      if(any(names(overallLegendArgs) %in% c("bg"))) {
+        par(bg=overallLegendArgs$bg)
+      }
+      
+      legendComplete <- lapply(legendOrdered, function(x) {unname(sapply(x, function(x) {eval(x)}))})
+      
+      legend(legendComplete)
+    
+    } else {
+      legendComplete <- appendLegendPositionConfiguration(gsplot[[index]][['gs.config']])
+      legend(legendComplete)
     }
-    
-    
-    overallLegendArgs <- appendLegendPositionConfiguration(gsplot[['legend']][['gs.config']])
-    legendParamsALL <- append(legendParamsALL, overallLegendArgs)
-    legendOrdered <- legendParamsALL[na.omit(match(names(default.args), names(legendParamsALL)))]
 
-    if(any(names(overallLegendArgs) %in% c("bg"))) {
-      par(bg=overallLegendArgs$bg)
-    }
-    
-    legendComplete <- lapply(legendOrdered, function(x) {unname(sapply(x, function(x) {eval(x)}))})
-    
-           
-   
-
-  legend(legendComplete)
   }
   
   par(xpd=oldXPD)
