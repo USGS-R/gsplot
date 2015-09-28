@@ -57,7 +57,7 @@ curve.gsplot <- function(object, expr, ..., legend.name=NULL, side=c(1,2)){
   
   object <- gsplot(append(object, to.gsplot))
   
-  views <- lapply(object[which(names(object)=="view")], function(x) {all(x$window$side == side)})
+  views <- lapply(object[which(names(object)=="view")], function(x) {all(x$window$side == set_sides(side))})
   correctView <- object[[which(unname(unlist(views)))]]
   current.args <- correctView[[which(names(correctView) %in% 'window') - 1]]
   object <- set_legend_args(object, fun.name='lines', current.args)
