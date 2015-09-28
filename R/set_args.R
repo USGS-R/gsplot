@@ -57,27 +57,25 @@ set_legend_args <- function(object, fun.name, ...) {
     overall.legend <- c("x", "y", "bty", "bg", "box.lty", "box.lwd", "box.col", "cex","xjust", 
                         "yjust", "adj", "text.width", "merge", "trace", "plot", "ncol", 
                         "horiz", "title", "inset", "title.col", "title.adj", "xpd")  
-    legend.params <- default.args[-which(names(default.args) %in% overall.legend)]
-    
-    usr.args <- paramsAll[which(names(paramsAll) %in% names(legend.params))] 
-    
+    not.overall <- default.args[which(!names(default.args) %in% overall.legend)]
+
     type <- paramsAll[['type']]
     
     if (fun.name == "points") {
       pt.names <- c("lwd","bg","cex")
-      names.index <- which(names(usr.args) %in% pt.names)
-      pt.names.index <- which(pt.names %in% names(usr.args))
-      names(usr.args)[names.index] <- paste0("pt.", pt.names)[pt.names.index]
+      names.index <- which(names(paramsAll) %in% pt.names)
+      pt.names.index <- which(pt.names %in% names(paramsAll))
+      names(paramsAll)[names.index] <- paste0("pt.", pt.names)[pt.names.index]
       
       if(!is.null(type) && type %in% c('l','b','o')){
-        if(is.null(usr.args$lwd)){usr.args$lwd <- 1}
-        if(is.null(usr.args$lty)){usr.args$lty <- 1}
+          if(is.null(paramsAll$lwd)){paramsAll$lwd <- 1}
+          if(is.null(paramsAll$lty)){paramsAll$lty <- 1}
       } else if(!is.null(type) && type %in% c('c','h','s','S')){
-        usr.args$pch <- NA
-        if(is.null(usr.args$lwd)){usr.args$lwd <- 1}
-        if(is.null(usr.args$lty)){usr.args$lty <- 1}
+          paramsAll$pch <- NA
+          if(is.null(paramsAll$lwd)){paramsAll$lwd <- 1}
+          if(is.null(paramsAll$lty)){paramsAll$lty <- 1}
       } else if(!is.null(type) && type %in% c('n')){
-        usr.args$pch <- NA
+          paramsAll$pch <- NA
       }
       
       fun.specific <- list(fill=quote(par("bg")),
@@ -92,23 +90,20 @@ set_legend_args <- function(object, fun.name, ...) {
                            text.col=par("col"),
                            text.font=1)
       
-      add.args <- fun.specific[!names(fun.specific) %in% names(usr.args)]
+      add.args <- fun.specific[!names(fun.specific) %in% names(paramsAll)]
       
-    } else if (fun.name == "lines") {
-      pt.names <- c("lwd","bg","cex")
-      names.index <- which(names(usr.args) %in% pt.names)
-      pt.names.index <- which(pt.names %in% names(usr.args))
+    } else if (fun.name %in% c("lines", "abline", "arrows", "segments")) {
       
       if(!is.null(type) && type %in% c('l','b','o')){
-        if(is.null(usr.args$pch)){usr.args$pch <- 1}
-        if(is.null(usr.args$pt.bg)){usr.args$pt.bg <- quote(par("bg"))}
-        if(is.null(usr.args$pt.cex)){usr.args$pt.cex <- quote(par("cex"))}
-        if(is.null(usr.args$pt.lwd)){usr.args$pt.lwd <- quote(par("lwd"))}
+          if(is.null(paramsAll$pch)){paramsAll$pch <- 1}
+          if(is.null(paramsAll$pt.bg)){paramsAll$pt.bg <- quote(par("bg"))}
+          if(is.null(paramsAll$pt.cex)){paramsAll$pt.cex <- par("cex")}
+          if(is.null(paramsAll$pt.lwd)){paramsAll$pt.lwd <- par("lwd")}
       } else if(!is.null(type) && type %in% c('c','h','s','S')){
-        usr.args$pch <- NA
+          paramsAll$pch <- NA
       } else if(!is.null(type) && type %in% c('n')){
-        usr.args$lty <- NA
-        usr.args$lwd <- NA
+          paramsAll$lty <- NA
+          paramsAll$lwd <- NA
       }
       
       fun.specific <- list(fill=quote(par("bg")),
@@ -123,16 +118,13 @@ set_legend_args <- function(object, fun.name, ...) {
                            text.col=par("col"),
                            text.font=1)
       
-      add.args <- fun.specific[!names(fun.specific) %in% names(usr.args)]
+      add.args <- fun.specific[!names(fun.specific) %in% names(paramsAll)]
       
     } else if (fun.name %in% c("polygon", "rect")) {
-      chg.names <- c("col")
-      names.index <- which(names(usr.args) %in% chg.names)
-      names(usr.args)[names.index] <- "fill"
-      
-      #these aren't shown in the legend (they appear as a line through the fill box)
-      usr.args$lty <- NA
-      usr.args$lwd <- NA
+      names.index <- which(names(paramsAll) %in% c("col"))
+      names(paramsAll)[names.index] <- "fill"
+      paramsAll$lty <- NA
+      paramsAll$lwd <- NA
       
       fun.specific <- list(fill=quote(par("bg")),
                            border=par("fg"),
@@ -143,21 +135,22 @@ set_legend_args <- function(object, fun.name, ...) {
                            text.col=par("col"),
                            text.font=1)
       
-      add.args <- fun.specific[!names(fun.specific) %in% names(usr.args)]
+      add.args <- fun.specific[!names(fun.specific) %in% names(paramsAll)]
     }
     
-    legend.params[match(names(usr.args), names(legend.params))] <- usr.args
-    legend.params[match(names(add.args), names(legend.params))] <- add.args
+    usr.args <- paramsAll[which(names(paramsAll) %in% names(not.overall))] 
     
-    if(!is.character(legend.params$lty)){
+    not.overall[match(names(usr.args), names(not.overall))] <- usr.args
+    not.overall[match(names(add.args), names(not.overall))] <- add.args
+    
+    if(!is.character(not.overall$lty)){
       lineTypes <- c("blank", "solid", "dashed", "dotted", "dotdash", "longdash", "twodash")
-      legend.params$lty <- ifelse(is.numeric(legend.params$lty), 
-                                  lineTypes[legend.params$lty + 1], 
-                                  as.character(legend.params$lty))
+      not.overall$lty <- ifelse(is.numeric(not.overall$lty), 
+                                  lineTypes[not.overall$lty + 1], 
+                                  as.character(not.overall$lty))
     }
     
-    object <- append(object, list(legend.args=legend.params))
-    
+    object <- append(object, list(legend.args=not.overall))
     object <- gsplot(object)
   }
   

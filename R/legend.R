@@ -61,7 +61,6 @@ legend.gsplot <- function(object, ..., location="topright", legend_offset=0.3) {
     gsConfig$x <- NULL
   }
   
-  #object[['legend']] <- append(object[['legend']], list(gs.config = gsConfig))
   object <- append(object, list(legend = list(gs.config = gsConfig)))
   
   return(gsplot(object))
@@ -113,12 +112,12 @@ draw_legend <- function(gsplot) {
                           "yjust", "adj", "text.width", "merge", "trace", "plot", "ncol",
                           "horiz", "title", "inset", "title.col", "title.adj", "xpd")
       
-      not.overall <- default.args[-which(names(default.args) %in% overall.legend)]
+      not.overall <- default.args[which(!names(default.args) %in% overall.legend)]
       legendParamsALL <- vector("list", length(not.overall))
       names(legendParamsALL) <- names(not.overall)
       
       for(i in which(names(gsplot) %in% 'legend.args')) {
-        orderedParams <- gsplot[[i]][match(names(legendParamsALL), names(gsplot[[i]]))] #might not need - could be in set_legend_args    
+        orderedParams <- gsplot[[i]][match(names(legendParamsALL), names(gsplot[[i]]))]    
         for (j in seq_along(legendParamsALL)) {
           legendParamsALL[[j]] <- c(legendParamsALL[[j]], orderedParams[[j]])
         }
@@ -134,7 +133,6 @@ draw_legend <- function(gsplot) {
         }
         legendParamsALL <- append(legendParamsALL, list(ncol=cols))
       }
-      
       
       overallLegendArgs <- appendLegendPositionConfiguration(gsplot[['legend']][['gs.config']])
       legendParamsALL <- append(legendParamsALL, overallLegendArgs)
@@ -153,12 +151,13 @@ draw_legend <- function(gsplot) {
       legend(legendComplete)
     }
 
+    par(xpd=oldXPD)
+    par(bg=oldBg)
   }
-  
-  par(xpd=oldXPD)
-  par(bg=oldBg)
+
 }
 
+# What is this for?
 legend_adjusted_margins <- function(gsPlot) {
   defaults <- config("plot")
   defaultMargins <- c(3, 3, 3, 3) #default margins should come from config
