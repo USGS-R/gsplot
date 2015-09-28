@@ -70,13 +70,14 @@ set_legend_args <- function(object, fun.name, ...) {
       if(!is.null(type) && type %in% c('l','b','o')){
           if(is.null(paramsAll$lwd)){paramsAll$lwd <- 1}
           if(is.null(paramsAll$lty)){paramsAll$lty <- 1}
+          if(type=='l'){paramsAll$pch <- NA}
       } else if(!is.null(type) && type %in% c('c','h','s','S')){
           paramsAll$pch <- NA
           if(is.null(paramsAll$lwd)){paramsAll$lwd <- 1}
           if(is.null(paramsAll$lty)){paramsAll$lty <- 1}
       } else if(!is.null(type) && type %in% c('n')){
           paramsAll$pch <- NA
-      }
+      } 
       
       fun.specific <- list(fill=quote(par("bg")),
                            border=quote(par("bg")),
@@ -89,18 +90,18 @@ set_legend_args <- function(object, fun.name, ...) {
                            pt.lwd=par("lwd"),
                            text.col=par("col"),
                            text.font=1)
-      
-      add.args <- fun.specific[!names(fun.specific) %in% names(paramsAll)]
-      
+
     } else if (fun.name %in% c("lines", "abline", "arrows", "segments")) {
       
-      if(!is.null(type) && type %in% c('l','b','o')){
+      if(!is.null(type) && type %in% c('p', 'b','o')){
           if(is.null(paramsAll$pch)){paramsAll$pch <- 1}
           if(is.null(paramsAll$pt.bg)){paramsAll$pt.bg <- quote(par("bg"))}
           if(is.null(paramsAll$pt.cex)){paramsAll$pt.cex <- par("cex")}
           if(is.null(paramsAll$pt.lwd)){paramsAll$pt.lwd <- par("lwd")}
-      } else if(!is.null(type) && type %in% c('c','h','s','S')){
-          paramsAll$pch <- NA
+          if(type=='p'){
+            paramsAll$lty <- NA
+            paramsAll$lwd <- NA
+          }
       } else if(!is.null(type) && type %in% c('n')){
           paramsAll$lty <- NA
           paramsAll$lwd <- NA
@@ -118,35 +119,32 @@ set_legend_args <- function(object, fun.name, ...) {
                            text.col=par("col"),
                            text.font=1)
       
-      add.args <- fun.specific[!names(fun.specific) %in% names(paramsAll)]
-      
     } else if (fun.name %in% c("polygon", "rect")) {
       names.index <- which(names(paramsAll) %in% c("col"))
       names(paramsAll)[names.index] <- "fill"
-      paramsAll$lty <- NA
-      paramsAll$lwd <- NA
       
       fun.specific <- list(fill=quote(par("bg")),
                            border=par("fg"),
+                           lty=NA,
+                           lwd=NA,
                            pch=NA,
                            density=NA,
+                           pt.bg=NA,
                            pt.cex=NA,
                            pt.lwd=NA,
                            text.col=par("col"),
                            text.font=1)
-      
-      add.args <- fun.specific[!names(fun.specific) %in% names(paramsAll)]
     }
     
     usr.args <- paramsAll[which(names(paramsAll) %in% names(not.overall))] 
+    add.args <- fun.specific[!names(fun.specific) %in% names(paramsAll)]
     
     not.overall[match(names(usr.args), names(not.overall))] <- usr.args
     not.overall[match(names(add.args), names(not.overall))] <- add.args
     
     if(!is.character(not.overall$lty)){
       lineTypes <- c("blank", "solid", "dashed", "dotted", "dotdash", "longdash", "twodash")
-      not.overall$lty <- ifelse(is.numeric(not.overall$lty), 
-                                  lineTypes[not.overall$lty + 1], 
+      not.overall$lty <- ifelse(is.numeric(not.overall$lty), lineTypes[not.overall$lty + 1], 
                                   as.character(not.overall$lty))
     }
     

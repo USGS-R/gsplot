@@ -66,28 +66,6 @@ legend.gsplot <- function(object, ..., location="topright", legend_offset=0.3) {
   return(gsplot(object))
 }
 
-appendLegendPositionConfiguration <- function(gsConfig) {
-  #TODO support explicit x/y coords
-  legend_offset <- gsConfig$legend_offset
-  location <- gsConfig$location
-  gsConfig$legend_offset <- NULL
-  gsConfig$location <- NULL
-  
-  if(location == "below") {
-    return(append(gsConfig, list(x = "bottom", y = NULL, inset=c(0, -legend_offset), bty="n")))
-  } else if(location == "above") {
-    return(append(gsConfig, list(x = "top", y = NULL, inset=c(0, -legend_offset), bty="n")))
-  } else if(location == "toright") {
-    return(append(gsConfig, list(x = "right", y = NULL, inset=c(-legend_offset, 0), bty="n")))
-  } else if(location == "toleft") {
-    return(append(gsConfig, list(x = "left", y = NULL, inset=c(-legend_offset, 0), bty="n")))
-  } else if("x" %in% names(gsConfig)){
-    return(gsConfig)
-  } else {
-    return(append(gsConfig, list(x = location)))
-  }
-}
-
 #' gsplot draw_legend
 #'
 #' Will cycle through  the gsplot, looking at the legend configuration (if one exists), and
@@ -107,11 +85,9 @@ draw_legend <- function(gsplot) {
     if (any(names(gsplot) == "legend.args")) {
     
       default.args <- formals(graphics::legend)
-      
       overall.legend <- c("x", "y", "bty", "bg", "box.lty", "box.lwd", "box.col", "cex","xjust", 
                           "yjust", "adj", "text.width", "merge", "trace", "plot", "ncol",
                           "horiz", "title", "inset", "title.col", "title.adj", "xpd")
-      
       not.overall <- default.args[which(!names(default.args) %in% overall.legend)]
       legendParamsALL <- vector("list", length(not.overall))
       names(legendParamsALL) <- names(not.overall)
@@ -138,10 +114,10 @@ draw_legend <- function(gsplot) {
       legendParamsALL <- append(legendParamsALL, overallLegendArgs)
       legendOrdered <- legendParamsALL[na.omit(match(names(default.args), names(legendParamsALL)))]
   
+      #set bg so that fill/border/etc args are correct, then evaluate any quoted list items
       if(any(names(overallLegendArgs) %in% c("bg"))) {
         par(bg=overallLegendArgs$bg)
       }
-      
       legendComplete <- lapply(legendOrdered, function(x) {unname(sapply(x, function(x) {eval(x)}))})
       
       legend(legendComplete)
@@ -155,6 +131,28 @@ draw_legend <- function(gsplot) {
     par(bg=oldBg)
   }
 
+}
+
+appendLegendPositionConfiguration <- function(gsConfig) {
+  #TODO support explicit x/y coords
+  legend_offset <- gsConfig$legend_offset
+  location <- gsConfig$location
+  gsConfig$legend_offset <- NULL
+  gsConfig$location <- NULL
+  
+  if(location == "below") {
+    return(append(gsConfig, list(x = "bottom", y = NULL, inset=c(0, -legend_offset), bty="n")))
+  } else if(location == "above") {
+    return(append(gsConfig, list(x = "top", y = NULL, inset=c(0, -legend_offset), bty="n")))
+  } else if(location == "toright") {
+    return(append(gsConfig, list(x = "right", y = NULL, inset=c(-legend_offset, 0), bty="n")))
+  } else if(location == "toleft") {
+    return(append(gsConfig, list(x = "left", y = NULL, inset=c(-legend_offset, 0), bty="n")))
+  } else if("x" %in% names(gsConfig)){
+    return(gsConfig)
+  } else {
+    return(append(gsConfig, list(x = location)))
+  }
 }
 
 # What is this for?
