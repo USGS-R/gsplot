@@ -46,3 +46,111 @@ set_inherited_args <- function(fun.name, inherited.args, ..., package='gsplot'){
   inherited.args = function_args(package, fun.name, inherited.args, drop=TRUE)
   return(c(inherited.args, set_args(fun.name, ..., package = package)))
 }
+
+set_legend_args <- function(object, fun.name, ...) {
+  paramsAll <- c(...)
+  
+  if(any(names(paramsAll) %in% "legend.name")) {
+  
+    names(paramsAll)[which(names(paramsAll)=='legend.name')] <- 'legend'
+    default.args <- formals(graphics::legend)
+    overall.legend <- c("x", "y", "bty", "bg", "box.lty", "box.lwd", "box.col", "cex","xjust", 
+                        "yjust", "adj", "text.width", "merge", "trace", "plot", "ncol", 
+                        "horiz", "title", "inset", "title.col", "title.adj", "xpd")  
+    not.overall <- default.args[which(!names(default.args) %in% overall.legend)]
+
+    type <- paramsAll[['type']]
+    
+    if (fun.name == "points") {
+      pt.names <- c("lwd","bg","cex")
+      names.index <- which(names(paramsAll) %in% pt.names)
+      pt.names.index <- which(pt.names %in% names(paramsAll))
+      names(paramsAll)[names.index] <- paste0("pt.", pt.names)[pt.names.index]
+      
+      if(!is.null(type) && type %in% c('l','b','o')){
+          if(is.null(paramsAll$lwd)){paramsAll$lwd <- 1}
+          if(is.null(paramsAll$lty)){paramsAll$lty <- 1}
+          if(type=='l'){paramsAll$pch <- NA}
+      } else if(!is.null(type) && type %in% c('c','h','s','S')){
+          paramsAll$pch <- NA
+          if(is.null(paramsAll$lwd)){paramsAll$lwd <- 1}
+          if(is.null(paramsAll$lty)){paramsAll$lty <- 1}
+      } else if(!is.null(type) && type %in% c('n')){
+          paramsAll$pch <- NA
+      } 
+      
+      fun.specific <- list(fill=quote(par("bg")),
+                           border=quote(par("bg")),
+                           lty=NA,
+                           lwd=NA,
+                           pch=1,
+                           density=NA,
+                           pt.bg=quote(par("bg")),
+                           pt.cex=par("cex"),
+                           pt.lwd=par("lwd"),
+                           text.col=par("col"),
+                           text.font=1)
+
+    } else if (fun.name %in% c("lines", "abline", "arrows", "segments")) {
+      
+      if(!is.null(type) && type %in% c('p', 'b','o')){
+          if(is.null(paramsAll$pch)){paramsAll$pch <- 1}
+          if(is.null(paramsAll$pt.bg)){paramsAll$pt.bg <- quote(par("bg"))}
+          if(is.null(paramsAll$pt.cex)){paramsAll$pt.cex <- par("cex")}
+          if(is.null(paramsAll$pt.lwd)){paramsAll$pt.lwd <- par("lwd")}
+          if(type=='p'){
+            paramsAll$lty <- NA
+            paramsAll$lwd <- NA
+          }
+      } else if(!is.null(type) && type %in% c('n')){
+          paramsAll$lty <- NA
+          paramsAll$lwd <- NA
+      }
+      
+      fun.specific <- list(fill=quote(par("bg")),
+                           border=quote(par("bg")),
+                           lty=1,
+                           lwd=1,
+                           pch=NA,
+                           density=NA,
+                           pt.bg=NA,
+                           pt.cex=NA,
+                           pt.lwd=NA,
+                           text.col=par("col"),
+                           text.font=1)
+      
+    } else if (fun.name %in% c("polygon", "rect")) {
+      names.index <- which(names(paramsAll) %in% c("col"))
+      names(paramsAll)[names.index] <- "fill"
+      
+      fun.specific <- list(fill=quote(par("bg")),
+                           border=par("fg"),
+                           lty=NA,
+                           lwd=NA,
+                           pch=NA,
+                           density=NA,
+                           pt.bg=NA,
+                           pt.cex=NA,
+                           pt.lwd=NA,
+                           text.col=par("col"),
+                           text.font=1)
+    }
+    
+    usr.args <- paramsAll[which(names(paramsAll) %in% names(not.overall))] 
+    add.args <- fun.specific[!names(fun.specific) %in% names(paramsAll)]
+    
+    not.overall[match(names(usr.args), names(not.overall))] <- usr.args
+    not.overall[match(names(add.args), names(not.overall))] <- add.args
+    
+    if(!is.character(not.overall$lty)){
+      lineTypes <- c("blank", "solid", "dashed", "dotted", "dotdash", "longdash", "twodash")
+      not.overall$lty <- ifelse(is.numeric(not.overall$lty), lineTypes[not.overall$lty + 1], 
+                                  as.character(not.overall$lty))
+    }
+    
+    object <- append(object, list(legend.args=not.overall))
+    object <- gsplot(object)
+  }
+  
+  return(object)
+}
