@@ -121,6 +121,19 @@ draw_legend <- function(gsplot) {
         legendParamsALL[[j]] <- c(legendParamsALL[[j]], orderedParams[[j]])
       }
     }
+    
+    #for above/below, dynamically set the number of columns
+    location <- gsplot[['legend']][['gs.config']][['location']]
+    if(location == "below" || location == "above") {
+      itemsPerCol <- 3 #TODO load this from config
+      cols <- length(legendParamsALL$legend) %/% 3;
+      if(length(legendParamsALL$legend) %% 3 > 0) {
+        cols <- cols + 1
+      }
+      legendParamsALL <- append(legendParamsALL, list(ncol=cols))
+    }
+    
+    
     overallLegendArgs <- appendLegendPositionConfiguration(gsplot[['legend']][['gs.config']])
     legendParamsALL <- append(legendParamsALL, overallLegendArgs)
     legendOrdered <- legendParamsALL[na.omit(match(names(default.args), names(legendParamsALL)))]
@@ -132,16 +145,7 @@ draw_legend <- function(gsplot) {
     legendComplete <- lapply(legendOrdered, function(x) {unname(sapply(x, function(x) {eval(x)}))})
     
            
-    #         #for above/below, dynamically set the number of columns
-    #         location <- gsplot[['legend']][['gs.config']][['location']]
-    #         if(location == "below" || location == "above") {
-    #           itemsPerCol <- 3 #TODO load this from config
-    #           cols <- NROW(smartLegend) %/% 3;
-    #           if(NROW(smartLegend) %% 3 > 0) {
-    #             cols <- cols + 1
-    #           }
-    #           legendParams <- append(legendParams, list(ncol=cols))
-    #         }
+   
 
   legend(legendComplete)
   }
