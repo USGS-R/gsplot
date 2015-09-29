@@ -45,10 +45,8 @@ rect <- function(object, ...) {
 }
 
 rect.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
-  object <- set_window_args(object, fun.name="rect", ..., legend.name=legend.name, side=side, def.funs=graphics::rect)
-  views <- lapply(object[which(names(object)=="view")], function(x) {all(x$window$side == set_sides(side))})
-  correctView <- object[[which(unname(unlist(views)))]]
-  current.args <- correctView[[which(names(correctView) %in% 'window') - 1]]
-  set_legend_args(object, fun.name='rect', current.args)
+  fun.name <- 'rect'
+  object <- set_window_args(object, fun.name=fun.name, ..., legend.name=legend.name, side=side, def.funs=graphics::rect)
+  object <- set_legend_args(object, fun.name=fun.name, ..., legend.name=legend.name)
 }
 
