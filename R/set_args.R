@@ -53,18 +53,19 @@ set_legend_args <- function(object, fun.name, ..., legend.name) {
   }
   
   paramsAll <- set_args(fun.name, list(...))
-
-  paramsAll$legend <- legend.name
-  default.args <- formals(graphics::legend)
-  overall.legend <- c("x", "y", "bty", "bg", "box.lty", "box.lwd", "box.col", "cex","xjust", 
-                      "yjust", "x.intersp", "y.intersp", "adj", "text.width", "merge", "trace", 
-                      "plot", "ncol", "horiz", "title", "inset", "title.col", "title.adj", "xpd")  
-  not.overall <- default.args[which(!names(default.args) %in% overall.legend)]
   
-  fun.default <- list(fill=quote(par("bg")),
+  fun.default <- list(legend=legend.name,
+                      fill=quote(par("bg")),
                       col=par("col"),
+                      border=NA,
+                      lty=NA,
+                      lwd=NA,
+                      pch=NA,
                       angle=45,
                       density=NA,
+                      pt.bg=NA,
+                      pt.cex=NA,
+                      pt.lwd=NA,
                       text.col=par("col"),
                       text.font=1,
                       seg.len=2)
@@ -81,56 +82,38 @@ set_legend_args <- function(object, fun.name, ..., legend.name) {
     paramsAll <- set_type_params(paramsAll, type.name, params.needed)
   }
   
+  usr.args <- paramsAll[which(names(paramsAll) %in% names(fun.default))]
+  
   if (fun.name == "points") {
     pt.names <- c("lwd","bg","cex")
-    names.index <- which(names(paramsAll) %in% pt.names)
-    pt.names.index <- which(pt.names %in% names(paramsAll))
-    names(paramsAll)[names.index] <- paste0("pt.", pt.names)[pt.names.index]
-    
-    fun.specific <- append(fun.default, list(border=quote(par("bg")),
-                                             lty=NA,
-                                             lwd=NA,
-                                             pch=1,
-                                             pt.bg=quote(par("bg")),
-                                             pt.cex=par("cex"),
-                                             pt.lwd=par("lwd")))
+    names(usr.args) <- replace(names(usr.args), which(names(usr.args) %in% pt.names), 
+                                paste0("pt.", pt.names[which(pt.names %in% names(usr.args))]))
+    fun.specific <- list(border=quote(par("bg")),
+                         pch=1,
+                         pt.bg=quote(par("bg")),
+                         pt.cex=par("cex"),
+                         pt.lwd=par("lwd"))
 
   } else if (fun.name %in% c("lines", "abline", "arrows", "segments")) {
-    
-    fun.specific <- append(fun.default, list(border=quote(par("bg")),
-                                             lty=1,
-                                             lwd=1,
-                                             pch=NA,
-                                             pt.bg=NA,
-                                             pt.cex=NA,
-                                             pt.lwd=NA))
+    fun.specific <- list(border=quote(par("bg")),
+                         lty=1,
+                         lwd=1)
     
   } else if (fun.name %in% c("polygon", "rect")) {
-    names.index <- which(names(paramsAll) %in% c("col"))
-    names(paramsAll)[names.index] <- "fill"
-    
-    fun.specific <- append(fun.default, list(border=par("fg"),
-                                             lty=NA,
-                                             lwd=NA,
-                                             pch=NA,
-                                             pt.bg=NA,
-                                             pt.cex=NA,
-                                             pt.lwd=NA))
+    names(usr.args) <- replace(names(usr.args), which(names(usr.args)=="col"), "fill")
+    fun.specific <- list(border=par("fg"))
   }
   
-  usr.args <- paramsAll[which(names(paramsAll) %in% names(not.overall))] 
-  add.args <- fun.specific[!names(fun.specific) %in% names(paramsAll)]
-  
-  not.overall[match(names(usr.args), names(not.overall))] <- usr.args
-  not.overall[match(names(add.args), names(not.overall))] <- add.args
-  
-  if(!is.character(not.overall$lty)){
+  fun.all <- replace(fun.default, match(names(fun.specific), names(fun.default)), fun.specific)
+  add.args <- fun.all[!names(fun.all) %in% names(usr.args)]
+  fun.legend.args <- append(usr.args, add.args)  
+
+  if(!is.character(fun.legend.args$lty)){
     lineTypes <- c("blank", "solid", "dashed", "dotted", "dotdash", "longdash", "twodash")
-    not.overall$lty <- ifelse(is.numeric(not.overall$lty), lineTypes[not.overall$lty + 1], 
-                                as.character(not.overall$lty))
+    fun.legend.args$lty <- lineTypes[fun.legend.args$lty + 1]
   }
   
-  object[['legend']] <- append(object[['legend']], list(legend.args=not.overall))
+  object[['legend']] <- append(object[['legend']], list(legend.args=fun.legend.args))
   return(object)
 }
 
