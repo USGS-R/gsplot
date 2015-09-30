@@ -49,7 +49,8 @@ error_bar.gsplot <- function(object, x, y, y.high=0, y.low=0, x.high=0, x.low=0,
     y.low.coord <- y.low.coord[errorIndex]
     y.error <- y[errorIndex]
     x.error <- x[errorIndex]
-    object <- arrows(object, x0=x.error, y0=y.error, x1=x.error, y1=y.low.coord, length=epsilon, angle=90, ...)
+    object <- arrows(object, x0=x.error, y0=y.error, x1=x.error, y1=y.low.coord, 
+                     length=epsilon, angle=90, ..., legend.name=legend.name)
   }
   
   if(!all(y.high == 0)){
@@ -58,7 +59,8 @@ error_bar.gsplot <- function(object, x, y, y.high=0, y.low=0, x.high=0, x.low=0,
     y.high.coord <- y.high.coord[errorIndex]
     y.error <- y[errorIndex]
     x.error <- x[errorIndex]
-    object <- arrows(object, x0=x.error, y0=y.error, x1=x.error, y1=y.high.coord, length=epsilon, angle=90, ...)
+    object <- arrows(object, x0=x.error, y0=y.error, x1=x.error, y1=y.high.coord, 
+                     length=epsilon, angle=90, ..., legend.name=legend.name)
   }
   
   if(!all(x.low == 0)){
@@ -67,7 +69,8 @@ error_bar.gsplot <- function(object, x, y, y.high=0, y.low=0, x.high=0, x.low=0,
     x.low.coord <- x.low.coord[errorIndex]
     x.error <- x[errorIndex]
     y.error <- y[errorIndex]
-    object <- arrows(object, x0=x.error, y0=y.error, x1=x.low.coord, y1=y.error, length=epsilon, angle=90, ...)
+    object <- arrows(object, x0=x.error, y0=y.error, x1=x.low.coord, y1=y.error, 
+                     length=epsilon, angle=90, ..., legend.name=legend.name)
   }
   
   if(!all(x.high == 0)){
@@ -76,7 +79,8 @@ error_bar.gsplot <- function(object, x, y, y.high=0, y.low=0, x.high=0, x.low=0,
     x.high.coord <- x.high.coord[errorIndex]
     x.error <- x[errorIndex]
     y.error <- y[errorIndex]
-    object <- arrows(object, x0=x.error, y0=y.error, x1=x.high.coord, y1=y.error, length=epsilon, angle=90, ...)
+    object <- arrows(object, x0=x.error, y0=y.error, x1=x.high.coord, y1=y.error, 
+                     length=epsilon, angle=90, ..., legend.name=legend.name)
   }
 
   return(object)
