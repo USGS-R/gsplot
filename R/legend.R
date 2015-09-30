@@ -61,9 +61,9 @@ legend.gsplot <- function(object, ..., location="topright", legend_offset=0.3) {
     gsConfig$x <- NULL
   }
   
-  object <- append(object, list(legend = list(gs.config = gsConfig)))
+  object[['legend']] <- append(object[['legend']], list(gs.config = gsConfig))
   
-  return(gsplot(object))
+  return(object)
 }
 
 #' gsplot draw_legend
@@ -75,25 +75,29 @@ legend.gsplot <- function(object, ..., location="topright", legend_offset=0.3) {
 
 draw_legend <- function(gsplot) {
   
+  if (all(!names(gsplot[['legend']]) %in% "gs.config")){
+    return()
+  }
+  
   oldXPD <- par()$xpd
   oldBg <- par('bg')
   
-  for(index in which(names(gsplot) %in% "legend")){
+  for(index in which(names(gsplot[['legend']]) %in% "gs.config")){
     
     par(xpd=TRUE)
     
-    if (any(names(gsplot) == "legend.args")) {
+    if (any(names(gsplot[['legend']]) == "legend.args")) {
     
       default.args <- formals(graphics::legend)
       overall.legend <- c("x", "y", "bty", "bg", "box.lty", "box.lwd", "box.col", "cex","xjust", 
-                          "yjust", "adj", "text.width", "merge", "trace", "plot", "ncol",
-                          "horiz", "title", "inset", "title.col", "title.adj", "xpd")
+                          "yjust", "x.intersp", "y.intersp", "adj", "text.width", "merge", "trace", 
+                          "plot", "ncol", "horiz", "title", "inset", "title.col", "title.adj", "xpd")  
       not.overall <- default.args[which(!names(default.args) %in% overall.legend)]
       legendParamsALL <- vector("list", length(not.overall))
       names(legendParamsALL) <- names(not.overall)
       
-      for(i in which(names(gsplot) %in% 'legend.args')) {
-        orderedParams <- gsplot[[i]][match(names(legendParamsALL), names(gsplot[[i]]))]    
+      for(i in which(names(gsplot[['legend']]) %in% 'legend.args')) {
+        orderedParams <- gsplot[['legend']][[i]][match(names(legendParamsALL), names(gsplot[['legend']][[i]]))]    
         for (j in seq_along(legendParamsALL)) {
           legendParamsALL[[j]] <- c(legendParamsALL[[j]], orderedParams[[j]])
         }
@@ -119,14 +123,12 @@ draw_legend <- function(gsplot) {
         par(bg=overallLegendArgs$bg)
       }
       legendComplete <- lapply(legendOrdered, function(x) {unname(sapply(x, function(x) {eval(x)}))})
-      
-      legend(legendComplete)
     
     } else {
-      legendComplete <- appendLegendPositionConfiguration(gsplot[[index]][['gs.config']])
-      legend(legendComplete)
+      legendComplete <- appendLegendPositionConfiguration(gsplot[['legend']][[index]])
     }
-
+    
+    legend(legendComplete)
     par(xpd=oldXPD)
     par(bg=oldBg)
   }
