@@ -13,8 +13,6 @@ abline:
   col: "grey"
   lty: 1
   lwd: 1
-legend: 
-  location: "topright"
 axis:
   at: NULL
   labels: TRUE
