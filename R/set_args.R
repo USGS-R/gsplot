@@ -101,6 +101,8 @@ set_legend_args <- function(object, fun.name, ..., legend.name) {
     
   } else if (fun.name %in% c("polygon", "rect")) {
     names(usr.args) <- replace(names(usr.args), which(names(usr.args)=="col"), "fill")
+    if(!is.null(usr.args$lty)) {usr.args$lty <- NA}
+    if(!is.null(usr.args$lwd)) {usr.args$lwd <- NA}
     fun.specific <- list(border=par("fg"))
   }
   
