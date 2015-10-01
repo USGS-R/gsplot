@@ -23,6 +23,23 @@ test_that("gsplot legend works", {
 
   expect_equal(gs$legend$gs.config$location, "bottomright")
   
+})
+
+test_that("gsplot legend args are still the same", {
+  
+  overall.legend <- c("x", "y", "bty", "bg", "box.lty", "box.lwd", "box.col", "cex",
+                      "xjust", "yjust", "x.intersp", "y.intersp", "adj", "text.width", 
+                      "merge", "trace", "plot", "ncol", "horiz", "title", "inset", 
+                      "xpd", "title.col", "title.adj", "seg.len")  
+  
+  fun.specific <- c("legend", "fill", "col", "border", "lty", "lwd", "pch", "angle", 
+                    "density", "pt.bg", "pt.cex", "pt.lwd", "text.col", "text.font")
+  
+  all.formals <- names(formals(graphics::legend))
+
+  expect_equal(length(all.formals[!all.formals %in% overall.legend]), length(fun.specific)) 
+  
+  expect_equal(length(all.formals[!all.formals %in% fun.specific]), length(overall.legend)) 
   
 })
 
