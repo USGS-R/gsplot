@@ -7,6 +7,7 @@
 #'  \item{\code{x0, y0}} {coordinates for the start of the segment}
 #'  \item{\code{x, y}} {coordinates for the end of the segment}
 #'  \item{\code{col, lty, lwd}} {parameters describing the color, type, and width of the segment, respectively}
+#'  \item{\code{legend.name}} {name that appears in the legend, see \code{\link{legend}} for more legend parameters}
 #' }
 #' 
 #' @param object gsplot object

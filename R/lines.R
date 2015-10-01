@@ -9,8 +9,8 @@
 #' \itemize{
 #'  \item{\code{x}} {vector of x-coordinates for points that make up the line}
 #'  \item{\code{y}} {vector of y-coordinates for points that make up the line}
-#'  \item{\code{legend.name}} {a character vector of length one to be used in the legend}
 #'  \item{\code{side}} {vector specifying the side(s) to use for axes (1,2,3,4 for sides, or 5,6,7,8 for outward offsets of those)}
+#'  \item{\code{legend.name}} {name that appears in the legend, see \code{\link{legend}} for more legend parameters}
 #'  \item{\code{error_bar}} {add error bars to the defined line, see \code{\link{error_bar}} 
 #'  for arguments, must add arguments as a list}
 #'  \item{\code{callouts}} {add callouts and text to the defined line, see \code{\link{callouts}} 

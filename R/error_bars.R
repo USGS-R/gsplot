@@ -4,6 +4,16 @@
 #' 
 #' @param object gsplot object
 #' @param \dots Further graphical parameters may also be supplied as arguments. See 'Details'.
+#' 
+#' @details Additional graphical parameter inputs:
+#' \itemize{
+#'  \item{\code{x, y}} {location of error_bar origin}
+#'  \item{\code{y.high, y.low}} {the y-value specifying the error above the point (high) and below the point (low)}
+#'  \item{\code{x.high, x.low}} {the x-value specifying the error above the point (high) and below the point (low)}
+#'  \item{\code{epsilon}} {width of the end of the error bar (in inches)}
+#'  \item{\code{col, lty, lwd}} {parameters describing the color, type, and width of the line, respectively}
+#'  \item{\code{legend.name}} {name that appears in the legend, see \code{\link{legend}} for more legend parameters}
+#' } 
 #'
 #' @rdname error_bar
 #' @export

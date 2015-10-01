@@ -10,6 +10,7 @@
 #'  \item{\code{x0, y0}} {position of the arrow tail}
 #'  \item{\code{x, y}} {position of the arrow head}
 #'  \item{\code{col, lty, lwd}} {parameters describing the color, type, and width of the arrow, respectively}
+#'  \item{\code{legend.name}} {name that appears in the legend, see \code{\link{legend}} for more legend parameters}
 #' }
 #' 
 #' @export

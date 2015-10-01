@@ -14,6 +14,17 @@ error_bar(object, ...)
 \description{
 Creates vertical and horizontal error bars around plot points.
 }
+\details{
+Additional graphical parameter inputs:
+\itemize{
+ \item{\code{x, y}} {location of error_bar origin}
+ \item{\code{y.high, y.low}} {the y-value specifying the error above the point (high) and below the point (low)}
+ \item{\code{x.high, x.low}} {the x-value specifying the error above the point (high) and below the point (low)}
+ \item{\code{epsilon}} {width of the end of the error bar (in inches)}
+ \item{\code{col, lty, lwd}} {parameters describing the color, type, and width of the line, respectively}
+ \item{\code{legend.name}} {name that appears in the legend, see \code{\link{legend}} for more legend parameters}
+}
+}
 \examples{
 gs <- gsplot()
 gsNew <- points(gs, y=c(3,1,2), x=1:3, xlim=c(0,NA),ylim=c(0,NA),
