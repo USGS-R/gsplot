@@ -67,8 +67,7 @@ set_legend_args <- function(object, fun.name, ..., legend.name) {
                       pt.cex=NA,
                       pt.lwd=NA,
                       text.col=par("col"),
-                      text.font=1,
-                      seg.len=2)
+                      text.font=1)
 
   type <- paramsAll[['type']]
   if(!is.null(type)){

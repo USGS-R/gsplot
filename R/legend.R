@@ -89,9 +89,10 @@ draw_legend <- function(gsplot) {
     if (any(names(gsplot[['legend']]) == "legend.args")) {
     
       default.args <- formals(graphics::legend)
-      overall.legend <- c("x", "y", "bty", "bg", "box.lty", "box.lwd", "box.col", "cex","xjust", 
-                          "yjust", "x.intersp", "y.intersp", "adj", "text.width", "merge", "trace", 
-                          "plot", "ncol", "horiz", "title", "inset", "title.col", "title.adj", "xpd")  
+      overall.legend <- c("x", "y", "bty", "bg", "box.lty", "box.lwd", "box.col", "cex",
+                          "xjust", "yjust", "x.intersp", "y.intersp", "adj", "text.width", 
+                          "merge", "trace", "plot", "ncol", "horiz", "title", "inset", 
+                          "xpd", "title.col", "title.adj", "seg.len")  
       not.overall <- default.args[which(!names(default.args) %in% overall.legend)]
       legendParamsALL <- vector("list", length(not.overall))
       names(legendParamsALL) <- names(not.overall)
