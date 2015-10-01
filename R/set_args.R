@@ -75,10 +75,11 @@ set_legend_args <- function(object, fun.name, ..., legend.name) {
                         c='lchsS', h='lchsS', s='lchsS', S='lchsS', n='n')
     params.needed <- switch(type.name, 
                             p=list(pch=1, pt.bg=quote(par("bg")), pt.cex=par("cex"), pt.lwd=par("lwd"), lty=NA, lwd=NA),
-                            bo=list(pch=1, pt.bg=quote(par("bg")), pt.cex=par("cex"), pt.lwd=par("lwd")),
+                            bo=list(pch=1, pt.bg=quote(par("bg")), pt.cex=par("cex"), pt.lwd=par("lwd"), lty=1, lwd=1),
                             lchsS=list(pch=NA, lty=1, lwd=1),
                             n=list(lty=NA, lwd=NA, pch=NA))
     paramsAll <- set_type_params(paramsAll, type.name, params.needed)
+    if(type.name %in% c('p', 'lchsS')) {fun.name <- switch(type.name, p="points", lchsS="lines")}
   }
   
   usr.args <- paramsAll[which(names(paramsAll) %in% names(fun.default))]
@@ -118,8 +119,10 @@ set_legend_args <- function(object, fun.name, ..., legend.name) {
 
 set_type_params <- function(list, type.name, params){
   for(k in names(params)){
-    if(type.name  == 'n' || is.null(list[[k]])){
-      list[[k]] <- params[[match(k, names(params))]]
+    if(type.name == 'p' && k %in% c('lty', 'lwd') ||
+       type.name == 'lchsS' && k %in% 'pch' ||
+       type.name  == 'n' || is.null(list[[k]])){
+        list[[k]] <- params[[match(k, names(params))]]
     } 
   }
   return(list)
