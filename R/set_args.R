@@ -101,6 +101,8 @@ set_legend_args <- function(object, fun.name, ..., legend.name) {
     
   } else if (fun.name %in% c("polygon", "rect")) {
     names(usr.args) <- replace(names(usr.args), which(names(usr.args)=="col"), "fill")
+    usr.args$lty <- NA #lty and lwd should always be NA for polygon & rectangles in the legend
+    usr.args$lwd <- NA  
     fun.specific <- list(border=par("fg"))
   }
   
