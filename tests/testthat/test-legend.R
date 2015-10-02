@@ -23,7 +23,7 @@ test_that("gsplot legend works", {
   expect_is(gs, "gsplot")
   expect_equal(gs$legend$gs.config$bg, "lightgrey")
   expect_equal(gs$legend$gs.config$location, "bottomright")
-  expect_equal(length(which(names(gs$legend)=="legend.args")), 3)
+  expect_equal(length(which(names(gs$legend)=="legend.args")), 4)
   expect_equal(gs$legend[[1]]$fill, quote(par("bg")))
   expect_equal(gs$legend[[4]]$lwd, NA)
   expect_equal(gs$legend[[2]]$density, NA)
