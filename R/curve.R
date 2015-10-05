@@ -19,6 +19,7 @@
 #'  \item{\code{col}} {line color}
 #'  \item{\code{lty}} {line type}
 #'  \item{\code{lwd}} {line width}
+#'  \item{\code{legend.name}} {name that appears in the legend, see \code{\link{legend}} for more legend parameters}
 #'  }
 #'    
 #' @rdname curve
@@ -56,6 +57,9 @@ curve.gsplot <- function(object, expr, ..., legend.name=NULL, side=c(1,2)){
     setNames('lines')
   
   object <- gsplot(append(object, to.gsplot))
+  
+  fun.name <- 'lines'
+  object <- set_legend_args(object, fun.name=fun.name, ..., legend.name=legend.name)
 
   return(object)
 }

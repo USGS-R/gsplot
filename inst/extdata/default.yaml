@@ -13,9 +13,6 @@ abline:
   col: "grey"
   lty: 1
   lwd: 1
-legend: 
-  title: "EXPLANATION"
-  location: "topright"
 axis:
   at: NULL
   labels: TRUE

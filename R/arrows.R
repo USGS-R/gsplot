@@ -10,6 +10,7 @@
 #'  \item{\code{x0, y0}} {position of the arrow tail}
 #'  \item{\code{x, y}} {position of the arrow head}
 #'  \item{\code{col, lty, lwd}} {parameters describing the color, type, and width of the arrow, respectively}
+#'  \item{\code{legend.name}} {name that appears in the legend, see \code{\link{legend}} for more legend parameters}
 #' }
 #' 
 #' @export
@@ -33,5 +34,7 @@ arrows <- function(object, ...) {
 
 
 arrows.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
-  set_window_args(object, fun.name='arrows', ..., legend.name=legend.name, side=side, def.funs=graphics::arrows)
+  fun.name <- 'arrows'
+  object <- set_window_args(object, fun.name=fun.name, ..., legend.name=legend.name, side=side, def.funs=graphics::arrows)
+  object <- set_legend_args(object, fun.name=fun.name, ..., legend.name=legend.name)
 }

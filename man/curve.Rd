@@ -29,6 +29,7 @@ Additional graphical parameter inputs:
  \item{\code{col}} {line color}
  \item{\code{lty}} {line type}
  \item{\code{lwd}} {line width}
+ \item{\code{legend.name}} {name that appears in the legend, see \code{\link{legend}} for more legend parameters}
  }
 }
 \examples{

@@ -20,7 +20,9 @@ formal_arguments <- function(arguments, def.funs, keep.names=NULL){
 }
 
 window_arguments <- function(arguments, def.funs){
-  args = arguments[!names(arguments) %in% names(formal_arguments(arguments, def.funs)) & !names(arguments) %in% names(par(no.readonly=T))]
+  args = arguments[!names(arguments) %in% names(formal_arguments(arguments, def.funs)) & 
+                   !names(arguments) %in% names(par(no.readonly=T)) &
+                   !names(arguments) %in% names(formals(graphics::legend))]
   if (length(args) > 0)
     return(args)
   else 

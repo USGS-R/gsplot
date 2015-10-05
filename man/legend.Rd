@@ -9,18 +9,26 @@ legend(object, ...)
 \arguments{
 \item{object}{gsplot object}
 
-\item{\dots}{Further graphical parameters may also be supplied as arguments. See 'Details'.}
+\item{\dots}{Overall legend parameters may also be supplied as arguments. See 'Details'.}
 }
 \description{
 If called with gsplot as first argument, will set the internal gsplot configuration
 for legends. See \code{\link[graphics]{legend}} for more details.
 }
 \details{
-Additional graphical parameter inputs:
-\itemize{
- \item{\code{location}} {position of the legend, specified by x- and y-coordinates or by keyword ("bottomright", "bottom", "bottomleft", "left", "topleft", "top", "topright", "right", or "center")}
- \item{\code{title}} {character string indicating the legend title}
-}
+Overall legend inputs:
+
+\code{x, y} coordinates OR use \code{location} which is a character string indicating the legend location: above, toright, toleft, or below (see \code{\link[graphics]{legend}} for more)
+
+\code{bty, bg, box.lty, box.lwd, box.col, cex, xjust, yjust
+x.intersp, y.intersp, adj, text.width, merge, trace,
+plot, ncol, horiz, title, inset, xpd, title.col
+title.adj, seg.len}
+
+Parameter inputs for each graphics call (use inside of lines, points, curve, etc):
+
+\code{legend.name, fill, col, border, lty, lwd, pch, angle,
+density, pt.bg, pt.cex, pt.lwd, text.col, text.font}
 }
 \examples{
 topright <- gsplot() \%>\%

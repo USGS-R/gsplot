@@ -27,6 +27,7 @@ Additional graphical parameter inputs:
  \item{\code{border}} {color of border, NA means no border, TRUE indicates the same color as shading lines}
  \item{\code{lty}} {line type for borders and shading}
  \item{\code{lwd}} {line width for borders and shading}
+ \item{\code{legend.name}} {name that appears in the legend, see \code{\link{legend}} for more legend parameters}
  }
 }
 \examples{
