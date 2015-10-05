@@ -9,7 +9,7 @@
 #'  \item{\code{xlim}} {vector containing the lower and upper limit for the x-axis}
 #'  \item{\code{ylim}} {vector containing the lower and upper limit for the y-axis}
 #'  \item{\code{col, pch}} {parameters describing the color and type of point, respectively}
-#'  \item{\code{legend.name}} {name that appears in the legend, see \code{\link{legend}}}
+#'  \item{\code{legend.name}} {name that appears in the legend, see \code{\link{legend}} for more legend parameters}
 #'  \item{\code{error_bar}} {add error bars to the defined points, see \code{\link{error_bar}} 
 #'  for arguments, must add arguments as a list}
 #'  \item{\code{callouts}} {add callouts and text to the defined points, see \code{\link{callouts}} 
@@ -46,5 +46,7 @@ points <- function(object, ...) {
 }
 
 points.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
-  set_window_args(object, fun.name='points', ..., legend.name=legend.name, side=side, def.funs = c(graphics::plot.xy, graphics::points.default))
+  fun.name <- 'points'
+  object <- set_window_args(object, fun.name=fun.name, ..., legend.name=legend.name, side=side, def.funs = c(graphics::plot.xy, graphics::points.default))
+  object <- set_legend_args(object, fun.name=fun.name, ..., legend.name=legend.name)
 }

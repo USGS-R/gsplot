@@ -11,8 +11,9 @@
 #'  \item{\code{h}} {the y-value specifying a horizontal line}
 #'  \item{\code{v}} {the x-value specifying a vertical line}
 #'  \item{\code{col, lty, lwd}} {parameters describing the color, type, and width of the line, respectively}
-#'  \item{\code{legend.name}} {name that appears the legend, see \code{\link{legend}}}
-#'  } 
+#'  \item{\code{legend.name}} {name that appears in the legend, see \code{\link{legend}} for more legend parameters}
+#' } 
+#'  
 #'
 #' @export
 #' @examples
@@ -28,5 +29,7 @@ abline <- function(object, ...) {
 
 
 abline.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
-  set_window_args(object, fun.name='abline', ..., legend.name=legend.name, side=side, def.funs=c(graphics::abline, graphics::plot.xy))
+  fun.name <- 'abline'
+  object <- set_window_args(object, fun.name=fun.name, ..., legend.name=legend.name, side=side, def.funs=c(graphics::abline, graphics::plot.xy))
+  object <- set_legend_args(object, fun.name=fun.name, ..., legend.name=legend.name)
 }

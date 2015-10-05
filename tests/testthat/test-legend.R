@@ -13,16 +13,39 @@ context("legend")
 
 test_that("gsplot legend works", {
   
-  gs <- gsplot() 
+  gs <- gsplot() %>%  
+    points(x=1, y=2, legend.name="Points 1", pch=1, col="blue") %>% 
+    points(x=3, y=4, legend.name="Points 2", pch=5, col="red") %>%  
+    error_bar(3,4, y.high=0.2, y.low=0.3, legend.name="Errors", text.font=2) %>% 
+    rect(2,3,2.5,4, col="blue", border="orange", lwd=3, density=15, legend.name="rectangle")  %>% 
+    legend(location="bottomright", bg="lightgrey")
   
   expect_is(gs, "gsplot")
-  
-  gs <- points(gs, x=1, y=2, side=c(3,2), legend.name="Points 1", pch=1, col="blue") %>% 
-    points(x=3, y=4, side=c(1,4), legend.name="Points 2", pch=5, col="red") %>%  
-    legend(location="bottomright")
-
+  expect_equal(gs$legend$gs.config$bg, "lightgrey")
   expect_equal(gs$legend$gs.config$location, "bottomright")
+  expect_equal(length(which(names(gs$legend)=="legend.args")), 4)
+  expect_equal(gs$legend[[1]]$fill, quote(par("bg")))
+  expect_equal(gs$legend[[4]]$lwd, NA)
+  expect_equal(gs$legend[[2]]$density, NA)
+  expect_equal(gs$legend[[3]]$text.font, 2)
   
+})
+
+test_that("gsplot legend args are still the same", {
+  
+  overall.legend <- c("x", "y", "bty", "bg", "box.lty", "box.lwd", "box.col", "cex",
+                      "xjust", "yjust", "x.intersp", "y.intersp", "adj", "text.width", 
+                      "merge", "trace", "plot", "ncol", "horiz", "title", "inset", 
+                      "xpd", "title.col", "title.adj", "seg.len")  
+  
+  fun.specific <- c("legend", "fill", "col", "border", "lty", "lwd", "pch", "angle", 
+                    "density", "pt.bg", "pt.cex", "pt.lwd", "text.col", "text.font")
+  
+  all.formals <- names(formals(graphics::legend))
+
+  expect_equal(length(all.formals[!all.formals %in% overall.legend]), length(fun.specific)) 
+  
+  expect_equal(length(all.formals[!all.formals %in% fun.specific]), length(overall.legend)) 
   
 })
 

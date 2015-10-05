@@ -15,6 +15,7 @@
 #'  \item{\code{border}} {color of border, NA means no border, TRUE indicates the same color as shading lines}
 #'  \item{\code{lty}} {line type for borders and shading}
 #'  \item{\code{lwd}} {line width for borders and shading}
+#'  \item{\code{legend.name}} {name that appears in the legend, see \code{\link{legend}} for more legend parameters}
 #'  }
 #'    
 #' @rdname polygon
@@ -35,5 +36,7 @@ polygon <- function(object, ...) {
 }
 
 polygon.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
-  set_window_args(object, fun.name="polygon", ..., legend.name=legend.name, side=side, def.funs=graphics::polygon)
+  fun.name <- 'polygon'
+  object <- set_window_args(object, fun.name=fun.name, ..., legend.name=legend.name, side=side, def.funs=graphics::polygon)
+  object <- set_legend_args(object, fun.name=fun.name, ..., legend.name=legend.name)
 }

@@ -4,6 +4,16 @@
 #' 
 #' @param object gsplot object
 #' @param \dots Further graphical parameters may also be supplied as arguments. See 'Details'.
+#' 
+#' @details Additional graphical parameter inputs:
+#' \itemize{
+#'  \item{\code{x, y}} {location of error_bar origin}
+#'  \item{\code{y.high, y.low}} {the y-value specifying the error above the point (high) and below the point (low)}
+#'  \item{\code{x.high, x.low}} {the x-value specifying the error above the point (high) and below the point (low)}
+#'  \item{\code{epsilon}} {width of the end of the error bar (in inches)}
+#'  \item{\code{col, lty, lwd}} {parameters describing the color, type, and width of the line, respectively}
+#'  \item{\code{legend.name}} {name that appears in the legend, see \code{\link{legend}} for more legend parameters}
+#' } 
 #'
 #' @rdname error_bar
 #' @export
@@ -49,7 +59,8 @@ error_bar.gsplot <- function(object, x, y, y.high=0, y.low=0, x.high=0, x.low=0,
     y.low.coord <- y.low.coord[errorIndex]
     y.error <- y[errorIndex]
     x.error <- x[errorIndex]
-    object <- arrows(object, x0=x.error, y0=y.error, x1=x.error, y1=y.low.coord, length=epsilon, angle=90, ...)
+    object <- arrows(object, x0=x.error, y0=y.error, x1=x.error, y1=y.low.coord, 
+                     length=epsilon, angle=90, ..., legend.name=legend.name)
   }
   
   if(!all(y.high == 0)){
@@ -58,7 +69,8 @@ error_bar.gsplot <- function(object, x, y, y.high=0, y.low=0, x.high=0, x.low=0,
     y.high.coord <- y.high.coord[errorIndex]
     y.error <- y[errorIndex]
     x.error <- x[errorIndex]
-    object <- arrows(object, x0=x.error, y0=y.error, x1=x.error, y1=y.high.coord, length=epsilon, angle=90, ...)
+    object <- arrows(object, x0=x.error, y0=y.error, x1=x.error, y1=y.high.coord, length=epsilon, 
+                     angle=90, ..., legend.name=check_legend_name(legend.name, y.low))
   }
   
   if(!all(x.low == 0)){
@@ -67,7 +79,8 @@ error_bar.gsplot <- function(object, x, y, y.high=0, y.low=0, x.high=0, x.low=0,
     x.low.coord <- x.low.coord[errorIndex]
     x.error <- x[errorIndex]
     y.error <- y[errorIndex]
-    object <- arrows(object, x0=x.error, y0=y.error, x1=x.low.coord, y1=y.error, length=epsilon, angle=90, ...)
+    object <- arrows(object, x0=x.error, y0=y.error, x1=x.low.coord, y1=y.error, length=epsilon, 
+                     angle=90, ..., legend.name=check_legend_name(legend.name, c(y.low, y.high)))
   }
   
   if(!all(x.high == 0)){
@@ -76,7 +89,8 @@ error_bar.gsplot <- function(object, x, y, y.high=0, y.low=0, x.high=0, x.low=0,
     x.high.coord <- x.high.coord[errorIndex]
     x.error <- x[errorIndex]
     y.error <- y[errorIndex]
-    object <- arrows(object, x0=x.error, y0=y.error, x1=x.high.coord, y1=y.error, length=epsilon, angle=90, ...)
+    object <- arrows(object, x0=x.error, y0=y.error, x1=x.high.coord, y1=y.error, length=epsilon, 
+                     angle=90, ..., legend.name=check_legend_name(legend.name, c(y.low, y.high, x.low)))
   }
 
   return(object)
@@ -87,4 +101,8 @@ error_bar.default <- function(x, y, y.high, y.low, x.high, x.low, epsilon=0.1, .
   return()
 }
 
-
+#don't use legend.name more than once
+check_legend_name <- function(legend.name, prev_calls){
+  if(!is.null(legend.name) && sum(prev_calls != 0)){ legend.name <- NULL }
+  return(legend.name)
+}
