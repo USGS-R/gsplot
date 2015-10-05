@@ -1,8 +1,7 @@
 #' @importFrom utils getFromNamespace
 #' @importFrom stats setNames
 #' @importFrom methods existsFunction
-#' @export
-#' @keywords internal
+
 override <- function(package, name, object, ...) {
   if(!missing(object) && class(object) == "gsplot") {
     fun <- function(object, ...) {
