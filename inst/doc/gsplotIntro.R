@@ -66,7 +66,7 @@ plot3
 
 ## ----echo=TRUE, fig.cap="Fig. 4 Water temperature timeseries on primary y-axis with pH timeseries on secondary y-axis.", fig.width=6, fig.height=6----
 site <- '04193490'
-demoPlot <- gsplot(mar=c(7.1, 4.1, 4.1, 2.1)) %>% 
+demoPlot <- gsplot(mar=c(7.1, 4.1, 4.1, 4.1)) %>% 
   lines(dates[[site]], Wtemp[[site]], col="orangered", 
         legend.name="Water Temperature", ylab='Water Temperature (deg C)') %>%
   lines(dates[[site]], pH[[site]], col="seagreen", side=4, 

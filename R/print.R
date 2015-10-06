@@ -42,7 +42,7 @@ print.gsplot <- function(x, ...){
 
   top.par <- par(no.readonly=T)
   for (i in which(names(views) %in% 'view')){
-    par(top.par)
+    # par(top.par)
     plots = views[[i]]
     plots[['window']] <- NULL
     window = views[[i]][['window']]
