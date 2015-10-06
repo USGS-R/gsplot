@@ -2,15 +2,14 @@
 % Please edit documentation in R/access-gsplot.R
 \name{log}
 \alias{log}
-\alias{log.gsplot}
 \title{log for gsplot}
 \usage{
-\method{log}{gsplot}(x, base)
+log(object, side)
 }
 \arguments{
-\item{x}{a gsplot object}
+\item{object}{a gsplot object}
 
-\item{base}{not used}
+\item{side}{which side(s) to use (returns logical)}
 }
 \description{
 get the log for views in gsplot object

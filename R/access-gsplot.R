@@ -41,10 +41,23 @@ ylim.gsplot <- function(object){
 #' @aliases log
 #' @name log
 #' @rdname log
-#' @param x a gsplot object
-#' @param base not used
+#' @param object a gsplot object
+#' @param side which side(s) to use (returns logical)
 #' @export
-log.gsplot <- function(x,base){
+log <- function(object, side) {
+  if (is.gsplot(object))
+    UseMethod('log')
+  base::log(x=object, base=side)  
+}
+
+#' @export
+log.gsplot <- function(x, side=NULL){
+  names = unname(sapply(views(x), function(x) paste0('side.',paste(x$window$side[1:2],collapse='.'))))
+  logs = lapply(views(x), function(x) x$window$log) %>% 
+    setNames(names)
   
-  lapply(views(x), function(x) x$window$log)
+  if (!is.null(side)){
+    warning('not yet implemented. Will return boolean for side matches')
+  }
+  return(logs)
 }
