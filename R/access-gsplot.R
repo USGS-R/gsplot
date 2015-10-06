@@ -12,7 +12,9 @@ xlim <- function(object) UseMethod("xlim")
 #' @export
 xlim.gsplot <- function(object){
 
-  lapply(views(object), function(x) x$window$xlim)
+  names = unname(sapply(views(object), function(x) paste0('side.',x$window$side[1])))
+  lapply(views(object), function(x) x$window$xlim) %>% 
+    setNames(names)
 }
 
 #' ylim for gsplot
@@ -27,7 +29,9 @@ ylim <- function(object) UseMethod("ylim")
 #' @export
 ylim.gsplot <- function(object){
   
-  lapply(views(object), function(x) x$window$ylim)
+  names = unname(sapply(views(object), function(x) paste0('side.',x$window$side[2])))
+  lapply(views(object), function(x) x$window$ylim) %>% 
+    setNames(names)
 }
 
 #' log for gsplot

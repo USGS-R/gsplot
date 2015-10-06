@@ -23,6 +23,17 @@ test_that("xlim for dual axis", {
   
 })
 
+test_that("xlim for string input", {
+  
+  usrDef <- gsplot(mar=c(4,4,4,4), xaxs='r', yaxs='r') %>% 
+    points(x=1, y=2, side=c(3,2), legend.name="Points 1", cex=3, xlab='cat') %>% 
+    points(x=3:10,y=4:11, side=c(1,2))
+  
+  expect_equal(xlim(usrDef)[['side.3']], c(1,1))
+  expect_equal(xlim(usrDef)[['side.1']], c(3,10))
+  
+})
+
 context("test get par for gsplot object")
 
 test_that("par for simple object",{
