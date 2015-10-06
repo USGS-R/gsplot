@@ -1,5 +1,5 @@
-xaxs: "r"
-yaxs: "r"
+xaxs: "i"
+yaxs: "i"
 tcl: 0.3
 mgp: [1.5, 0.3, 0.0]
 points:
