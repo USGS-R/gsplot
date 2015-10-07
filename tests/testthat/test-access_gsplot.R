@@ -41,21 +41,29 @@ test_that("par for simple object",{
   expect_is(par(gsplot(mar=c(4,4,4,4), xaxs='r', yaxs='r')), 'list')
 })
 
-context("test get log for gsplot object")
+context("test get logged for gsplot object")
 
-test_that("log for simple object",{
+test_that("logged for simple object",{
   usrDef <- gsplot(mar=c(4,4,4,4), xaxs='r', yaxs='r') %>% 
     points(x=1, y=2, side=c(3,2), legend.name="Points 1", cex=3, xlab='cat') %>% 
     points(x=3:10,y=4:11, side=c(1,2))
-  expect_equal(log(usrDef)[[1]],"")
-  expect_equal(log(usrDef)[[2]],"")
+  expect_equal(logged(usrDef)[[1]],"")
+  expect_equal(logged(usrDef)[[2]],"")
   
   usrDef <- lines(usrDef,1:2,4:5, log='xy')
-  expect_equal(log(usrDef)[[1]],"")
-  expect_equal(log(usrDef)[[2]],"xy")
+  expect_equal(logged(usrDef)[[1]],"")
+  expect_equal(logged(usrDef)[[2]],"xy")
   
 })
 
-test_that("base::log still works as expected",{
-  expect_equal(log(10),base::log(10))
+test_that("logged side extractor ",{
+  usrDef <- gsplot(mar=c(4,4,4,4), xaxs='r', yaxs='r') %>% 
+    points(x=1, y=2, side=c(3,2), legend.name="Points 1", cex=3, xlab='cat',log='y') %>% 
+    points(x=3:10,y=4:11, side=c(1,2), log='xy')
+  expect_true(logged(usrDef, side=1))
+  expect_false(logged(usrDef, side=3))
+  
+  dual = logged(usrDef, side=c(1,2))
+  expect_equal(length(dual), 2)
+  expect_true(all(dual))
 })
