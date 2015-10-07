@@ -27,8 +27,12 @@ par <- function(object, ...) {
 
 
 par.gsplot <- function(object, ...){
-  current_list <- config("par")
   arguments <- list(...)
+
+   if (length(arguments)==0 && !is.null(object$par))
+     return(object$par)
+  current_list <- config("par")
+  
   
   # // only add config list items if they aren't in ..., and aren't already set in par (i.e., don't reset them)
   indicesToAdd <- !(names(current_list) %in% names(arguments)) & !(names(current_list) %in% names(object[['par']]))
