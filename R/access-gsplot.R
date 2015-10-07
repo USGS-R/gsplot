@@ -5,16 +5,21 @@
 #' get the xlim for views in gsplot object
 #' 
 #' @param object a gsplot object
+#' @param side which side(s) to use
 #' 
 #' @export
-xlim <- function(object) UseMethod("xlim")
+xlim <- function(object, side) UseMethod("xlim")
 
 #' @export
-xlim.gsplot <- function(object){
+xlim.gsplot <- function(object, side=NULL){
 
-  names = unname(sapply(views(object), function(x) paste0('side.',x$window$side[1])))
-  lapply(views(object), function(x) x$window$xlim) %>% 
-    setNames(names)
+  if (!is.null(side))
+    views <- object[views_with_side(views(object), side)]
+  else 
+    views <- views(object)
+  names = unname(sapply(views, function(x) paste0('side.',x$window$side[1])))
+  unique(lapply(views, function(x) x$window$xlim)) %>% 
+    setNames(unique(names))
 }
 
 #' ylim for gsplot
@@ -22,16 +27,20 @@ xlim.gsplot <- function(object){
 #' get the ylim for views in gsplot object
 #' 
 #' @param object a gsplot object
+#' @param side which side(s) to use
 #' 
 #' @export
-ylim <- function(object) UseMethod("ylim")
+ylim <- function(object, side) UseMethod("ylim")
 
 #' @export
-ylim.gsplot <- function(object){
-  
-  names = unname(sapply(views(object), function(x) paste0('side.',x$window$side[2])))
-  lapply(views(object), function(x) x$window$ylim) %>% 
-    setNames(names)
+ylim.gsplot <- function(object, side=NULL){
+  if (!is.null(side))
+    views <- object[views_with_side(views(object), side)]
+  else 
+    views <- views(object)
+  names = unname(sapply(views, function(x) paste0('side.',x$window$side[2])))
+  unique(lapply(views, function(x) x$window$ylim)) %>% 
+    setNames(unique(names))
 }
 
 #' log for gsplot

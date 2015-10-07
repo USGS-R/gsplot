@@ -4,10 +4,12 @@
 \alias{ylim}
 \title{ylim for gsplot}
 \usage{
-ylim(object)
+ylim(object, side)
 }
 \arguments{
 \item{object}{a gsplot object}
+
+\item{side}{which side(s) to use}
 }
 \description{
 get the ylim for views in gsplot object
