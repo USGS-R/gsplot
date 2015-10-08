@@ -187,6 +187,8 @@ unname_c <- function(list){
   do.call(c, unname(list))
 }
 views_with_side <- function(views, side){
+  if(length(side) > 1)
+    stop('side can only be length of 1')
   with.side = lapply(views, function(x) any(x[['window']][['side']] %in% side))
   view.match = unname(unlist(with.side[names(with.side) == 'view']))
   if (is.null(view.match) || !any(view.match))
