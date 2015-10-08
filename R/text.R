@@ -43,5 +43,5 @@ text <- function(object, ...) {
 
 
 text.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
-  set_window_args(object, fun.name='text', ..., legend.name=legend.name, side=side, def.funs=graphics::text)
+  set_window_args(object, fun.name='text', ..., legend.name=legend.name, side=side, def.funs=graphics::text.default)
 }
