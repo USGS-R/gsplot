@@ -24,22 +24,35 @@
 #' gs <- gsplot() %>%
 #'    points(y=c(3,1,2), x=1:3, xlim=c(0,NA),ylim=c(0,NA)) %>%
 #'    axis(side=c(4), labels=FALSE) %>%
-#'    axis(side=c(1,3), n.minor=4, labels=FALSE)
+#'    axis(side=c(1,3), n.minor=4)
 #' gs
 #' 
 #' gs <- gsplot() %>%
 #'    points(1:10, 1:10) %>%
-#'    axis(1, at = seq(0,10,by=0.1),labels=FALSE, tcl=0.15)
+#'    axis(1, at = seq(0,10,by=0.1),labels=FALSE, tcl=0.15) %>%
+#'    axis(2, reverse=TRUE)
 #' gs
 #' 
 #' gs <- gsplot() %>%
 #'    points(1:5, c(1,10,100,1000,10000), log="y", las=1) %>%
-#'    axis(side=c(2,4), labels=FALSE, n.minor=4)
+#'    axis(side=c(2,4), n.minor=4)
 #' gs
+#' 
 #' gs <- gsplot() %>%
 #'    lines(1:5, c(1,10,100,1000,10000), log="y", axes=FALSE) %>%
 #'    axis(side=c(2,4), labels=FALSE, n.minor=4)
 #' gs
+#' 
+#' gs <- gsplot() %>% 
+#'   points(runif(30, 1,5), runif(30,0.5,3.5)) %>% 
+#'   axis(side=1, at=seq(1,5,by=0.25),las=3) %>%
+#'   axis(side=c(3,4), labels=FALSE)
+#' gs
+#' 
+#' usrDef <- gsplot(mar=c(4,4,4,4), xaxs='r', yaxs='r') %>% 
+#'   points(x=1, y=2, side=c(3,2), cex=3, xlab='cat',log='x') %>% 
+#'   points(x=3:10,y=4:11, side=c(1,2), log='y')
+#' usrDef
 axis <- function(object, ...) {
   override("graphics", "axis", object, ...)
 }
@@ -69,10 +82,8 @@ axis.gsplot <- function(object, ..., n.minor=0, tcl.minor=0.15, reverse=NULL) {
 }
 
 draw_axis <- function(gsplot) {
-  
-  for(index in which(names(gsplot) %in% "axis")){
-    axisParams <- gsplot[[index]][['arguments']]
-    n.minor <- gsplot[[index]][['gs.config']]$n.minor
+
+  draw_axis_execute <- function(axisParams,n.minor){
     if(n.minor == 0){
       axis(axisParams)
     } else {
@@ -89,6 +100,12 @@ draw_axis <- function(gsplot) {
       axisParams$labels <- FALSE
       axis(axisParams)
     }
-    
   }
+  
+  for(index in which(names(gsplot) %in% "axis")){
+    axisParams <- gsplot[[index]][['arguments']]
+    n.minor <- gsplot[[index]][['gs.config']]$n.minor
+    draw_axis_execute(axisParams, n.minor)
+  }
+
 }

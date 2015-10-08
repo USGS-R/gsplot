@@ -73,3 +73,27 @@ logged.gsplot <- function(object, side=NULL){
       setNames(names)
   }
 }
+
+#' Get view information from a gsplot object
+#' 
+#' get the views in gsplot object
+#' 
+#' @param object a gsplot object
+#' @return data frame with one row per view. Each view has an x side, y side, the log command, and the view index.
+#' @export
+getViewInfo <- function(object){
+  j <- which(names(object) %in% 'view')
+  viewSides <- sapply(j, function(x) object[[x]][['window']][['side']])
+  viewLogs <- sapply(j, function(x) object[[x]][['window']][['log']])
+  viewInfo <- data.frame(t(rbind(viewSides, viewLogs, j)), stringsAsFactors = FALSE)
+  names(viewInfo) <- c("x","y","log","index")
+  
+  for(dir in c("y","x")){
+    dup_index <- which(duplicated(viewInfo[dir]) | duplicated(viewInfo[dir], fromLast=TRUE))
+    viewInfo$log[dup_index[-grep(dir,viewInfo$log)]] <- paste0(dir,viewInfo$log[dup_index[-grep(dir,viewInfo$log)]])
+  }
+  
+  viewInfo[,c("x","y","index")] <- sapply(viewInfo[,c("x","y","index")], function(x) as.integer(x))
+  
+  return(viewInfo)
+}

@@ -40,9 +40,14 @@ print.gsplot <- function(x, ...){
     plot.new()
   }
 
-  top.par <- par(no.readonly=T)
+  i <- which(names(views) %in% 'axis')
+  definded.sides <- sapply(i, function(x) views[[x]][['arguments']][['side']])
+  
+  view.info <- getViewInfo(views)
+  view.sides.drawn <- NULL
+  
   for (i in which(names(views) %in% 'view')){
-    # par(top.par)
+
     plots = views[[i]]
     plots[['window']] <- NULL
     window = views[[i]][['window']]
@@ -50,31 +55,43 @@ print.gsplot <- function(x, ...){
     par(views[['par']])
     
     par(window[['par']])
-    plot.window(xlim = window$xlim, ylim = window$ylim, log = window$log)
+    plot.window(xlim = window$xlim, ylim = window$ylim, log = view.info$log[i==view.info$index])
 
-    # -- call functions -- 
-    to_gsplot(lapply(plots, function(x) x[!names(x) %in% 'legend.name']))
-
-
-    if(window$axes){
-      Axis(side=window$side[1],x=window$xlim)
-      Axis(side=window$side[2],x=window$ylim)        
+    sides.not.defined <- window$side[!(window$side %in% definded.sides)]
+    
+    if(!is.null(view.sides.drawn)){
+      view.sides.drawn <- sides.not.defined[-view.sides.drawn]
     }
-
+    
+    if(window$axes){
+      for(j in sides.not.defined){
+        if(j %% 2 != 0){
+          Axis(side=j,x=window$xlim)
+        } else {
+          Axis(side=j,x=window$ylim) 
+        }
+        view.sides.drawn <- append(view.sides.drawn, j)
+      }
+    } 
+    
     if(window$ann){
       mtext(text=window$xlab, side=window$side[1], line = 2)
       mtext(text=window$ylab, side=window$side[2], line = 2)        
     }
     
+    # -- call functions -- 
+    to_gsplot(lapply(plots, function(x) x[!names(x) %in% 'legend.name']))
+
     par(new=TRUE)
   }
+  
+  draw_axis(views)
   
   if(window$frame.plot){
     box()
   }
 
   draw_legend(views)
-  draw_axis(views)
   
 }
 
