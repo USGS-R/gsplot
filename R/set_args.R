@@ -81,11 +81,13 @@ set_legend_args <- function(object, fun.name, ..., legend.name) {
     paramsAll <- set_type_params(paramsAll, type.name, params.needed)
     if(type.name %in% c('p', 'lchsS')) {fun.name <- switch(type.name, p="points", lchsS="lines")}
   }
+  
+  usr.args <- paramsAll[which(names(paramsAll) %in% names(fun.default))]
  
   if (fun.name == "points") {
     pt.names <- c("lwd","bg","cex")
-    names(paramsAll) <- replace(names(paramsAll), which(names(paramsAll) %in% pt.names), 
-                                paste0("pt.", pt.names[which(pt.names %in% names(paramsAll))]))
+    names(usr.args) <- replace(names(usr.args), which(names(usr.args) %in% pt.names), 
+                                paste0("pt.", pt.names[which(pt.names %in% names(usr.args))]))
     fun.specific <- list(border=quote(par("bg")),
                          pch=1,
                          pt.bg=quote(par("bg")),
@@ -98,13 +100,13 @@ set_legend_args <- function(object, fun.name, ..., legend.name) {
                          lwd=1)
     
   } else if (fun.name %in% c("polygon", "rect")) {
-    names(paramsAll) <- replace(names(paramsAll), which(names(paramsAll)=="col"), "fill")
-    paramsAll$lty <- NA #lty/lwd should always be NA for polygon & rectangles in the legend
-    paramsAll$lwd <- NA  
+    names(usr.args) <- replace(names(usr.args), which(names(usr.args)=="col"), "fill")
+    usr.args$lty <- NA #lty/lwd should always be NA for polygon & rectangles in the legend
+    usr.args$lwd <- NA  
     fun.specific <- list(border=par("fg"))
   }
   
-  usr.args <- paramsAll[which(names(paramsAll) %in% names(fun.default))]
+  usr.args <- usr.args[which(names(usr.args) %in% names(fun.default))]
   fun.all <- replace(fun.default, match(names(fun.specific), names(fun.default)), fun.specific)
   add.args <- fun.all[!names(fun.all) %in% names(usr.args)]
   fun.legend.args <- append(usr.args, add.args)  
