@@ -16,3 +16,20 @@ test_that("par within view", {
   expect_equal(gs[[2]]$window$par$las, 1)
   
 })
+
+test_that("view_info", {
+  
+  gs = points(gsplot(), y=1, x=2, col="blue", pch=18, las=3)  %>% lines(2:3,4:5)  %>% points(3,4,side=c(3,4),las=1)
+  view.information <- view_info(gs)
+  expect_equal(nrow(view.information), 2)
+  expect_equal(view.information$log, c("",""))
+  
+  usrDef <- gsplot(mar=c(4,4,4,4)) %>% 
+    points(x=1, y=2, side=c(3,2), cex=3, xlab='cat',log='x') %>% 
+    points(x=3:10,y=4:11, side=c(1,2), log='y')
+  
+  view.information <- view_info(usrDef)
+  expect_equal(nrow(view.information), 2)
+  expect_equal(view.information$log, c("yx","y"))
+  
+})
