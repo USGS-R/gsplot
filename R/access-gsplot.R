@@ -81,7 +81,7 @@ logged.gsplot <- function(object, side=NULL){
 #' @param object a gsplot object
 #' @return data frame with one row per view. Each view has an x side, y side, the log command, and the view index.
 #' @export
-getViewInfo <- function(object){
+view_info <- function(object){
   j <- which(names(object) %in% 'view')
   viewSides <- sapply(j, function(x) object[[x]][['window']][['side']])
   viewLogs <- sapply(j, function(x) object[[x]][['window']][['log']])

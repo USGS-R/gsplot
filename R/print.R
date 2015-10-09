@@ -43,7 +43,7 @@ print.gsplot <- function(x, ...){
   i <- which(names(views) %in% 'axis')
   definded.sides <- sapply(i, function(x) views[[x]][['arguments']][['side']])
   
-  view.info <- getViewInfo(views)
+  view.info <- view_info(views)
   view.sides.drawn <- NULL
   
   for (i in which(names(views) %in% 'view')){
