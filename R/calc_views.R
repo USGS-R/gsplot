@@ -261,7 +261,7 @@ set_window <- function(list){
     param <- c("axes","ann","frame.plot") #Add panel.first, panel.last, asp, and "main","sub","frame.plot"...without breaking title
     varPar <- c("xaxs","yaxs","xaxt","yaxt","las")
     
-    window[param] <- TRUE
+    window[param[!(param %in% names(window))]] <- TRUE
     
     for(i in names(plots)){
       for(k in param){
