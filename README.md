@@ -51,7 +51,8 @@ gs <- gsplot() %>%
   lines(c(3,4,3), c(2,4,6), legend.name="Lines", ylab="logged y axis", xlab="logged x axis", log='xy') %>%
   callouts(x=8, y=4, lwd=2, angle=45, labels="Not sure about this one") %>%
   title("logged axes") %>%
-  axis(side=c(1,2,3,4), labels=FALSE, n.minor=4)
+  axis(side=c(1,2,3,4), labels=FALSE, n.minor=4) %>%
+  axis(side=c(1,2))
 gs
 ```
 
