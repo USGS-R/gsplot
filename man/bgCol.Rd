@@ -17,20 +17,24 @@ Adds color to the plot background.
 \examples{
 gs <- gsplot() \%>\%
    points(y=c(3,1,2), x=4:6, xlim=c(0,NA),legend.name="Points") \%>\%
+   bgCol(col="lightgrey") \%>\%
    lines( c(3,4,3), c(2,4,6), legend.name="Lines", side=c(3,4)) \%>\%
-   legend(location="topleft") \%>\%
-   bgCol(col="lightgrey")
-
+   legend(location="topleft")
 gs
 
-gsPlain <- gsplot() \%>\%
+gs <- gsplot() \%>\%
    points(1:100, rnorm(100,mean=10000, sd=1000), log="y") \%>\%
    bgCol(col="lightgrey")
-gsPlain
+gs
 
-gsPlain <- gsplot() \%>\%
+gs <- gsplot() \%>\%
    points(1:100, rnorm(100,mean=10000, sd=1000), log="y") \%>\%
    bgCol() #yaml specifies lightgrey
-gsPlain
+gs
+
+gs <- gsplot() \%>\%
+   points(1:100, rnorm(100,mean=10000, sd=1000), log="y") \%>\%
+   bgCol("lightgoldenrod")
+gs
 }
 

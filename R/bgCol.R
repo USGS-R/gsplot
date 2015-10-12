@@ -15,15 +15,20 @@
 #'    legend(location="topleft")      
 #' gs
 #' 
-#' gsPlain <- gsplot() %>%
+#' gs <- gsplot() %>%
 #'    points(1:100, rnorm(100,mean=10000, sd=1000), log="y") %>%
 #'    bgCol(col="lightgrey")
-#' gsPlain
+#' gs
 #' 
-#' gsPlain <- gsplot() %>%
+#' gs <- gsplot() %>%
 #'    points(1:100, rnorm(100,mean=10000, sd=1000), log="y") %>%
 #'    bgCol() #yaml specifies lightgrey
-#' gsPlain
+#' gs
+#' 
+#' gs <- gsplot() %>%
+#'    points(1:100, rnorm(100,mean=10000, sd=1000), log="y") %>%
+#'    bgCol("lightgoldenrod") 
+#' gs
 bgCol <- function(object, ...) {
   override("gsplot", "bgCol", object, ...)
 }
