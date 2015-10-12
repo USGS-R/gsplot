@@ -50,6 +50,7 @@ print.gsplot <- function(x, ...){
   view.info <- view_info(views)
   view.sides.drawn <- NULL
   view.index <- which(names(views) %in% 'view')
+  
   for (i in view.index){
 
     plots = views[[i]]
@@ -89,8 +90,8 @@ print.gsplot <- function(x, ...){
     } 
     
     if(window$ann){
-      mtext(text=window$xlab, side=window$side[1], line = 2)
-      mtext(text=window$ylab, side=window$side[2], line = 2)        
+      mtext(text=window$xlab, side=window$side[1], line = 2, las=config("mtext")$las)
+      mtext(text=window$ylab, side=window$side[2], line = 2, las=config("mtext")$las)        
     }
     
     par(new=TRUE)

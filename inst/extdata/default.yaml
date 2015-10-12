@@ -25,7 +25,8 @@ axis:
   outer: FALSE
 title: NULL
 text: NULL
-mtext: NULL
+mtext: 
+  las: 0
 grid:
   col: "grey"
   lwd: 1
