@@ -44,6 +44,7 @@ print.gsplot <- function(x, ...){
   definded.sides <- sapply(i, function(x) views[[x]][['arguments']][['side']])
   
   bg.arg <- views$bgCol
+  title.arg <- views$title
   grid.arg <- views$grid
   
   view.info <- view_info(views)
@@ -63,6 +64,7 @@ print.gsplot <- function(x, ...){
     # -- initial view --
     if(i == view.index[1]){
       bgCol(bg.arg)
+      title(title.arg)
       #draw_grid(grid.arg)
     }
     
@@ -71,6 +73,9 @@ print.gsplot <- function(x, ...){
     if(!is.null(view.sides.drawn)){
       view.sides.drawn <- sides.not.defined[-view.sides.drawn]
     }
+    
+    # -- call functions -- 
+    to_gsplot(lapply(plots, function(x) x[!names(x) %in% 'legend.name']))
     
     if(window$axes){
       for(j in sides.not.defined){
@@ -88,9 +93,6 @@ print.gsplot <- function(x, ...){
       mtext(text=window$ylab, side=window$side[2], line = 2)        
     }
     
-    # -- call functions -- 
-    to_gsplot(lapply(plots, function(x) x[!names(x) %in% 'legend.name']))
-
     par(new=TRUE)
   }
   
