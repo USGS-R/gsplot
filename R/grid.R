@@ -29,6 +29,12 @@
 #'        grid(side=c(1,2),col="green") %>%
 #'        grid(side=c(3,4))
 #' gs
+#' 
+#' gs <- gsplot() %>%
+#'       points(x=seq.Date(as.Date("2000-01-01"),as.Date("2010-01-01"),length.out = 20),
+#'              y=1:20,axes=FALSE) %>%
+#'      grid()
+#'gs
 grid <- function(object, ...) {
   override("graphics", "grid", object, ...)
 }
@@ -51,7 +57,7 @@ draw_custom_grid <- function(object, index){
   
   grid.args <- set_args("grid",object[[index]][['grid']], package = "graphics")
   
-  if(class(window$xlim) == "numeric"){
+  if(class(window$xlim) %in% c("numeric","integer")){
     x.at <- axTicks(view.info$x)
   } else if (class(window$xlim) == "Date"){
     x.at <- axis.Date(view.info$x,window$xlim)
@@ -67,7 +73,7 @@ draw_custom_grid <- function(object, index){
     }
   }
   
-  if(class(window$ylim) == "numeric"){
+  if(class(window$ylim) %in% c("numeric","integer")){
     y.at <- axTicks(view.info$y)
   } else if (class(window$ylim) == "Date"){
     y.at <- axis.Date(view.info$y,window$ylim)

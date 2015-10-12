@@ -37,5 +37,11 @@ gs <- gsplot() \%>\%
        grid(side=c(1,2),col="green") \%>\%
        grid(side=c(3,4))
 gs
+
+gs <- gsplot() \%>\%
+      points(x=seq.Date(as.Date("2000-01-01"),as.Date("2010-01-01"),length.out = 20),
+             y=1:20,axes=FALSE) \%>\%
+     grid()
+gs
 }
 
