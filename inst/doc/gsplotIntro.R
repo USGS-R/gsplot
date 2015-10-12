@@ -18,8 +18,6 @@ demoPlot
 
 
 ## ----echo=TRUE, message=FALSE--------------------------------------------
-library(gsplot)
-MaumeeDV <- MaumeeDV
 
 sites <- unique(MaumeeDV$site_no)
 dates <- sapply(sites, function(x) MaumeeDV$Date[which(MaumeeDV$site_no==x)], USE.NAMES=TRUE)
@@ -30,7 +28,7 @@ Wtemp <- sapply(sites, function(x) MaumeeDV$Wtemp[which(MaumeeDV$site_no==x)], U
 
 ## ----echo=TRUE, fig.cap="Fig. 1 Simple flow timeseries using `gsplot`.", fig.width=6, fig.height=6----
 site <- '04193500'
-demoPlot <- gsplot() %>% 
+demoPlot <- gsplot(mgp=c(2.75, 0.3, 0.0)) %>% 
   lines(dates[[site]], flow[[site]], col="royalblue") %>%
   title(main=paste("Site", site), ylab="Flow, ft3/s") %>%
   grid()
@@ -39,9 +37,12 @@ demoPlot
 
 ## ----echo=TRUE, fig.cap="Fig. 2 Simple flow timeseries with a logged y-axis using `gsplot`.", fig.width=6, fig.height=6----
 site <- '04193500'
-demoPlot <- gsplot() %>% 
-  lines(dates[[site]], flow[[site]], col="royalblue", log='y') %>%
-  title(main=paste("Site", site), ylab="Flow, ft3/s") %>%
+options(scipen=5)
+demoPlot <- gsplot(mgp=c(3, 0.3, 0.0)) %>% 
+  lines(dates[[site]], flow[[site]], 
+        col="royalblue", log='y', 
+        ylab= expression(paste("Discharge in ",ft^3/s))) %>%
+  title(main=paste("Site", site)) %>%
   grid(equilogs=FALSE)
 demoPlot
 

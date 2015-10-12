@@ -42,8 +42,6 @@ demoPlot
 Data from Maumee River will be used to showcase the workflow and features that `gsplot` offers. First, the data is manipulated to extract the timeseries as four separate variables - dates (formatted as yyyy-mm-dd), flow (discharge in cubic feet per second), pH, and Wtemp (water temperature in degrees Celcius). Additionally, the USGS site IDs for the sampling stations are identified. 
 
 ```{r echo=TRUE, message=FALSE}
-library(gsplot)
-MaumeeDV <- MaumeeDV
 
 sites <- unique(MaumeeDV$site_no)
 dates <- sapply(sites, function(x) MaumeeDV$Date[which(MaumeeDV$site_no==x)], USE.NAMES=TRUE)
@@ -60,7 +58,7 @@ First, `gsplot` is used to create a simple timeseries graph for discharge, and a
 
 ```{r echo=TRUE, fig.cap="Fig. 1 Simple flow timeseries using `gsplot`.", fig.width=6, fig.height=6}
 site <- '04193500'
-demoPlot <- gsplot() %>% 
+demoPlot <- gsplot(mgp=c(2.75, 0.3, 0.0)) %>% 
   lines(dates[[site]], flow[[site]], col="royalblue") %>%
   title(main=paste("Site", site), ylab="Flow, ft3/s") %>%
   grid()
@@ -75,9 +73,12 @@ This data may be better represented using a log scale due to the range of flow v
 
 ```{r echo=TRUE, fig.cap="Fig. 2 Simple flow timeseries with a logged y-axis using `gsplot`.", fig.width=6, fig.height=6}
 site <- '04193500'
-demoPlot <- gsplot() %>% 
-  lines(dates[[site]], flow[[site]], col="royalblue", log='y') %>%
-  title(main=paste("Site", site), ylab="Flow, ft3/s") %>%
+options(scipen=5)
+demoPlot <- gsplot(mgp=c(3, 0.3, 0.0)) %>% 
+  lines(dates[[site]], flow[[site]], 
+        col="royalblue", log='y', 
+        ylab= expression(paste("Discharge in ",ft^3/s))) %>%
+  title(main=paste("Site", site)) %>%
   grid(equilogs=FALSE)
 demoPlot
 

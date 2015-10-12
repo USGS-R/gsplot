@@ -68,7 +68,8 @@ print.gsplot <- function(x, ...){
     
     # -- call functions -- 
     
-    if(sum(view.info$x.side.defined.by.user[i], view.info$y.side.defined.by.user[i])== 0 | 
+    if((sum(view.info$x.side.defined.by.user[i], view.info$y.side.defined.by.user[i])== 0 ) &
+       (class(window$xlim) == "numeric" & class(window$ylim) == "numeric") | 
        !(any(names(plots) %in% 'grid'))){
       to_gsplot(lapply(plots, function(x) x[!names(x) %in% 'legend.name']))
     } else {
