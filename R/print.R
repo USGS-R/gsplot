@@ -43,10 +43,13 @@ print.gsplot <- function(x, ...){
   i <- which(names(views) %in% 'axis')
   definded.sides <- sapply(i, function(x) views[[x]][['arguments']][['side']])
   
+  bg.arg <- views$bgCol
+  grid.arg <- views$grid
+  
   view.info <- view_info(views)
   view.sides.drawn <- NULL
-  
-  for (i in which(names(views) %in% 'view')){
+  view.index <- which(names(views) %in% 'view')
+  for (i in view.index){
 
     plots = views[[i]]
     plots[['window']] <- NULL
@@ -57,6 +60,12 @@ print.gsplot <- function(x, ...){
     par(window[['par']])
     plot.window(xlim = window$xlim, ylim = window$ylim, log = view.info$log[i==view.info$index])
 
+    # -- initial view --
+    if(i == view.index[1]){
+      bgCol(bg.arg)
+      #draw_grid(grid.arg)
+    }
+    
     sides.not.defined <- window$side[!(window$side %in% definded.sides)]
     
     if(!is.null(view.sides.drawn)){

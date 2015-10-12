@@ -39,6 +39,7 @@ error_bar:
 arrows: NULL
 callouts:
   col: 'black'
-bgCol: NULL
+bgCol: 
+  col: 'lightgrey'
 orderToPlot:
   order: [grid, bgCol]

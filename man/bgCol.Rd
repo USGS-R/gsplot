@@ -23,9 +23,14 @@ gs <- gsplot() \%>\%
 
 gs
 
-gsPlain <- gsplot()\%>\%
+gsPlain <- gsplot() \%>\%
    points(1:100, rnorm(100,mean=10000, sd=1000), log="y") \%>\%
    bgCol(col="lightgrey")
+gsPlain
+
+gsPlain <- gsplot() \%>\%
+   points(1:100, rnorm(100,mean=10000, sd=1000), log="y") \%>\%
+   bgCol() #yaml specifies lightgrey
 gsPlain
 }
 
