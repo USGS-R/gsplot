@@ -15,11 +15,19 @@
 #' gsNew <- abline(gsNew, b=1, a=0, legend.name="1:1")
 #' gsNew <- legend(gsNew, location="topleft",title="Awesome!")
 #' gsNew
+#' 
+#' gs <- gsplot() %>%
+#'        points(1:10,1:10) %>%
+#'        lines(6:14,6:14,side=c(3,4))
+#' gs
+#' 
 grid <- function(object, ...) {
   override("graphics", "grid", object, ...)
 }
 
-
 grid.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
-  set_window_args(object, fun.name='grid', ..., legend.name=legend.name, side=side, def.funs = graphics::grid)
+  
+  object <- set_window_args(object, fun.name='grid', ..., legend.name=legend.name, side=side, def.funs = graphics::grid)
+  
+  
 }

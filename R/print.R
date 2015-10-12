@@ -45,7 +45,6 @@ print.gsplot <- function(x, ...){
   
   bg.arg <- views$bgCol
   title.arg <- views$title
-  grid.arg <- views$grid
   
   view.info <- view_info(views)
   view.sides.drawn <- NULL
@@ -66,9 +65,8 @@ print.gsplot <- function(x, ...){
     if(i == view.index[1]){
       bgCol(bg.arg)
       title(title.arg)
-      #draw_grid(grid.arg)
     }
-    
+
     sides.not.defined <- window$side[!(window$side %in% definded.sides)]
     
     if(!is.null(view.sides.drawn)){

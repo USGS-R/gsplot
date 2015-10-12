@@ -23,5 +23,10 @@ gsNew <- grid(gsNew)
 gsNew <- abline(gsNew, b=1, a=0, legend.name="1:1")
 gsNew <- legend(gsNew, location="topleft",title="Awesome!")
 gsNew
+
+gs <- gsplot() \%>\%
+       points(1:10,1:10) \%>\%
+       lines(6:14,6:14,side=c(3,4))
+gs
 }
 
