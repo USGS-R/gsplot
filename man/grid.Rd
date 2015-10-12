@@ -32,8 +32,10 @@ gs
 
 gs <- gsplot() \%>\%
        points(1:10,1:10) \%>\%
-       axis(side=1, at=seq(1,10,length.out=18)) \%>\%
-       grid()
+       axis(side=1, at=seq(1,10,length.out=18),las=3) \%>\%
+       axis(side=3, labels=FALSE) \%>\%
+       grid(side=c(1,2),col="green") \%>\%
+       grid(side=c(3,4))
 gs
 }
 

@@ -24,8 +24,10 @@
 #' 
 #' gs <- gsplot() %>%
 #'        points(1:10,1:10) %>%
-#'        axis(side=1, at=seq(1,10,length.out=18)) %>%
-#'        grid()
+#'        axis(side=1, at=seq(1,10,length.out=18),las=3) %>%
+#'        axis(side=3, labels=FALSE) %>%
+#'        grid(side=c(1,2),col="green") %>%
+#'        grid(side=c(3,4))
 #' gs
 grid <- function(object, ...) {
   override("graphics", "grid", object, ...)
@@ -35,4 +37,38 @@ grid.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
   
   object <- set_window_args(object, fun.name='grid', ..., legend.name=legend.name, side=side, def.funs = graphics::grid)
   
+}
+
+draw_custom_grid <- function(object, index){
+   
+  i <- which(names(object) %in% 'axis')
+  definded.sides <- sapply(i, function(x) object[[x]][['arguments']][['side']])
+
+  view.info <- view_info(object)
+  view.info <- view.info[index == view.info$index,]
+  
+  grid.args <- set_args("grid",object[[index]][['grid']], package = "graphics")
+  
+  if(view.info$x.side.defined.by.user){
+    axes.index <- i[definded.sides == view.info$x]
+    x.at <- object[axes.index][['axis']][['arguments']][['at']]
+    if(length(x.at) == 0){
+      x.at <- axTicks(view.info$x)
+    }
+  } else {
+    x.at <- axTicks(view.info$x)
+  }
+  
+  if(view.info$y.side.defined.by.user){
+    axes.index <- i[definded.sides == view.info$y]
+    y.at <- object[axes.index][['axis']][['arguments']][['at']]
+    if(length(y.at) == 0){
+      y.at <- axTicks(view.info$y)
+    }
+  } else {
+    y.at <- axTicks(view.info$y)
+  }
+  
+  abline(h=y.at, v=x.at, grid.args)
+    
 }

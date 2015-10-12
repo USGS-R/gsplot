@@ -65,10 +65,18 @@ print.gsplot <- function(x, ...){
       bgCol(bg.arg)
       title(title.arg)
     }
-
-    # -- call functions -- 
-    to_gsplot(lapply(plots, function(x) x[!names(x) %in% 'legend.name']))
     
+    # -- call functions -- 
+    
+    if(sum(view.info$x.side.defined.by.user[i], view.info$y.side.defined.by.user[i])== 0 | 
+       !(any(names(plots) %in% 'grid'))){
+      to_gsplot(lapply(plots, function(x) x[!names(x) %in% 'legend.name']))
+    } else {
+      draw_custom_grid(views,i)
+      plots <- plots[!(names(plots) %in% 'grid')]
+      to_gsplot(lapply(plots, function(x) x[!(names(x) %in% c('legend.name'))]))
+    }
+
     if(window$axes){
       if(!view.info$x.side.defined.by.user[i]){
         Axis(side=view.info$x[i],x=window$xlim)
