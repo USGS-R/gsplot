@@ -95,5 +95,12 @@ view_info <- function(object){
   
   viewInfo[,c("x","y","index")] <- sapply(viewInfo[,c("x","y","index")], function(x) as.integer(x))
   
+  i <- which(names(object) %in% 'axis')
+  definded.sides <- sapply(i, function(x) object[[x]][['arguments']][['side']])
+  view.sides.drawn <- NULL
+
+  viewInfo$x.side.defined.by.user <- viewInfo$x %in% definded.sides
+  viewInfo$y.side.defined.by.user <- viewInfo$y %in% definded.sides
+  
   return(viewInfo)
 }

@@ -47,8 +47,7 @@ print.gsplot <- function(x, ...){
   title.arg <- views$title
   
   view.info <- view_info(views)
-  view.sides.drawn <- NULL
-  view.index <- which(names(views) %in% 'view')
+  view.index <- view.info$index
   
   for (i in view.index){
 
@@ -67,23 +66,15 @@ print.gsplot <- function(x, ...){
       title(title.arg)
     }
 
-    sides.not.defined <- window$side[!(window$side %in% definded.sides)]
-    
-    if(!is.null(view.sides.drawn)){
-      view.sides.drawn <- sides.not.defined[-view.sides.drawn]
-    }
-    
     # -- call functions -- 
     to_gsplot(lapply(plots, function(x) x[!names(x) %in% 'legend.name']))
     
     if(window$axes){
-      for(j in sides.not.defined){
-        if(j %% 2 != 0){
-          Axis(side=j,x=window$xlim)
-        } else {
-          Axis(side=j,x=window$ylim) 
-        }
-        view.sides.drawn <- append(view.sides.drawn, j)
+      if(!view.info$x.side.defined.by.user[i]){
+        Axis(side=view.info$x[i],x=window$xlim)
+      }
+      if(!view.info$y.side.defined.by.user[i]){
+        Axis(side=view.info$y[i],x=window$ylim)
       }
     } 
     
