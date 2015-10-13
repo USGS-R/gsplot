@@ -26,3 +26,35 @@ gsplot.list <- function(x){
   class(x) <- "gsplot"
   invisible(x) 
 }
+
+#' Summary of gsplot object
+#'
+#' Summary information
+#'
+#' @param object list
+#' @param \dots additional parameters
+#' @export
+#' @examples 
+#' gs <- gsplot() %>%
+#'        points(1:10,1:10) %>%
+#'        axis(side=1, at=seq(1,10,length.out=18),las=3) %>%
+#'        axis(side=3, labels=FALSE) %>%
+#'        grid(side=c(1,2),col="green") %>%
+#'        grid(side=c(3,4))
+#' summary(gs)
+summary.gsplot <- function(object,...){
+  
+  view.info <- view_info(object)
+  cat("Summary information of plotting object:\n")
+  cat(nrow(view.info),"views:\n")
+  for(i in seq_len(nrow(view.info))){
+    cat("View:",i,"\nx side:", view.info$x[i], ",y side:", view.info$y[i], "\n")
+    cat("xlim:",as.numeric(xlim(object, side=view.info$x[i])[[1]]),",")
+    cat("ylim:",as.numeric(ylim(object, side=view.info$y[i])[[1]]))
+    if(view.info$log[i] != ""){
+      cat(",log:",view.info$log[i])
+    }
+    cat("\n")
+  }
+}
+

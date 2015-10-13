@@ -68,3 +68,10 @@ test_that("logged side extractor ",{
   expect_equal(length(dual), 2)
   expect_true(all(dual))
 })
+
+test_that("summary ",{
+  usrDef <- gsplot(mar=c(4,4,4,4), xaxs='r', yaxs='r') %>% 
+    points(x=1, y=2, side=c(3,2), legend.name="Points 1", cex=3, xlab='cat',log='y') %>% 
+    points(x=3:10,y=4:11, side=c(1,2), log='xy')
+  expect_output(summary(usrDef),regexp = "2 views:")
+})

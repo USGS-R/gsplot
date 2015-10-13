@@ -3,6 +3,7 @@
 S3method(gsplot,default)
 S3method(logged,gsplot)
 S3method(print,gsplot)
+S3method(summary,gsplot)
 S3method(xlim,gsplot)
 S3method(ylim,gsplot)
 export("%>%")
