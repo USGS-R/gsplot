@@ -38,11 +38,7 @@ group_views <- function(gsplot){
   gsplot[[length(gsplot)]] <- NULL
   views <- views(gsplot) # existing
   non.views <- non_views(gsplot)
-  add_sides <- NULL
-  
-  if(is.list(tail.gs)){
-    add_sides <- set_sides(tail.gs[['gs.config']][['side']])
-  }
+  add_sides <- set_sides(tail.gs[['gs.config']][['side']])
     
   if (!is.null(add_sides)){
     to_draw <- setNames(list(c(tail.gs[['arguments']], legend.name=tail.gs[['gs.config']][['legend.name']])), tail.nm)
