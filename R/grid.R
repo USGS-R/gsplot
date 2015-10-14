@@ -11,7 +11,7 @@
 #' gsNew <- points(gs, y=1, x=2, xlim=c(0,NA),ylim=c(0,NA),
 #'             col="blue", pch=18, legend.name="Points")
 #' gsNew <- lines(gsNew, c(3,4,3), c(2,4,6), legend.name="Lines")
-#' gsNew <- grid(gsNew, legend.name="Grid") 
+#' gsNew <- grid(gsNew) 
 #' gsNew <- abline(gsNew, b=1, a=0, legend.name="1:1")
 #' gsNew <- legend(gsNew, location="topleft",title="Awesome!")
 #' gsNew
@@ -34,7 +34,13 @@
 #'       points(x=seq.Date(as.Date("2000-01-01"),as.Date("2010-01-01"),length.out = 20),
 #'              y=1:20,axes=FALSE) %>%
 #'      grid()
-#'gs
+#' gs
+#'
+#' gs <- gsplot() %>% 
+#'      points(x=1:10, y=1:10) %>% 
+#'      grid(lty=3, col="gray") %>%
+#'      axis(side=2, reverse=TRUE) 
+#' gs
 grid <- function(object, ...) {
   override("graphics", "grid", object, ...)
 }
@@ -68,7 +74,7 @@ draw_custom_grid <- function(object, index){
   if(view.info$x.side.defined.by.user){
     axes.index <- i[definded.sides == view.info$x]
     x <- object[axes.index][['axis']][['arguments']][['at']]
-    if(length(x.at) != 0){
+    if(!is.null(x)){
       x.at <-x
     }
   }
@@ -84,7 +90,7 @@ draw_custom_grid <- function(object, index){
   if(view.info$y.side.defined.by.user){
     axes.index <- i[definded.sides == view.info$y]
     y <- object[axes.index][['axis']][['arguments']][['at']]
-    if(length(y.at) != 0){
+    if(!is.null(y)){
       y.at <- y
     }
   }
