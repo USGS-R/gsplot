@@ -4,6 +4,7 @@ tcl: 0.3
 mgp: [1.5, 0.3, 0.0]
 yaxt: "s"
 xaxt: "s"
+las:  1
 points:
   pch: 6
   col: "red"
@@ -24,7 +25,8 @@ axis:
   outer: FALSE
 title: NULL
 text: NULL
-mtext: NULL
+mtext: 
+  las: 0
 grid:
   col: "grey"
   lwd: 1
@@ -39,6 +41,6 @@ error_bar:
 arrows: NULL
 callouts:
   col: 'black'
-bgCol: NULL
-orderToPlot:
-  order: [grid, bgCol]
+bgCol: 
+  col: 'lightgrey'
+

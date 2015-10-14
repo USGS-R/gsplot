@@ -7,10 +7,11 @@ test_that("testing content of gsplot list for bgCol", {
   expect_is(gs,"gsplot")
   
   gs <- gsplot()  %>% 
-    points(1:10, col="black")  %>% 
+    points(1:10, 1:10)  %>%
+    lines(20:30,20:30, side=c(3,4)) %>%
     bgCol(col="coral2")
   
-  expect_true(any(names(gs[['view']]) %in% "bgCol"))
+  expect_true(any(names(gs) %in% "bgCol"))
   
 })
 

@@ -16,18 +16,28 @@
 #'  
 #' @export
 #' @examples
-#' gs <- gsplot()
-#' gsNew <- points(gs, y=1, x=2, col="blue", pch=18, legend.name="Points", xlab="Stuff")
-#' gsNew <- lines(gsNew, c(3,4,3), c(2,4,6), legend.name="Lines", ylab="Data!")
-#' gsNew <- abline(gsNew, b=1, a=0, legend.name="1:1")
-#' gsNew <- legend(gsNew, location="topleft",title="Awesome!")
-#' gsNew <- title(gsNew, main="Great Graph", col.main="grey", font.main=2, cex.main=2)
-#' gsNew
+#' gs <- gsplot() %>%
+#'       points(y=1, x=2, col="blue", pch=18, legend.name="Points", xlab="Stuff") %>%
+#'       lines(c(3,4,3), c(2,4,6), legend.name="Lines", ylab="Data!") %>%
+#'       abline(b=1, a=0, legend.name="1:1") %>%
+#'       legend(location="topleft",title="Awesome!") %>%
+#'       title(main="Great Graph", col.main="grey", font.main=2, cex.main=2)
+#' gs
+#' gs <- gsplot() %>%
+#'       points(y=1, x=2) %>%
+#'       title(main="Great Graph")
+#' gs
 title <- function(object, ...) {
   override("graphics", "title", object, ...)
 }
 
 
 title.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
-  set_window_args(object, fun.name='title', ..., legend.name=legend.name, side=side, def.funs=graphics::title)
+  to.gsplot <- set_args("title",..., package = "graphics")
+  
+  to.gsplot <- list("title"=to.gsplot)
+  
+  object <- append(object, to.gsplot)
+  return(gsplot(object))
+  # set_window_args(object, fun.name='title', ..., legend.name=legend.name, side=side, def.funs=graphics::title)
 }

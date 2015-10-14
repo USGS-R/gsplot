@@ -23,5 +23,31 @@ gsNew <- grid(gsNew)
 gsNew <- abline(gsNew, b=1, a=0, legend.name="1:1")
 gsNew <- legend(gsNew, location="topleft",title="Awesome!")
 gsNew
+
+gs <- gsplot() \%>\%
+       points(1:10,1:10) \%>\%
+       lines(6:14,6:14,side=c(3,4)) \%>\%
+       grid(side=c(3,4))
+gs
+
+gs <- gsplot() \%>\%
+       points(1:10,1:10) \%>\%
+       axis(side=1, at=seq(1,10,length.out=18),las=3) \%>\%
+       axis(side=3, labels=FALSE) \%>\%
+       grid(side=c(1,2),col="green") \%>\%
+       grid(side=c(3,4))
+gs
+
+gs <- gsplot() \%>\%
+      points(x=seq.Date(as.Date("2000-01-01"),as.Date("2010-01-01"),length.out = 20),
+             y=1:20,axes=FALSE) \%>\%
+     grid()
+gs
+
+gs <- gsplot() \%>\%
+     points(x=1:10, y=1:10) \%>\%
+     grid(lty=3, col="gray") \%>\%
+     axis(side=2, reverse=TRUE)
+gs
 }
 

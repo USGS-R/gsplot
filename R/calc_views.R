@@ -186,6 +186,7 @@ c_unname <- function(list){
 unname_c <- function(list){
   do.call(c, unname(list))
 }
+
 views_with_side <- function(views, side){
   if(length(side) > 1)
     stop('side can only be length of 1')
