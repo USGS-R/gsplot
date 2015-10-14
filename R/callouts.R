@@ -41,7 +41,7 @@ callouts.gsplot <- function(object, ..., side=c(1,2)){
 #' 
 #' @rdname callouts
 #' @export
-callouts.default <- function(x, y=NULL, labels=NA, length=0.1, angle='auto', ...){
+callouts.default <- function(x, y=NULL, labels=NA, length=0.1, angle='auto', cex=1, ...){
   
   if (is.null(y)) {
     warning("y=NULL not currently supported in callouts.default")
@@ -97,6 +97,6 @@ callouts.default <- function(x, y=NULL, labels=NA, length=0.1, angle='auto', ...
   pos[angle > 135 & angle <= 225] <- 2
 
   segments(x0=x, y0=y, x1=x1, y1=y1, ...)
-  text(x=x1, y=y1, labels=labels, pos=pos,...)
+  text(x=x1, y=y1, labels=labels, pos=pos, cex=cex, ...)
   
 }

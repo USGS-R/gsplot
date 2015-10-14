@@ -8,7 +8,7 @@
 callouts(object, ...)
 
 callouts.default(x, y = NULL, labels = NA, length = 0.1, angle = "auto",
-  ...)
+  cex = 1, ...)
 }
 \arguments{
 \item{object}{gsplot object}
