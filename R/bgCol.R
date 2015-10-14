@@ -10,23 +10,38 @@
 #' @examples
 #' gs <- gsplot() %>%
 #'    points(y=c(3,1,2), x=4:6, xlim=c(0,NA),legend.name="Points") %>%
+#'    bgCol(col="lightgrey") %>%
 #'    lines( c(3,4,3), c(2,4,6), legend.name="Lines", side=c(3,4)) %>%
-#'    legend(location="topleft") %>%
-#'    bgCol(col="lightgrey") 
-#'     
+#'    legend(location="topleft")      
 #' gs
 #' 
-#' gsPlain <- gsplot()%>%
+#' gs <- gsplot() %>%
 #'    points(1:100, rnorm(100,mean=10000, sd=1000), log="y") %>%
 #'    bgCol(col="lightgrey")
-#' gsPlain
+#' gs
+#' 
+#' gs <- gsplot() %>%
+#'    points(1:100, rnorm(100,mean=10000, sd=1000), log="y") %>%
+#'    bgCol() #yaml specifies lightgrey
+#' gs
+#' 
+#' gs <- gsplot() %>%
+#'    points(1:100, rnorm(100,mean=10000, sd=1000), log="y") %>%
+#'    bgCol("lightgoldenrod") 
+#' gs
 bgCol <- function(object, ...) {
   override("gsplot", "bgCol", object, ...)
 }
 
 
-bgCol.gsplot <- function(object, ..., side=c(1,2)){
-  set_window_args(object, fun.name="bgCol", ..., legend.name=NULL, side=side, package='gsplot')
+bgCol.gsplot <- function(object, ...){
+
+  to.gsplot <- set_args("bgCol",..., package = "gsplot")
+
+  to.gsplot <- list("bgCol"=to.gsplot)
+  
+  object <- append(object, to.gsplot)
+  return(gsplot(object))
 }
 
 bgCol.default <- function(col,...){

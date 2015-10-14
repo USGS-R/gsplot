@@ -48,3 +48,18 @@ test_that("arrows gsplot",{
   gs = arrows(gs, x[s], y[s], x[s+1], y[s+1], col= 1:3)
   expect_equal(gs$view$arrows$col, 1:3) 
 })
+
+test_that("grid",{
+  plot(1:10)
+  grid()
+  
+  gs <- gsplot() %>%
+         points(1:10,1:10) %>%
+         axis(side=1, at=seq(1,10,length.out=18),las=3) %>%
+         axis(side=3, labels=FALSE) %>%
+         grid(side=c(1,2),col="green") %>%
+         grid(side=c(3,4))
+  expect_equal(names(gs$view),c("points","grid","window"))
+  expect_equal(gs$view$grid$col,"green")
+  
+})

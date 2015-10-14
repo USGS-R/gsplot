@@ -43,10 +43,13 @@ print.gsplot <- function(x, ...){
   i <- which(names(views) %in% 'axis')
   definded.sides <- sapply(i, function(x) views[[x]][['arguments']][['side']])
   
-  view.info <- view_info(views)
-  view.sides.drawn <- NULL
+  bg.arg <- views$bgCol
+  title.arg <- views$title
   
-  for (i in which(names(views) %in% 'view')){
+  view.info <- view_info(views)
+  view.index <- view.info$index
+  
+  for (i in view.index){
 
     plots = views[[i]]
     plots[['window']] <- NULL
@@ -57,31 +60,38 @@ print.gsplot <- function(x, ...){
     par(window[['par']])
     plot.window(xlim = window$xlim, ylim = window$ylim, log = view.info$log[i==view.info$index])
 
-    sides.not.defined <- window$side[!(window$side %in% definded.sides)]
-    
-    if(!is.null(view.sides.drawn)){
-      view.sides.drawn <- sides.not.defined[-view.sides.drawn]
+    # -- initial view --
+    if(i == view.index[1]){
+      bgCol(bg.arg)
+      title(title.arg)
     }
     
+    # -- call functions -- 
+    
+    if((sum(view.info$x.side.defined.by.user[i], view.info$y.side.defined.by.user[i])== 0 ) &
+       (class(window$xlim) == "numeric" & class(window$ylim) == "numeric") | 
+       !(any(names(plots) %in% 'grid'))){
+      to_gsplot(lapply(plots, function(x) x[!names(x) %in% 'legend.name']))
+    } else {
+      draw_custom_grid(views,i)
+      plots <- plots[!(names(plots) %in% 'grid')]
+      to_gsplot(lapply(plots, function(x) x[!(names(x) %in% c('legend.name'))]))
+    }
+
     if(window$axes){
-      for(j in sides.not.defined){
-        if(j %% 2 != 0){
-          Axis(side=j,x=window$xlim)
-        } else {
-          Axis(side=j,x=window$ylim) 
-        }
-        view.sides.drawn <- append(view.sides.drawn, j)
+      if(!view.info$x.side.defined.by.user[i]){
+        Axis(side=view.info$x[i],x=window$xlim)
+      }
+      if(!view.info$y.side.defined.by.user[i]){
+        Axis(side=view.info$y[i],x=window$ylim)
       }
     } 
     
     if(window$ann){
-      mtext(text=window$xlab, side=window$side[1], line = 2)
-      mtext(text=window$ylab, side=window$side[2], line = 2)        
+      mtext(text=window$xlab, side=window$side[1], line = 2, las=config("mtext")$las)
+      mtext(text=window$ylab, side=window$side[2], line = 2, las=config("mtext")$las)        
     }
     
-    # -- call functions -- 
-    to_gsplot(lapply(plots, function(x) x[!names(x) %in% 'legend.name']))
-
     par(new=TRUE)
   }
   

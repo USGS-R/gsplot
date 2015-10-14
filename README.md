@@ -29,7 +29,7 @@ library(gsplot)
 demoPlot <- gsplot() %>%
   points(y=c(3,1,2), x=1:3, xlim=c(0,NA),ylim=c(0,NA),
          col="blue", pch=18, legend.name="Points", xlab="Index") %>%
-  lines(c(3,4,3), c(2,4,6), legend.name="Lines", ylab="Data") %>%
+  lines(c(3,4,3), c(2,4,6), legend.name="Lines", ylab=expression(paste("Data [ft"^"3","/s]"))) %>%
   abline(b=1, a=0, legend.name="1:1") %>%
   axis(side=c(3,4), labels=FALSE) %>%
   legend(location="topleft",title="Awesome!") %>%
@@ -44,11 +44,11 @@ demoPlot
 ![](README_files/figure-markdown_github/unnamed-chunk-2-1.png)
 
 ``` r
-library(gsplot)
-
 gs <- gsplot() %>%
-  points(y=c(3,1,2,4,5), x=c(1:3,8,80), col="blue", pch=18, legend.name="Points") %>%
-  lines(c(3,4,3), c(2,4,6), legend.name="Lines", ylab="logged y axis", xlab="logged x axis", log='xy') %>%
+  points(y=c(3,1,2,4,5), x=c(1:3,8,80), 
+         col="blue", pch=18, legend.name="Points") %>%
+  lines(c(3,4,3), c(2,4,6), legend.name="Lines", 
+        ylab="logged y axis", xlab="logged x axis", log='xy') %>%
   callouts(x=8, y=4, lwd=2, angle=45, labels="Not sure about this one") %>%
   title("logged axes") %>%
   axis(side=c(1,2,3,4), labels=FALSE, n.minor=4) %>%
@@ -59,7 +59,6 @@ gs
 ![](README_files/figure-markdown_github/unnamed-chunk-3-1.png)
 
 ``` r
-library(gsplot)
 usrDef <- gsplot(mar=c(4,4,4,4), xaxs='r', yaxs='r') %>% 
      points(x=1, y=2, side=c(3,2), legend.name="Points 1", cex=3, xlab='cat') %>% 
      points(x=3, y=4, side=c(1,4), legend.name="Points 2", pch=5, col="red", ylab=expression(paste("Discharge in ",ft^3/s))) %>% 
