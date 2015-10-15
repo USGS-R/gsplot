@@ -27,11 +27,10 @@ test_that("gsplot yaxs = 'o' works", {
   expect_equal(par(gs)$yaxs, "i")
 })
 
-test_that("gsplot yaxs = 'o' works", {
+test_that("gsplot yaxs = 'o' works in gsplot()", {
   gs <- gsplot(ylim=c(0,NA), yaxs='o') %>%
     points(1:4,1:4) %>%
     lines(1:6,1:6)
-  
   
   beforeBuffer <- c(0,6)
   buffer <- diff(beforeBuffer)*0.04
