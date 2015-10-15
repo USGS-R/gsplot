@@ -19,7 +19,20 @@ test_that("gsplot yaxs = 'o' works", {
     points(1:4,1:4, ylim=c(0,NA), yaxs='o') %>%
     lines(1:6,1:6)
   
-  beforeBuffer <- c(0,6)
+  beforeBuffer <- c(0,4)
+  buffer <- diff(beforeBuffer)*0.04
+  afterBuffer <- c(beforeBuffer[1], beforeBuffer[2]+buffer)
+  
+  expect_equal(ylim(gs), afterBuffer)
+  expect_equal(par(gs)$yaxs, "i")
+})
+
+test_that("gsplot yaxs = 'o' works", {
+  gs <- gsplot(ylim=c(0,NA), yaxs='o') %>%
+    points(1:4,1:4) %>%
+    lines(1:6,1:6)
+  
+  beforeBuffer <- c(0,4)
   buffer <- diff(beforeBuffer)*0.04
   afterBuffer <- c(beforeBuffer[1], beforeBuffer[2]+buffer)
   
