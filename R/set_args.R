@@ -85,7 +85,7 @@ set_legend_args <- function(object, fun.name, ..., legend.name) {
   if (fun.name == "points") {
     pt.names <- c("lwd","bg","cex")
     names(paramsAll) <- replace(names(paramsAll), which(names(paramsAll) %in% pt.names), 
-                                paste0("pt.", pt.names[which(pt.names %in% names(paramsAll))]))
+                                paste0("pt.", pt.names[na.omit(match(names(paramsAll), pt.names))]))
     fun.specific <- list(border=quote(par("bg")),
                          pch=1,
                          pt.bg=quote(par("bg")),

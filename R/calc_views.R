@@ -123,8 +123,8 @@ set_view_lim <- function(views){
   data <- list(y=summarize_args(views,c('y','y1','y0'),ignore=c('window','gs.config')), 
                x=summarize_args(views,c('x','x1','x0'),ignore=c('window','gs.config')))
 
-  axs <- list(yaxs=summarize_args(views,c('yaxs'),ignore=c('window','gs.config')),
-              xaxs=summarize_args(views,c('xaxs'),ignore=c('window','gs.config')))
+  axs <- list(yaxs=summarize_args(views,c('yaxs'),ignore=c('gs.config')),
+              xaxs=summarize_args(views,c('xaxs'),ignore=c('gs.config')))
   
   definedSides <- unlist(c_unname(views),recursive = FALSE)
   definedSides <- unique(unname(unlist(definedSides[grep("side", names(definedSides))])))
@@ -158,7 +158,7 @@ set_view_lim <- function(views){
       
       usr.axs <- axs[[axs.name]][[n.i]]
       
-      if (!is.na(usr.axs) && usr.axs == 'o') {
+      if (any(!is.na(usr.axs)) && any(usr.axs == 'o')) {
         if (all(!is.na(usr.lim)))
           stop('no NA given to distinguish buffered limit')
         
@@ -166,8 +166,9 @@ set_view_lim <- function(views){
         buffer <- 0.04*diff(views[[n.i]][['window']][[lim.name]])
         lim <- views[[n.i]][['window']][[lim.name]][[which(is.na(usr.lim))]]
         buffered.lim <- ifelse(which(is.na(usr.lim)) == 1, lim - buffer, lim + buffer)
+        views[[n.i]][[view.i]][[lim.name]][[which(is.na(usr.lim))]] <- buffered.lim
         views[[n.i]][['window']][[lim.name]][[which(is.na(usr.lim))]] <- buffered.lim
-        views[[n.i]][[view.i]][[axs.name]] <- NULL
+        views[[n.i]][['window']][['par']][[axs.name]] <- NULL
         views[['par']][[axs.name]] <- 'i'
       }
   
