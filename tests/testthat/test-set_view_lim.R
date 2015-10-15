@@ -32,6 +32,7 @@ test_that("gsplot yaxs = 'o' works", {
     points(1:4,1:4) %>%
     lines(1:6,1:6)
   
+  
   beforeBuffer <- c(0,6)
   buffer <- diff(beforeBuffer)*0.04
   afterBuffer <- c(beforeBuffer[1], beforeBuffer[2]+buffer)
