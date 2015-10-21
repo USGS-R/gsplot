@@ -113,20 +113,20 @@ draw_legend <- function(gsplot) {
         }
       }
       
+      overallLegendArgs <- appendLegendPositionConfiguration(gsplot[['legend']][['gs.config']])
+      legendParamsALL <- append(legendParamsALL, overallLegendArgs)
+      legendOrdered <- legendParamsALL[na.omit(match(names(default.args), names(legendParamsALL)))]
+      
       #for above/below, dynamically set the number of columns
       location <- gsplot[['legend']][['gs.config']][['location']]
       if(location == "below" || location == "above") {
         itemsPerCol <- 3 #TODO load this from config
-        cols <- length(legendParamsALL$legend) %/% 3;
-        if(length(legendParamsALL$legend) %% 3 > 0) {
+        cols <- length(legendOrdered$legend) %/% 3;
+        if(length(legendOrdered$legend) %% 3 > 0) {
           cols <- cols + 1
         }
-        legendParamsALL <- append(legendParamsALL, list(ncol=cols))
+        legendOrdered$ncol <- ifelse(is.null(legendOrdered$ncol), cols, legendOrdered$ncol)
       }
-      
-      overallLegendArgs <- appendLegendPositionConfiguration(gsplot[['legend']][['gs.config']])
-      legendParamsALL <- append(legendParamsALL, overallLegendArgs)
-      legendOrdered <- legendParamsALL[na.omit(match(names(default.args), names(legendParamsALL)))]
   
       #set bg so that fill/border/etc args are correct, then evaluate any quoted list items
       if(any(names(overallLegendArgs) %in% c("bg"))) {
