@@ -44,7 +44,7 @@ config <- function(type, ...){
                     "mtext","grid","segments",
                     "error_bar","arrows","bgCol","callouts",
                     "rect", "polygon", "symbols", 
-                    "curve", "orderToPlot")
+                    "curve", "orderToPlot", "barplot")
   
   type <- match.arg(type, choices = allowedTypes)
   
@@ -76,6 +76,7 @@ config <- function(type, ...){
                          symbols=names(formals(graphics::symbols)),
                          curve=names(formals(graphics::curve)),
                          orderToPlot='order',
+                         barplot=names(formals(graphics::barplot)),
                          formalsNames)
   
   formalsNames <- formalsNames[formalsNames != "..."]
