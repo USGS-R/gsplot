@@ -76,7 +76,7 @@ config <- function(type, ...){
                          symbols=names(formals(graphics::symbols)),
                          curve=names(formals(graphics::curve)),
                          orderToPlot='order',
-                         barplot=names(formals(graphics::barplot)),
+                         barplot=names(formals(graphics::barplot.default)),
                          formalsNames)
   
   formalsNames <- formalsNames[formalsNames != "..."]
