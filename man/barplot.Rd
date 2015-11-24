@@ -34,11 +34,8 @@ Additional graphical parameter inputs:
 }
 \examples{
 gs <- gsplot() \%>\%
-   barplot()
+   barplot(c(21,15,10,18))
 gs
 
-gs <- gsplot() \%>\%
-   barplot() 
-gs
 }
 
