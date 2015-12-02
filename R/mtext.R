@@ -28,6 +28,27 @@ mtext <- function(object, ...) {
 }
 
 
-mtext.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
-  set_window_args(object, fun.name='mtext', ..., legend.name=legend.name, side=side, def.funs=graphics::mtext)
+mtext.gsplot <- function(object, ..., legend.name=NULL){
+  fun.name <- "mtext"
+  def.funs <- graphics::mtext
+  
+  user_args <- function_args(name=fun.name, package="graphics", ...)
+  
+  sides <- user_args$side
+  user_args[["side"]] <- NULL
+  
+  for(i in sides){
+    arguments1 <- append(list(side=i), user_args)
+    
+    to.gsplot <- list(list(arguments = do.call(set_args, c(fun.name, arguments1)),  
+                           gs.config = list(legend.name = legend.name, side=i, axes=FALSE,
+                                            par=par_arguments(arguments1, def.funs)))) %>% 
+      setNames(fun.name)
+    
+    object <- append(object, to.gsplot)
+  }
+  
+  return(gsplot(object))
+  
+ # set_window_args(object, fun.name='mtext', ..., legend.name=legend.name, def.funs=graphics::mtext)
 }
