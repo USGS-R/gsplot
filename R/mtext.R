@@ -37,11 +37,14 @@ mtext.gsplot <- function(object, ..., legend.name=NULL, side = 3){
   sides <- user_args$side
   user_args[["side"]] <- NULL
   
-  for(i in sides){
-    arguments1 <- append(list(side=i), user_args)
+  for(i in seq_along(sides)){
+    arguments1 <- append(list(side=sides[i]), user_args)
+    
+    if(length(user_args$text) == length(sides)){arguments1$text <- arguments1$text[i]}
+    if(length(user_args$at) == length(sides)){arguments1$at <- arguments1$at[i]}
     
     to.gsplot <- list(list(arguments = do.call(set_args, c(fun.name, arguments1)),  
-                           gs.config = list(legend.name = legend.name, side=i,
+                           gs.config = list(legend.name = legend.name, side=sides[i],
                                             par=par_arguments(arguments1, def.funs)))) %>% 
       setNames(fun.name)
     
