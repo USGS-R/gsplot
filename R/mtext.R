@@ -28,11 +28,11 @@ mtext <- function(object, ...) {
 }
 
 
-mtext.gsplot <- function(object, ..., legend.name=NULL){
+mtext.gsplot <- function(object, ..., legend.name=NULL, side = 3){
   fun.name <- "mtext"
   def.funs <- graphics::mtext
   
-  user_args <- function_args(name=fun.name, package="graphics", ...)
+  user_args <- function_args(name=fun.name, package="graphics", side=side, ...)
   
   sides <- user_args$side
   user_args[["side"]] <- NULL
@@ -41,14 +41,22 @@ mtext.gsplot <- function(object, ..., legend.name=NULL){
     arguments1 <- append(list(side=i), user_args)
     
     to.gsplot <- list(list(arguments = do.call(set_args, c(fun.name, arguments1)),  
-                           gs.config = list(legend.name = legend.name, side=i, axes=FALSE,
+                           gs.config = list(legend.name = legend.name, side=i,
                                             par=par_arguments(arguments1, def.funs)))) %>% 
       setNames(fun.name)
     
     object <- append(object, to.gsplot)
+    object <- gsplot(object)
+    
   }
   
-  return(gsplot(object))
+  for(v in which(names(object) == "view")){
+    if(length(object[[v]]) == 2 && any(names(object[[v]]) %in% "mtext")){
+      object[[v]]$window$axes <- FALSE
+    }
+  }
+  
+  return(object)
   
  # set_window_args(object, fun.name='mtext', ..., legend.name=legend.name, def.funs=graphics::mtext)
 }
