@@ -194,7 +194,7 @@ views_with_side <- function(views, side){
   if(length(side) > 1)
     stop('side can only be length of 1')
   with.side = lapply(views, function(x) any(x[['window']][['side']] %in% side))
-  view.match = unname(unlist(with.side[names(with.side) == 'view']))
+  view.match = unname(unlist(with.side[grep('view.', names(views))]))
   if (is.null(view.match) || !any(view.match))
     return(NULL)
   else
@@ -202,7 +202,7 @@ views_with_side <- function(views, side){
 }
 
 get_view_side <- function(views, view_i, param){
-  i = which(names(views) %in% 'view')[view_i]
+  i = grep('view.', names(views))[view_i]
   sides <- views[[i]][['window']][['side']]
   if (param=='y')
     return(sides[which(sides %% 2 == 0)])
