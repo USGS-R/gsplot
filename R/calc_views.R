@@ -50,7 +50,9 @@ group_views <- function(gsplot){
       views[[v.i]] <- append(views[[v.i]], to_draw)
       views[[v.i]][['window']][['par']] <- append_replace(views[[v.i]][['window']][['par']], tail.gs[['gs.config']][['par']])
     } else{
-      views <- append(views, list(view = append(to_draw, list(window=list(side=add_sides,par=tail.gs[['gs.config']][['par']])))))
+      new.view <- list(append(to_draw, list(window=list(side=add_sides,par=tail.gs[['gs.config']][['par']])))) %>% 
+        setNames(sprintf('view.%s.%s',add_sides[1],add_sides[2]))
+      views <- append(views, new.view)
     }
   } else {
     # // if field isn't associated with a side(s), it is moved up to top level (e.g., legend)
