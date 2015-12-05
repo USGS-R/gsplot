@@ -212,9 +212,9 @@ get_view_side <- function(views, view_i, param){
     stop('view side undefined for ',param)
 }
 
-summarize_args <- function(views, param, na.value,ignore='gs.config'){
+summarize_args <- function(views, param, na.value, ignore='gs.config'){
   
-  view_i <- which(names(views) %in% "view")
+  view_i <- grep('view.', names(views))
   values <- list()
   for (i in view_i){
     x <- views[[i]][!names(views[[i]]) %in% ignore]
@@ -256,7 +256,7 @@ set_window <- function(list){
   listOut <- list
   pars <- list[['par']]
   
-  for(j in which(names(list) == "view")){
+  for(j in grep('view.', names(list))){
     
     window <- list[[j]][['window']]
     plots <- list[[j]]
