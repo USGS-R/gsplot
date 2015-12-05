@@ -25,7 +25,7 @@ calc_views <- function(gsplot){
 }
 
 views <- function(gsplot){
-  gsplot[names(gsplot) %in% 'view']
+  gsplot[grep('view.', names(gsplot))]
 }
 
 non_views <- function(gsplot){
@@ -90,7 +90,7 @@ which_reals <- function(values, na.value){
   
 }
 set_view_window <- function(views, param, na.value=NA, remove=TRUE, ignore=NULL){
-  view_i <- which(names(views) %in% "view")
+  view_i <- grep('view.', names(views))
   for (i in view_i){
     values <- lapply(views[[i]][!names(views[[i]]) %in% ignore], function(x) strip_pts(x, param))
     val.i <- which_reals(values, na.value)
