@@ -9,7 +9,7 @@ test_that("testing content of gsplot list for multiple error bars defined", {
   gs <- points(gs, c(0,3), c(2,4)) %>% 
     error_bar(c(0,3), c(2,4), y.high=c(2,2), x.low=c(NA,1))
   
-  expect_true(length(which(names(gs[['view']]) == "arrows"))==2)
+  expect_true(length(which(names(gs[['view.1.2']]) == "arrows"))==2)
   
 })
 
