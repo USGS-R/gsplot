@@ -29,8 +29,9 @@ views <- function(gsplot){
 }
 
 non_views <- function(gsplot){
-  gsplot[grep('view.', names(gsplot))] <- NULL
-  return(gsplot)
+  non.views <- gsplot
+  non.views[grep('view.', names(non.views))] <- NULL
+  return(non.views)
 }
 
 group_views <- function(gsplot){
