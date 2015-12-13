@@ -24,12 +24,18 @@ calc_views <- function(gsplot){
   return(views)
 }
 
+which_views <- function(gsplot){
+  grep('view.', names(gsplot))
+}
+
 views <- function(gsplot){
-  gsplot[names(gsplot) %in% 'view']
+  gsplot[which_views(gsplot)]
 }
 
 non_views <- function(gsplot){
-  gsplot[!names(gsplot) %in% 'view']
+  non.views <- gsplot
+  non.views[which_views(non.views)] <- NULL
+  return(non.views)
 }
 
 group_views <- function(gsplot){
@@ -50,7 +56,9 @@ group_views <- function(gsplot){
       views[[v.i]] <- append(views[[v.i]], to_draw)
       views[[v.i]][['window']][['par']] <- append_replace(views[[v.i]][['window']][['par']], tail.gs[['gs.config']][['par']])
     } else{
-      views <- append(views, list(view = append(to_draw, list(window=list(side=add_sides,par=tail.gs[['gs.config']][['par']])))))
+      new.view <- list(append(to_draw, list(window=list(side=add_sides,par=tail.gs[['gs.config']][['par']])))) %>% 
+        setNames(sprintf('view.%s.%s',add_sides[1],add_sides[2]))
+      views <- append(views, new.view)
     }
   } else {
     # // if field isn't associated with a side(s), it is moved up to top level (e.g., legend)
@@ -88,7 +96,7 @@ which_reals <- function(values, na.value){
   
 }
 set_view_window <- function(views, param, na.value=NA, remove=TRUE, ignore=NULL){
-  view_i <- which(names(views) %in% "view")
+  view_i <- which_views(views)
   for (i in view_i){
     values <- lapply(views[[i]][!names(views[[i]]) %in% ignore], function(x) strip_pts(x, param))
     val.i <- which_reals(values, na.value)
@@ -117,16 +125,18 @@ set_view_lab <- function(views){
 
 
 set_view_lim <- function(views){
+  y.include <- c('y','y1','y0','ytop','ybottom')
+  x.include <- c('x','x1','x0','xleft','xright')
   views <- set_view_window(views, param = 'xlim', na.value=NA, ignore='window', remove=FALSE)
   views <- set_view_window(views, param = 'ylim', na.value=NA, ignore='window', remove=FALSE)
   
-  data <- list(y=summarize_args(views,c('y','y1','y0'),ignore=c('window','gs.config')), 
-               x=summarize_args(views,c('x','x1','x0'),ignore=c('window','gs.config')))
+  data <- list(y=summarize_args(views, y.include, ignore=c('window','gs.config')), 
+               x=summarize_args(views, x.include, ignore=c('window','gs.config')))
 
-  axs <- list(yaxs=summarize_args(views,c('yaxs'),ignore=c('gs.config')),
-              xaxs=summarize_args(views,c('xaxs'),ignore=c('gs.config')))
+  axs <- list(yaxs=summarize_args(views, c('yaxs'), ignore=c('gs.config')),
+              xaxs=summarize_args(views, c('xaxs'), ignore=c('gs.config')))
   
-  definedSides <- unlist(c_unname(views),recursive = FALSE)
+  definedSides <- unlist(c_unname(views), recursive = FALSE)
   definedSides <- unique(unname(unlist(definedSides[grep("side", names(definedSides))])))
 
   for(param in c('y','x')){
@@ -192,7 +202,7 @@ views_with_side <- function(views, side){
   if(length(side) > 1)
     stop('side can only be length of 1')
   with.side = lapply(views, function(x) any(x[['window']][['side']] %in% side))
-  view.match = unname(unlist(with.side[names(with.side) == 'view']))
+  view.match = unname(unlist(with.side[which_views(views)]))
   if (is.null(view.match) || !any(view.match))
     return(NULL)
   else
@@ -200,7 +210,7 @@ views_with_side <- function(views, side){
 }
 
 get_view_side <- function(views, view_i, param){
-  i = which(names(views) %in% 'view')[view_i]
+  i = which_views(views)[view_i]
   sides <- views[[i]][['window']][['side']]
   if (param=='y')
     return(sides[which(sides %% 2 == 0)])
@@ -210,9 +220,9 @@ get_view_side <- function(views, view_i, param){
     stop('view side undefined for ',param)
 }
 
-summarize_args <- function(views, param, na.value,ignore='gs.config'){
+summarize_args <- function(views, param, na.value, ignore='gs.config'){
   
-  view_i <- which(names(views) %in% "view")
+  view_i <- which_views(views)
   values <- list()
   for (i in view_i){
     x <- views[[i]][!names(views[[i]]) %in% ignore]
@@ -254,7 +264,7 @@ set_window <- function(list){
   listOut <- list
   pars <- list[['par']]
   
-  for(j in which(names(list) == "view")){
+  for(j in which_views(list)){
     
     window <- list[[j]][['window']]
     plots <- list[[j]]

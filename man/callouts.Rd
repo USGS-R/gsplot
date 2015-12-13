@@ -8,7 +8,7 @@
 callouts(object, ...)
 
 callouts.default(x, y = NULL, labels = NA, length = 0.1, angle = "auto",
-  cex = 1, ...)
+  cex = par()$cex, ...)
 }
 \arguments{
 \item{object}{gsplot object}
@@ -22,6 +22,8 @@ callouts.default(x, y = NULL, labels = NA, length = 0.1, angle = "auto",
 \item{length}{relative (percentage of window width and height) distance for callout}
 
 \item{angle}{callout line angle}
+
+\item{cex}{passed to text for font size formatting}
 
 \item{\dots}{Further graphical parameters may also be supplied as arguments. See 'Details'.}
 }

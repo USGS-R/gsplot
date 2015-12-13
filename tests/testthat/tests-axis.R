@@ -12,14 +12,14 @@ test_that("axis",{
 })
 
 test_that("axis gsplot",{
-  gs = points(gsplot(), c(-2,3), c(-1,5)) %>% 
+  gs = points(gsplot(mar=c(1,1,1,1)), c(-2,3), c(-1,5)) %>% 
     axis(3)
-  expect_equal(names(gs), c("view","par","axis"))
+  expect_equal(names(gs), c("view.1.2","par","axis"))
   
   gs <- gsplot() %>%
      lines(1:5, c(1,10,100,1000,10000), log="y", axes=FALSE) %>%
      axis(side=c(2,4), labels=FALSE, n.minor=4)
   
-  expect_false(gs$view$window$axes)
+  expect_false(gs$view.1.2$window$axes)
   
 })
