@@ -24,13 +24,17 @@ calc_views <- function(gsplot){
   return(views)
 }
 
+which_views <- function(gsplot){
+  grep('view.', names(gsplot))
+}
+
 views <- function(gsplot){
-  gsplot[grep('view.', names(gsplot))]
+  gsplot[which_views(gsplot)]
 }
 
 non_views <- function(gsplot){
   non.views <- gsplot
-  non.views[grep('view.', names(non.views))] <- NULL
+  non.views[which_views(non.views)] <- NULL
   return(non.views)
 }
 
@@ -92,7 +96,7 @@ which_reals <- function(values, na.value){
   
 }
 set_view_window <- function(views, param, na.value=NA, remove=TRUE, ignore=NULL){
-  view_i <- grep('view.', names(views))
+  view_i <- which_views(views)
   for (i in view_i){
     values <- lapply(views[[i]][!names(views[[i]]) %in% ignore], function(x) strip_pts(x, param))
     val.i <- which_reals(values, na.value)
@@ -198,7 +202,7 @@ views_with_side <- function(views, side){
   if(length(side) > 1)
     stop('side can only be length of 1')
   with.side = lapply(views, function(x) any(x[['window']][['side']] %in% side))
-  view.match = unname(unlist(with.side[grep('view.', names(views))]))
+  view.match = unname(unlist(with.side[which_views(views)]))
   if (is.null(view.match) || !any(view.match))
     return(NULL)
   else
@@ -206,7 +210,7 @@ views_with_side <- function(views, side){
 }
 
 get_view_side <- function(views, view_i, param){
-  i = grep('view.', names(views))[view_i]
+  i = which_views(views)[view_i]
   sides <- views[[i]][['window']][['side']]
   if (param=='y')
     return(sides[which(sides %% 2 == 0)])
@@ -218,7 +222,7 @@ get_view_side <- function(views, view_i, param){
 
 summarize_args <- function(views, param, na.value, ignore='gs.config'){
   
-  view_i <- grep('view.', names(views))
+  view_i <- which_views(views)
   values <- list()
   for (i in view_i){
     x <- views[[i]][!names(views[[i]]) %in% ignore]
@@ -260,7 +264,7 @@ set_window <- function(list){
   listOut <- list
   pars <- list[['par']]
   
-  for(j in grep('view.', names(list))){
+  for(j in which_views(list)){
     
     window <- list[[j]][['window']]
     plots <- list[[j]]
