@@ -37,8 +37,8 @@ gsNew
 
 gs <- gsplot() \%>\% 
          points(x=1:5, y=1:5, xlim=c(0,10), ylim=c(0,10), 
-               callouts=list(labels=c(rep(NA, 4), "oh")), 
-               error_bar=list(y.high=1))
+               callouts(labels=c(rep(NA, 4), "oh")), 
+               error_bar(y.high=1))
 gs
 
 gs2 <- gsplot() \%>\%
