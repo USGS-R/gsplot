@@ -4,7 +4,6 @@ tcl: 0.3
 mgp: [1.5, 0.3, 0.0]
 yaxt: "s"
 xaxt: "s"
-las:  1
 points:
   pch: 6
   col: "red"
