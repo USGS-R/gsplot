@@ -46,7 +46,7 @@ test_that("arrows gsplot",{
   ## draw arrows from point to point :
   s <- seq(length(x)-1)  # one shorter than data
   gs = arrows(gs, x[s], y[s], x[s+1], y[s+1], col= 1:3)
-  expect_equal(gs$view$arrows$col, 1:3) 
+  expect_equal(gs$view.1.2$arrows$col, 1:3) 
 })
 
 test_that("grid",{
@@ -59,7 +59,7 @@ test_that("grid",{
          axis(side=3, labels=FALSE) %>%
          grid(side=c(1,2),col="green") %>%
          grid(side=c(3,4))
-  expect_equal(names(gs$view),c("points","grid","window"))
-  expect_equal(gs$view$grid$col,"green")
+  expect_equal(names(gs$view.1.2),c("points","grid","window"))
+  expect_equal(gs$view.1.2$grid$col,"green")
   
 })
