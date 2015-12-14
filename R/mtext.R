@@ -43,7 +43,6 @@ mtext.gsplot <- function(object, ..., legend.name=NULL, side = 3){
     setNames(fun.name)
   
   object <- append(object, to.gsplot)
-  object <- 
     
   return(gsplot(object))
   
