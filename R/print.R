@@ -40,8 +40,8 @@ print.gsplot <- function(x, ...){
     plot.new()
   }
 
-  i <- which(names(views) %in% 'axis')
-  definded.sides <- sapply(i, function(x) views[[x]][['arguments']][['side']])
+  i.axis <- which(names(views) %in% 'axis')
+  defined.sides <- sapply(i.axis, function(x) views[[x]][['arguments']][['side']])
   
   bg.arg <- views$bgCol
   title.arg <- views$title
@@ -78,14 +78,24 @@ print.gsplot <- function(x, ...){
       to_gsplot(lapply(plots, function(x) x[!(names(x) %in% c('legend.name'))]))
     }
 
-    if(window$axes){
-      if(!view.info$x.side.defined.by.user[i]){
+    
+    if(!view.info$x.side.defined.by.user[i]){
+      if(window$axes){
         Axis(side=view.info$x[i],x=window$xlim)
       }
-      if(!view.info$y.side.defined.by.user[i]){
+    } else {
+      x.axis <- i.axis[which(defined.sides == view.info$x[i])]
+      draw_axis(views, index.axis=x.axis)
+    }
+    
+    if(!view.info$y.side.defined.by.user[i]){
+      if(window$axes){
         Axis(side=view.info$y[i],x=window$ylim)
-      }
-    } 
+      } 
+    } else {
+      y.axis <- i.axis[which(defined.sides == view.info$y[i])]
+      draw_axis(views, index.axis=y.axis)
+    }
     
     if(window$ann){
       mtext(text=window$xlab, side=window$side[1], line = 2, las=config("mtext")$las)
@@ -95,7 +105,8 @@ print.gsplot <- function(x, ...){
     par(new=TRUE)
   }
   
-  draw_axis(views)
+  i.axis.noview <- i.axis[which(!defined.sides %in% c(view.info$x, view.info$y))]
+  draw_axis(views, index.axis=i.axis.noview)
   
   if(window$frame.plot){
     box()
