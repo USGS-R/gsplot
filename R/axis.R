@@ -87,11 +87,9 @@ axis.gsplot <- function(object, ..., n.minor=0, tcl.minor=0.15, reverse=NULL) {
   
 }
 
-draw_axis <- function(gsplot) {
+draw_axis <- function(gsplot, index.axis) {
 
-  draw_axis_execute <- function(axisParams,n.minor){
-    axisParams <- gsplot[[index]][['arguments']]
-    n.minor <- gsplot[[index]][['gs.config']]$n.minor
+  draw_axis_execute <- function(axisParams, n.minor, index){
     
     if(n.minor == 0){
       axis(axisParams)
@@ -127,10 +125,18 @@ draw_axis <- function(gsplot) {
     }
   }
   
-  for(index in which(names(gsplot) %in% "axis")){
-    axisParams <- gsplot[[index]][['arguments']]
-    n.minor <- gsplot[[index]][['gs.config']]$n.minor
-    draw_axis_execute(axisParams, n.minor)
+  if(length(index.axis) == 1){
+    axisParams <- gsplot[[index.axis]][['arguments']]
+    n.minor <- gsplot[[index.axis]][['gs.config']]$n.minor
+    draw_axis_execute(axisParams, n.minor, index.axis)
+  } else {
+    
+    for(i in index.axis){
+      axisParams <- gsplot[[i]][['arguments']]
+      n.minor <- gsplot[[i]][['gs.config']]$n.minor
+      draw_axis_execute(axisParams, n.minor, i)
+    }
+    
   }
 
 }
