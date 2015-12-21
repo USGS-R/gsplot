@@ -22,6 +22,7 @@ axis:
   line: NULL 
   pos: NULL
   outer: FALSE
+  las: 1
 title: NULL
 text: NULL
 mtext: 
