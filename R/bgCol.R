@@ -62,7 +62,7 @@ bgCol.default <- function(col,...){
     y2 <- par("usr")[4]  
   }
   
-  rect(x1,y1,x2,y2,col = col,...)
+  rect(x1,y1,x2,y2,col = col, border = NA, ...)
   
 }
 
