@@ -31,6 +31,7 @@ loadConfig = function(filename) {
 #'
 #' @param type string of gsplot config object to retrieve
 #' @param ... additional configuration to override what is pulled from config
+#' @param persist logical of whether to persist overrides to config
 #'
 #' @examples
 #' config("par")
@@ -38,7 +39,7 @@ loadConfig = function(filename) {
 #' @importFrom graphics plot.xy
 #' @importFrom graphics par
 #' @export
-config <- function(type, ...){
+config <- function(type, ..., persist=FALSE){
   allowedTypes <- c("par","points","lines","axis","plot",
                     "abline","legend","title","text",
                     "mtext","grid","segments",
@@ -93,6 +94,14 @@ config <- function(type, ...){
   } else {
     globalConfig[names(list(...))] <- NULL
     globalConfig <- append(globalConfig, list(...))
+  }
+  
+  if (persist){
+    if (type == "par"){
+      gsconfig$options[names(globalConfig)] <- globalConfig 
+    } else {
+      gsconfig$options[[type]] <- globalConfig
+    }
   }
   
   return(globalConfig)
