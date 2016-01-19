@@ -4,12 +4,14 @@
 \alias{config}
 \title{Get configuration for gsplot}
 \usage{
-config(type, ...)
+config(type, ..., persist = FALSE)
 }
 \arguments{
 \item{type}{string of gsplot config object to retrieve}
 
 \item{...}{additional configuration to override what is pulled from config}
+
+\item{persist}{logical of whether to persist overrides to config}
 }
 \description{
 Gets config for gsplot, mostly used internally
