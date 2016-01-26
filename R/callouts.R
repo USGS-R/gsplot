@@ -54,7 +54,7 @@ callouts.default <- function(x, y=NULL, labels=NA, length=0.1, angle='auto', cex
   x <- x[!is.na(labels)]
   y <- y[!is.na(labels)]
   labels <- labels[!is.na(labels)]
-  angle <- angle[!is.na(labels)]
+  if(length(angle) > 1){angle[!is.na(labels)]}
   
   # // to do: possibly support angle and length as vectors equal in length to x 
   x.usr <- par("usr")[c(1,2)]
