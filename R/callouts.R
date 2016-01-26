@@ -49,11 +49,12 @@ callouts.default <- function(x, y=NULL, labels=NA, length=0.1, angle='auto', cex
     return()
   }
   
-  stopifnot(angle=='auto' | (angle >= 0 & angle <= 360))
+  stopifnot(all(angle=='auto' | is.na(angle) | (angle >= 0 & angle <= 360)))
   
   x <- x[!is.na(labels)]
   y <- y[!is.na(labels)]
   labels <- labels[!is.na(labels)]
+  angle <- angle[!is.na(labels)]
   
   # // to do: possibly support angle and length as vectors equal in length to x 
   x.usr <- par("usr")[c(1,2)]
@@ -66,30 +67,58 @@ callouts.default <- function(x, y=NULL, labels=NA, length=0.1, angle='auto', cex
   xrange <- diff(x.usr)
   yrange <- diff(y.usr)
   
-  if (angle != "auto") {
-    x1 <- x + length * xrange * cos(2*pi*(angle/360))
-    y1 <- y + length * yrange * sin(2*pi*(angle/360))
-  } else {
-    auto.angle <- c(30, 330, 150, 210)
-    x1 <- sapply(auto.angle, function(a) {
-      x + length * xrange * cos(2*pi*(a/360))
-    })
-    y1 <- sapply(auto.angle, function(a) {
-      y + length * yrange * sin(2*pi*(a/360))
-    })
+  calc_x1y1 <- function(x, y, angle, length, xrange, yrange, x.usr, y.usr){
     
-    good.y1 <- y1 >= y.usr[1] & y1 <= y.usr[2]
-    good.x1 <- x1 >= x.usr[1] & x1 <= x.usr[2]
-    good.pt <- good.y1 & good.x1
-    if (!is.null(dim(good.pt))){
-      angle <- auto.angle[apply(good.pt, 1, function(z){
-        ifelse(!any(z), 1, min(which(z)))
-      })]
-    } else { 
-      angle <- auto.angle[ifelse(!any(good.pt), 1, min(which(good.pt)))]
+    if (is.na(angle) | angle == "auto") {
+      auto.angle <- c(30, 330, 150, 210)
+      x1 <- sapply(auto.angle, function(a) {
+        x + length * xrange * cos(2*pi*(a/360))
+      })
+      y1 <- sapply(auto.angle, function(a) {
+        y + length * yrange * sin(2*pi*(a/360))
+      })
+      
+      good.y1 <- y1 >= y.usr[1] & y1 <= y.usr[2]
+      good.x1 <- x1 >= x.usr[1] & x1 <= x.usr[2]
+      good.pt <- good.y1 & good.x1
+      if (!is.null(dim(good.pt))){
+        angle <- auto.angle[apply(good.pt, 1, function(z){
+          ifelse(!any(z), 1, min(which(z)))
+        })]
+      } else { 
+        angle <- auto.angle[ifelse(!any(good.pt), 1, min(which(good.pt)))]
+      }
+      x1 <- x + length * xrange * cos(2*pi*(angle/360))
+      y1 <- y + length * yrange * sin(2*pi*(angle/360))
+    } else {
+      x1 <- x + length * xrange * cos(2*pi*(angle/360))
+      y1 <- y + length * yrange * sin(2*pi*(angle/360))
     }
-    x1 <- x + length * xrange * cos(2*pi*(angle/360))
-    y1 <- y + length * yrange * sin(2*pi*(angle/360))
+    
+    return(list(x1 = x1, y1 = y1, angle = angle))
+  }
+  
+  if(length(angle) == 1){
+    x1_y1_angle <- calc_x1y1(x = x, y = y, angle = angle, 
+                       length, xrange, yrange, x.usr, y.usr)
+    x1 <- x1_y1_angle$x1
+    y1 <- x1_y1_angle$y1
+    angle <- x1_y1_angle$angle
+  } else {
+    stopifnot(length(x)%%length(angle) == 0) #stop if the defined angles aren't a multiple of the points
+    stopifnot(!is.character(angle)) #stop if it's not a numeric vector ('auto' is not used for the vector)
+  
+    num_pts <- length(x)
+    x1 <- vector(mode = "numeric", length = num_pts)
+    y1 <- vector(mode = "numeric", length = num_pts)
+    
+    for(r in seq(num_pts)){
+      x1_y1_angle <- calc_x1y1(x = x[r], y = y[r], angle = angle[r], 
+                         length, xrange, yrange, x.usr, y.usr)
+      x1[r] <- x1_y1_angle$x1
+      y1[r] <- x1_y1_angle$y1
+      angle[r] <- x1_y1_angle$angle
+    }
   }
     
   pos <- rep(1, length(angle))  
