@@ -96,8 +96,16 @@ draw_axis <- function(gsplot, index.axis) {
     } else {
       axis(axisParams)
       n.minor <- n.minor + 1
-      #Minor axis:
-      at <- axTicks(axisParams$side)
+      
+      # Minor axis:
+
+      #if user hasn't specified "at", calculate it
+      if(is.null(axisParams$at)){
+        at <- axTicks(axisParams$side)
+      } else {
+        at <- axisParams$at
+      }
+      
       newAT <- c()
       
       if(axisParams$side %% 2 == 0){
