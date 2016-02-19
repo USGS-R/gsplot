@@ -1,5 +1,26 @@
 gsconfig <- new.env(parent = emptyenv())
 
+overrides <- list("par" = "par",
+                  "points" = "plot.xy",
+                  "lines" = "plot.xy",
+                  "axis" = "axis",
+                  "plot" = "plot.xy",
+                  "abline" = "abline",
+                  "legend" = "legend",
+                  "title" = "title",
+                  "text" = "text",
+                  "mtext" = "mtext",
+                  "grid" = "grid",
+                  "segments" = "segments",
+                  "error_bar" = "error_bar",
+                  "arrows" = "arrows",
+                  "bgCol" = "bgCol",
+                  "callouts" = "callouts",
+                  "rect" = "rect",
+                  "polygon" = "polygon",
+                  "symbols" = "symbols", 
+                  "curve" = "curve")
+
 #' @title Load gsplot config
 #'
 #' @description Loads the config file into options which are
@@ -40,12 +61,7 @@ loadConfig = function(filename) {
 #' @importFrom graphics par
 #' @export
 config <- function(type, ..., persist=FALSE){
-  allowedTypes <- c("par","points","lines","axis","plot",
-                    "abline","legend","title","text",
-                    "mtext","grid","segments",
-                    "error_bar","arrows","bgCol","callouts",
-                    "rect", "polygon", "symbols", 
-                    "curve", "orderToPlot")
+  allowedTypes <- names(overrides)
   
   type <- match.arg(type, choices = allowedTypes)
   
@@ -57,30 +73,8 @@ config <- function(type, ..., persist=FALSE){
   
   globalConfig <- config_list[!(names(config_list) %in% allowedTypes[allowedTypes != "par"])]
 
-  formalsNames <- names(formals(plot.xy))
+  formalsNames <- formal_names(type)
 
-  formalsNames <- switch(type,
-                         par=names(par(no.readonly = TRUE)),
-                         axis=names(formals(graphics::axis)),
-                         legend=names(formals(graphics::legend)),
-                         abline=names(formals(graphics::abline)),
-                         title=names(formals(graphics::title)),
-                         text=names(formals(graphics::text)),
-                         mtext=names(formals(graphics::mtext)),
-                         grid=names(formals(graphics::grid)),
-                         segments=names(formals(graphics::segments)),
-                         error_bar=names(formals(error_bar.default)),
-                         bgCol=names(formals(bgCol.default)),
-                         callouts=names(formals(callouts.default)),
-                         rect=names(formals(graphics::rect)),
-                         polygon=names(formals(graphics::polygon)),
-                         symbols=names(formals(graphics::symbols)),
-                         curve=names(formals(graphics::curve)),
-                         orderToPlot='order',
-                         formalsNames)
-  
-  formalsNames <- formalsNames[formalsNames != "..."]
-  
   globalConfig <- globalConfig[names(globalConfig) %in% formalsNames]
   
   if(type %in% names(config_list)){
@@ -105,4 +99,23 @@ config <- function(type, ..., persist=FALSE){
   }
   
   return(globalConfig)
+}
+
+formal_names <- function(type) {
+  formals <- NULL
+  
+  if (type == "par") {
+    formals <- names(par(no.readonly=TRUE))
+  } else {
+    func <- tryCatch(getFromNamespace(overrides[[type]], "graphics"), error=function(e){})
+    
+    if (!is.null(func)) {
+      formals <- names(formals(func))
+    } else {
+      formals <- names(formals(overrides[[type]]))
+    }
+  }
+  formals <- formals[formals != "..."]
+  
+  return(formals)
 }

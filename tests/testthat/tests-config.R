@@ -20,3 +20,13 @@ test_that("persisting to config alters environment", {
   expect_equal(gsplot:::config("points")$col, "blue")
   cleanup()
 })
+
+test_that("formals are correctly retrieved", {
+  expect_equal(length(config("par")), 6)
+  expect_equal(names(config("points")), c("pch", "col"))
+  expect_equal(length(config("arrows")), 0)
+})
+
+test_that("non-existant type hits error", {
+  expect_error(config("foo"))
+})
