@@ -26,3 +26,7 @@ test_that("formals are correctly retrieved", {
   expect_equal(names(config("points")), c("pch", "col"))
   expect_equal(length(config("arrows")), 0)
 })
+
+test_that("non-existant type hits error", {
+  expect_error(config("foo"))
+})
