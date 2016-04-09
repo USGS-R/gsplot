@@ -184,7 +184,7 @@ set_view_lim <- function(view, sides){
 
   for (side in names(side.vals)){
     data.vals <- side.vals[[side]]
-    sides[[as.side_name(side)]]$lim <- range(data.vals[is.finite(data.vals)])
+    sides[[as.side_name(side)]]$lim <- range(c(sides[[as.side_name(side)]]$lim, data.vals[is.finite(data.vals)]), na.rm = TRUE)
   }
   #axs <- list(yaxs=summarize_args(views, c('yaxs'), ignore=c('gs.config')),
   #            xaxs=summarize_args(views, c('xaxs'), ignore=c('gs.config')))
