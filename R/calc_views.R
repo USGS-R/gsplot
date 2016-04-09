@@ -44,11 +44,13 @@ append_sides <- function(gsplot, sides, on.exists = c('skip','replace')){
     return(gsplot)
   on.exists = match.arg(on.exists)
   
+  side_template <- list(lim=c(NA,NA), label=NA, usr.lim=FALSE)
+  
   if (on.exists == 'skip'){
     sides <- paste('side.',sides, sep='')
     
     to_add <- !sides %in% names(gsplot)
-    side_list <- vector(mode = 'list', sum(to_add)) %>% setNames(sides[which(to_add)])
+    side_list <- rep(list(side_template), sum(to_add)) %>% setNames(sides[which(to_add)])
     gsplot <- append(gsplot, side_list)
   } else if (on.exists == 'replace'){
     stop('on.exists ', on.exists, ' not implemented yet')
