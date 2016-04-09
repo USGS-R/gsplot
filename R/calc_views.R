@@ -81,7 +81,7 @@ group_views <- function(gsplot){
   gsplot[[length(gsplot)]] <- NULL
   add_sides <- set_sides(tail.gs[['gs.config']][['side']])
   non.views <- non_views(gsplot, include.sides = FALSE)
-  vew.n.sde <- gsplot[which_views(gsplot) | which_sides(gsplot)]
+  vew.n.sde <- gsplot[c(which_views(gsplot), which_sides(gsplot))]
   if (!is.null(add_sides)){
     vew.n.sde <- append_sides(vew.n.sde, add_sides)
     to_draw <- setNames(list(c(tail.gs[['arguments']], legend.name=tail.gs[['gs.config']][['legend.name']])), tail.nm)
