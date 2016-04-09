@@ -38,14 +38,34 @@ non_views <- function(gsplot){
   return(non.views)
 }
 
+append_sides <- function(gsplot, sides, on.exists = c('skip','replace')){
+  
+  if (is.null(sides))
+    return(gsplot)
+  on.exists = match.arg(on.exists)
+  
+  if (on.exists == 'skip'){
+    sides <- paste('side.',sides, sep='')
+    
+    to_add <- !sides %in% names(gsplot)
+    side_list <- vector(mode = 'list', sum(to_add)) %>% setNames(sides[which(to_add)])
+    gsplot <- append(gsplot, side_list)
+  } else if (on.exists == 'replace'){
+    stop('on.exists ', on.exists, ' not implemented yet')
+  }
+  return(gsplot)
+}
+                       
+
 group_views <- function(gsplot){
   tail.gs <- gsplot[[length(gsplot)]]
   tail.nm <- names(gsplot[length(gsplot)])
   gsplot[[length(gsplot)]] <- NULL
   views <- views(gsplot) # existing
-  non.views <- non_views(gsplot)
   add_sides <- set_sides(tail.gs[['gs.config']][['side']])
-    
+  gsplot <- append_sides(gsplot, add_sides)
+  non.views <- non_views(gsplot)
+
   if (!is.null(add_sides)){
     to_draw <- setNames(list(c(tail.gs[['arguments']], legend.name=tail.gs[['gs.config']][['legend.name']])), tail.nm)
     # // to do: verify sides are in order: x then y
