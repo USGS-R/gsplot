@@ -24,6 +24,10 @@ calc_views <- function(gsplot){
   return(views)
 }
 
+#' get the indices of the gsplot object for where the views are
+#' 
+#' @param gsplot a gsplot object
+#' @return a vector of ints
 which_views <- function(gsplot){
   grep('view.', names(gsplot))
 }
@@ -44,7 +48,7 @@ append_sides <- function(gsplot, sides, on.exists = c('skip','replace')){
     return(gsplot)
   on.exists = match.arg(on.exists)
   
-  side_template <- list(lim=c(NA,NA), label=NA, usr.lim=FALSE)
+  side_template <- list(lim=c(NA,NA), label=NA, usr.lim=c(FALSE, FALSE))
   
   if (on.exists == 'skip'){
     sides <- paste('side.',sides, sep='')
