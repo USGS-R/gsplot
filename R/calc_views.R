@@ -51,7 +51,7 @@ append_sides <- function(gsplot, sides, on.exists = c('skip','replace')){
   side_template <- list(lim=c(NA,NA), label=NA, usr.lim=c(FALSE, FALSE))
   
   if (on.exists == 'skip'){
-    sides <- paste('side.',sides, sep='')
+    sides <- as.side_name(sides)
     
     to_add <- !sides %in% names(gsplot)
     side_list <- rep(list(side_template), sum(to_add)) %>% setNames(sides[which(to_add)])
@@ -140,6 +140,14 @@ set_view_window <- function(views, param, na.value=NA, remove=TRUE, ignore=NULL)
   return(views)
 }
 
+as.view_name <- function(sides){
+  paste0('view.', paste(sides, collapse='.'))
+}
+
+as.side_name <- function(sides){
+  paste('side.',sides, sep='')
+}
+
 set_view_log <- function(views){
   set_view_window(views, param = 'log', na.value="")
 }
@@ -170,7 +178,8 @@ set_view_lim <- function(views){
       n.i <- as.numeric(i)
       lim.name <- paste0(param,'lim')
       axs.name <- paste0(param, 'axs')
-      view.side <- get_view_side(views, as.numeric(i), param)
+      view.side <- get_view_side(views, n.i, param)
+      side.nm <- as.side_name(view.side)
       match.side <- as.character(views_with_side(views, view.side))
       data.var <- c_unname(data[[param]][match.side])
       
@@ -187,10 +196,12 @@ set_view_lim <- function(views){
       }
       
       data.lim <- range(data.var[is.finite(data.var)])
+      views[[side.nm]]$lim <- data.lim
       usr.lim <- views[[n.i]][['window']][[lim.name]][1:2]
       views[[n.i]][['window']][[lim.name]] <- data.lim
       views[[n.i]][['window']][[lim.name]][!is.na(usr.lim)] <- usr.lim[!is.na(usr.lim)]
-    
+      views[[side.nm]]$lim[!is.na(usr.lim)] <- usr.lim[!is.na(usr.lim)]
+      views[[side.nm]]$usr.lim[!is.na(usr.lim)] <- rep(TRUE,sum(!is.na(usr.lim)))
       
       usr.axs <- axs[[axs.name]][[n.i]]
       
