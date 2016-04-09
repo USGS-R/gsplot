@@ -32,6 +32,10 @@ which_views <- function(gsplot){
   grep('view.', names(gsplot))
 }
 
+view_names <- function(gsplot){
+  names(views(gsplot))
+}
+
 views <- function(gsplot){
   gsplot[which_views(gsplot)]
 }
@@ -144,6 +148,7 @@ as.view_name <- function(sides){
   paste0('view.', paste(sides, collapse='.'))
 }
 
+
 as.side_name <- function(sides){
   paste('side.',sides, sep='')
 }
@@ -161,67 +166,37 @@ set_view_lab <- function(views){
 set_view_lim <- function(views){
   y.include <- c('y','y1','y0','ytop','ybottom')
   x.include <- c('x','x1','x0','xleft','xright')
-  views <- set_view_window(views, param = 'xlim', na.value=NA, ignore='window', remove=FALSE)
-  views <- set_view_window(views, param = 'ylim', na.value=NA, ignore='window', remove=FALSE)
+  # // need value arguments, need yaxs/xaxs args, need user-specified ylim/xlim values
   
-  data <- list(y=summarize_args(views, y.include, ignore=c('window','gs.config')), 
-               x=summarize_args(views, x.include, ignore=c('window','gs.config')))
+  side.vals <- c(summarize_side_values(views, y.include, ignore=c('window','gs.config'), axis='y'),
+                 summarize_side_values(views, x.include, ignore=c('window','gs.config'), axis='x'))
 
-  axs <- list(yaxs=summarize_args(views, c('yaxs'), ignore=c('gs.config')),
-              xaxs=summarize_args(views, c('xaxs'), ignore=c('gs.config')))
-  
-  definedSides <- unlist(c_unname(views), recursive = FALSE)
-  definedSides <- unique(unname(unlist(definedSides[grep("side", names(definedSides))])))
-
-  for(param in c('y','x')){
-    for (i in names(data[[param]])){
-      n.i <- as.numeric(i)
-      lim.name <- paste0(param,'lim')
-      axs.name <- paste0(param, 'axs')
-      view.side <- get_view_side(views, n.i, param)
-      side.nm <- as.side_name(view.side)
-      match.side <- as.character(views_with_side(views, view.side))
-      data.var <- c_unname(data[[param]][match.side])
-      
-      if(!is.null(data.var) && all(is.na(data.var))){
-        if((view.side %% 2) == 0){ #even
-          otherSide <- c(2,4)[c(2,4) %in% definedSides[definedSides != view.side]]
-        } else { #odd
-          otherSide <- c(1,3)[c(1,3) %in% definedSides[definedSides != view.side]]
-        }
-        data.var <- c_unname(data[[param]][otherSide])
-        if(all(is.na(data.var))){ #So do data total
-          data.var <- c(0,1)
-        }
-      }
-      
-      data.lim <- range(data.var[is.finite(data.var)])
-      views[[side.nm]]$lim <- data.lim
-      usr.lim <- views[[n.i]][['window']][[lim.name]][1:2]
-      views[[n.i]][['window']][[lim.name]] <- data.lim
-      views[[n.i]][['window']][[lim.name]][!is.na(usr.lim)] <- usr.lim[!is.na(usr.lim)]
-      views[[side.nm]]$lim[!is.na(usr.lim)] <- usr.lim[!is.na(usr.lim)]
-      views[[side.nm]]$usr.lim[!is.na(usr.lim)] <- rep(TRUE,sum(!is.na(usr.lim)))
-      
-      usr.axs <- axs[[axs.name]][[n.i]]
-      
-      if (any(!is.na(usr.axs)) && any(usr.axs == 'o')) {
-        if (all(!is.na(usr.lim)))
-          stop('no NA given to distinguish buffered limit')
-        
-        view.i <- which(!names(views[[n.i]]) %in% c('window', 'gs.config'))
-        buffer <- 0.04*diff(views[[n.i]][['window']][[lim.name]])
-        lim <- views[[n.i]][['window']][[lim.name]][[which(is.na(usr.lim))]]
-        buffered.lim <- ifelse(which(is.na(usr.lim)) == 1, lim - buffer, lim + buffer)
-        views[[n.i]][[view.i]][[lim.name]][[which(is.na(usr.lim))]] <- buffered.lim
-        views[[n.i]][['window']][[lim.name]][[which(is.na(usr.lim))]] <- buffered.lim
-        views[[n.i]][['window']][['par']][[axs.name]] <- NULL
-        views[['par']][[axs.name]] <- 'i'
-      }
-  
-    }
-
+  for (side in names(side.vals)){
+    data.vals <- side.vals[[side]]
+    views[[as.side_name(side)]]$lim <- range(data.vals[is.finite(data.vals)])
   }
+  #axs <- list(yaxs=summarize_args(views, c('yaxs'), ignore=c('gs.config')),
+  #            xaxs=summarize_args(views, c('xaxs'), ignore=c('gs.config')))
+  
+      # usr.axs <- axs[[axs.name]][[n.i]]
+      # 
+      # if (any(!is.na(usr.axs)) && any(usr.axs == 'o')) {
+      #   if (all(!is.na(usr.lim)))
+      #     stop('no NA given to distinguish buffered limit')
+      #   
+      #   view.i <- which(!names(views[[n.i]]) %in% c('window', 'gs.config'))
+      #   buffer <- 0.04*diff(views[[n.i]][['window']][[lim.name]])
+      #   lim <- views[[n.i]][['window']][[lim.name]][[which(is.na(usr.lim))]]
+      #   buffered.lim <- ifelse(which(is.na(usr.lim)) == 1, lim - buffer, lim + buffer)
+      #   views[[n.i]][[view.i]][[lim.name]][[which(is.na(usr.lim))]] <- buffered.lim
+      #   views[[n.i]][['window']][[lim.name]][[which(is.na(usr.lim))]] <- buffered.lim
+      #   views[[n.i]][['window']][['par']][[axs.name]] <- NULL
+      #   views[['par']][[axs.name]] <- 'i'
+      # }
+  
+    #}
+
+#  }
 
   return(views)
 }
@@ -267,6 +242,28 @@ summarize_args <- function(views, param, na.value, ignore='gs.config'){
     values[[i]] <- c_unname(valStuff)
   }
   names(values) <- view_i
+  return(values)
+}
+
+summarize_side_values <- function(views, param, na.value, axis=c('x','y'), ignore='gs.config'){
+  axis <- match.arg(axis)
+  side_i <- c('x'=1,'y'=2)
+  
+  view_nm <- names(views)[which_views(views)]
+  if (length(view_nm) == 0){
+    return(list())
+  }
+  use_sides <- c_unname(lapply(view_nm, function(x) strsplit(x, '[.]')[[1]][1 + side_i[[axis]]]))
+  values <- list()
+  for (side in use_sides){
+    view_i = views_with_side(views, as.numeric(side))
+    values[[side]] <- c()
+    for (i in views_with_side(views, as.numeric(side))){
+      x <- views[[i]][!names(views[[i]]) %in% ignore]
+      valStuff <- lapply(x, function(x) strip_pts(x, param))
+      values[[side]] <- c(values[[side]], c_unname(valStuff))
+    }
+  }
   return(values)
 }
 

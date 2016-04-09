@@ -48,30 +48,35 @@ print.gsplot <- function(x, ...){
   
   view.info <- view_info(views)
   view.index <- view.info$index
-  
-  for (i in view.index){
+  view.names = view_names(views)
+  for (view.name in view.names){
 
-    plots = views[[i]]
+    plots = views[[view.name]]
     plots[['window']] <- NULL
-    window = views[[i]][['window']]
+    window = views[[view.name]][['window']]
     
     par(views[['par']])
     
     par(window[['par']])
-    plot.window(xlim = window$xlim, ylim = window$ylim, log = view.info$log[i==view.info$index])
+    x.side = as.side_name(window$side[1])
+    y.side = as.side_name(window$side[2])
+    
+    plot.window(xlim = views[[x.side]]$lim, ylim = views[[y.side]]$lim, log = view.info$log[view.name==view.names])
 
     # -- initial view --
-    if(i == view.index[1]){
+    if(view.name == view.names[1]){
       if (!is.null(bg.arg))
         bgCol(bg.arg)
       title(title.arg)
     }
     
+    # // *** this is a carryover from the indexing. Should alter view.info to use names ***
+    i = which(view.name==view.names) 
     # -- call functions -- 
     
 #     if((sum(view.info$x.side.defined.by.user[i], view.info$y.side.defined.by.user[i])== 0 ) &
 #        (class(window$xlim) == "numeric" & class(window$ylim) == "numeric") | 
-      if(!(any(names(plots) %in% 'grid'))){
+    if(!(any(names(plots) %in% 'grid'))){
       to_gsplot(lapply(plots, function(x) x[!names(x) %in% 'legend.name']))
     } else {
       draw_custom_grid(views,i)
