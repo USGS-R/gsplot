@@ -13,7 +13,7 @@ calc_views <- function(gsplot){
   
   views <- set_view_log(views)
 
-  views <- set_view_lim(views)
+  #views <- set_view_lim(views)
   
   views <- set_view_lab(views)
   
@@ -32,6 +32,9 @@ which_views <- function(gsplot){
   grep('view.', names(gsplot))
 }
 
+which_sides <- function(gsplot){
+  grep('side.', names(gsplot))
+}
 view_names <- function(gsplot){
   names(views(gsplot))
 }
@@ -40,9 +43,14 @@ views <- function(gsplot){
   gsplot[which_views(gsplot)]
 }
 
-non_views <- function(gsplot){
+sides <- function(gsplot){
+  gsplot[which_sides(gsplot)]
+}
+non_views <- function(gsplot, include.sides = TRUE){
   non.views <- gsplot
   non.views[which_views(non.views)] <- NULL
+  if (!include.sides)
+    non.views[which_sides(non.views)] <- NULL
   return(non.views)
 }
 
@@ -71,24 +79,27 @@ group_views <- function(gsplot){
   tail.gs <- gsplot[[length(gsplot)]]
   tail.nm <- names(gsplot[length(gsplot)])
   gsplot[[length(gsplot)]] <- NULL
-  views <- views(gsplot) # existing
   add_sides <- set_sides(tail.gs[['gs.config']][['side']])
-  gsplot <- append_sides(gsplot, add_sides)
-  non.views <- non_views(gsplot)
-
+  non.views <- non_views(gsplot, include.sides = FALSE)
+  vew.n.sde <- gsplot[which_views(gsplot) | which_sides(gsplot)]
   if (!is.null(add_sides)){
+    vew.n.sde <- append_sides(vew.n.sde, add_sides)
     to_draw <- setNames(list(c(tail.gs[['arguments']], legend.name=tail.gs[['gs.config']][['legend.name']])), tail.nm)
+    view.name <- sprintf('view.%s.%s',add_sides[1],add_sides[2])
+    sides <- sides(vew.n.sde)
+    sides <- set_view_lim(list(to_draw) %>% setNames(view.name), sides)
+    
+    vew.n.sde <- append_replace(vew.n.sde, sides)
+    
     # // to do: verify sides are in order: x then y
-    view.1 <- views_with_side(views, add_sides[1])
-    view.2 <- views_with_side(views, add_sides[2])
-    if (!is.null(view.1) && !is.null(view.2) && any(view.2==view.1)){
-      v.i = view.2[which(view.2 %in% view.1)]
-      views[[v.i]] <- append(views[[v.i]], to_draw)
-      views[[v.i]][['window']][['par']] <- append_replace(views[[v.i]][['window']][['par']], tail.gs[['gs.config']][['par']])
+    
+    if (!is.null(vew.n.sde[[view.name]])){
+      vew.n.sde[[view.name]] <- append(vew.n.sde[[view.name]], to_draw)
+      vew.n.sde[[view.name]][['window']][['par']] <- append_replace(gsplot[[view.name]][['window']][['par']], tail.gs[['gs.config']][['par']])
     } else{
       new.view <- list(append(to_draw, list(window=list(side=add_sides,par=tail.gs[['gs.config']][['par']])))) %>% 
-        setNames(sprintf('view.%s.%s',add_sides[1],add_sides[2]))
-      views <- append(views, new.view)
+        setNames(view.name)
+      vew.n.sde <- append(vew.n.sde, new.view)
     }
   } else {
     # // if field isn't associated with a side(s), it is moved up to top level (e.g., legend)
@@ -97,7 +108,7 @@ group_views <- function(gsplot){
     non.views <- append(non.views, newList)
   }
 
-  return(append(views, non.views))
+  return(append(vew.n.sde, non.views))
 }
 
 append_replace <- function(old.list, new.list){
@@ -163,17 +174,17 @@ set_view_lab <- function(views){
 }
 
 
-set_view_lim <- function(views){
+set_view_lim <- function(view, sides){
   y.include <- c('y','y1','y0','ytop','ybottom')
   x.include <- c('x','x1','x0','xleft','xright')
   # // need value arguments, need yaxs/xaxs args, need user-specified ylim/xlim values
   
-  side.vals <- c(summarize_side_values(views, y.include, ignore=c('window','gs.config'), axis='y'),
-                 summarize_side_values(views, x.include, ignore=c('window','gs.config'), axis='x'))
+  side.vals <- c(summarize_side_values(view, y.include, ignore=c('window','gs.config'), axis='y'),
+                 summarize_side_values(view, x.include, ignore=c('window','gs.config'), axis='x'))
 
   for (side in names(side.vals)){
     data.vals <- side.vals[[side]]
-    views[[as.side_name(side)]]$lim <- range(data.vals[is.finite(data.vals)])
+    sides[[as.side_name(side)]]$lim <- range(data.vals[is.finite(data.vals)])
   }
   #axs <- list(yaxs=summarize_args(views, c('yaxs'), ignore=c('gs.config')),
   #            xaxs=summarize_args(views, c('xaxs'), ignore=c('gs.config')))
@@ -198,7 +209,7 @@ set_view_lim <- function(views){
 
 #  }
 
-  return(views)
+  return(sides)
 }
 
 
@@ -245,25 +256,19 @@ summarize_args <- function(views, param, na.value, ignore='gs.config'){
   return(values)
 }
 
-summarize_side_values <- function(views, param, na.value, axis=c('x','y'), ignore='gs.config'){
+summarize_side_values <- function(view, param, na.value, axis=c('x','y'), ignore='gs.config'){
   axis <- match.arg(axis)
   side_i <- c('x'=1,'y'=2)
   
-  view_nm <- names(views)[which_views(views)]
+  view_nm <- names(view)[which_views(view)] #// is it a view? if not, pass through
   if (length(view_nm) == 0){
     return(list())
   }
-  use_sides <- c_unname(lapply(view_nm, function(x) strsplit(x, '[.]')[[1]][1 + side_i[[axis]]]))
-  values <- list()
-  for (side in use_sides){
-    view_i = views_with_side(views, as.numeric(side))
-    values[[side]] <- c()
-    for (i in views_with_side(views, as.numeric(side))){
-      x <- views[[i]][!names(views[[i]]) %in% ignore]
-      valStuff <- lapply(x, function(x) strip_pts(x, param))
-      values[[side]] <- c(values[[side]], c_unname(valStuff))
-    }
-  }
+  side <- strsplit(view_nm, '[.]')[[1]][1 + side_i[[axis]]]
+  x <- view[!names(view) %in% ignore]
+  valStuff <- lapply(x, function(x) strip_pts(x, param))
+  values <- list(c_unname(valStuff)) %>% 
+    setNames(side)
   return(values)
 }
 
