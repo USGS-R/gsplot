@@ -15,4 +15,5 @@ a character vector of side names
 \description{
 turn a numeric side into a named side
 }
+\keyword{internal}
 

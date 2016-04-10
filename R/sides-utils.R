@@ -2,6 +2,7 @@
 #' 
 #' @param view.name a chracter vector of view names
 #' @return an integer vector of x sides
+#' @keywords internal
 as.x_side <- function(view.name){
   unname(sapply(view.name, function(x) as.numeric(strsplit(x,'[.]')[[1]][2])))
 }
@@ -10,6 +11,7 @@ as.x_side <- function(view.name){
 #' 
 #' @param view.name a chracter vector of view names
 #' @return an integer vector of y sides
+#' @keywords internal
 as.y_side <- function(view.name){
   unname(sapply(view.name, function(x) as.numeric(strsplit(x,'[.]')[[1]][3])))
 }
@@ -18,6 +20,7 @@ as.y_side <- function(view.name){
 #' 
 #' @param sides an integer vector of \code{side}
 #' @return a character vector of side names
+#' @keywords internal
 as.side_name <- function(sides){
   paste('side.',sides, sep='')
 }
@@ -26,6 +29,7 @@ as.side_name <- function(sides){
 #' 
 #' @param side.names vector of side names
 #' @return numeric values for \code{side}
+#' @keywords internal
 as.side <- function(side.names){
   as.numeric(gsub('side.','',side.names))
 }
@@ -34,6 +38,7 @@ as.side <- function(side.names){
 #' 
 #' @param gsplot a gsplot object
 #' @return indices of sides
+#' @keywords internal
 which_sides <- function(gsplot){
   grep('side.', names(gsplot))
 }
@@ -42,6 +47,7 @@ which_sides <- function(gsplot){
 #' 
 #' @param gsplot a gsplot object
 #' @return a sides list
+#' @keywords internal
 sides <- function(gsplot){
   gsplot[which_sides(gsplot)]
 }
@@ -51,6 +57,7 @@ sides <- function(gsplot){
 #' @param lims the usr.lims
 #' @param sides a sides list
 #' @return the modified sides list
+#' @keywords internal
 set_usr_lim <- function(lims, sides){
   for (lim in names(lims)){
     to.set <- !is.na(lims[[lim]])
@@ -65,6 +72,7 @@ set_usr_lim <- function(lims, sides){
 #' let's you know what sides have been user-defined
 #' @param sides a sides list
 #' @return names of the sides that are locked
+#' @keywords internal
 locked_sides <- function(sides){
   lim.locks <- sapply(sides, function(x) all(x$usr.lim))
   names(lim.locks)[lim.locks]
@@ -75,6 +83,7 @@ locked_sides <- function(sides){
 #' @param view a single view
 #' @param sides the sides for the gsplot object (see \code{\link{sides}})
 #' @return a modified \code{sides} list
+#' @keywords internal
 set_side_lim <- function(view, sides){
   y.include <- c('y','y1','y0','ytop','ybottom')
   x.include <- c('x','x1','x0','xleft','xright')
@@ -132,6 +141,7 @@ set_side_lim <- function(view, sides){
 #' @param skip.side a vector of side names to leave out 
 #' (if, for example, they are locked and it doesn't matter what they contain)
 #' @return a list of values for \code{param} indexed by 'side' names
+#' @keywords internal
 summarize_side_values <- function(view, param, na.value=NULL, axis=c('x','y'), ignore='gs.config', skip.side=NA){
   axis <- match.arg(axis)
   side_i <- c('x'=1,'y'=2)
@@ -161,6 +171,7 @@ summarize_side_values <- function(view, param, na.value=NULL, axis=c('x','y'), i
 #' @param sides integer vector of sides to add
 #' @param on.exist what to do when the sides already exists
 #' @return a modified gsplot object
+#' @keywords internal
 append_sides <- function(gsplot, sides, on.exists = c('skip','replace')){
   
   if (is.null(sides))
@@ -185,6 +196,7 @@ append_sides <- function(gsplot, sides, on.exists = c('skip','replace')){
 #' 
 #' @param sides an integer vector of length one or two 
 #' @return a side integer vector of length two
+#' @keywords internal
 set_sides <- function(sides){
   if (length(sides)==1){
     if(sides %% 2 == 0)

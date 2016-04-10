@@ -15,4 +15,5 @@ names of the sides that are locked
 \description{
 let's you know what sides have been user-defined
 }
+\keyword{internal}
 

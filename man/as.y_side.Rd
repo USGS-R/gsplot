@@ -15,4 +15,5 @@ an integer vector of y sides
 \description{
 take a view name and extract the numeric y side
 }
+\keyword{internal}
 

@@ -17,4 +17,5 @@ a modified \code{sides} list
 \description{
 sets the side limits according to a new view addition
 }
+\keyword{internal}
 

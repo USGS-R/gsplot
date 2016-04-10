@@ -25,4 +25,5 @@ a list of values for \code{param} indexed by 'side' names
 \description{
 unlist and summarize values according to their side
 }
+\keyword{internal}
 

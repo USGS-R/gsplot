@@ -15,4 +15,5 @@ a side integer vector of length two
 \description{
 automatically fill in sides as pairs if they are single vals
 }
+\keyword{internal}
 

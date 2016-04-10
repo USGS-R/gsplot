@@ -15,4 +15,5 @@ indices of sides
 \description{
 which indices in the gsplot object are sides
 }
+\keyword{internal}
 

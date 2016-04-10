@@ -15,4 +15,5 @@ a sides list
 \description{
 subset the gsplot object to return only sides
 }
+\keyword{internal}
 

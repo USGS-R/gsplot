@@ -19,4 +19,5 @@ a modified gsplot object
 \description{
 add sides list to gsplot object
 }
+\keyword{internal}
 

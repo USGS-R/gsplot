@@ -15,4 +15,5 @@ numeric values for \code{side}
 \description{
 take a named side and turn it into numeric
 }
+\keyword{internal}
 
