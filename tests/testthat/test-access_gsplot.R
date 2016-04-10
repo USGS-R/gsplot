@@ -30,8 +30,8 @@ test_that("xlim for string input", {
     points(x=3:10,y=4:11, side=c(1,2))
   
   expect_equal(xlim(usrDef)[['side.3']], c(1,1))
-  expect_equal(xlim(usrDef, side = 3)[[1]], c(1,1))
-  expect_equal(xlim(usrDef, side = 1)[[1]], c(3,10))
+  expect_equal(xlim(usrDef, side = 3), c(1,1))
+  expect_equal(xlim(usrDef, side = 1), c(3,10))
   
 })
 

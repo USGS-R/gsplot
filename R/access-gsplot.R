@@ -29,8 +29,11 @@ side.lim <- function(object, side, axis = c('x','y')){
     side.names <- as.side_name(sides[use.sides])
   }
   
-  lapply(side.names, function(x) object[[x]]$lim) %>% 
+  lims <- lapply(side.names, function(x) object[[x]]$lim) %>% 
     setNames(side.names)
+  if (!is.null(side) && length(side==1))
+    lims <- lims[[1]]
+  return(lims)
 }
 
 #' ylim for gsplot
