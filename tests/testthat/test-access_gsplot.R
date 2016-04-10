@@ -23,6 +23,23 @@ test_that("xlim for dual axis", {
   
 })
 
+test_that("lim for classes", {
+  
+  usrDef <- gsplot() %>% 
+    points(x=as.Date('1990-01-01'), y=2) %>% 
+    points(x=as.Date('1995-01-01'),y=4)
+  
+  expect_is(xlim(usrDef, 1), 'Date')
+  
+  usrDef <- gsplot() %>% 
+    points(x=as.POSIXct('1990-01-01'), y=2) %>% 
+    points(x=as.POSIXct('1995-01-01'),y=4)
+  
+  expect_is(xlim(usrDef, 1), 'POSIXct')
+  
+})
+
+
 test_that("xlim for string input", {
   
   usrDef <- gsplot(mar=c(4,4,4,4), xaxs='r', yaxs='r') %>% 
