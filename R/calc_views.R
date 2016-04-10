@@ -202,9 +202,11 @@ set_side_lim <- function(view, sides){
 
   for (side in names(side.vals)){
     data.vals <- side.vals[[side]]
-    data.range <- range(c(sides[[side]]$lim, data.vals[is.finite(data.vals)]), na.rm = TRUE)
-    free.lim <- !sides[[side]]$usr.lim
-    sides[[side]]$lim[free.lim] <- data.range[free.lim]
+    if (any(!is.na(data.vals))){
+      data.range <- range(c(sides[[side]]$lim, data.vals[is.finite(data.vals)]), na.rm = TRUE)
+      free.lim <- !sides[[side]]$usr.lim
+      sides[[side]]$lim[free.lim] <- data.range[free.lim]
+    }
   }
   #axs <- list(yaxs=summarize_args(views, c('yaxs'), ignore=c('gs.config')),
   #            xaxs=summarize_args(views, c('xaxs'), ignore=c('gs.config')))
