@@ -30,9 +30,7 @@ which_views <- function(gsplot){
   grep('view.', names(gsplot))
 }
 
-which_sides <- function(gsplot){
-  grep('side.', names(gsplot))
-}
+
 view_names <- function(gsplot){
   names(views(gsplot))
 }
@@ -41,9 +39,6 @@ views <- function(gsplot){
   gsplot[which_views(gsplot)]
 }
 
-sides <- function(gsplot){
-  gsplot[which_sides(gsplot)]
-}
 non_views <- function(gsplot, include.sides = TRUE){
   non.views <- gsplot
   non.views[which_views(non.views)] <- NULL
@@ -51,27 +46,7 @@ non_views <- function(gsplot, include.sides = TRUE){
     non.views[which_sides(non.views)] <- NULL
   return(non.views)
 }
-
-append_sides <- function(gsplot, sides, on.exists = c('skip','replace')){
-  
-  if (is.null(sides))
-    return(gsplot)
-  on.exists = match.arg(on.exists)
-  
-  side_template <- list(lim = c(NA, NA), label=NA, usr.lim=c(FALSE, FALSE))
-  
-  if (on.exists == 'skip'){
-    sides <- as.side_name(sides)
-    
-    to_add <- !sides %in% names(gsplot)
-    side_list <- rep(list(side_template), sum(to_add)) %>% setNames(sides[which(to_add)])
-    gsplot <- append(gsplot, side_list)
-  } else if (on.exists == 'replace'){
-    stop('on.exists ', on.exists, ' not implemented yet')
-  }
-  return(gsplot)
-}
-                       
+                    
 
 group_views <- function(gsplot){
   tail.gs <- gsplot[[length(gsplot)]]
@@ -116,15 +91,7 @@ append_replace <- function(old.list, new.list){
   out.list <- append(out.list, new.list)
   return(out.list)
 }
-set_sides <- function(sides){
-  if (length(sides)==1){
-    if(sides %% 2 == 0)
-      sides = c(1,sides)
-    else 
-      sides = c(sides,2)
-  } 
-  return(sides)
-}
+
 
 which_reals <- function(values, na.value){
   
@@ -158,13 +125,6 @@ as.view_name <- function(sides){
 }
 
 
-as.side_name <- function(sides){
-  paste('side.',sides, sep='')
-}
-
-as.side <- function(side.names){
-  as.numeric(gsub('side.','',side.names))
-}
 set_view_log <- function(views){
   set_view_window(views, param = 'log', na.value="")
 }
@@ -174,66 +134,7 @@ set_view_lab <- function(views){
   set_view_window(views, param = 'xlab', na.value="")
 }
 
-set_usr_lim <- function(lims, sides){
-  for (lim in names(lims)){
-    to.set <- !is.na(lims[[lim]])
-    sides[[lim]]$lim[to.set] <- lims[[lim]][to.set]
-    sides[[lim]]$usr.lim[to.set] <- TRUE
-  }
-  return(sides)
-}
 
-locked_sides <- function(sides){
-  lim.locks <- sapply(sides, function(x) all(x$usr.lim))
-  names(lim.locks)[lim.locks]
-}
-
-set_side_lim <- function(view, sides){
-  y.include <- c('y','y1','y0','ytop','ybottom')
-  x.include <- c('x','x1','x0','xleft','xright')
-  # // need value arguments, need yaxs/xaxs args, need user-specified ylim/xlim values
-  usr.lims <- c(summarize_side_values(view, 'ylim', ignore=c('window','gs.config'), axis='y'),
-                summarize_side_values(view, 'xlim', ignore=c('window','gs.config'), axis='x'))
-  sides <- set_usr_lim(usr.lims, sides)
-  
-  locked.sides <- locked_sides(sides)
-  side.vals <- c(summarize_side_values(view, y.include, ignore=c('window','gs.config'), axis='y', skip.side = locked.sides),
-                 summarize_side_values(view, x.include, ignore=c('window','gs.config'), axis='x', skip.side = locked.sides))
-
-  for (side in names(side.vals)){
-    data.vals <- side.vals[[side]]
-    if (any(!is.na(data.vals))){
-      data.range <- range(c(data.vals[is.finite(data.vals)], sides[[side]]$lim), na.rm = TRUE)
-      free.lim <- !sides[[side]]$usr.lim
-      data.range[!free.lim] <- sides[[side]]$lim[!free.lim]
-      sides[[side]]$lim <- data.range
-    }
-  }
-  #axs <- list(yaxs=summarize_args(views, c('yaxs'), ignore=c('gs.config')),
-  #            xaxs=summarize_args(views, c('xaxs'), ignore=c('gs.config')))
-  
-      # usr.axs <- axs[[axs.name]][[n.i]]
-      # 
-      # if (any(!is.na(usr.axs)) && any(usr.axs == 'o')) {
-      #   if (all(!is.na(usr.lim)))
-      #     stop('no NA given to distinguish buffered limit')
-      #   
-      #   view.i <- which(!names(views[[n.i]]) %in% c('window', 'gs.config'))
-      #   buffer <- 0.04*diff(views[[n.i]][['window']][[lim.name]])
-      #   lim <- views[[n.i]][['window']][[lim.name]][[which(is.na(usr.lim))]]
-      #   buffered.lim <- ifelse(which(is.na(usr.lim)) == 1, lim - buffer, lim + buffer)
-      #   views[[n.i]][[view.i]][[lim.name]][[which(is.na(usr.lim))]] <- buffered.lim
-      #   views[[n.i]][['window']][[lim.name]][[which(is.na(usr.lim))]] <- buffered.lim
-      #   views[[n.i]][['window']][['par']][[axs.name]] <- NULL
-      #   views[['par']][[axs.name]] <- 'i'
-      # }
-  
-    #}
-
-#  }
-
-  return(sides)
-}
 
 
 c_unname <- function(list){
@@ -279,28 +180,6 @@ summarize_args <- function(views, param, na.value, ignore='gs.config'){
   return(values)
 }
 
-summarize_side_values <- function(view, param, na.value=NULL, axis=c('x','y'), ignore='gs.config', skip.side=NA){
-  axis <- match.arg(axis)
-  side_i <- c('x'=1,'y'=2)
-  
-  view_nm <- names(view)[which_views(view)] #// is it a view? if not, pass through
-  if (length(view_nm) == 0){
-    return(na.value)
-  }
-  
-  side <- as.side_name(strsplit(view_nm, '[.]')[[1]][1 + side_i[[axis]]])
-  
-  if (side %in% skip.side)
-    return(na.value)
-  
-  x <- view[!names(view) %in% ignore]
-  valStuff <- lapply(x, function(x) strip_pts(x[[1]], param))
-  if (length(valStuff) == 1 & is.na(valStuff))
-    return(na.value)
-  values <- list(c_unname(valStuff)) %>% 
-    setNames(side)
-  return(values)
-}
 
 remove_field <- function(list, param){
  

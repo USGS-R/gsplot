@@ -15,13 +15,6 @@ xlim.gsplot <- function(object, side=NULL){
   side.lim(object, side, 'x')
 }
 
-as.x_side <- function(view.name){
-  unname(sapply(view.name, function(x) as.numeric(strsplit(x,'[.]')[[1]][2])))
-}
-
-as.y_side <- function(view.name){
-  unname(sapply(view.name, function(x) as.numeric(strsplit(x,'[.]')[[1]][3])))
-}
 side.lim <- function(object, side, axis = c('x','y')){
   axis = match.arg(axis)
   side.names <- names(sides(object))
