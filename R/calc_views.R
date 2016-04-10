@@ -58,7 +58,7 @@ append_sides <- function(gsplot, sides, on.exists = c('skip','replace')){
     return(gsplot)
   on.exists = match.arg(on.exists)
   
-  side_template <- list(lim=c(NA,NA), label=NA, usr.lim=c(FALSE, FALSE))
+  side_template <- list(lim = c(NA, NA), label=NA, usr.lim=c(FALSE, FALSE))
   
   if (on.exists == 'skip'){
     sides <- as.side_name(sides)
@@ -203,9 +203,10 @@ set_side_lim <- function(view, sides){
   for (side in names(side.vals)){
     data.vals <- side.vals[[side]]
     if (any(!is.na(data.vals))){
-      data.range <- range(c(sides[[side]]$lim, data.vals[is.finite(data.vals)]), na.rm = TRUE)
+      data.range <- range(c(data.vals[is.finite(data.vals)], sides[[side]]$lim), na.rm = TRUE)
       free.lim <- !sides[[side]]$usr.lim
-      sides[[side]]$lim[free.lim] <- data.range[free.lim]
+      data.range[!free.lim] <- sides[[side]]$lim[!free.lim]
+      sides[[side]]$lim <- data.range
     }
   }
   #axs <- list(yaxs=summarize_args(views, c('yaxs'), ignore=c('gs.config')),
@@ -316,13 +317,17 @@ strip_pts <- function(list, param){
     if (v %in% names(list) &&  !inherits(list[[v]], c('function','formula')))
       out <- append(out, list[[v]])
     else{
-      u.list <- unname_c(list)
-      if(v %in% names(u.list))
-        out <- append(out, u.list[[v]])
-      else if (any(sapply(u.list, function(x) any(names(x) %in% v))))
-        out <- append(out, u.list[[which(sapply(u.list, function(x) any(names(x) %in% v)))]][[v]])
-      else
+      if (any(sapply(list, is.list))){
+        u.list <- unname_c(list[sapply(list, is.list)])
+        if(v %in% names(u.list))
+          out <- append(out, u.list[[v]])
+        else if (any(sapply(u.list, function(x) any(names(x) %in% v))))
+          out <- append(out, u.list[[which(sapply(u.list, function(x) any(names(x) %in% v)))]][[v]])
+        else
+          out <- append(out, NA)
+      } else
         out <- append(out, NA)
+      
     }
     
   }
