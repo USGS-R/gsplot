@@ -173,18 +173,30 @@ set_view_lab <- function(views){
   set_view_window(views, param = 'xlab', na.value="")
 }
 
+set_usr_lim <- function(lims, sides){
+  for (lim in names(lims)){
+    to.set <- !is.na(lims[[lim]])
+    sides[[lim]]$lim[to.set] <- lims[[lim]][to.set]
+    sides[[lim]]$usr.lim[to.set] <- TRUE
+  }
+  return(sides)
+}
 
 set_view_lim <- function(view, sides){
   y.include <- c('y','y1','y0','ytop','ybottom')
   x.include <- c('x','x1','x0','xleft','xright')
   # // need value arguments, need yaxs/xaxs args, need user-specified ylim/xlim values
-  
+  usr.lims <- c(summarize_side_values(view, 'ylim', ignore=c('window','gs.config'), axis='y'),
+                summarize_side_values(view, 'xlim', ignore=c('window','gs.config'), axis='x'))
+  sides <- set_usr_lim(usr.lims, sides)
   side.vals <- c(summarize_side_values(view, y.include, ignore=c('window','gs.config'), axis='y'),
                  summarize_side_values(view, x.include, ignore=c('window','gs.config'), axis='x'))
 
   for (side in names(side.vals)){
     data.vals <- side.vals[[side]]
-    sides[[as.side_name(side)]]$lim <- range(c(sides[[as.side_name(side)]]$lim, data.vals[is.finite(data.vals)]), na.rm = TRUE)
+    data.range <- range(c(sides[[side]]$lim, data.vals[is.finite(data.vals)]), na.rm = TRUE)
+    free.lim <- !sides[[side]]$usr.lim
+    sides[[side]]$lim[free.lim] <- data.range[free.lim]
   }
   #axs <- list(yaxs=summarize_args(views, c('yaxs'), ignore=c('gs.config')),
   #            xaxs=summarize_args(views, c('xaxs'), ignore=c('gs.config')))
@@ -256,7 +268,7 @@ summarize_args <- function(views, param, na.value, ignore='gs.config'){
   return(values)
 }
 
-summarize_side_values <- function(view, param, na.value, axis=c('x','y'), ignore='gs.config'){
+summarize_side_values <- function(view, param, na.value=NULL, axis=c('x','y'), ignore='gs.config'){
   axis <- match.arg(axis)
   side_i <- c('x'=1,'y'=2)
   
@@ -267,8 +279,10 @@ summarize_side_values <- function(view, param, na.value, axis=c('x','y'), ignore
   side <- strsplit(view_nm, '[.]')[[1]][1 + side_i[[axis]]]
   x <- view[!names(view) %in% ignore]
   valStuff <- lapply(x, function(x) strip_pts(x, param))
+  if (length(valStuff) == 1 & is.na(valStuff))
+    return(na.value)
   values <- list(c_unname(valStuff)) %>% 
-    setNames(side)
+    setNames(as.side_name(side))
   return(values)
 }
 
