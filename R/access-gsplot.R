@@ -82,7 +82,7 @@ logged.gsplot <- function(object, side=NULL){
   }
   if (!is.null(side)){
     views <- views(object)
-    sapply(side, function(x) is.logged(views[[views_with_side(views, side=x)[1]]]$window, x))
+    sapply(side, function(x) is.logged(views[[tail(views_with_side(views, side=x),1)]]$window, x))
   } else {
     side.names = names(sides(object))
     lapply(side.names, function(x) logged.gsplot(object, as.side(x))) %>% 
