@@ -48,12 +48,13 @@ test_that("logged for simple object",{
   usrDef <- gsplot(mar=c(4,4,4,4), xaxs='r', yaxs='r') %>% 
     points(x=1, y=2, side=c(3,2), legend.name="Points 1", cex=3, xlab='cat') %>% 
     points(x=3:10,y=4:11, side=c(1,2))
-  expect_equal(logged(usrDef)[[1]],"")
-  expect_equal(logged(usrDef)[[2]],"")
+  expect_false(logged(usrDef, 1))
+  expect_false(logged(usrDef, 2))
   
   usrDef <- lines(usrDef,1:2,4:5, log='xy')
-  expect_equal(logged(usrDef)[[1]],"")
-  expect_equal(logged(usrDef)[[2]],"xy")
+  expect_false(logged(usrDef, 3))
+  expect_true(logged(usrDef, 2))
+  expect_true(logged(usrDef, 1))
   
 })
 

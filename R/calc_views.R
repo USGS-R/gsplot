@@ -162,6 +162,9 @@ as.side_name <- function(sides){
   paste('side.',sides, sep='')
 }
 
+as.side <- function(side.names){
+  as.numeric(gsub('side.','',side.names))
+}
 set_view_log <- function(views){
   set_view_window(views, param = 'log', na.value="")
 }
