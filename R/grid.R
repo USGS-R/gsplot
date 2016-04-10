@@ -58,17 +58,20 @@ draw_custom_grid <- function(object, index){
 
   window = object[[index]][['window']]
   
+  view.name <- names(object[index])
+  xlim <- xlim(object, side=as.x_side(view.name))
+  ylim <- ylim(object, side=as.y_side(view.name))
   view.info <- view_info(object)
   view.info <- view.info[index == view.info$index,]
   
   grid.args <- set_args("grid",object[[index]][['grid']], package = "graphics")
   
-  if(class(window$xlim) %in% c("numeric","integer")){
+  if(class(xlim) %in% c("numeric","integer")){
     x.at <- axTicks(view.info$x)
-  } else if (class(window$xlim) == "Date"){
-    x.at <- axis.Date(view.info$x,window$xlim)
-  } else if (class(window$xlim) == "POSIXct"){
-    x.at <- axis.POSIXct(view.info$x,window$xlim)
+  } else if (class(xlim) == "Date"){
+    x.at <- axis.Date(view.info$x, xlim)
+  } else if (class(xlim) == "POSIXct"){
+    x.at <- axis.POSIXct(view.info$x, xlim)
   }
   
   if(view.info$x.side.defined.by.user){
@@ -79,12 +82,12 @@ draw_custom_grid <- function(object, index){
     }
   }
   
-  if(class(window$ylim) %in% c("numeric","integer")){
+  if(class(ylim) %in% c("numeric","integer")){
     y.at <- axTicks(view.info$y)
-  } else if (class(window$ylim) == "Date"){
-    y.at <- axis.Date(view.info$y,window$ylim)
-  } else if (class(window$ylim) == "POSIXct"){
-    y.at <- axis.POSIXct(view.info$y,window$ylim)
+  } else if (class(ylim) == "Date"){
+    y.at <- axis.Date(view.info$y, ylim)
+  } else if (class(ylim) == "POSIXct"){
+    y.at <- axis.POSIXct(view.info$y, ylim)
   }
     
   if(view.info$y.side.defined.by.user){
