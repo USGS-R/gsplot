@@ -293,7 +293,7 @@ summarize_side_values <- function(view, param, na.value=NULL, axis=c('x','y'), i
     return(na.value)
   
   x <- view[!names(view) %in% ignore]
-  valStuff <- lapply(x, function(x) strip_pts(x, param))
+  valStuff <- lapply(x, function(x) strip_pts(x[[1]], param))
   if (length(valStuff) == 1 & is.na(valStuff))
     return(na.value)
   values <- list(c_unname(valStuff)) %>% 
@@ -319,6 +319,8 @@ strip_pts <- function(list, param){
       u.list <- unname_c(list)
       if(v %in% names(u.list))
         out <- append(out, u.list[[v]])
+      else if (any(sapply(u.list, function(x) any(names(x) %in% v))))
+        out <- append(out, u.list[[which(sapply(u.list, function(x) any(names(x) %in% v)))]][[v]])
       else
         out <- append(out, NA)
     }
