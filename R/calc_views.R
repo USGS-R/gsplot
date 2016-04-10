@@ -13,8 +13,6 @@ calc_views <- function(gsplot){
   
   views <- set_view_log(views)
 
-  #views <- set_view_lim(views)
-  
   views <- set_view_lab(views)
   
   #views <- set_view_order(views, config("orderToPlot")$order)
@@ -87,7 +85,7 @@ group_views <- function(gsplot){
     to_draw <- setNames(list(c(tail.gs[['arguments']], legend.name=tail.gs[['gs.config']][['legend.name']])), tail.nm)
     view.name <- sprintf('view.%s.%s',add_sides[1],add_sides[2])
     sides <- sides(vew.n.sde)
-    sides <- set_view_lim(list(to_draw) %>% setNames(view.name), sides)
+    sides <- set_side_lim(list(to_draw) %>% setNames(view.name), sides)
     
     vew.n.sde <- append_replace(vew.n.sde, sides)
     
@@ -182,15 +180,22 @@ set_usr_lim <- function(lims, sides){
   return(sides)
 }
 
-set_view_lim <- function(view, sides){
+locked_sides <- function(sides){
+  lim.locks <- sapply(sides, function(x) all(x$usr.lim))
+  names(lim.locks)[lim.locks]
+}
+
+set_side_lim <- function(view, sides){
   y.include <- c('y','y1','y0','ytop','ybottom')
   x.include <- c('x','x1','x0','xleft','xright')
   # // need value arguments, need yaxs/xaxs args, need user-specified ylim/xlim values
   usr.lims <- c(summarize_side_values(view, 'ylim', ignore=c('window','gs.config'), axis='y'),
                 summarize_side_values(view, 'xlim', ignore=c('window','gs.config'), axis='x'))
   sides <- set_usr_lim(usr.lims, sides)
-  side.vals <- c(summarize_side_values(view, y.include, ignore=c('window','gs.config'), axis='y'),
-                 summarize_side_values(view, x.include, ignore=c('window','gs.config'), axis='x'))
+  
+  locked.sides <- locked_sides(sides)
+  side.vals <- c(summarize_side_values(view, y.include, ignore=c('window','gs.config'), axis='y', skip.side = locked.sides),
+                 summarize_side_values(view, x.include, ignore=c('window','gs.config'), axis='x', skip.side = locked.sides))
 
   for (side in names(side.vals)){
     data.vals <- side.vals[[side]]
@@ -268,21 +273,26 @@ summarize_args <- function(views, param, na.value, ignore='gs.config'){
   return(values)
 }
 
-summarize_side_values <- function(view, param, na.value=NULL, axis=c('x','y'), ignore='gs.config'){
+summarize_side_values <- function(view, param, na.value=NULL, axis=c('x','y'), ignore='gs.config', skip.side=NA){
   axis <- match.arg(axis)
   side_i <- c('x'=1,'y'=2)
   
   view_nm <- names(view)[which_views(view)] #// is it a view? if not, pass through
   if (length(view_nm) == 0){
-    return(list())
+    return(na.value)
   }
-  side <- strsplit(view_nm, '[.]')[[1]][1 + side_i[[axis]]]
+  
+  side <- as.side_name(strsplit(view_nm, '[.]')[[1]][1 + side_i[[axis]]])
+  
+  if (side %in% skip.side)
+    return(na.value)
+  
   x <- view[!names(view) %in% ignore]
   valStuff <- lapply(x, function(x) strip_pts(x, param))
   if (length(valStuff) == 1 & is.na(valStuff))
     return(na.value)
   values <- list(c_unname(valStuff)) %>% 
-    setNames(as.side_name(side))
+    setNames(side)
   return(values)
 }
 
