@@ -3,19 +3,34 @@
 #' 
 #' @param gsplot a gsplot object
 #' @return a vector of ints
+#' @keywords internal
 which_views <- function(gsplot){
   grep('view.', names(gsplot))
 }
 
-
+#' names of the views in gsplot object
+#' 
+#' @param gsplot a gsplot object
+#' @return a character vector of view names
+#' @keywords internal
 view_names <- function(gsplot){
   names(views(gsplot))
 }
 
+#' views in the gsplot object
+#' 
+#' @param gsplot a gsplot object
+#' @return a subset of the gsplot object that contains only views
+#' @keywords internal
 views <- function(gsplot){
   gsplot[which_views(gsplot)]
 }
 
+#' non-views in the gsplot object
+#' 
+#' @param gsplot a gsplot object
+#' @return a subset of the gsplot object that contains only non-views
+#' @keywords internal
 non_views <- function(gsplot, include.sides = TRUE){
   non.views <- gsplot
   non.views[which_views(non.views)] <- NULL
@@ -24,11 +39,22 @@ non_views <- function(gsplot, include.sides = TRUE){
   return(non.views)
 }
 
+#' convert sides vector into view name
+#' 
+#' @param sides a vector of sides (if only length 1, appended via \code{set_sides})
+#' @return a vector of view names
+#' @keywords internal
 as.view_name <- function(sides){
-  paste0('view.', paste(sides, collapse='.'))
+  paste0('view.', paste(set_sides(sides), collapse='.'))
 }
 
 
+#' find views with a certain side
+#' 
+#' @param views a gsplot object or subset of gsplot object containing views
+#' @param side a single side value to compare to the views
+#' @return indices for views that have this side
+#' @keywords internal
 views_with_side <- function(views, side){
   if(length(side) > 1)
     stop('side can only be length of 1')
@@ -40,13 +66,20 @@ views_with_side <- function(views, side){
     return(which(view.match))
 }
 
-get_view_side <- function(views, view_i, param){
+#' get the side from a view for an axis
+#' 
+#' @param views a gsplot object or subset of gsplot object containing views
+#' @param view_i an index for views to be used
+#' @param axis 'y' or 'x'
+#' @return the side vector
+#' @keywords internal
+get_view_side <- function(views, view_i, axis){
   i = which_views(views)[view_i]
   sides <- views[[i]][['window']][['side']]
-  if (param=='y')
+  if (axis=='y')
     return(sides[which(sides %% 2 == 0)])
-  else if (param=='x')
+  else if (axis=='x')
     return(sides[which(sides %% 2 != 0)])
   else
-    stop('view side undefined for ',param)
+    stop('view side undefined for ',axis)
 }
