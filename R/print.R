@@ -60,7 +60,7 @@ print.gsplot <- function(x, ...){
     par(views[['par']])
     par(window[['par']])
 
-    plot.window(xlim = xlim(views, x.side), ylim = ylim(views, y.side), log = view.info$log[view.name==view.names])
+    plot.window(xlim = xlim(views, x.side), ylim = ylim(views, y.side), log = as.log(views, view.name))
 
     # -- initial view --
     if(view.name == view.names[1]){

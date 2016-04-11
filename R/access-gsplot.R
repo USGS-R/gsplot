@@ -83,6 +83,12 @@ logged.gsplot <- function(object, side=NULL){
   }
 }
 
+as.log <- function(object, view.name){
+  x.side <- as.x_side(view.name)
+  y.side <- as.y_side(view.name)
+  paste0(ifelse(logged(object, x.side),'x',''),ifelse(logged(object, y.side),'y',''))
+}
+
 #' Get view information from a gsplot object
 #' 
 #' get the views in gsplot object
