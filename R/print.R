@@ -52,16 +52,16 @@ print.gsplot <- function(x, ...){
   for (view.name in view.names){
 
     plots = views[[view.name]]
+    window = plots[['window']]
     plots[['window']] <- NULL
-    window = views[[view.name]][['window']]
+    
+    x.side <- as.x_side(view.name)
+    y.side <- as.y_side(view.name)
     
     par(views[['par']])
-    
     par(window[['par']])
-    x.side = as.side_name(window$side[1])
-    y.side = as.side_name(window$side[2])
-    
-    plot.window(xlim = views[[x.side]]$lim, ylim = views[[y.side]]$lim, log = view.info$log[view.name==view.names])
+
+    plot.window(xlim = xlim(views, x.side), ylim = ylim(views, y.side), log = view.info$log[view.name==view.names])
 
     # -- initial view --
     if(view.name == view.names[1]){
