@@ -100,8 +100,8 @@ as.log <- function(object, view.name){
 view_info <- function(object){
   j <- which_views(object)
   viewSides <- sapply(j, function(x) object[[x]][['window']][['side']])
-  viewLogs <- sapply(j, function(x) object[[x]][['window']][['log']])
   viewNames <- names(object[j])
+  viewLogs <- sapply(viewNames , function(x) as.log(object, x))
   viewInfo <- data.frame(t(rbind(viewSides, viewLogs, j, viewNames)), stringsAsFactors = FALSE)
   
   names(viewInfo) <- c("x","y","log","index","name")

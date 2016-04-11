@@ -49,8 +49,8 @@ summary.gsplot <- function(object,...){
   cat(nrow(view.info),"views:\n")
   for(i in seq_len(nrow(view.info))){
     cat("View:",i,"\nx side:", view.info$x[i], ",y side:", view.info$y[i], "\n")
-    cat("xlim:",as.numeric(xlim(object, side=view.info$x[i])[[1]]),",")
-    cat("ylim:",as.numeric(ylim(object, side=view.info$y[i])[[1]]))
+    cat("xlim:",xlim(object, side=view.info$x[i]),",")
+    cat("ylim:",ylim(object, side=view.info$y[i]))
     if(view.info$log[i] != ""){
       cat(",log:",view.info$log[i])
     }
