@@ -58,6 +58,14 @@ ylim.gsplot <- function(object, side=NULL){
 #' @name logged
 #' @param object a gsplot object
 #' @param side which side(s) to use (returns logical)
+#' @examples 
+#' gs <- gsplot() %>%
+#'    points(1, 2, legend.name="Cool points", xlim=c(0,NA)) %>%
+#'    lines(x=1:5, y=1:5, legend.name="Cool lines", ylab='taco night', log='x')
+#'    
+#' logged(gs, 1)
+#' logged(gs)
+#' logged(gs, c(1,2))
 #' @export
 logged <- function(object, side) UseMethod('logged')
 
@@ -73,14 +81,16 @@ logged.gsplot <- function(object, side=NULL){
       grepl(pattern = 'x',log)
     }
   }
-  if (!is.null(side)){
+  if (!is.null(side) && length(side) == 1){
     views <- views(object)
-    sapply(side, function(x) is.logged(views[[tail(views_with_side(views, side=x),1)]]$window, x))
-  } else {
-    side.names = names(sides(object))
-    lapply(side.names, function(x) logged.gsplot(object, as.side(x))) %>% 
-      setNames(side.names)
-  }
+    return(sapply(side, function(x) is.logged(views[[tail(views_with_side(views, side=x),1)]]$window, x)))
+  } 
+  
+  if (is.null(side))
+    side = as.side(names(sides(object)))
+  
+  lapply(side, function(x) logged.gsplot(object, x)) %>% 
+    setNames(as.side_name(side))
 }
 
 as.log <- function(object, view.name){
