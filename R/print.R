@@ -47,7 +47,6 @@ print.gsplot <- function(x, ...){
   title.arg <- views$title
   
   view.info <- view_info(views)
-  view.index <- view.info$index
   view.names = view_names(views)
   for (view.name in view.names){
 
