@@ -73,21 +73,12 @@ logged <- function(object, side) UseMethod('logged')
 #' @export
 logged.gsplot <- function(object, side=NULL){
   
-  is.logged <- function(window, side){
-    log = window$log
-    if (side %% 2 == 0){ # is y
-      grepl(pattern = 'y',log)
-    } else {
-      grepl(pattern = 'x',log)
-    }
-  }
   if (!is.null(side) && length(side) == 1){
-    views <- views(object)
-    return(sapply(side, function(x) is.logged(views[[tail(views_with_side(views, side=x),1)]]$window, x)))
+    return(sapply(side, function(x) object[[as.side_name(x)]]$log))
   } 
   
   if (is.null(side))
-    side = as.side(names(sides(object)))
+    side = sort(as.side(names(sides(object))))
   
   lapply(side, function(x) logged.gsplot(object, x)) %>% 
     setNames(as.side_name(side))

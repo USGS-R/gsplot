@@ -7,13 +7,31 @@ as.x_side <- function(view.name){
   unname(sapply(view.name, function(x) as.numeric(strsplit(x,'[.]')[[1]][2])))
 }
 
-#' take a view name and extract the numeric y side
+#' take a view name and extract the named x sides
+#' 
+#' @param view.name a chracter vector of view names
+#' @return an character vector of x side names
+#' @keywords internal
+as.x_side_name <- function(view.name){
+  as.side_name(as.x_side(view.name))
+}
+
+#' take a view name and extract the numeric y sides
 #' 
 #' @param view.name a chracter vector of view names
 #' @return an integer vector of y sides
 #' @keywords internal
 as.y_side <- function(view.name){
   unname(sapply(view.name, function(x) as.numeric(strsplit(x,'[.]')[[1]][3])))
+}
+
+#' take a view name and extract the named y sides
+#' 
+#' @param view.name a chracter vector of view names
+#' @return an character vector of s side names
+#' @keywords internal
+as.y_side_name <- function(view.name){
+  as.side_name(as.y_side(view.name))
 }
 
 #' turn a numeric side into a named side
@@ -76,6 +94,26 @@ set_usr_lim <- function(lims, sides){
 locked_sides <- function(sides){
   lim.locks <- sapply(sides, function(x) all(x$usr.lim))
   names(lim.locks)[lim.locks]
+}
+
+#' set the log value on a side
+#' 
+#' @param view a single named view
+#' @param sides the sides for the gsplot object (see \code{\link{sides}})
+#' @return a modified \code{sides} list
+#' @keywords internal
+set_side_log <- function(view, sides){
+  stopifnot(length(view) == 1)
+  view.name <- names(view)
+  log <- summarize_args(view, c('log'), ignore=c('gs.config'), na.value = '')[[view.name]]
+  if (log == "")
+    return(sides) # // do nothing
+  
+  x.side.name <- as.x_side_name(view.name)
+  y.side.name <- as.y_side_name(view.name)
+  sides[[x.side.name]]$log <- ifelse(grepl('x',log), TRUE, sides[[x.side.name]]$log) # replace only if specified
+  sides[[y.side.name]]$log <- ifelse(grepl('y',log), TRUE, sides[[y.side.name]]$log) 
+  return(sides)
 }
 
 #' sets the side limits according to a new view addition
@@ -178,7 +216,7 @@ append_sides <- function(gsplot, sides, on.exists = c('skip','replace')){
     return(gsplot)
   on.exists = match.arg(on.exists)
   
-  side_template <- list(lim = c(NA, NA), label=NA, usr.lim=c(FALSE, FALSE))
+  side_template <- list(lim = c(NA, NA), log=FALSE, label=NA, usr.lim=c(FALSE, FALSE))
   
   if (on.exists == 'skip'){
     sides <- as.side_name(sides)

@@ -68,10 +68,14 @@ test_that("logged for simple object",{
   expect_false(logged(usrDef, 1))
   expect_false(logged(usrDef, 2))
   
-  usrDef <- lines(usrDef,1:2,4:5, log='xy')
-  expect_false(logged(usrDef, 3))
+  expect_is(logged(usrDef), 'list')
+  expect_is(logged(usrDef, c(1,2)), 'list')
+  expect_is(logged(usrDef, 1), 'logical')
+  
+  usrDef <- lines(usrDef,1:2,4:5, side=c(3,2), log='xy')
+  expect_false(logged(usrDef, 1))
   expect_true(logged(usrDef, 2))
-  expect_true(logged(usrDef, 1))
+  expect_true(logged(usrDef, 3))
   
 })
 

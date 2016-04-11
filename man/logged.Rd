@@ -17,4 +17,13 @@ logged(object, side)
 \description{
 get the log for views in gsplot object
 }
+\examples{
+gs <- gsplot() \%>\%
+   points(1, 2, legend.name="Cool points", xlim=c(0,NA)) \%>\%
+   lines(x=1:5, y=1:5, legend.name="Cool lines", ylab='taco night', log='x')
+   
+logged(gs, 1)
+logged(gs)
+logged(gs, c(1,2))
+}
 

@@ -10,8 +10,6 @@
 calc_views <- function(gsplot){
   
   views <- group_views(gsplot)
-  
-  views <- set_view_log(views)
 
   views <- set_view_lab(views)
   
@@ -60,7 +58,9 @@ group_views <- function(gsplot){
     to_draw <- setNames(list(c(tail.gs[['arguments']], legend.name=tail.gs[['gs.config']][['legend.name']])), tail.nm)
     view.name <- sprintf('view.%s.%s',add_sides[1],add_sides[2])
     sides <- sides(vew.n.sde)
-    sides <- set_side_lim(list(to_draw) %>% setNames(view.name), sides)
+    named.view <- list(to_draw) %>% setNames(view.name)
+    sides <- set_side_lim(named.view, sides)
+    sides <- set_side_log(named.view, sides)
     
     vew.n.sde <- append_replace(vew.n.sde, sides)
     
@@ -167,16 +167,15 @@ get_view_side <- function(views, view_i, param){
     stop('view side undefined for ',param)
 }
 
-summarize_args <- function(views, param, na.value, ignore='gs.config'){
+summarize_args <- function(views, param, na.value=NA, ignore='gs.config'){
   
-  view_i <- which_views(views)
+  view.names <- names(views[which_views(views)])
   values <- list()
-  for (i in view_i){
-    x <- views[[i]][!names(views[[i]]) %in% ignore]
+  for (view.name in view.names){
+    x <- views[[view.name]][!names(views[[view.name]]) %in% ignore]
     valStuff <- lapply(x, function(x) strip_pts(x, param))
-    values[[i]] <- c_unname(valStuff)
+    values[[view.name]] <- ifelse(all(is.na(c_unname(valStuff))), na.value, c_unname(valStuff))
   }
-  names(values) <- view_i
   return(values)
 }
 
