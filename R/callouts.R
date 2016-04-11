@@ -45,7 +45,8 @@ callouts.gsplot <- function(object, ..., side=c(1,2)){
 callouts.default <- function(x, y=NULL, labels=NA, length=0.1, angle='auto', cex=par()$cex, ...){
   
   if (is.null(y)) {
-    stop("y=NULL not currently supported in callouts.default", call. = FALSE)
+    warning("y=NULL not currently supported in callouts.default")
+    return()
   }
   
   stopifnot(all(angle=='auto' | is.na(angle) | (angle >= 0 & angle <= 360)))

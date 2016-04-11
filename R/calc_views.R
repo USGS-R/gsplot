@@ -31,7 +31,7 @@ group_views <- function(gsplot){
   if (!is.null(add_sides)){
     vew.n.sde <- append_sides(vew.n.sde, add_sides)
     to_draw <- setNames(list(c(tail.gs[['arguments']], legend.name=tail.gs[['gs.config']][['legend.name']])), tail.nm)
-    view.name <- sprintf('view.%s.%s',add_sides[1],add_sides[2])
+    view.name <- as.view_name(c(add_sides[1],add_sides[2]))
     sides <- sides(vew.n.sde)
     named.view <- list(to_draw) %>% setNames(view.name)
     sides <- set_side_lim(named.view, sides)

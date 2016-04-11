@@ -15,6 +15,22 @@ xlim.gsplot <- function(object, side=NULL){
   side.lim(object, side, 'x')
 }
 
+
+#' ylim for gsplot
+#' 
+#' get the ylim for views in gsplot object
+#' 
+#' @param object a gsplot object
+#' @param side which side(s) to use
+#' 
+#' @export
+ylim <- function(object, side) UseMethod("ylim")
+
+#' @export
+ylim.gsplot <- function(object, side=NULL){
+  side.lim(object, side, 'y')
+}
+
 side.lim <- function(object, side, axis = c('x','y')){
   axis = match.arg(axis)
   side.names <- names(sides(object))
@@ -36,20 +52,6 @@ side.lim <- function(object, side, axis = c('x','y')){
   return(lims)
 }
 
-#' ylim for gsplot
-#' 
-#' get the ylim for views in gsplot object
-#' 
-#' @param object a gsplot object
-#' @param side which side(s) to use
-#' 
-#' @export
-ylim <- function(object, side) UseMethod("ylim")
-
-#' @export
-ylim.gsplot <- function(object, side=NULL){
-  side.lim(object, side, 'y')
-}
 
 #' log for gsplot
 #' 
@@ -80,8 +82,8 @@ logged.gsplot <- function(object, side=NULL){
   if (is.null(side))
     side = sort(as.side(names(sides(object))))
   
-  lapply(side, function(x) logged.gsplot(object, x)) %>% 
-    setNames(as.side_name(side))
+  logged <- lapply(side, function(x) logged.gsplot(object, x))
+  return(setNames(logged, as.side_name(side)))
 }
 
 as.log <- function(object, view.name){
