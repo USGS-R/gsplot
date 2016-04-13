@@ -4,7 +4,8 @@
 \alias{lim}
 \title{limits for gsplot}
 \usage{
-lim(object, side = NULL, axis = NULL)
+lim(object, side = NULL, axis = NULL, set.undefined = TRUE,
+  if.null = c(0, 1))
 }
 \arguments{
 \item{object}{a gsplot object}

@@ -48,10 +48,10 @@ print.gsplot <- function(x, ...){
   title.arg <- views$title
   view.info <- view_info(views)
   side.names <- side_names(views)
-  browser()
+
   for (side.name in side.names){
     side <- as.side(side.name)
-
+    plot.window(xlim = lim(views, side), ylim = lim(views, side), log = ifelse(logged(views, side), as.axis(side),''))
     if(!side %in% defined.sides){ ## need to make it side specific (not x vs y)
       if(all(sapply(views_with_side(views, side), function(x) views(views)[[x]][['window']][['axes']]))){
         Axis(side=side,x=lim(views, side))

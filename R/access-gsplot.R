@@ -64,19 +64,7 @@ xlim <- function(object, side, set.undefined) UseMethod("xlim")
 
 #' @export
 xlim.gsplot <- function(object, side=NULL, set.undefined=TRUE){
-  axis <- 'x'
-  lim <- lim(object, side, axis)
-  if (set.undefined && !is.null(side)){
-    if (all(is.na(lim))){
-      lims <- lim(object, axis=axis)
-      sides <- as.side(names(lims)[sapply(lims, function(x) !any(is.na(x)))])
-      closest.side <- sides[which.min(abs(side-sides))]
-      lim <- lims[[as.side_name(closest.side)]]
-    }
-    return(lim)
-  } else{
-    return(lim)
-  }
+  lim(object, side, axis='x', set.undefined=set.undefined)
 }
 
 #' ylim for gsplot
@@ -91,20 +79,7 @@ ylim <- function(object, side, set.undefined) UseMethod("ylim")
 
 #' @export
 ylim.gsplot <- function(object, side=NULL, set.undefined=TRUE){
-  axis <- 'y'
-  lim <- lim(object, side, axis)
-  if (set.undefined && !is.null(side)){
-    if (all(is.na(lim))){
-      lims <- lim(object, axis=axis)
-      sides <- as.side(names(lims)[sapply(lims, function(x) !any(is.na(x)))])
-      closest.side <- sides[which.min(abs(side-sides))]
-      lim <- lims[[as.side_name(closest.side)]]
-    }
-    return(lim)
-  } else{
-    return(lim)
-  }
-    
+  lim(object, side, axis='y', set.undefined=set.undefined)
 }
 
 #' limits for gsplot
@@ -116,9 +91,9 @@ ylim.gsplot <- function(object, side=NULL, set.undefined=TRUE){
 #' @param axis 'y' or 'x'. Only used when side=NULL
 #' 
 #' @export
-lim <- function(object, side, axis) UseMethod("lim")
+lim <- function(object, side, axis, set.undefined) UseMethod("lim")
 
-lim <- function(object, side=NULL, axis = NULL){
+lim <- function(object, side=NULL, axis = NULL, set.undefined=TRUE, if.null=c(0,1)){
   side.names <- names(sides(object))
   if (!is.null(side))
     side.names <- as.side_name(side)
@@ -136,11 +111,25 @@ lim <- function(object, side=NULL, axis = NULL){
   
   lims <- lapply(side.names, function(x) object[[x]]$lim) %>% 
     setNames(side.names)
-  if (!is.null(side) && length(side==1))
+  if (!is.null(side) && length(side==1)){
     lims <- lims[[1]]
+    if (set.undefined && all(is.na(lims))){
+      lims <- lim(object, axis=as.axis(side))
+      sides <- as.side(names(lims)[sapply(lims, function(x) !any(is.na(x)))])
+      closest.side <- sides[which.min(abs(side-sides))]
+      lims <- lims[[as.side_name(closest.side)]]
+    }
+    if (is.null(lims)){
+      lims <- if.null
+    }
+  }
+    
   return(lims)
 }
 
+as.axis <- function(side){
+  ifelse(side %% 2 == 0,'y','x')
+}
 
 #' log for gsplot
 #' 
