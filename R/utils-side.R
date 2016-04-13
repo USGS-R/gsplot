@@ -139,8 +139,8 @@ set_side_lab <- function(view, sides){
   y.side.name <- as.y_side_name(view.name)
   ylab <- summarize_args(view, c('ylab'), ignore=c('gs.config'), na.value = NA)[[view.name]]
   xlab <- summarize_args(view, c('xlab'), ignore=c('gs.config'), na.value = NA)[[view.name]]
-  sides[[x.side.name]]$label <- ifelse(!is.na(xlab), xlab, sides[[x.side.name]]$label)
-  sides[[y.side.name]]$label <- ifelse(!is.na(ylab), ylab, sides[[y.side.name]]$label)
+  sides[[x.side.name]]$label <- ifelse(is.expression(xlab) || !is.na(xlab), xlab, sides[[x.side.name]]$label)
+  sides[[y.side.name]]$label <- ifelse(is.expression(ylab) || !is.na(ylab), ylab, sides[[y.side.name]]$label)
   return(sides)
 }
 

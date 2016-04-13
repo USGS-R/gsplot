@@ -51,20 +51,20 @@ grid.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
   
 }
 
-draw_custom_grid <- function(object, index){
+draw_custom_grid <- function(object, view.name){
    
   i <- which(names(object) %in% 'axis')
   definded.sides <- sapply(i, function(x) object[[x]][['arguments']][['side']])
 
-  window = object[[index]][['window']]
+  window = object[[view.name]][['window']]
   
-  view.name <- names(object[index])
+  view.name <- names(object[view.name])
   xlim <- xlim(object, side=as.x_side(view.name))
   ylim <- ylim(object, side=as.y_side(view.name))
   view.info <- view_info(object)
-  view.info <- view.info[index == view.info$index,]
+  view.info <- view.info[view.name == view.info$name,]
   
-  grid.args <- set_args("grid",object[[index]][['grid']], package = "graphics")
+  grid.args <- set_args("grid",object[[view.name]][['grid']], package = "graphics")
   
   if(class(xlim) %in% c("numeric","integer")){
     x.at <- axTicks(view.info$x)

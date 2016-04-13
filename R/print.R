@@ -39,6 +39,7 @@ print.gsplot <- function(x, ...){
     on.exit(dev.flush())
     plot.new()
   }
+  
   par(views[['par']])
   i.axis <- which(names(views) %in% 'axis')
   defined.sides <- sapply(i.axis, function(x) views[[x]][['arguments']][['side']])
@@ -47,7 +48,7 @@ print.gsplot <- function(x, ...){
   title.arg <- views$title
   view.info <- view_info(views)
   side.names <- side_names(views)
-  
+  browser()
   for (side.name in side.names){
     side <- as.side(side.name)
 
@@ -88,8 +89,6 @@ print.gsplot <- function(x, ...){
       title(title.arg)
     }
     
-    # // *** this is a carryover from the indexing. Should alter view.info to use names ***
-    i = which(view.name==view.names) 
     # -- call functions -- 
     
 #     if((sum(view.info$x.side.defined.by.user[i], view.info$y.side.defined.by.user[i])== 0 ) &
@@ -97,7 +96,7 @@ print.gsplot <- function(x, ...){
     if(!(any(names(plots) %in% 'grid'))){
       to_gsplot(lapply(plots, function(x) x[!names(x) %in% 'legend.name']))
     } else {
-      draw_custom_grid(views,i)
+      draw_custom_grid(views,view.name)
       plots <- plots[!(names(plots) %in% 'grid')]
       to_gsplot(lapply(plots, function(x) x[!(names(x) %in% c('legend.name'))]))
     }

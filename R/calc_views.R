@@ -116,7 +116,10 @@ summarize_args <- function(views, param, na.value=NA, ignore='gs.config'){
   for (view.name in view.names){
     x <- views[[view.name]][!names(views[[view.name]]) %in% ignore]
     valStuff <- lapply(x, function(x) strip_pts(x, param))
-    values[[view.name]] <- ifelse(all(is.na(c_unname(valStuff))), na.value, c_unname(valStuff))
+    flat.vals <- c_unname(valStuff)
+    if (!is.expression(flat.vals) && all(is.na(flat.vals)))
+      flat.vals <- na.value
+    values[[view.name]] <- flat.vals
   }
   return(values)
 }

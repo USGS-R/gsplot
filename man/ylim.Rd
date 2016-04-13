@@ -4,7 +4,7 @@
 \alias{ylim}
 \title{ylim for gsplot}
 \usage{
-ylim(object, side)
+ylim(object, side, set.undefined)
 }
 \arguments{
 \item{object}{a gsplot object}

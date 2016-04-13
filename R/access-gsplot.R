@@ -60,11 +60,23 @@ label <- function(object, side, axis){
 #' @param side which side(s) to use
 #' 
 #' @export
-xlim <- function(object, side) UseMethod("xlim")
+xlim <- function(object, side, set.undefined) UseMethod("xlim")
 
 #' @export
-xlim.gsplot <- function(object, side=NULL){
-  lim(object, side, 'x')
+xlim.gsplot <- function(object, side=NULL, set.undefined=TRUE){
+  axis <- 'x'
+  lim <- lim(object, side, axis)
+  if (set.undefined && !is.null(side)){
+    if (all(is.na(lim))){
+      lims <- lim(object, axis=axis)
+      sides <- as.side(names(lims)[sapply(lims, function(x) !any(is.na(x)))])
+      closest.side <- sides[which.min(abs(side-sides))]
+      lim <- lims[[as.side_name(closest.side)]]
+    }
+    return(lim)
+  } else{
+    return(lim)
+  }
 }
 
 #' ylim for gsplot
@@ -75,11 +87,24 @@ xlim.gsplot <- function(object, side=NULL){
 #' @param side which side(s) to use
 #' 
 #' @export
-ylim <- function(object, side) UseMethod("ylim")
+ylim <- function(object, side, set.undefined) UseMethod("ylim")
 
 #' @export
-ylim.gsplot <- function(object, side=NULL){
-  lim(object, side, 'y')
+ylim.gsplot <- function(object, side=NULL, set.undefined=TRUE){
+  axis <- 'y'
+  lim <- lim(object, side, axis)
+  if (set.undefined && !is.null(side)){
+    if (all(is.na(lim))){
+      lims <- lim(object, axis=axis)
+      sides <- as.side(names(lims)[sapply(lims, function(x) !any(is.na(x)))])
+      closest.side <- sides[which.min(abs(side-sides))]
+      lim <- lims[[as.side_name(closest.side)]]
+    }
+    return(lim)
+  } else{
+    return(lim)
+  }
+    
 }
 
 #' limits for gsplot
