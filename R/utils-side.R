@@ -162,29 +162,6 @@ set_side_lim <- function(view, sides){
       sides[[side]]$lim <- data.range
     }
   }
-  #axs <- list(yaxs=summarize_args(views, c('yaxs'), ignore=c('gs.config')),
-  #            xaxs=summarize_args(views, c('xaxs'), ignore=c('gs.config')))
-  
-  # usr.axs <- axs[[axs.name]][[n.i]]
-  # 
-  # if (any(!is.na(usr.axs)) && any(usr.axs == 'o')) {
-  #   if (all(!is.na(usr.lim)))
-  #     stop('no NA given to distinguish buffered limit')
-  #   
-  #   view.i <- which(!names(views[[n.i]]) %in% c('window', 'gs.config'))
-  #   buffer <- 0.04*diff(views[[n.i]][['window']][[lim.name]])
-  #   lim <- views[[n.i]][['window']][[lim.name]][[which(is.na(usr.lim))]]
-  #   buffered.lim <- ifelse(which(is.na(usr.lim)) == 1, lim - buffer, lim + buffer)
-  #   views[[n.i]][[view.i]][[lim.name]][[which(is.na(usr.lim))]] <- buffered.lim
-  #   views[[n.i]][['window']][[lim.name]][[which(is.na(usr.lim))]] <- buffered.lim
-  #   views[[n.i]][['window']][['par']][[axs.name]] <- NULL
-  #   views[['par']][[axs.name]] <- 'i'
-  # }
-  
-  #}
-  
-  #  }
-  
   return(sides)
 }
 
