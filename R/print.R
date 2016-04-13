@@ -86,7 +86,7 @@ print.gsplot <- function(x, ...){
     
     if(!view.info$x.side.defined.by.user[i]){
       if(window$axes){
-        Axis(side=view.info$x[i],x=window$xlim)
+        Axis(side=view.info$x[i],x=xlim(views, x.side))
       }
     } else {
       x.axis <- i.axis[which(defined.sides == view.info$x[i])]
@@ -95,7 +95,7 @@ print.gsplot <- function(x, ...){
     
     if(!view.info$y.side.defined.by.user[i]){
       if(window$axes){
-        Axis(side=view.info$y[i],x=window$ylim)
+        Axis(side=view.info$y[i],x=ylim(views, y.side))
       } 
     } else {
       y.axis <- i.axis[which(defined.sides == view.info$y[i])]
