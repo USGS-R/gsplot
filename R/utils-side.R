@@ -105,7 +105,7 @@ locked_sides <- function(sides){
 set_side_log <- function(view, sides){
   stopifnot(length(view) == 1)
   view.name <- names(view)
-  log <- summarize_args(view, c('log'), ignore=c('gs.config'), na.value = '')[[view.name]]
+  log <- summarize_args(view, c('log'), ignore=c('gs.config'), na.value = "")[[view.name]]
   if (log == "")
     return(sides) # // do nothing
   
@@ -235,7 +235,7 @@ append_sides <- function(gsplot, sides, on.exists = c('skip','replace')){
     return(gsplot)
   on.exists = match.arg(on.exists)
   
-  side_template <- list(lim = c(NA, NA), log=FALSE, label=NA, usr.lim=c(FALSE, FALSE))
+  side_template <- list(lim = c(NA, NA), log=FALSE, label="", usr.lim=c(FALSE, FALSE))
   
   if (on.exists == 'skip'){
     sides <- as.side_name(sides)

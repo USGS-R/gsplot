@@ -6,10 +6,10 @@ test_that("append replace list", {
     lines(x=1:5, y=1:5, legend.name="Cool lines") %>%
     legend(location="topleft")
   
-  expect_true(is.na(gs$side.1$label))
-  expect_true(is.na(gs$side.2$label))
+  expect_equal(gs$side.1$label,"")
+  expect_equal(gs$side.2$label,"")
   
   gs <- lines(gs, x=1:5, y=1:5, ylab='pizza',side=c(1,4))
   expect_equal(gs$side.4$label, 'pizza')
-  expect_true(is.na(gs$side.2$label))
+  expect_equal(gs$side.2$label,"")
 })

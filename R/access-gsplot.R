@@ -1,4 +1,56 @@
 
+#' xlab for gsplot
+#' 
+#' get the xlab for views in gsplot object
+#' 
+#' @param object a gsplot object
+#' @param side which side(s) to use
+#' 
+#' @export
+xlab <- function(object, side) UseMethod("xlab")
+
+#' @export
+xlab.gsplot <- function(object, side=NULL){
+  label(object, side, 'x')
+}
+
+#' ylab for gsplot
+#' 
+#' get the ylab for views in gsplot object
+#' 
+#' @param object a gsplot object
+#' @param side which side(s) to use
+#' 
+#' @export
+ylab <- function(object, side) UseMethod("ylab")
+
+#' @export
+ylab.gsplot <- function(object, side=NULL){
+  label(object, side, 'y')
+}
+
+label <- function(object, side, axis){
+  side.names <- names(sides(object))
+  if (!is.null(side))
+    side.names <- as.side_name(side)
+  else {
+    if (!is.null(axis)){
+      sides <- as.side(names(sides(object)))
+      if (axis == 'y')
+        use.sides <- sides %% 2 == 0
+      else 
+        use.sides <- !sides %% 2 == 0
+      side.names <- as.side_name(sides[use.sides])
+    } 
+    
+  }
+  
+  labels <- lapply(side.names, function(x) object[[x]]$label) %>% 
+    setNames(side.names)
+  if (!is.null(side) && length(side==1))
+    labels <- labels[[1]]
+  return(labels)
+}
 
 #' xlim for gsplot
 #' 
@@ -14,7 +66,6 @@ xlim <- function(object, side) UseMethod("xlim")
 xlim.gsplot <- function(object, side=NULL){
   lim(object, side, 'x')
 }
-
 
 #' ylim for gsplot
 #' 

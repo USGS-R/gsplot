@@ -67,6 +67,21 @@ test_that("xlim for string input", {
   
 })
 
+context("test labels for gsplot")
+
+test_that("xlab for simple object",{
+  
+  usrDef <- gsplot(mar=c(4,4,4,4), xaxs='r', yaxs='r') %>% 
+    points(x=1, y=2, side=c(3,2), legend.name="Points 1", cex=3, xlab='cat') %>% 
+    points(x=3:10,y=4:11, side=c(1,2))
+  
+  expect_equal(xlab(usrDef, 3), 'cat')
+  expect_equal(xlab(usrDef, 1),"")
+  expect_is(xlab(usrDef), 'list')
+  expect_equal(ylab(usrDef, 2),"")
+})
+
+
 context("test get par for gsplot object")
 
 test_that("par for simple object",{

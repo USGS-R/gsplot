@@ -10,8 +10,6 @@
 calc_views <- function(gsplot){
   
   views <- group_views(gsplot)
-
-  views <- set_view_lab(views)
   
   #views <- set_view_order(views, config("orderToPlot")$order)
   
