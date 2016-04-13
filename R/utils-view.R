@@ -66,9 +66,6 @@ views_with_side <- function(views, side){
     return(which(view.match))
 }
 
-true_in_any <- function(views, field){
-  values <- strip_pts(views, field) #///// WIP
-}
 
 #' get the side from a view for an axis
 #' 

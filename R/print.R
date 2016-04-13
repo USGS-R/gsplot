@@ -50,27 +50,18 @@ print.gsplot <- function(x, ...){
   
   for (side.name in side.names){
     side <- as.side(side.name)
-    if(!view.info$x.side.defined.by.user[view.info$x==side]){ ## need to make it side specific (not x vs y)
-      if(window$axes){
+
+    if(!side %in% defined.sides){ ## need to make it side specific (not x vs y)
+      if(all(sapply(views_with_side(views, side), function(x) views(views)[[x]][['window']][['axes']]))){
         Axis(side=side,x=lim(views, side))
       }
     } else {
-      x.axis <- i.axis[which(defined.sides == view.info$x[i])]
-      draw_axis(views, index.axis=x.axis)
+      axis <- i.axis[which(defined.sides == side)]
+      draw_axis(views, index.axis=axis)
     }
-    
-    if(!view.info$y.side.defined.by.user[i]){
-      if(window$axes){
-        Axis(side=view.info$y[i],x=ylim(views, y.side))
-      } 
-    } else {
-      y.axis <- i.axis[which(defined.sides == view.info$y[i])]
-      draw_axis(views, index.axis=y.axis)
-    }
-    
-    if(window$ann){
-      mtext(text=xlab(views, x.side), side=x.side, line = 2, las=config("mtext")$las)
-      mtext(text=ylab(views, y.side), side=y.side, line = 2, las=config("mtext")$las)        
+    views_with_side(views, side)
+    if(all(sapply(views_with_side(views, side), function(x) views(views)[[x]][['window']][['ann']]))){
+      mtext(text=label(views, side), side=side, line = 2, las=config("mtext")$las)
     }
   }
   
