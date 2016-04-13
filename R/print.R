@@ -45,6 +45,34 @@ print.gsplot <- function(x, ...){
   
   bg.arg <- views$bgCol
   title.arg <- views$title
+  view.info <- view_info(views)
+  side.names <- side_names(views)
+  
+  for (side.name in side.names){
+    side <- as.side(side.name)
+    if(!view.info$x.side.defined.by.user[view.info$x==side]){ ## need to make it side specific (not x vs y)
+      if(window$axes){
+        Axis(side=side,x=lim(views, side))
+      }
+    } else {
+      x.axis <- i.axis[which(defined.sides == view.info$x[i])]
+      draw_axis(views, index.axis=x.axis)
+    }
+    
+    if(!view.info$y.side.defined.by.user[i]){
+      if(window$axes){
+        Axis(side=view.info$y[i],x=ylim(views, y.side))
+      } 
+    } else {
+      y.axis <- i.axis[which(defined.sides == view.info$y[i])]
+      draw_axis(views, index.axis=y.axis)
+    }
+    
+    if(window$ann){
+      mtext(text=xlab(views, x.side), side=x.side, line = 2, las=config("mtext")$las)
+      mtext(text=ylab(views, y.side), side=y.side, line = 2, las=config("mtext")$las)        
+    }
+  }
   
   view.info <- view_info(views)
   view.names = view_names(views)
@@ -83,30 +111,6 @@ print.gsplot <- function(x, ...){
       to_gsplot(lapply(plots, function(x) x[!(names(x) %in% c('legend.name'))]))
     }
 
-    
-    if(!view.info$x.side.defined.by.user[i]){
-      if(window$axes){
-        Axis(side=view.info$x[i],x=xlim(views, x.side))
-      }
-    } else {
-      x.axis <- i.axis[which(defined.sides == view.info$x[i])]
-      draw_axis(views, index.axis=x.axis)
-    }
-    
-    if(!view.info$y.side.defined.by.user[i]){
-      if(window$axes){
-        Axis(side=view.info$y[i],x=ylim(views, y.side))
-      } 
-    } else {
-      y.axis <- i.axis[which(defined.sides == view.info$y[i])]
-      draw_axis(views, index.axis=y.axis)
-    }
-    
-    if(window$ann){
-      mtext(text=xlab(views, x.side), side=x.side, line = 2, las=config("mtext")$las)
-      mtext(text=ylab(views, y.side), side=y.side, line = 2, las=config("mtext")$las)        
-    }
-    
     par(new=TRUE)
   }
   

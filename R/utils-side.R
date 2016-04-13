@@ -1,3 +1,12 @@
+#' names of the sides in gsplot object
+#' 
+#' @param object a gsplot object
+#' @return a character vector of side names
+#' @keywords internal
+side_names <- function(object){
+  names(sides(object))
+}
+
 #' take a view name and extract the numeric x side
 #' 
 #' @param view.name a chracter vector of view names
