@@ -39,7 +39,7 @@ print.gsplot <- function(x, ...){
     on.exit(dev.flush())
     plot.new()
   }
-
+  par(views[['par']])
   i.axis <- which(names(views) %in% 'axis')
   defined.sides <- sapply(i.axis, function(x) views[[x]][['arguments']][['side']])
   
