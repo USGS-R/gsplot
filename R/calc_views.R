@@ -36,6 +36,7 @@ group_views <- function(gsplot){
     named.view <- list(to_draw) %>% setNames(view.name)
     sides <- set_side_lim(named.view, sides)
     sides <- set_side_log(named.view, sides)
+    sides <- set_side_lab(named.view, sides)
     
     vew.n.sde <- append_replace(vew.n.sde, sides)
     

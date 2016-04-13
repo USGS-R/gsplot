@@ -12,7 +12,7 @@ xlim <- function(object, side) UseMethod("xlim")
 
 #' @export
 xlim.gsplot <- function(object, side=NULL){
-  side.lim(object, side, 'x')
+  lim(object, side, 'x')
 }
 
 
@@ -28,21 +28,34 @@ ylim <- function(object, side) UseMethod("ylim")
 
 #' @export
 ylim.gsplot <- function(object, side=NULL){
-  side.lim(object, side, 'y')
+  lim(object, side, 'y')
 }
 
-side.lim <- function(object, side, axis = c('x','y')){
-  axis = match.arg(axis)
+#' limits for gsplot
+#' 
+#' get the limits for sides in gsplot object
+#' 
+#' @param object a gsplot object
+#' @param side which side(s) to use
+#' @param axis 'y' or 'x'. Only used when side=NULL
+#' 
+#' @export
+lim <- function(object, side, axis) UseMethod("lim")
+
+lim <- function(object, side=NULL, axis = NULL){
   side.names <- names(sides(object))
   if (!is.null(side))
     side.names <- as.side_name(side)
   else {
-    sides <- as.side(names(sides(object)))
-    if (axis == 'y')
-      use.sides <- sides %% 2 == 0
-    else 
-      use.sides <- !sides %% 2 == 0
-    side.names <- as.side_name(sides[use.sides])
+    if (!is.null(axis)){
+      sides <- as.side(names(sides(object)))
+      if (axis == 'y')
+        use.sides <- sides %% 2 == 0
+      else 
+        use.sides <- !sides %% 2 == 0
+      side.names <- as.side_name(sides[use.sides])
+    } 
+    
   }
   
   lims <- lapply(side.names, function(x) object[[x]]$lim) %>% 

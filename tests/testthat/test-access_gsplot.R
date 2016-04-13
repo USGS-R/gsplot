@@ -12,6 +12,21 @@ test_that("xlim for single axis", {
   
 })
 
+test_that("lim for single axis", {
+  
+  usrDef <- gsplot(mar=c(4,4,4,4), xaxs='r', yaxs='r') %>% 
+    points(x=1, y=2, side=c(3,2), legend.name="Points 1", cex=3, xlab='cat')
+  
+  expect_is(lim(usrDef), 'list')
+  expect_is(lim(usrDef, 3), 'numeric')
+  
+  usrDef <- points(usrDef,x=3:10,y=4:11, side=c(3,2))
+  
+  expect_equal(lim(usrDef, 3), c(1,10))
+  
+})
+
+
 test_that("xlim for dual axis", {
   
   usrDef <- gsplot(mar=c(4,4,4,4), xaxs='r', yaxs='r') %>% 
@@ -88,7 +103,7 @@ test_that("logged side extractor ",{
   
   dual = logged(usrDef, side=c(1,2))
   expect_equal(length(dual), 2)
-  expect_true(all(dual))
+  expect_true(all(unlist(dual)))
 })
 
 test_that("summary ",{

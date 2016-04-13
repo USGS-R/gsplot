@@ -116,6 +116,25 @@ set_side_log <- function(view, sides){
   return(sides)
 }
 
+#' set the label value on a side
+#' 
+#' @param view a single named view
+#' @param sides the sides for the gsplot object (see \code{\link{sides}})
+#' @return a modified \code{sides} list
+#' @keywords internal
+set_side_lab <- function(view, sides){
+  stopifnot(length(view) == 1)
+  view.name <- names(view)
+  
+  x.side.name <- as.x_side_name(view.name)
+  y.side.name <- as.y_side_name(view.name)
+  ylab <- summarize_args(view, c('ylab'), ignore=c('gs.config'), na.value = NA)[[view.name]]
+  xlab <- summarize_args(view, c('xlab'), ignore=c('gs.config'), na.value = NA)[[view.name]]
+  sides[[x.side.name]]$label <- ifelse(!is.na(xlab), xlab, sides[[x.side.name]]$label)
+  sides[[y.side.name]]$label <- ifelse(!is.na(ylab), ylab, sides[[y.side.name]]$label)
+  return(sides)
+}
+
 #' sets the side limits according to a new view addition
 #' 
 #' @param view a single view
