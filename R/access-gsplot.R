@@ -58,6 +58,7 @@ label <- function(object, side, axis){
 #' 
 #' @param object a gsplot object
 #' @param side which side(s) to use
+#' @param set.undefined logical, use opposite side if this one is undefined?
 #' 
 #' @export
 xlim <- function(object, side, set.undefined) UseMethod("xlim")
@@ -73,6 +74,7 @@ xlim.gsplot <- function(object, side=NULL, set.undefined=TRUE){
 #' 
 #' @param object a gsplot object
 #' @param side which side(s) to use
+#' @param set.undefined logical, use opposite side if this one is undefined?
 #' 
 #' @export
 ylim <- function(object, side, set.undefined) UseMethod("ylim")
@@ -89,9 +91,11 @@ ylim.gsplot <- function(object, side=NULL, set.undefined=TRUE){
 #' @param object a gsplot object
 #' @param side which side(s) to use
 #' @param axis 'y' or 'x'. Only used when side=NULL
+#' @param set.undefined logical, use opposite side if this one is undefined?
+#' @param if.null replace with this value when limits are NULL
 #' 
 #' @export
-lim <- function(object, side, axis, set.undefined) UseMethod("lim")
+lim <- function(object, side, axis, set.undefined, if.null) UseMethod("lim")
 
 lim <- function(object, side=NULL, axis = NULL, set.undefined=TRUE, if.null=c(0,1)){
   side.names <- names(sides(object))
@@ -116,7 +120,7 @@ lim <- function(object, side=NULL, axis = NULL, set.undefined=TRUE, if.null=c(0,
     if (set.undefined && all(is.na(lims))){
       lims <- lim(object, axis=as.axis(side))
       sides <- as.side(names(lims)[sapply(lims, function(x) !any(is.na(x)))])
-      closest.side <- sides[which.min(abs(side-sides))]
+      closest.side <- sides[which.min(abs(side-sides))][1]
       lims <- lims[[as.side_name(closest.side)]]
     }
     if (is.null(lims)){

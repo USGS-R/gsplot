@@ -51,8 +51,8 @@ print.gsplot <- function(x, ...){
 
   for (side.name in side.names){
     side <- as.side(side.name)
-    plot.window(xlim = lim(views, side), ylim = lim(views, side), log = ifelse(logged(views, side), as.axis(side),''))
-    if(!side %in% defined.sides){ ## need to make it side specific (not x vs y)
+    set_frame(views, side)
+    if(!side %in% defined.sides){ 
       if(all(sapply(views_with_side(views, side), function(x) views(views)[[x]][['window']][['axes']]))){
         Axis(side=side,x=lim(views, side))
       }
@@ -60,59 +60,50 @@ print.gsplot <- function(x, ...){
       axis <- i.axis[which(defined.sides == side)]
       draw_axis(views, index.axis=axis)
     }
-    views_with_side(views, side)
     if(all(sapply(views_with_side(views, side), function(x) views(views)[[x]][['window']][['ann']]))){
       mtext(text=label(views, side), side=side, line = 2, las=config("mtext")$las)
     }
   }
   
-  view.info <- view_info(views)
-  view.names = view_names(views)
-  for (view.name in view.names){
-
-    plots = views[[view.name]]
-    window = plots[['window']]
-    plots[['window']] <- NULL
-    
-    x.side <- as.x_side(view.name)
-    y.side <- as.y_side(view.name)
-    
+  for (view.name in view_names(views)){
     par(views[['par']])
-    par(window[['par']])
-
-    plot.window(xlim = xlim(views, x.side), ylim = ylim(views, y.side), log = as.log(views, view.name))
-
-    # -- initial view --
-    if(view.name == view.names[1]){
+    set_frame(views, side=view.name)
+    if(any(names(views[[view.name]]) %in% 'grid')){
+      draw_custom_grid(views,view.name)
+    }
+    print.view(views[[view.name]])
+        # -- initial view --
+    if(view.name == view_names(views)[1]){
       if (!is.null(bg.arg))
         bgCol(bg.arg)
       title(title.arg)
     }
-    
-    # -- call functions -- 
-    
-#     if((sum(view.info$x.side.defined.by.user[i], view.info$y.side.defined.by.user[i])== 0 ) &
-#        (class(window$xlim) == "numeric" & class(window$ylim) == "numeric") | 
-    if(!(any(names(plots) %in% 'grid'))){
-      to_gsplot(lapply(plots, function(x) x[!names(x) %in% 'legend.name']))
-    } else {
-      draw_custom_grid(views,view.name)
-      plots <- plots[!(names(plots) %in% 'grid')]
-      to_gsplot(lapply(plots, function(x) x[!(names(x) %in% c('legend.name'))]))
-    }
-
     par(new=TRUE)
   }
   
   i.axis.noview <- i.axis[which(!defined.sides %in% c(view.info$x, view.info$y))]
   draw_axis(views, index.axis=i.axis.noview)
+
+  draw_legend(views)
+  
+}
+
+#' print view
+#' 
+#' @param x a view
+#' @param \dots additional arguments (not used)
+#' @keywords internal
+print.view <- function(x, ...){
+  plots <- remove_field(x, param = c('window','grid'))
+  window <- x[['window']]
   
   if(window$frame.plot){
     box()
   }
-
-  draw_legend(views)
+  par(window[['par']])
   
+  # -- call functions -- 
+  to_gsplot(lapply(plots, function(x) x[!(names(x) %in% c('legend.name'))]))
 }
 
 to_gsplot <- function(x){

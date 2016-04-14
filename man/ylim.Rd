@@ -10,6 +10,8 @@ ylim(object, side, set.undefined)
 \item{object}{a gsplot object}
 
 \item{side}{which side(s) to use}
+
+\item{set.undefined}{logical, use opposite side if this one is undefined?}
 }
 \description{
 get the ylim for views in gsplot object

@@ -13,6 +13,10 @@ lim(object, side = NULL, axis = NULL, set.undefined = TRUE,
 \item{side}{which side(s) to use}
 
 \item{axis}{'y' or 'x'. Only used when side=NULL}
+
+\item{set.undefined}{logical, use opposite side if this one is undefined?}
+
+\item{if.null}{replace with this value when limits are NULL}
 }
 \description{
 get the limits for sides in gsplot object
