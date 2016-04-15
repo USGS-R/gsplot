@@ -48,6 +48,7 @@ as.y_side_name <- function(view.name){
 #' @param x a numeric vector of sides or character vector of view names
 #' @return a character vector of side names
 #' @keywords internal
+#' @export
 as.side_name <- function(x) UseMethod("as.side_name")
 
 #' @keywords internal

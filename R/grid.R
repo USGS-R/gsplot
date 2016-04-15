@@ -74,9 +74,9 @@ draw_custom_grid <- function(object, view.name){
     }
     if(side %in% defined.sides){
       axes.index <- i[defined.sides == side]
-      x <- object[axes.index][['axis']][['arguments']][['at']]
-      if(!is.null(x)){
-        at[[side.name]] <- x
+      usr.at <- object[axes.index][['axis']][['arguments']][['at']]
+      if(!is.null(usr.at)){
+        at[[side.name]] <- usr.at
       }
     }
   }
