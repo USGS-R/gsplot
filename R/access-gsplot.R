@@ -1,4 +1,56 @@
 
+#' xlab for gsplot
+#' 
+#' get the xlab for views in gsplot object
+#' 
+#' @param object a gsplot object
+#' @param side which side(s) to use
+#' 
+#' @export
+xlab <- function(object, side) UseMethod("xlab")
+
+#' @export
+xlab.gsplot <- function(object, side=NULL){
+  label(object, side, 'x')
+}
+
+#' ylab for gsplot
+#' 
+#' get the ylab for views in gsplot object
+#' 
+#' @param object a gsplot object
+#' @param side which side(s) to use
+#' 
+#' @export
+ylab <- function(object, side) UseMethod("ylab")
+
+#' @export
+ylab.gsplot <- function(object, side=NULL){
+  label(object, side, 'y')
+}
+
+label <- function(object, side, axis){
+  side.names <- names(sides(object))
+  if (!is.null(side))
+    side.names <- as.side_name(side)
+  else {
+    if (!is.null(axis)){
+      sides <- as.side(names(sides(object)))
+      if (axis == 'y')
+        use.sides <- sides %% 2 == 0
+      else 
+        use.sides <- !sides %% 2 == 0
+      side.names <- as.side_name(sides[use.sides])
+    } 
+    
+  }
+  
+  labels <- lapply(side.names, function(x) object[[x]]$label) %>% 
+    setNames(side.names)
+  if (!is.null(side) && length(side==1))
+    labels <- labels[[1]]
+  return(labels)
+}
 
 #' xlim for gsplot
 #' 
@@ -6,20 +58,14 @@
 #' 
 #' @param object a gsplot object
 #' @param side which side(s) to use
+#' @param set.undefined logical, use opposite side if this one is undefined?
 #' 
 #' @export
-xlim <- function(object, side) UseMethod("xlim")
+xlim <- function(object, side, set.undefined) UseMethod("xlim")
 
 #' @export
-xlim.gsplot <- function(object, side=NULL){
-
-  if (!is.null(side))
-    views <- object[views_with_side(views(object), side)]
-  else 
-    views <- views(object)
-  names = unname(sapply(views, function(x) paste0('side.',x$window$side[1])))
-  unique(lapply(views, function(x) x$window$xlim)) %>% 
-    setNames(unique(names))
+xlim.gsplot <- function(object, side=NULL, set.undefined=TRUE){
+  lim(object, side, axis='x', set.undefined=set.undefined)
 }
 
 #' ylim for gsplot
@@ -28,19 +74,65 @@ xlim.gsplot <- function(object, side=NULL){
 #' 
 #' @param object a gsplot object
 #' @param side which side(s) to use
+#' @param set.undefined logical, use opposite side if this one is undefined?
 #' 
 #' @export
-ylim <- function(object, side) UseMethod("ylim")
+ylim <- function(object, side, set.undefined) UseMethod("ylim")
 
 #' @export
-ylim.gsplot <- function(object, side=NULL){
+ylim.gsplot <- function(object, side=NULL, set.undefined=TRUE){
+  lim(object, side, axis='y', set.undefined=set.undefined)
+}
+
+#' limits for gsplot
+#' 
+#' get the limits for sides in gsplot object
+#' 
+#' @param object a gsplot object
+#' @param side which side(s) to use
+#' @param axis 'y' or 'x'. Only used when side=NULL
+#' @param set.undefined logical, use opposite side if this one is undefined?
+#' @param if.null replace with this value when limits are NULL
+#' 
+#' @export
+lim <- function(object, side, axis, set.undefined, if.null) UseMethod("lim")
+
+lim <- function(object, side=NULL, axis = NULL, set.undefined=TRUE, if.null=c(0,1)){
+  side.names <- names(sides(object))
   if (!is.null(side))
-    views <- object[views_with_side(views(object), side)]
-  else 
-    views <- views(object)
-  names = unname(sapply(views, function(x) paste0('side.',x$window$side[2])))
-  unique(lapply(views, function(x) x$window$ylim)) %>% 
-    setNames(unique(names))
+    side.names <- as.side_name(side)
+  else {
+    if (!is.null(axis)){
+      sides <- as.side(names(sides(object)))
+      if (axis == 'y')
+        use.sides <- sides %% 2 == 0
+      else 
+        use.sides <- !sides %% 2 == 0
+      side.names <- as.side_name(sides[use.sides])
+    } 
+    
+  }
+  
+  lims <- lapply(side.names, function(x) object[[x]]$lim) %>% 
+    setNames(side.names)
+  if (!is.null(side) && length(side==1)){
+    lims <- lims[[1]]
+    if (set.undefined && all(is.na(lims))){
+      lims <- lim(object, axis=as.axis(side))
+      sides <- as.side(names(lims)[sapply(lims, function(x) !any(is.na(x)))])
+      closest.side <- sides[which.min(abs(side-sides))][1]
+      lims <- lims[[as.side_name(closest.side)]]
+    }
+    if (is.null(lims)){
+      lims <- if.null
+    }
+  }
+    
+  return(lims)
+}
+
+as.axis <- function(side){
+  ifelse(side %% 2 == 0,'y','x')
 }
 
 #' log for gsplot
@@ -50,6 +142,14 @@ ylim.gsplot <- function(object, side=NULL){
 #' @name logged
 #' @param object a gsplot object
 #' @param side which side(s) to use (returns logical)
+#' @examples 
+#' gs <- gsplot() %>%
+#'    points(1, 2, legend.name="Cool points", xlim=c(0,NA)) %>%
+#'    lines(x=1:5, y=1:5, legend.name="Cool lines", ylab='taco night', log='x')
+#'    
+#' logged(gs, 1)
+#' logged(gs)
+#' logged(gs, c(1,2))
 #' @export
 logged <- function(object, side) UseMethod('logged')
 
@@ -57,21 +157,21 @@ logged <- function(object, side) UseMethod('logged')
 #' @export
 logged.gsplot <- function(object, side=NULL){
   
-  is.logged <- function(window, side){
-    log = window$log
-    if (side %% 2 == 0){ # is y
-      grepl(pattern = 'y',log)
-    } else {
-      grepl(pattern = 'x',log)
-    }
-  }
-  if (!is.null(side)){
-    sapply(side, function(x) is.logged(object[[views_with_side(views(object), side=x)[1]]]$window, x))
-  } else {
-    names = unname(sapply(views(object), function(x) paste0('side.',paste(x$window$side[1:2],collapse='.'))))
-    lapply(views(object), function(x) x$window$log) %>% 
-      setNames(names)
-  }
+  if (!is.null(side) && length(side) == 1){
+    return(sapply(side, function(x) object[[as.side_name(x)]]$log))
+  } 
+  
+  if (is.null(side))
+    side = sort(as.side(names(sides(object))))
+  
+  logged <- lapply(side, function(x) logged.gsplot(object, x))
+  return(setNames(logged, as.side_name(side)))
+}
+
+as.log <- function(object, view.name){
+  x.side <- as.x_side(view.name)
+  y.side <- as.y_side(view.name)
+  paste0(ifelse(logged(object, x.side),'x',''),ifelse(logged(object, y.side),'y',''))
 }
 
 #' Get view information from a gsplot object
@@ -84,23 +184,25 @@ logged.gsplot <- function(object, side=NULL){
 view_info <- function(object){
   j <- which_views(object)
   viewSides <- sapply(j, function(x) object[[x]][['window']][['side']])
-  viewLogs <- sapply(j, function(x) object[[x]][['window']][['log']])
-  viewInfo <- data.frame(t(rbind(viewSides, viewLogs, j)), stringsAsFactors = FALSE)
-  names(viewInfo) <- c("x","y","log","index")
+  viewNames <- names(object[j])
+  viewLogs <- sapply(viewNames , function(x) as.log(object, x))
+  viewInfo <- data.frame(t(rbind(viewSides, viewLogs, j, viewNames)), stringsAsFactors = FALSE)
+  
+  names(viewInfo) <- c("x","y","log","index","name")
   
   for(dir in c("y","x")){
     dup_index <- which(duplicated(viewInfo[dir]) | duplicated(viewInfo[dir], fromLast=TRUE))
     viewInfo$log[dup_index[-grep(dir,viewInfo$log)]] <- paste0(dir,viewInfo$log[dup_index[-grep(dir,viewInfo$log)]])
   }
   
-  viewInfo[,c("x","y","index")] <- sapply(viewInfo[,c("x","y","index")], function(x) as.integer(x))
+  viewInfo[,c("x","y","index")] <- sapply(viewInfo[,c("x","y","index")], as.integer)
   
   i <- which(names(object) %in% 'axis')
-  definded.sides <- sapply(i, function(x) object[[x]][['arguments']][['side']])
+  defined.sides <- sapply(i, function(x) object[[x]][['arguments']][['side']])
   view.sides.drawn <- NULL
 
-  viewInfo$x.side.defined.by.user <- viewInfo$x %in% definded.sides
-  viewInfo$y.side.defined.by.user <- viewInfo$y %in% definded.sides
+  viewInfo$x.side.defined.by.user <- viewInfo$x %in% defined.sides
+  viewInfo$y.side.defined.by.user <- viewInfo$y %in% defined.sides
   
   return(viewInfo)
 }

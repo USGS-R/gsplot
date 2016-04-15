@@ -4,12 +4,14 @@
 \alias{ylim}
 \title{ylim for gsplot}
 \usage{
-ylim(object, side)
+ylim(object, side, set.undefined)
 }
 \arguments{
 \item{object}{a gsplot object}
 
 \item{side}{which side(s) to use}
+
+\item{set.undefined}{logical, use opposite side if this one is undefined?}
 }
 \description{
 get the ylim for views in gsplot object

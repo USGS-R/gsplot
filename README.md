@@ -41,7 +41,7 @@ demoPlot <- gsplot() %>%
 demoPlot
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-2-1.png)
+![](README_files/figure-markdown_github/unnamed-chunk-2-1.png)<!-- -->
 
 ``` r
 gs <- gsplot() %>%
@@ -56,7 +56,7 @@ gs <- gsplot() %>%
 gs
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-3-1.png)
+![](README_files/figure-markdown_github/unnamed-chunk-3-1.png)<!-- -->
 
 ``` r
 usrDef <- gsplot(mar=c(4,4,4,4), xaxs='r', yaxs='r') %>% 
@@ -68,7 +68,7 @@ usrDef <- gsplot(mar=c(4,4,4,4), xaxs='r', yaxs='r') %>%
 usrDef
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-4-1.png)
+![](README_files/figure-markdown_github/unnamed-chunk-4-1.png)<!-- -->
 
 Disclaimer
 ----------
