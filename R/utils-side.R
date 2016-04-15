@@ -43,13 +43,22 @@ as.y_side_name <- function(view.name){
   as.side_name(as.y_side(view.name))
 }
 
-#' turn a numeric side into a named side
+#' get the side names
 #' 
-#' @param sides an integer vector of \code{side}
+#' @param x a numeric vector of sides or character vector of view names
 #' @return a character vector of side names
 #' @keywords internal
-as.side_name <- function(sides){
-  paste('side.',sides, sep='')
+as.side_name <- function(x) UseMethod("as.side_name")
+
+#' @keywords internal
+#' @export
+as.side_name.numeric <- function(x){
+  paste('side.',x, sep='')
+}
+#' @keywords internal
+#' @export
+as.side_name.character <- function(x){
+  as.side_name(unname(sapply(x, function(x) as.numeric(tail(strsplit(x,'[.]')[[1]],-1L)))))
 }
 
 #' take a named side and turn it into numeric
@@ -194,7 +203,7 @@ summarize_side_values <- function(view, param, na.value=NULL, axis=c('x','y'), i
     return(na.value)
   }
   
-  side <- as.side_name(strsplit(view_nm, '[.]')[[1]][1 + side_i[[axis]]])
+  side <- as.side_name(view_nm)[side_i[[axis]]]
   
   if (side %in% skip.side)
     return(na.value)

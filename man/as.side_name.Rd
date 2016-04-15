@@ -2,18 +2,18 @@
 % Please edit documentation in R/utils-side.R
 \name{as.side_name}
 \alias{as.side_name}
-\title{turn a numeric side into a named side}
+\title{get the side names}
 \usage{
-as.side_name(sides)
+as.side_name(x)
 }
 \arguments{
-\item{sides}{an integer vector of \code{side}}
+\item{x}{a numeric vector of sides or character vector of view names}
 }
 \value{
 a character vector of side names
 }
 \description{
-turn a numeric side into a named side
+get the side names
 }
 \keyword{internal}
 
