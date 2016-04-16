@@ -85,7 +85,7 @@ print.gsplot <- function(x, ...){
   draw_axis(views, index.axis=i.axis.noview)
 
   draw_legend(views)
-  
+  par(new=FALSE)
 }
 
 #' print view
@@ -99,7 +99,7 @@ print.view <- function(x, ...){
   
   if(window$frame.plot){
     box()
-  }
+  } 
   par(window[['par']])
   
   # -- call functions -- 

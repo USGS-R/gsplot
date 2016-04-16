@@ -70,7 +70,8 @@ draw_custom_grid <- function(object, view.name){
     if(is.numeric(lim)){
       at[[side.name]] <- axTicks(side)
     } else{
-      at[[side.name]] <- axis(side, x = lim)
+      fun <- getFromNamespace(paste0('axis.',class(lim)[1L]),'graphics')
+      at[[side.name]] <- fun(side, x = lim, lwd=0, lwd.ticks=0, labels = FALSE)
     }
     if(side %in% defined.sides){
       axes.index <- i[defined.sides == side]
