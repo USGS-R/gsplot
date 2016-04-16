@@ -25,7 +25,7 @@ test_that("testing content of gsplot list", {
  
    expect_equal(gs$view$lines$y[1], 2)
    
-   expect_less_than(gs$view$lines$y[1], 34)
+   expect_lt(gs$view$lines$y[1], 34)
   
 })
 
