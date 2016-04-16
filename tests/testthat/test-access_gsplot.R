@@ -36,6 +36,20 @@ test_that("xlim for dual axis", {
   expect_equal(xlim(usrDef)[[1]], c(1,1))
   expect_equal(xlim(usrDef)[[2]], c(3,10))
   
+  
+  
+})
+
+test_that("limits sort for user side arguments", {
+  usrDef <- gsplot(mar=c(4,4,4,4), xaxs='r', yaxs='r') %>% 
+    points(x=1, y=2, side=c(3,2), legend.name="Points 1", cex=3, xlab='cat') %>% 
+    points(x=3:10,y=4:11, side=c(1,2))
+  
+  expect_is(lim(usrDef, side = c(1,3)), 'list')
+  
+  expect_equal(names(lim(usrDef, side = c(1,3))), as.side_name(c(1,3)))
+  expect_equal(names(lim(usrDef, side = c(3,1))), as.side_name(c(3,1)))
+  
 })
 
 test_that("lim for classes", {
