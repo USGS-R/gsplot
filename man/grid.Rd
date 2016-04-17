@@ -24,8 +24,9 @@ gsNew <- abline(gsNew, b=1, a=0, legend.name="1:1")
 gsNew <- legend(gsNew, location="topleft",title="Awesome!")
 gsNew
 
+x.date <- seq(as.Date("2000-01-01"), by = "month", length.out = 10)
 gs <- gsplot() \%>\%
-       points(1:10,1:10) \%>\%
+       points(x.date,1:10) \%>\%
        lines(6:14,6:14,side=c(3,4)) \%>\%
        grid(side=c(3,4))
 gs

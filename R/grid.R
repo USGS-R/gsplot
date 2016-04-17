@@ -16,8 +16,9 @@
 #' gsNew <- legend(gsNew, location="topleft",title="Awesome!")
 #' gsNew
 #' 
+#' x.date <- seq(as.Date("2000-01-01"), by = "month", length.out = 10)
 #' gs <- gsplot() %>%
-#'        points(1:10,1:10) %>%
+#'        points(x.date,1:10) %>%
 #'        lines(6:14,6:14,side=c(3,4)) %>%
 #'        grid(side=c(3,4))
 #' gs
@@ -51,50 +52,37 @@ grid.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
   
 }
 
-draw_custom_grid <- function(object, index){
+draw_custom_grid <- function(object, view.name){
    
   i <- which(names(object) %in% 'axis')
-  definded.sides <- sapply(i, function(x) object[[x]][['arguments']][['side']])
-
-  window = object[[index]][['window']]
+  defined.sides <- sapply(i, function(x) object[[x]][['arguments']][['side']])
+  window = object[[view.name]][['window']]
   
-  view.info <- view_info(object)
-  view.info <- view.info[index == view.info$index,]
+  view.name <- names(object[view.name])
+  side.names <- as.side_name(view.name)
   
-  grid.args <- set_args("grid",object[[index]][['grid']], package = "graphics")
+  grid.args <- set_args("grid", object[[view.name]][['grid']], package = "graphics")
   
-  if(class(window$xlim) %in% c("numeric","integer")){
-    x.at <- axTicks(view.info$x)
-  } else if (class(window$xlim) == "Date"){
-    x.at <- axis.Date(view.info$x,window$xlim)
-  } else if (class(window$xlim) == "POSIXct"){
-    x.at <- axis.POSIXct(view.info$x,window$xlim)
-  }
-  
-  if(view.info$x.side.defined.by.user){
-    axes.index <- i[definded.sides == view.info$x]
-    x <- object[axes.index][['axis']][['arguments']][['at']]
-    if(!is.null(x)){
-      x.at <-x
+  at <- list()
+  for (side.name in side.names){
+    side <- as.side(side.name)
+    lim <- lim(object, side)
+    if(is.numeric(lim)){
+      at[[side.name]] <- axTicks(side)
+    } else{
+      fun <- getFromNamespace(paste0('axis.',class(lim)[1L]),'graphics')
+      at[[side.name]] <- fun(side, x = lim, lwd=0, lwd.ticks=0, labels = FALSE)
+    }
+    if(side %in% defined.sides){
+      axes.index <- i[defined.sides == side]
+      usr.at <- object[axes.index][['axis']][['arguments']][['at']]
+      if(!is.null(usr.at)){
+        at[[side.name]] <- usr.at
+      }
     }
   }
   
-  if(class(window$ylim) %in% c("numeric","integer")){
-    y.at <- axTicks(view.info$y)
-  } else if (class(window$ylim) == "Date"){
-    y.at <- axis.Date(view.info$y,window$ylim)
-  } else if (class(window$ylim) == "POSIXct"){
-    y.at <- axis.POSIXct(view.info$y,window$ylim)
-  }
-    
-  if(view.info$y.side.defined.by.user){
-    axes.index <- i[definded.sides == view.info$y]
-    y <- object[axes.index][['axis']][['arguments']][['at']]
-    if(!is.null(y)){
-      y.at <- y
-    }
-  }
   grid.args <- grid.args[names(grid.args) != "equilogs"] 
-  abline(h=y.at, v=x.at, grid.args)
+  abline(h=at[[as.y_side_name(view.name)]], v=at[[as.x_side_name(view.name)]], grid.args)
     
 }

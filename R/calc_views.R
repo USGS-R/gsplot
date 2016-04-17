@@ -11,54 +11,43 @@ calc_views <- function(gsplot){
   
   views <- group_views(gsplot)
   
-  views <- set_view_log(views)
-
-  views <- set_view_lim(views)
-  
-  views <- set_view_lab(views)
-  
   #views <- set_view_order(views, config("orderToPlot")$order)
   
   views <- set_window(views)
   
   return(views)
 }
-
-which_views <- function(gsplot){
-  grep('view.', names(gsplot))
-}
-
-views <- function(gsplot){
-  gsplot[which_views(gsplot)]
-}
-
-non_views <- function(gsplot){
-  non.views <- gsplot
-  non.views[which_views(non.views)] <- NULL
-  return(non.views)
-}
+            
 
 group_views <- function(gsplot){
   tail.gs <- gsplot[[length(gsplot)]]
   tail.nm <- names(gsplot[length(gsplot)])
   gsplot[[length(gsplot)]] <- NULL
-  views <- views(gsplot) # existing
-  non.views <- non_views(gsplot)
   add_sides <- set_sides(tail.gs[['gs.config']][['side']])
-    
+  non.views <- non_views(gsplot, include.sides = FALSE)
+  vew.n.sde <- gsplot[c(which_views(gsplot), which_sides(gsplot))]
   if (!is.null(add_sides)){
+    vew.n.sde <- append_sides(vew.n.sde, add_sides)
     to_draw <- setNames(list(c(tail.gs[['arguments']], legend.name=tail.gs[['gs.config']][['legend.name']])), tail.nm)
+    view.name <- as.view_name(c(add_sides[1],add_sides[2]))
+    sides <- sides(vew.n.sde)
+    named.view <- list(to_draw) %>% setNames(view.name)
+    sides <- set_side_lim(named.view, sides)
+    sides <- set_side_log(named.view, sides)
+    sides <- set_side_lab(named.view, sides)
+    to_draw[[1]] <- remove_field(to_draw[[1]], param=c('log','ylim','xlim','xlab','ylab'))
+    
+    vew.n.sde <- append_replace(vew.n.sde, sides)
+    
     # // to do: verify sides are in order: x then y
-    view.1 <- views_with_side(views, add_sides[1])
-    view.2 <- views_with_side(views, add_sides[2])
-    if (!is.null(view.1) && !is.null(view.2) && any(view.2==view.1)){
-      v.i = view.2[which(view.2 %in% view.1)]
-      views[[v.i]] <- append(views[[v.i]], to_draw)
-      views[[v.i]][['window']][['par']] <- append_replace(views[[v.i]][['window']][['par']], tail.gs[['gs.config']][['par']])
+    
+    if (!is.null(vew.n.sde[[view.name]])){
+      vew.n.sde[[view.name]] <- append(vew.n.sde[[view.name]], to_draw)
+      vew.n.sde[[view.name]][['window']][['par']] <- append_replace(gsplot[[view.name]][['window']][['par']], tail.gs[['gs.config']][['par']])
     } else{
       new.view <- list(append(to_draw, list(window=list(side=add_sides,par=tail.gs[['gs.config']][['par']])))) %>% 
-        setNames(sprintf('view.%s.%s',add_sides[1],add_sides[2]))
-      views <- append(views, new.view)
+        setNames(view.name)
+      vew.n.sde <- append(vew.n.sde, new.view)
     }
   } else {
     # // if field isn't associated with a side(s), it is moved up to top level (e.g., legend)
@@ -67,7 +56,7 @@ group_views <- function(gsplot){
     non.views <- append(non.views, newList)
   }
 
-  return(append(views, non.views))
+  return(append(vew.n.sde, non.views))
 }
 
 append_replace <- function(old.list, new.list){
@@ -77,15 +66,7 @@ append_replace <- function(old.list, new.list){
   out.list <- append(out.list, new.list)
   return(out.list)
 }
-set_sides <- function(sides){
-  if (length(sides)==1){
-    if(sides %% 2 == 0)
-      sides = c(1,sides)
-    else 
-      sides = c(sides,2)
-  } 
-  return(sides)
-}
+
 
 which_reals <- function(values, na.value){
   
@@ -114,81 +95,11 @@ set_view_window <- function(views, param, na.value=NA, remove=TRUE, ignore=NULL)
   return(views)
 }
 
-set_view_log <- function(views){
-  set_view_window(views, param = 'log', na.value="")
-}
 
 set_view_lab <- function(views){
   views <- set_view_window(views, param = 'ylab', na.value="")
   set_view_window(views, param = 'xlab', na.value="")
 }
-
-
-set_view_lim <- function(views){
-  y.include <- c('y','y1','y0','ytop','ybottom')
-  x.include <- c('x','x1','x0','xleft','xright')
-  views <- set_view_window(views, param = 'xlim', na.value=NA, ignore='window', remove=FALSE)
-  views <- set_view_window(views, param = 'ylim', na.value=NA, ignore='window', remove=FALSE)
-  
-  data <- list(y=summarize_args(views, y.include, ignore=c('window','gs.config')), 
-               x=summarize_args(views, x.include, ignore=c('window','gs.config')))
-
-  axs <- list(yaxs=summarize_args(views, c('yaxs'), ignore=c('gs.config')),
-              xaxs=summarize_args(views, c('xaxs'), ignore=c('gs.config')))
-  
-  definedSides <- unlist(c_unname(views), recursive = FALSE)
-  definedSides <- unique(unname(unlist(definedSides[grep("side", names(definedSides))])))
-
-  for(param in c('y','x')){
-    for (i in names(data[[param]])){
-      n.i <- as.numeric(i)
-      lim.name <- paste0(param,'lim')
-      axs.name <- paste0(param, 'axs')
-      view.side <- get_view_side(views, as.numeric(i), param)
-      match.side <- as.character(views_with_side(views, view.side))
-      data.var <- c_unname(data[[param]][match.side])
-      
-      if(!is.null(data.var) && all(is.na(data.var))){
-        if((view.side %% 2) == 0){ #even
-          otherSide <- c(2,4)[c(2,4) %in% definedSides[definedSides != view.side]]
-        } else { #odd
-          otherSide <- c(1,3)[c(1,3) %in% definedSides[definedSides != view.side]]
-        }
-        data.var <- c_unname(data[[param]][otherSide])
-        if(all(is.na(data.var))){ #So do data total
-          data.var <- c(0,1)
-        }
-      }
-      
-      data.lim <- range(data.var[is.finite(data.var)])
-      usr.lim <- views[[n.i]][['window']][[lim.name]][1:2]
-      views[[n.i]][['window']][[lim.name]] <- data.lim
-      views[[n.i]][['window']][[lim.name]][!is.na(usr.lim)] <- usr.lim[!is.na(usr.lim)]
-    
-      
-      usr.axs <- axs[[axs.name]][[n.i]]
-      
-      if (any(!is.na(usr.axs)) && any(usr.axs == 'o')) {
-        if (all(!is.na(usr.lim)))
-          stop('no NA given to distinguish buffered limit')
-        
-        view.i <- which(!names(views[[n.i]]) %in% c('window', 'gs.config'))
-        buffer <- 0.04*diff(views[[n.i]][['window']][[lim.name]])
-        lim <- views[[n.i]][['window']][[lim.name]][[which(is.na(usr.lim))]]
-        buffered.lim <- ifelse(which(is.na(usr.lim)) == 1, lim - buffer, lim + buffer)
-        views[[n.i]][[view.i]][[lim.name]][[which(is.na(usr.lim))]] <- buffered.lim
-        views[[n.i]][['window']][[lim.name]][[which(is.na(usr.lim))]] <- buffered.lim
-        views[[n.i]][['window']][['par']][[axs.name]] <- NULL
-        views[['par']][[axs.name]] <- 'i'
-      }
-  
-    }
-
-  }
-
-  return(views)
-}
-
 
 c_unname <- function(list){
   unname(do.call(c, list))
@@ -198,40 +109,21 @@ unname_c <- function(list){
   do.call(c, unname(list))
 }
 
-views_with_side <- function(views, side){
-  if(length(side) > 1)
-    stop('side can only be length of 1')
-  with.side = lapply(views, function(x) any(x[['window']][['side']] %in% side))
-  view.match = unname(unlist(with.side[which_views(views)]))
-  if (is.null(view.match) || !any(view.match))
-    return(NULL)
-  else
-    return(which(view.match))
-}
-
-get_view_side <- function(views, view_i, param){
-  i = which_views(views)[view_i]
-  sides <- views[[i]][['window']][['side']]
-  if (param=='y')
-    return(sides[which(sides %% 2 == 0)])
-  else if (param=='x')
-    return(sides[which(sides %% 2 != 0)])
-  else
-    stop('view side undefined for ',param)
-}
-
-summarize_args <- function(views, param, na.value, ignore='gs.config'){
+summarize_args <- function(views, param, na.value=NA, ignore='gs.config'){
   
-  view_i <- which_views(views)
+  view.names <- names(views[which_views(views)])
   values <- list()
-  for (i in view_i){
-    x <- views[[i]][!names(views[[i]]) %in% ignore]
+  for (view.name in view.names){
+    x <- views[[view.name]][!names(views[[view.name]]) %in% ignore]
     valStuff <- lapply(x, function(x) strip_pts(x, param))
-    values[[i]] <- c_unname(valStuff)
+    flat.vals <- c_unname(valStuff)
+    if (!is.expression(flat.vals) && all(is.na(flat.vals)))
+      flat.vals <- na.value
+    values[[view.name]] <- flat.vals
   }
-  names(values) <- view_i
   return(values)
 }
+
 
 remove_field <- function(list, param){
  
@@ -248,11 +140,17 @@ strip_pts <- function(list, param){
     if (v %in% names(list) &&  !inherits(list[[v]], c('function','formula')))
       out <- append(out, list[[v]])
     else{
-      u.list <- unname_c(list)
-      if(v %in% names(u.list))
-        out <- append(out, u.list[[v]])
-      else
+      if (any(sapply(list, is.list))){
+        u.list <- unname_c(list[sapply(list, is.list)])
+        if(v %in% names(u.list))
+          out <- append(out, u.list[[v]])
+        else if (any(sapply(u.list, function(x) any(names(x) %in% v))))
+          out <- append(out, u.list[[which(sapply(u.list, function(x) any(names(x) %in% v)))]][[v]])
+        else
+          out <- append(out, NA)
+      } else
         out <- append(out, NA)
+      
     }
     
   }

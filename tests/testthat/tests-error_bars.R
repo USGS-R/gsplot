@@ -24,7 +24,7 @@ test_that("testing content of gsplot list for NA given", {
   
   expect_equal(length(gs$view$arrows$y0), 1)
   
-  expect_less_than(gs$view$arrows$x1, gs$view$arrows$x0)
+  expect_lt(gs$view$arrows$x1, gs$view$arrows$x0)
   
 })
 
