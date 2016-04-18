@@ -26,6 +26,30 @@ This package is still very much in development, so the API may change at any tim
 ##Overview
 The goal of this package is to simplify plotting in R. This includes improving the basic workflow and using defaults that tend to adhear to USGS style guidelines.
 
+Extra features that are not available in base:
+
+```{r table_plots, echo=FALSE, message=FALSE}
+library(gsplot)
+piping <- gsplot() %>% 
+  points(1:3, 2:4) %>%
+  lines(1:5, 5:1)
+
+autolegend <- gsplot() %>% 
+  points(1:3, 1:3, col = "green", pch = 8, legend.name = "my points") %>% 
+  points(3:1, 3:1, col = "red", pch = 20, legend.name = "some other points") %>% 
+  lines(1:3, 1:3, legend.name = "some line") %>% 
+  legend()
+
+```
+
+Feature           | Description   | Example code  | Example figure
+-------------     | ------------- | ------------- | -------------
+Piping            | Using the magrittr pipe, `%>%`, you can easily add features to your plot. | [code] | `r print(piping)`
+Automatic legend  | For each plot feature, the argument `legend.name` can be included in it's function call. Then, the `legend()` function is used to add the legend to your plot object. | [code]  | `r print(autolegend)`
+Error bars        | blahblah  | blahblah  |
+Callouts          | blahblah  | blahblah  |
+Axes reversal     | If the axis needs to be reversed, you can add the argument `reverse = TRUE` to the function call. | 
+
 ##Improved workflow examples
 
 ```{r echo=TRUE, warning=FALSE, message=FALSE}
