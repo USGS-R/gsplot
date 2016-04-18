@@ -57,3 +57,5 @@ function_args <- function(package, name, object, ..., use.default=paste0(name,'.
   
   return(params)
 }
+
+user_function_args <- function_args
