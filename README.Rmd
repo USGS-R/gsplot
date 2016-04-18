@@ -24,19 +24,18 @@ This package is still very much in development, so the API may change at any tim
 
 
 ##Overview
-The goal of this package is to simplify plotting in R. This includes improving the basic workflow and using defaults that tend to adhear to USGS style guidelines.
+The goal of this package is to simplify plotting in R. This includes improving the basic workflow and using defaults that tend to adhear to USGS style guidelines. Extra features and functions are included that are not available in base for common USGS elements (error bars, callouts, reverse y axes, etc.). This is intended to make the plotting code more concise and easier to interpret for the sake of reproducibility. 
 
-Extra features that are not available in base:
-
-Feature                       | Description                 | 
--------------                 | --------------------------  | 
-[Piping](#pipes)              | Using the magrittr pipe, `%>%`, you can easily add features to your plot. |
-[Automatic legend](#legend)   | For each plot feature, corresponding legend name can be specified. Eliminates duplication of styles. |
-[Error bars](#error)          | Apply error bars to points by specifying the upper and lower offsets. |
-[Callouts](#callouts)         | Add a line and label in one call. |
-[Axes reversal](#reverse)     | Reverse the axis with by specifying one argument to `axis()`.  |          
-[Automatic limits](#limits)   | Automatically regenerate limits of plot when new features are added. |        
-[Embedded functions](#embed)  |               |       
+Feature                                 | Description                 | 
+-------------                           | --------------------------  | 
+[Piping and plots as objects](#pipes)   | Easily add features to your plot. |
+[Automatic legend](#legend)             | For each plot feature, a corresponding legend name can be specified. Eliminates the need to duplicate `par` arguments. |
+[Error bars](#error)                    | Apply error bars to points by specifying the upper and lower offsets. |
+[Callouts](#callouts)                   | Add a line and label in one call. |
+[Axes reversal](#reverse)               | Reverse the axis by specifying one argument to `axis()`.  |
+[Automatic limits](#limits)             | Automatically regenerate limits of plot when new features are added.  |
+[Embedded functions](#embed)            | Add extra plot features within a points call (no duplication of x/y values)  |       
+[Compatibility with base](#base) | Can start a plot using `gsplot`, and add base R features afterwards.  | 
 
 ```{r table_plots, echo=FALSE, message=FALSE}
 library(gsplot)
@@ -44,50 +43,101 @@ library(gsplot)
 
 <a name="pipes"></a>
 
-#### Piping
+#### Piping and plot objects
 
-Using the magrittr pipe, `%>%`, you can easily add features to your plot. 
+With the magrittr pipe (`%>%`) and the gsplot object, you can easily add features to your plot without needing repeat code. 
+
+```{r message=FALSE, warning=FALSE, eval = FALSE}
+# base:
+plot(1:3, 2:4)
+lines(1:5, 5:1)
+
+plot(1:3, 2:4)
+lines(1:5, 5:1)
+points(3.5,3.5, col="blue")
+```
 
 ```{r message=FALSE, warning=FALSE}
-piping <- gsplot() %>% 
+myplot <- gsplot() %>% 
   points(1:3, 2:4) %>%
   lines(1:5, 5:1)
-piping
+
+myplot <- myplot %>% points(3.5,3.5,col="blue")
+myplot
 ```
 
 <a name="legend"></a>
 
 #### Automatic legend
 
-For each plot feature, the argument `legend.name` can be included in it's function call. Then, the `legend()` function is used to add the legend to your plot object.
+For each plot feature, the argument `legend.name` can be included in it's function call. Then, the `legend()` function is used to add the legend to your plot object. This creates a legend that inherits `par` specifications from the function calls, so that you do not have to also include it in the legend call. 
+
+```{r message=FALSE, warning=FALSE, eval = FALSE}
+# base:
+plot(1:3, 1:3, col = "green", pch = 8) 
+points(1:3, 3:1, col = "red", pch = 20)
+lines(1:3, 1:3, lty = 2) 
+rect(1.15,2,1.25,2.5, col = "blue", density = 15, angle = 45)
+legend(x = "topright", legend = c("my points", "some other points", "some line", "box"),
+       col = c("green", "red", "black", "blue"), 
+       pch = c(8,20,NA,NA), 
+       lty = c(NA,NA,2,NA), 
+       density = c(NA,NA,NA,15), 
+       angle = c(NA,NA,NA,45), 
+       fill = c("white","white","white","blue"), 
+       border = c(NA,NA,NA,"black"))
+```
 
 ```{r message=FALSE, warning=FALSE}
-autolegend <- gsplot() %>% 
+gsplot() %>% 
   points(1:3, 1:3, col = "green", pch = 8, legend.name = "my points") %>% 
   points(1:3, 3:1, col = "red", pch = 20, legend.name = "some other points") %>% 
-  lines(1:3, 1:3, legend.name = "some line") %>% 
+  lines(1:3, 1:3, lty = 2, legend.name = "some line") %>% 
+  rect(1.15,2,1.25,2.5, col = "blue", density = 15, angle = 45, legend.name = "box") %>% 
   legend()
-autolegend
 ```
 
 <a name="error"></a>
 
 #### Error bars
 
-Apply error bars to points by specifying the upper and lower offsets. 
+Apply error bars to points by specifying the upper and lower offsets. Horizontal and vertical error bars can be completed in the same call to `error_bar`. 
+
+```{r message=FALSE, warning=FALSE, eval=FALSE}
+# base:
+plot(4:8, 4:8) 
+arrows(x0 = c(5,7), x1 = c(5,7), 
+       y0 = c(5,7), y1 = c(6,7.5), 
+       angle = 90, length = 0.1)
+arrows(x0 = c(5,7), x1 = c(5,7), 
+       y0 = c(5,7), y1 = c(4.5,6), 
+       angle = 90, length = 0.1)
+arrows(x0 = 6, x1 = 6.75, y0 = 6, y1 = 6,
+       angle = 90, length = 0.1)
+```
 
 ```{r message=FALSE, warning=FALSE}
-errorbarsplot <- gsplot() %>% 
+gsplot() %>% 
   points(4:8, 4:8) %>% 
-  error_bar(c(5,7), c(5,7), y.high = c(1,0.5), y.low = c(0.5,1))
-errorbarsplot
+  error_bar(x = 5:7, y = 5:7, x.high = c(NA,0.75,NA), 
+            y.high = c(1,NA,0.5), y.low = c(0.5,NA,1))
 ```
 
 <a name="callouts"></a>
 
 #### Callouts
 
-Add a line and label in one call.
+Add a line and label in one call, rather than making a call to `segments` and `text`. This function automatically determines if the callout line will be outside of the plot limits, and changes the angle accordingly. 
+
+```{r message=FALSE, warning=FALSE, eval=FALSE}
+# base:
+plot(1:3,1:3)
+segments(x0 = 1:2, y0 = 1:2, x1 = c(1.25,2.25), y1 = c(1.25,2.25))
+text(x = c(1.25,2.25), y = c(1.25,2.25), 
+     labels = paste("point", 1:2), pos = 4)
+segments(x0 = 3, y0 = 3, x1 = 2.75, y1 = 2.75)
+text(x = 2.75, y = 2.75, labels = paste("point 3"), pos = 2)
+```
 
 ```{r message=FALSE, warning=FALSE}
 calloutsplot <- gsplot() %>% 
@@ -100,41 +150,76 @@ calloutsplot
 
 #### Axis reversal
 
-If the axis needs to be reversed, you can add the argument `reverse = TRUE` to the function call.
+If the axis needs to be reversed, you can add the argument `reverse = TRUE` to the function call. The order of your data does not need to change, and you can easily revert the axis flip. 
+
+```{r message=FALSE, warning=FALSE, eval=FALSE}
+# base:
+data_y <- c(1,7,23,47,31)
+plot(1:5, rev(data_y)) 
+```
 
 ```{r message=FALSE, warning=FALSE}
-axisreversal <- gsplot() %>% 
-  title("groundwater level") %>% 
-  points(1:5, c(1,7,23,47,31)) %>% 
+data_y <- c(1,7,23,47,31)
+gsplot() %>% 
+  points(1:5, data_y) %>% 
   axis(side = 2, reverse = TRUE)
-axisreversal
 ```
 
 <a name="limits"></a>
 
 #### Automatic limits
 
-Automatically regenerate limits of plot when new features are added. 
+`gsplot` automatically regenerates plot limits when new features are added, so that the user does not need to explicity do so. 
 
 ```{r message=FALSE, warning=FALSE}
-autolimits <- gsplot() %>% 
+# base:
+plot(1:3,1:3)
+points(5:6,5:6)
+
+#cuts it off, so you need to re-plot with different limits
+plot(1:3,1:3, ylim = c(1,6), xlim = c(1,6))
+points(5:6,5:6)
+```
+
+```{r message=FALSE, warning=FALSE}
+gsplot() %>% 
   points(1:3,1:3) %>% 
   points(5:6,5:6)
-autolimits
 ```
 
 <a name="embed"></a>
 
 #### Embedded functions
 
-```{r message=FALSE, warning=FALSE}
+Add features that apply to points within the points call, so that it inherits those values. Reduces the amount of code because you are not repeating the points values. Functions that can be embedded: `error_bar`, `callouts`.
 
+```{r message=FALSE, warning=FALSE, eval=FALSE}
+# base:
+plot(4:8, 4:8) 
+arrows(x0 = c(5,7), x1 = c(5,7), 
+       y0 = c(5,7), y1 = c(6,7.5), 
+       angle = 90, length = 0.1)
+arrows(x0 = c(5,7), x1 = c(5,7), 
+       y0 = c(5,7), y1 = c(4.5,6), 
+       angle = 90, length = 0.1)
+arrows(x0 = 6, x1 = 6.75, y0 = 6, y1 = 6,
+       angle = 90, length = 0.1)
 ```
 
-#### 
+```{r message=FALSE, warning=FALSE}
+gsplot() %>% 
+  points(4:8, 4:8, error_bar(x.high = c(NA,NA,0.75,NA,NA), 
+                             y.high = c(NA,1,NA,0.5,NA), 
+                             y.low = c(NA,0.5,NA,1,NA))) 
+```
+
+#### Backwards compatibility with base plotting
+
+If you need to use a feature that `gsplot` has yet to implement, you can always start with `gsplot` and add on using base R. The reverse is (starting with base and then using `gsplot`) is not supported.
 
 ```{r message=FALSE, warning=FALSE}
-
+gsplot() %>% points(1,2)
+points(2,3)
 ```
 
 ##Improved workflow examples
