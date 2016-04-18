@@ -3,8 +3,8 @@ title: "README"
 author: "R"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
-  md_document:
-    variant: markdown_github
+  html_document:
+    # variant: markdown_github
 ---
 
 ##Installation
@@ -28,46 +28,114 @@ The goal of this package is to simplify plotting in R. This includes improving t
 
 Extra features that are not available in base:
 
+Feature                       | Description                 | 
+-------------                 | --------------------------  | 
+[Piping](#pipes)              | Using the magrittr pipe, `%>%`, you can easily add features to your plot. |
+[Automatic legend](#legend)   | For each plot feature, corresponding legend name can be specified. Eliminates duplication of styles. |
+[Error bars](#error)          | Apply error bars to points by specifying the upper and lower offsets. |
+[Callouts](#callouts)         | Add a line and label in one call. |
+[Axes reversal](#reverse)     | Reverse the axis with by specifying one argument to `axis()`.  |          
+[Automatic limits](#limits)   | Automatically regenerate limits of plot when new features are added. |        
+[Embedded functions](#embed)  |               |       
+
 ```{r table_plots, echo=FALSE, message=FALSE}
 library(gsplot)
+```
+
+<a name="pipes"></a>
+
+#### Piping
+
+Using the magrittr pipe, `%>%`, you can easily add features to your plot. 
+
+```{r message=FALSE, warning=FALSE}
 piping <- gsplot() %>% 
   points(1:3, 2:4) %>%
   lines(1:5, 5:1)
+piping
+```
 
+<a name="legend"></a>
+
+#### Automatic legend
+
+For each plot feature, the argument `legend.name` can be included in it's function call. Then, the `legend()` function is used to add the legend to your plot object.
+
+```{r message=FALSE, warning=FALSE}
 autolegend <- gsplot() %>% 
   points(1:3, 1:3, col = "green", pch = 8, legend.name = "my points") %>% 
   points(1:3, 3:1, col = "red", pch = 20, legend.name = "some other points") %>% 
   lines(1:3, 1:3, legend.name = "some line") %>% 
   legend()
+autolegend
+```
 
+<a name="error"></a>
+
+#### Error bars
+
+Apply error bars to points by specifying the upper and lower offsets. 
+
+```{r message=FALSE, warning=FALSE}
 errorbarsplot <- gsplot() %>% 
   points(4:8, 4:8) %>% 
   error_bar(c(5,7), c(5,7), y.high = c(1,0.5), y.low = c(0.5,1))
+errorbarsplot
+```
 
+<a name="callouts"></a>
+
+#### Callouts
+
+Add a line and label in one call.
+
+```{r message=FALSE, warning=FALSE}
 calloutsplot <- gsplot() %>% 
   points(1:3,1:3) %>% 
   callouts(1:3, 1:3, labels = paste("point", 1:3))
+calloutsplot
+```
 
+<a name="reverse"></a>
+
+#### Axis reversal
+
+If the axis needs to be reversed, you can add the argument `reverse = TRUE` to the function call.
+
+```{r message=FALSE, warning=FALSE}
 axisreversal <- gsplot() %>% 
   title("groundwater level") %>% 
   points(1:5, c(1,7,23,47,31)) %>% 
   axis(side = 2, reverse = TRUE)
+axisreversal
+```
 
+<a name="limits"></a>
+
+#### Automatic limits
+
+Automatically regenerate limits of plot when new features are added. 
+
+```{r message=FALSE, warning=FALSE}
 autolimits <- gsplot() %>% 
   points(1:3,1:3) %>% 
   points(5:6,5:6)
+autolimits
+```
+
+<a name="embed"></a>
+
+#### Embedded functions
+
+```{r message=FALSE, warning=FALSE}
 
 ```
 
-Feature           | Description   | Example code  | Example figure
--------------     | ------------- | ------------- | -------------
-Piping            | Using the magrittr pipe, `%>%`, you can easily add features to your plot. | [code] | `r print(piping)`
-Automatic legend  | For each plot feature, the argument `legend.name` can be included in it's function call. Then, the `legend()` function is used to add the legend to your plot object. | [code]  | `r print(autolegend)`
-Error bars        | Apply error bars to points by specifying the upper and lower offsets.  | [code]  | `r print(errorbarsplot)`
-Callouts          | Add a line and label in one call.  | [code]  | `r print(calloutsplot)`
-Axes reversal     | If the axis needs to be reversed, you can add the argument `reverse = TRUE` to the function call. | [code]  | `r print(axisreversal)`
-Automatic limits  | Automatically regenerate limits of plot when new features are added.  | [code]  | `r print(autolimits)`
-Embedded functions  | 
+#### 
+
+```{r message=FALSE, warning=FALSE}
+
+```
 
 ##Improved workflow examples
 
