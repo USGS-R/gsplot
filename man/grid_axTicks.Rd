@@ -22,8 +22,9 @@ grid_axTicks uses different methods to get tick locations
 depending on the class of the data on that \code{side}. For numeric data,
 \code{\link[graphics]{axTicks}}, for other data (only tested Date and POSIX), 
 \code{\link[graphics]{axis.Date}} and \code{\link[graphics]{axis.POSIXct}} are used,
-but the actual plotting of ticks is suppressed. If an axis is specified by the user 
-for this side, those ticks are used.
+but the actual plotting of ticks is suppressed. 
+This function is really hard to test because it uses the actual plot to get tick locations,
+so it is hard to isolate.
 }
 \keyword{internal}
 
