@@ -36,9 +36,26 @@ piping <- gsplot() %>%
 
 autolegend <- gsplot() %>% 
   points(1:3, 1:3, col = "green", pch = 8, legend.name = "my points") %>% 
-  points(3:1, 3:1, col = "red", pch = 20, legend.name = "some other points") %>% 
+  points(1:3, 3:1, col = "red", pch = 20, legend.name = "some other points") %>% 
   lines(1:3, 1:3, legend.name = "some line") %>% 
   legend()
+
+errorbarsplot <- gsplot() %>% 
+  points(4:8, 4:8) %>% 
+  error_bar(c(5,7), c(5,7), y.high = c(1,0.5), y.low = c(0.5,1))
+
+calloutsplot <- gsplot() %>% 
+  points(1:3,1:3) %>% 
+  callouts(1:3, 1:3, labels = paste("point", 1:3))
+
+axisreversal <- gsplot() %>% 
+  title("groundwater level") %>% 
+  points(1:5, c(1,7,23,47,31)) %>% 
+  axis(side = 2, reverse = TRUE)
+
+autolimits <- gsplot() %>% 
+  points(1:3,1:3) %>% 
+  points(5:6,5:6)
 
 ```
 
@@ -46,9 +63,11 @@ Feature           | Description   | Example code  | Example figure
 -------------     | ------------- | ------------- | -------------
 Piping            | Using the magrittr pipe, `%>%`, you can easily add features to your plot. | [code] | `r print(piping)`
 Automatic legend  | For each plot feature, the argument `legend.name` can be included in it's function call. Then, the `legend()` function is used to add the legend to your plot object. | [code]  | `r print(autolegend)`
-Error bars        | blahblah  | blahblah  |
-Callouts          | blahblah  | blahblah  |
-Axes reversal     | If the axis needs to be reversed, you can add the argument `reverse = TRUE` to the function call. | 
+Error bars        | Apply error bars to points by specifying the upper and lower offsets.  | [code]  | `r print(errorbarsplot)`
+Callouts          | Add a line and label in one call.  | [code]  | `r print(calloutsplot)`
+Axes reversal     | If the axis needs to be reversed, you can add the argument `reverse = TRUE` to the function call. | [code]  | `r print(axisreversal)`
+Automatic limits  | Automatically regenerate limits of plot when new features are added.  | [code]  | `r print(autolimits)`
+Embedded functions  | 
 
 ##Improved workflow examples
 
