@@ -2,12 +2,24 @@
 % Please edit documentation in R/add_to_view.R
 \name{call_arguments}
 \alias{call_arguments}
-\title{add function call to view}
+\title{extract the call arguments}
 \usage{
 call_arguments(fun.name, ...)
 }
+\arguments{
+\item{fun.name}{the name of the rendering function}
+
+\item{\dots}{arguments to \code{fun.name} or an embedded function 
+within it.}
+}
+\value{
+list with arguments. List is named according to function 
+names.
+}
 \description{
-add function call to view
+extract the normal call arguments, and embedded function 
+call arguments and return as lists named according to their 
+rendering functions.
 }
 \examples{
 gs <- gsplot() \%>\% 
