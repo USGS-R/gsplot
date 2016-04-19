@@ -41,7 +41,7 @@ loadConfig = function(filename) {
 #' @importFrom graphics par
 #' @export
 config <- function(type, ..., persist=FALSE){
-  allowedTypes <- names(fun.details)
+  allowedTypes <- names(pkg.env$fun.details)
   
   type <- match.arg(type, choices = allowedTypes)
   
