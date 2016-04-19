@@ -47,8 +47,9 @@ points <- function(object, ...) {
 
 points.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
   fun.name <- 'points'
+  side <- set_sides(side)
   call.args <- call_arguments(fun.name, ...)
-  # // object <- add_to_view(object, call.args, side=side)
+  object <- add_to_view(object, call.args, side=side)
   # // object <- modify_side(object, side.args, side=side)
   # // object <- modify_par(object, par.args)
   # // object <- modify_legend(object, par.args)

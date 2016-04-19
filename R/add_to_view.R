@@ -1,4 +1,26 @@
 
+add_new_view <- function(object, view.name){
+  view <- list(c())
+  names(view) <- view.name
+  view.i <- which_views(object)
+  if (length(view.i) == 0)
+    last.view.i <- 0
+  else 
+    last.view.i <- max(view)
+  object <- append(object, view, after = last.view.i)
+  return(object)
+}
+
+add_to_view <- function(object, call.args, side){
+  view.name <- as.view_name(side)
+  new.view <- !view.name %in% view_names(object)
+  
+  if (new.view)
+    object <- add_new_view(object, view.name)
+  
+  object[[view.name]] <- append(object[[view.name]], call.args)
+  return(object)
+}
 #' add function call to view
 #' 
 #' @param fun.name
