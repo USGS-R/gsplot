@@ -68,14 +68,3 @@ set_legend_args <- function(object, fun.name, ..., legend.name) {
   
   return(object)
 }
-
-set_type_params <- function(list, type.name, params){
-  for(k in names(params)){
-    if(type.name == 'p' && k %in% c('lty', 'lwd') ||
-       type.name == 'lchsS' && k %in% 'pch' ||
-       type.name  == 'n' || is.null(list[[k]])){
-        list[[k]] <- params[[match(k, names(params))]]
-    } 
-  }
-  return(list)
-}

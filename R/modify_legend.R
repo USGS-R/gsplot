@@ -102,6 +102,23 @@ get_legend_args <- function(fun.name, call.args, legend.name, ...){
   return(fun.legend.args)
 }
 
+#' figure out the correct par args needed depending on the "type" 
+#' 
+#' @param list
+#' @param type.name
+#' @param params
+#' @keywords internal
+set_type_params <- function(list, type.name, params){
+  for(k in names(params)){
+    if(type.name == 'p' && k %in% c('lty', 'lwd') ||
+       type.name == 'lchsS' && k %in% 'pch' ||
+       type.name  == 'n' || is.null(list[[k]])){
+      list[[k]] <- params[[match(k, names(params))]]
+    } 
+  }
+  return(list)
+}
+
 #' add the current function call legend info to the overall legend arguments
 #' 
 #' @param object
