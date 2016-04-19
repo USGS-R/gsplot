@@ -18,7 +18,11 @@ modify_legend <- function(object, fun.name, legend.name, ...){
     return(object)
   }
   
+  call.args <- call_arguments(fun.name, ...)[[1]] #exclude embedded
+  fun.legend.args <- get_legend_args(fun.name, call.args, legend.name, ...)
+  all.legend.args <- combine_legend_args(object, fun.legend.args)
   
+  object[['legend']][['legend.args']] <- all.legend.args
   
   # // set_legend_args stuff goes here
   return(object)
@@ -26,14 +30,76 @@ modify_legend <- function(object, fun.name, legend.name, ...){
 
 #' get the arguments that go into the legend for a single function call
 #' 
-#' @param object
 #' @param fun.name
+#' @param call.args
 #' @param legend.name
 #' @param .dots lazy_dots
 #' @keywords internal
-get_legend_args <- function(){
+get_legend_args <- function(fun.name, call.args, legend.name, ...){
   # // do stuff
   # return(legend_args)
+  
+  fun.default <- list(legend=legend.name,
+                      fill=quote(par("bg")),
+                      col=par("col"),
+                      border=NA,
+                      lty=NA,
+                      lwd=NA,
+                      pch=NA,
+                      angle=45,
+                      density=NA,
+                      pt.bg=NA,
+                      pt.cex=NA,
+                      pt.lwd=NA,
+                      text.col=par("col"),
+                      text.font=1)
+  
+  type <- call.args[['type']]
+  if(!is.null(type)){
+    type.name <- switch(type, p='p', b='bo', o='bo', l='lchsS', 
+                        c='lchsS', h='lchsS', s='lchsS', S='lchsS', n='n')
+    params.needed <- switch(type.name, 
+                            p=list(pch=1, pt.bg=quote(par("bg")), pt.cex=par("cex"), pt.lwd=par("lwd"), lty=NA, lwd=NA),
+                            bo=list(pch=1, pt.bg=quote(par("bg")), pt.cex=par("cex"), pt.lwd=par("lwd"), lty=1, lwd=1),
+                            lchsS=list(pch=NA, lty=1, lwd=1),
+                            n=list(lty=NA, lwd=NA, pch=NA))
+    call.args <- set_type_params(call.args, type.name, params.needed)
+    if(type.name %in% c('p', 'lchsS')) {fun.name <- switch(type.name, p="points", lchsS="lines")}
+  }
+  
+  if (fun.name == "points") {
+    pt.names <- c("lwd","bg","cex")
+    names(call.args) <- replace(names(call.args), which(names(call.args) %in% pt.names), 
+                                paste0("pt.", pt.names[na.omit(match(names(call.args), pt.names))]))
+    fun.specific <- list(border=quote(par("bg")),
+                         pch=1,
+                         pt.bg=quote(par("bg")),
+                         pt.cex=par("cex"),
+                         pt.lwd=par("lwd"))
+    
+  } else if (fun.name %in% c("lines", "abline", "arrows", "segments")) {
+    fun.specific <- list(border=quote(par("bg")),
+                         lty=1,
+                         lwd=1)
+    
+  } else if (fun.name %in% c("polygon", "rect")) {
+    names(call.args) <- replace(names(call.args), which(names(call.args)=="col"), "fill")
+    call.args$lty <- NA #lty/lwd should always be NA for polygon & rectangles in the legend
+    call.args$lwd <- NA  
+    fun.specific <- list(border=par("fg"))
+  }
+  
+  usr.args <- call.args[which(names(call.args) %in% names(fun.default))]
+  fun.all <- replace(fun.default, match(names(fun.specific), names(fun.default)), fun.specific)
+  add.args <- fun.all[!names(fun.all) %in% names(usr.args)]
+  fun.legend.args <- append(usr.args, add.args)  
+  
+  if(!is.character(fun.legend.args$lty)){
+    lineTypes <- c("blank", "solid", "dashed", "dotted", "dotdash", "longdash", "twodash")
+    fun.legend.args$lty <- lineTypes[fun.legend.args$lty + 1]
+  }
+  
+  return(fun.legend.args)
 }
 
 #' add the current function call legend info to the overall legend arguments
@@ -44,23 +110,23 @@ get_legend_args <- function(){
 #' @keywords internal
 combine_legend_args <- function(object, new_legend_args, ...){
   
-  if(!"legend" %in% names(gsplot)){
+  if(!"legend" %in% names(object)){
     default.args <- formals(graphics::legend)
     overall.legend <- c("x", "y", "bty", "bg", "box.lty", "box.lwd", "box.col", "cex",
                         "xjust", "yjust", "x.intersp", "y.intersp", "adj", "text.width", 
                         "merge", "trace", "plot", "ncol", "horiz", "title", "inset", 
                         "xpd", "title.col", "title.adj", "seg.len")  
     not.overall <- default.args[which(!names(default.args) %in% overall.legend)]
-    legendParamsALL <- vector("list", length(not.overall))
-    names(legendParamsALL) <- names(not.overall)
+    legend.args <- vector("list", length(not.overall))
+    names(legend.args) <- names(not.overall)
   } else {
-    legendParamsALL <- gsplot[['legend']][['legend.args']]
+    legend.args <- object[['legend']][['legend.args']]
   }
   
-  orderedParams <- new_legend_args[match(names(legendParamsALL), names(new_legend_args))]    
-  for (j in seq_along(legendParamsALL)) {
-    legendParamsALL[[j]] <- c(legendParamsALL[[j]], orderedParams[[j]])
+  orderedParams <- new_legend_args[match(names(legend.args), names(new_legend_args))]    
+  for (j in seq_along(legend.args)) {
+    legend.args[[j]] <- c(legend.args[[j]], orderedParams[[j]])
   }
   
-  return(legendParamsALL)
+  return(legend.args)
 }

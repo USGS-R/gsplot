@@ -59,79 +59,12 @@ set_legend_args <- function(object, fun.name, ..., legend.name) {
 
     for(p in seq(nrow(paramsAll_df))) {
       paramsAll_list <- as.list(paramsAll_df[p,])
-      object <- get_legend_args(object, fun.name, paramsAll_list, legend.name[p])
+      legend_args <- get_legend_args(object, fun.name, paramsAll_list, legend.name[p])
     }
     
   } else {
-    object <- get_legend_args(object, fun.name, paramsAll, legend.name)
+    legend_args <- get_legend_args(object, fun.name, paramsAll, legend.name)
   }
-  
-  return(object)
-}
-
-get_legend_args <- function(object, fun.name, paramsAll, legend.name){
-  
-  fun.default <- list(legend=legend.name,
-                      fill=quote(par("bg")),
-                      col=par("col"),
-                      border=NA,
-                      lty=NA,
-                      lwd=NA,
-                      pch=NA,
-                      angle=45,
-                      density=NA,
-                      pt.bg=NA,
-                      pt.cex=NA,
-                      pt.lwd=NA,
-                      text.col=par("col"),
-                      text.font=1)
-  
-  type <- paramsAll[['type']]
-  if(!is.null(type)){
-    type.name <- switch(type, p='p', b='bo', o='bo', l='lchsS', 
-                        c='lchsS', h='lchsS', s='lchsS', S='lchsS', n='n')
-    params.needed <- switch(type.name, 
-                            p=list(pch=1, pt.bg=quote(par("bg")), pt.cex=par("cex"), pt.lwd=par("lwd"), lty=NA, lwd=NA),
-                            bo=list(pch=1, pt.bg=quote(par("bg")), pt.cex=par("cex"), pt.lwd=par("lwd"), lty=1, lwd=1),
-                            lchsS=list(pch=NA, lty=1, lwd=1),
-                            n=list(lty=NA, lwd=NA, pch=NA))
-    paramsAll <- set_type_params(paramsAll, type.name, params.needed)
-    if(type.name %in% c('p', 'lchsS')) {fun.name <- switch(type.name, p="points", lchsS="lines")}
-  }
-  
-  if (fun.name == "points") {
-    pt.names <- c("lwd","bg","cex")
-    names(paramsAll) <- replace(names(paramsAll), which(names(paramsAll) %in% pt.names), 
-                                paste0("pt.", pt.names[na.omit(match(names(paramsAll), pt.names))]))
-    fun.specific <- list(border=quote(par("bg")),
-                         pch=1,
-                         pt.bg=quote(par("bg")),
-                         pt.cex=par("cex"),
-                         pt.lwd=par("lwd"))
-    
-  } else if (fun.name %in% c("lines", "abline", "arrows", "segments")) {
-    fun.specific <- list(border=quote(par("bg")),
-                         lty=1,
-                         lwd=1)
-    
-  } else if (fun.name %in% c("polygon", "rect")) {
-    names(paramsAll) <- replace(names(paramsAll), which(names(paramsAll)=="col"), "fill")
-    paramsAll$lty <- NA #lty/lwd should always be NA for polygon & rectangles in the legend
-    paramsAll$lwd <- NA  
-    fun.specific <- list(border=par("fg"))
-  }
-  
-  usr.args <- paramsAll[which(names(paramsAll) %in% names(fun.default))]
-  fun.all <- replace(fun.default, match(names(fun.specific), names(fun.default)), fun.specific)
-  add.args <- fun.all[!names(fun.all) %in% names(usr.args)]
-  fun.legend.args <- append(usr.args, add.args)  
-  
-  if(!is.character(fun.legend.args$lty)){
-    lineTypes <- c("blank", "solid", "dashed", "dotted", "dotdash", "longdash", "twodash")
-    fun.legend.args$lty <- lineTypes[fun.legend.args$lty + 1]
-  }
-  
-  object[['legend']] <- append(object[['legend']], list(legend.args=fun.legend.args))
   
   return(object)
 }
