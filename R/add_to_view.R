@@ -20,8 +20,9 @@ add_to_view <- function(object, call.args, side){
   view.name <- as.view_name(side)
   new.view <- !view.name %in% view_names(object)
   
-  if (new.view)
+  if (new.view){
     object <- add_new_view(object, view.name)
+  }
   
   object[[view.name]] <- append(object[[view.name]], call.args)
   return(object)

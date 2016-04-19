@@ -1,10 +1,5 @@
 gsconfig <- new.env(parent = emptyenv())
 
-overrides <- c("par", "points", "lines", "axis", 
-               "plot", "abline", "legend", "title",
-               "text", "mtext", "grid", "segments", "error_bar",
-               "arrows", "bgCol", "callouts", "rect", "polygon",
-               "symbols", "curve")
 
 #' @title Load gsplot config
 #'
@@ -46,7 +41,7 @@ loadConfig = function(filename) {
 #' @importFrom graphics par
 #' @export
 config <- function(type, ..., persist=FALSE){
-  allowedTypes <- overrides
+  allowedTypes <- names(fun.details)
   
   type <- match.arg(type, choices = allowedTypes)
   
