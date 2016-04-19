@@ -1,25 +1,10 @@
 gsconfig <- new.env(parent = emptyenv())
 
-overrides <- list("par" = "par",
-                  "points" = "plot.xy",
-                  "lines" = "plot.xy",
-                  "axis" = "axis",
-                  "plot" = "plot.xy",
-                  "abline" = "abline",
-                  "legend" = "legend",
-                  "title" = "title",
-                  "text" = "text",
-                  "mtext" = "mtext",
-                  "grid" = "grid",
-                  "segments" = "segments",
-                  "error_bar" = "error_bar",
-                  "arrows" = "arrows",
-                  "bgCol" = "bgCol",
-                  "callouts" = "callouts",
-                  "rect" = "rect",
-                  "polygon" = "polygon",
-                  "symbols" = "symbols", 
-                  "curve" = "curve")
+overrides <- c("par", "points", "lines", "axis", 
+               "plot", "abline", "legend", "title",
+               "text", "mtext", "grid", "segments", "error_bar",
+               "arrows", "bgCol", "callouts", "rect", "polygon",
+               "symbols", "curve")
 
 #' @title Load gsplot config
 #'
@@ -61,7 +46,7 @@ loadConfig = function(filename) {
 #' @importFrom graphics par
 #' @export
 config <- function(type, ..., persist=FALSE){
-  allowedTypes <- names(overrides)
+  allowedTypes <- overrides
   
   type <- match.arg(type, choices = allowedTypes)
   
@@ -107,12 +92,12 @@ formal_names <- function(type) {
   if (type == "par") {
     formals <- names(par(no.readonly=TRUE))
   } else {
-    func <- tryCatch(getFromNamespace(overrides[[type]], "graphics"), error=function(e){})
-    
-    if (!is.null(func)) {
-      formals <- names(formals(func))
+    funs <- function_defaults(type, out='def.funs')
+    if (length(funs) > 1){
+      formals <- c_unname(lapply(funs, function(x) names(formals(x))))
+      formals <- unique(formals)
     } else {
-      formals <- names(formals(overrides[[type]]))
+      formals <- names(formals(funs)) 
     }
   }
   formals <- formals[formals != "..."]
