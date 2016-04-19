@@ -54,35 +54,65 @@ grid.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
 
 draw_custom_grid <- function(object, view.name){
    
-  i <- which(names(object) %in% 'axis')
-  defined.sides <- sapply(i, function(x) object[[x]][['arguments']][['side']])
+ 
   window = object[[view.name]][['window']]
   
   view.name <- names(object[view.name])
   side.names <- as.side_name(view.name)
   
   grid.args <- set_args("grid", object[[view.name]][['grid']], package = "graphics")
-  
+  grid.args <- remove_field(grid.args, "equilogs")
   at <- list()
   for (side.name in side.names){
-    side <- as.side(side.name)
-    lim <- lim(object, side)
-    if(is.numeric(lim)){
-      at[[side.name]] <- axTicks(side)
-    } else{
-      fun <- getFromNamespace(paste0('axis.',class(lim)[1L]),'graphics')
-      at[[side.name]] <- fun(side, x = lim, lwd=0, lwd.ticks=0, labels = FALSE)
-    }
-    if(side %in% defined.sides){
-      axes.index <- i[defined.sides == side]
-      usr.at <- object[axes.index][['axis']][['arguments']][['at']]
-      if(!is.null(usr.at)){
-        at[[side.name]] <- usr.at
-      }
-    }
+    usr.at <- axis_axTicks(object, as.side(side.name))
+    if (is.null(usr.at))
+      at[[side.name]] <- grid_axTicks(object, as.side(side.name))
+    else
+      at[[side.name]] <- usr.at
   }
   
-  grid.args <- grid.args[names(grid.args) != "equilogs"] 
   abline(h=at[[as.y_side_name(view.name)]], v=at[[as.x_side_name(view.name)]], grid.args)
     
+}
+
+#' get the locations for ticks for custom grid
+#' 
+#' @param object a gsplot object
+#' @param side a numeric side
+#' @return a numeric vector of locations for ticks
+#' @details grid_axTicks uses different methods to get tick locations 
+#' depending on the class of the data on that \code{side}. For numeric data,
+#' \code{\link[graphics]{axTicks}}, for other data (only tested Date and POSIX), 
+#' \code{\link[graphics]{axis.Date}} and \code{\link[graphics]{axis.POSIXct}} are used,
+#' but the actual plotting of ticks is suppressed. 
+#' This function is really hard to test because it uses the actual plot to get tick locations,
+#' so it is hard to isolate. 
+#' @keywords internal
+grid_axTicks <- function(object, side){
+  
+  lim <- lim(object, side)
+  if(is.numeric(lim)){
+    at <- axTicks(side)
+  } else{
+    fun <- getFromNamespace(paste0('axis.',class(lim)[1L]),'graphics')
+    at <- fun(side, x = lim, lwd=0, lwd.ticks=0, labels = FALSE)
+  }
+  return(at)
+}
+
+#' get the user-specified locations for axes ticks for a side
+#' 
+#' @param object a gsplot object
+#' @param side a numeric side
+#' @return a series of ticks as a vector, or NULL if they weren't specified
+#' @keywords internal
+axis_axTicks <- function(object, side){
+  i <- which(names(object) %in% 'axis')
+  defined.sides <- sapply(i, function(x) object[[x]][['arguments']][['side']])
+  usr.at <- NULL
+  if(side %in% defined.sides){
+    axes.index <- i[defined.sides == side]
+    usr.at <- object[axes.index][['axis']][['arguments']][['at']]
+  }
+  return(usr.at)
 }
