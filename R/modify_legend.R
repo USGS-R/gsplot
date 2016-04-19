@@ -1,5 +1,5 @@
 
-#' add function call to legend
+#' add function call to the overall legend
 #' 
 #' @param object
 #' @param fun.name
@@ -14,6 +14,34 @@
 #' 
 #' @keywords internal
 modify_legend <- function(object, fun.name, legend.name, ...){
-  # // do nothing
+  if(is.null(legend.name)) {
+    return(object)
+  }
+  
+  # // set_legend_args stuff goes here
   return(object)
+}
+
+#' get the arguments that go into the legend for a single function call
+#' 
+#' @param object
+#' @param fun.name
+#' @param legend.name
+#' @param .dots lazy_dots
+#' @keywords internal
+get_legend_args <- function(){
+  # // do stuff
+  # return(legend_args)
+}
+
+#' add the current function call legend info to the overall legend arguments
+#' 
+#' @param object
+#' @param fun.name
+#' @param legend.name
+#' @param .dots lazy_dots
+#' @keywords internal
+combine_legend_args <- function(){
+  # // do stuff
+  # return(legend_args)
 }
