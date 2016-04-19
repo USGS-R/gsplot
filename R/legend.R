@@ -97,21 +97,21 @@ draw_legend <- function(gsplot) {
     
     if (any(names(gsplot[['legend']]) == "legend.args")) {
     
-      default.args <- formals(graphics::legend)
-      overall.legend <- c("x", "y", "bty", "bg", "box.lty", "box.lwd", "box.col", "cex",
-                          "xjust", "yjust", "x.intersp", "y.intersp", "adj", "text.width", 
-                          "merge", "trace", "plot", "ncol", "horiz", "title", "inset", 
-                          "xpd", "title.col", "title.adj", "seg.len")  
-      not.overall <- default.args[which(!names(default.args) %in% overall.legend)]
-      legendParamsALL <- vector("list", length(not.overall))
-      names(legendParamsALL) <- names(not.overall)
-      
-      for(i in which(names(gsplot[['legend']]) %in% 'legend.args')) {
-        orderedParams <- gsplot[['legend']][[i]][match(names(legendParamsALL), names(gsplot[['legend']][[i]]))]    
-        for (j in seq_along(legendParamsALL)) {
-          legendParamsALL[[j]] <- c(legendParamsALL[[j]], orderedParams[[j]])
-        }
-      }
+      # default.args <- formals(graphics::legend)
+      # overall.legend <- c("x", "y", "bty", "bg", "box.lty", "box.lwd", "box.col", "cex",
+      #                     "xjust", "yjust", "x.intersp", "y.intersp", "adj", "text.width", 
+      #                     "merge", "trace", "plot", "ncol", "horiz", "title", "inset", 
+      #                     "xpd", "title.col", "title.adj", "seg.len")  
+      # not.overall <- default.args[which(!names(default.args) %in% overall.legend)]
+      # legendParamsALL <- vector("list", length(not.overall))
+      # names(legendParamsALL) <- names(not.overall)
+      # 
+      # for(i in which(names(gsplot[['legend']]) %in% 'legend.args')) {
+      #   orderedParams <- gsplot[['legend']][[i]][match(names(legendParamsALL), names(gsplot[['legend']][[i]]))]    
+      #   for (j in seq_along(legendParamsALL)) {
+      #     legendParamsALL[[j]] <- c(legendParamsALL[[j]], orderedParams[[j]])
+      #   }
+      # }
       
       overallLegendArgs <- appendLegendPositionConfiguration(gsplot[['legend']][['gs.config']])
       legendParamsALL <- append(legendParamsALL, overallLegendArgs)
