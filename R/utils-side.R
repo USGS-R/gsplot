@@ -88,8 +88,7 @@ which_sides <- function(gsplot){
 sides <- function(gsplot, by.index=NA){
   mySides <- gsplot[which_sides(gsplot)]
   if (!all(is.na(by.index))) {
-    split <- strsplit(names(mySides), split = "side.", fixed = TRUE)
-    indices <- sapply(split, function(x) x[2])
+    indices <- as.side(names(mySides))
     mySides <- mySides[indices %in% by.index]
   }
   return(mySides)
