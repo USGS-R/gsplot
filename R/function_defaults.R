@@ -12,11 +12,11 @@ function_defaults <- function(fun.name, out=c('package','def.funs')){
                'lines' = 
                  list(package='graphics', def.funs=c(graphics::plot.xy, graphics::lines.default)),
                'bgCol' = 
-                 list(package='gsplot', def.funs=gsplot:::bgCol.default),
+                 list(package='gsplot', def.funs=gsplot::bgCol.default),
                'callouts' = 
                  list(package='gsplot', def.funs=gsplot::callouts.default),
                'error_bar' = 
-                 list(package='gsplot', def.funs=gsplot:::error_bar.default))
+                 list(package='gsplot', def.funs=gsplot::error_bar.default))
                
   
   if (!fun.name %in% names(funs)){
