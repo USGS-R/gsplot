@@ -2,27 +2,37 @@ global.only.par <- c("ask", "fig", "fin", "lheight", "mai", "mar", "mex", "mfcol
                      "new", "oma", "omd", "omi", "pin", "plt", "ps", "pty", "usr", "xlog", "ylog",
                      "ylbias")
 
-read.only.par <- c("cin", "cra", "csi", "cxy", "din", "page")
+can.set <- names(par(no.readonly=TRUE))
 
-#' modify par for global, a view, or a side
+#' modify par for global, side, or view
 #' 
 #' @param object a gsplot object
-#' @param \dots settings for par
-#' @param side NULL if par pertains to global, length 1 for side, length 2 for view
+#' @param arguments settings for par
 #' @return a modified gsplot object
-modify_par <- function(object, ..., side=NULL){
+#' @examples 
+#' gs <- gsplot()
+#' gs <- gsplot:::modify_par(gs, list(new=TRUE, cex=1.2))
+#' names(gs$global$par)
+#' gs <- gsplot:::modify_par(gs, list(new=TRUE, cex=1.4, omi=c(0,0,0,0)))
+#' names(gs$global$par)
+modify_par <- function(object, arguments, side=NULL){
+
   
   if (is.null(side)){
-    # // is global change
+    field <- 'global'
+    available.par <- can.set
   } else if (length(side) == 1){
-    # // is side par change
+    field <- as.side_name(side)
+    available.par <- can.set[!can.set %in% global.only.par]
   } else if (length(side) == 2){
-    # // is view par change
-  } else {
-    stop(side, ' not supported')
+    field <- as.view_name(side)
+    available.par <- can.set[!can.set %in% global.only.par]
   }
-}
-
-modify_global_par <- function(object, ...){
   
+  if (!all(names(arguments) %in% available.par)){
+    stop('cannot set ', paste(names(arguments)[!names(arguments) %in% available.par], collapse=', ' ), call. = FALSE)
+  }
+  
+  object[[field]]$par <- append_replace(object[[field]]$par, arguments)
+  return(object)
 }
