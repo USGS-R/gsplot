@@ -11,7 +11,14 @@ add function call to the overall legend
 }
 \examples{
 gs <- gsplot() \%>\% 
-         points(x=1:5, y=1:5, legend.name = 'points 1')
+         points(x=1:5, y=1:5, legend.name = 'points 1') \%>\% 
+         legend()
+gs
+
+gs <- gsplot() \%>\% 
+         points(x=1:2, y=1:2, col = c("red", "blue"), 
+                legend.name = c('points 1', 'points 2')) \%>\% 
+         legend()
 gs
 
 gsplot:::modify_legend('points', x=2:6, y=2:6, legend.name = 'points')

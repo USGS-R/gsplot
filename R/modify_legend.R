@@ -7,7 +7,14 @@
 #' @param \dots
 #' @examples 
 #' gs <- gsplot() %>% 
-#'          points(x=1:5, y=1:5, legend.name = 'points 1')
+#'          points(x=1:5, y=1:5, legend.name = 'points 1') %>% 
+#'          legend()
+#' gs
+#' 
+#' gs <- gsplot() %>% 
+#'          points(x=1:2, y=1:2, col = c("red", "blue"), 
+#'                 legend.name = c('points 1', 'points 2')) %>% 
+#'          legend()
 #' gs
 #' 
 #' gsplot:::modify_legend('points', x=2:6, y=2:6, legend.name = 'points')
@@ -19,10 +26,20 @@ modify_legend <- function(object, fun.name, legend.name, ...){
   }
   
   call.args <- call_arguments(fun.name, ...)[[1]] #exclude embedded
-  fun.legend.args <- get_legend_args(fun.name, call.args, legend.name, ...)
-  all.legend.args <- combine_legend_args(object, fun.legend.args)
   
-  object[['legend']][['legend.args']] <- all.legend.args
+  if(length(legend.name) > 1){
+    call.args.df <- as.data.frame(call.args, stringsAsFactors = FALSE)
+    
+    for(p in seq(nrow(call.args.df))) {
+      call.args.list <- as.list(call.args.df[p,])
+      fun.legend.args <- get_legend_args(fun.name, call.args.list, legend.name[p], ...)
+      object[['legend']][['legend.args']] <- combine_legend_args(object, fun.legend.args)
+    }
+    
+  } else {
+    fun.legend.args <- get_legend_args(fun.name, call.args, legend.name, ...)
+    object[['legend']][['legend.args']] <- combine_legend_args(object, fun.legend.args)
+  }
   
   # // set_legend_args stuff goes here
   return(object)
@@ -127,6 +144,7 @@ set_type_params <- function(list, type.name, params){
 #' @keywords internal
 combine_legend_args <- function(object, new_legend_args, ...){
   
+  # look for existing list of legend args in the object
   if(!"legend" %in% names(object)){
     default.args <- formals(graphics::legend)
     overall.legend <- c("x", "y", "bty", "bg", "box.lty", "box.lwd", "box.col", "cex",
