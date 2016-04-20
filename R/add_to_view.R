@@ -1,8 +1,44 @@
 
+add_new_view <- function(object, view.name){
+  if (view.name %in% view_names(object))
+    stop(view.name, ' already exists, cannot add it.', call. = FALSE)
+  view <- list(c())
+  names(view) <- view.name
+  
+  last.view.i <- max(which_views(object), 0)
+  object <- append(object, view, after = last.view.i)
+  return(object)
+}
 #' add function call to view
 #' 
-#' @param fun.name
-#' @param \dots
+#' @param object a gsplot object
+#' @param call.args a named list of function calls
+#' @param side a numeric vector of side(s) appropriate for creating a view name
+#' @return a modified object with the function added to the proper view
+#' @keywords internal
+add_to_view <- function(object, call.args, side){
+  view.name <- as.view_name(side)
+  new.view <- !view.name %in% view_names(object)
+  
+  if (new.view){
+    object <- add_new_view(object, view.name)
+  }
+  
+  object[[view.name]] <- append(object[[view.name]], call.args)
+  return(object)
+}
+
+#' extract the call arguments
+#' 
+#' extract the normal call arguments, and embedded function 
+#' call arguments and return as lists named according to their 
+#' rendering functions. 
+#' 
+#' @param fun.name the name of the rendering function
+#' @param \dots arguments to \code{fun.name} or an embedded function 
+#' within it. 
+#' @return list with arguments. List is named according to function 
+#' names. 
 #' @examples 
 #' gs <- gsplot() %>% 
 #'          points(x=1:5, y=1:5, xlim=c(0,10), ylim=c(0,10), 
@@ -25,8 +61,8 @@ call_arguments <- function(fun.name, ...){
 
 #' get the arguments that go into the function call, stripping out others and adding config defaults
 #' 
-#' @param fun.name
-#' @param .dots lazy_dots
+#' @param fun.name the name of the rendering function
+#' @param .dots lazy_dots arguments
 #' @keywords internal
 normal_arguments <- function(fun.name, .dots){
 
@@ -42,6 +78,12 @@ normal_arguments <- function(fun.name, .dots){
   return(args)
 }
 
+#' get the embedded arguments that go into the function call
+#' 
+#' @param fun.name the name of the rendering function
+#' @param embedded.dots expressions to be evaluated within \code{parent.args} data
+#' @param parent.args data that should be accessible when evaluating \code{embedded.dots}
+#' @keywords internal
 embedded_arguments <- function(fun.name, embedded.dots, parent.args){
 
   args <- list()
