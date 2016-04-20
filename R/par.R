@@ -28,9 +28,9 @@ par <- function(object, ...) {
 
 par.gsplot <- function(object, ...){
   arguments <- list(...)
-
-   if (length(arguments)==0 && !is.null(object$par))
-     return(object$par)
+  
+  if (length(arguments)==0 && !is.null(object$global$par))
+    return(object$global$par)
   current_list <- config("par")
   
   
@@ -38,13 +38,14 @@ par.gsplot <- function(object, ...){
   indicesToAdd <- !(names(current_list) %in% names(arguments)) & !(names(current_list) %in% names(object[['par']]))
   arguments <- append(arguments, current_list[indicesToAdd])
   
-  if ("par" %in% names(object)){
-    # // keep any par that shouldn't be overwritten. The rest are dropped/replaced
-    cur.par <- names(object[['par']])
-    keep.par <- cur.par[!cur.par %in% names(arguments)]
-    arguments <- append(arguments, object[['par']][keep.par])
-    object[['par']] <- NULL
-  } 
-  object <- append(object, list(par = arguments))
-  return(gsplot(object))
+  # if ("par" %in% names(object)){
+  #   # // keep any par that shouldn't be overwritten. The rest are dropped/replaced
+  #   cur.par <- names(object[['par']])
+  #   keep.par <- cur.par[!cur.par %in% names(arguments)]
+  #   arguments <- append(arguments, object[['par']][keep.par])
+  #   object[['par']] <- NULL
+  # } 
+  object <- modify_par(object, arguments)
+  #object <- append(object, list(par = arguments))
+  return(object)
 }
