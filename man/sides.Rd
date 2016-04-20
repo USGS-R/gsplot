@@ -4,7 +4,7 @@
 \alias{sides}
 \title{subset the gsplot object to return only sides}
 \usage{
-sides(gsplot)
+sides(gsplot, by.index = NA)
 }
 \arguments{
 \item{gsplot}{a gsplot object}
