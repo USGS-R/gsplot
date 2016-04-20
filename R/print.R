@@ -34,13 +34,13 @@ print.gsplot <- function(x, ...){
   # -- set plot -- 
   views = x
   
-  if(!isTRUE(x[['par']][['new']])){
+  if(!isTRUE(x$gobal$par$new)){
     dev.hold()
     on.exit(dev.flush())
     plot.new()
   }
   
-  par(views[['par']])
+  par(x$global$par)
   i.axis <- which(names(views) %in% 'axis')
   defined.sides <- sapply(i.axis, function(x) views[[x]][['arguments']][['side']])
   
@@ -66,7 +66,7 @@ print.gsplot <- function(x, ...){
   }
   
   for (view.name in view_names(views)){
-    par(views[['par']])
+    par(x$global$par)
     set_frame(views, side=view.name)
     if(any(names(views[[view.name]]) %in% 'grid')){
       draw_custom_grid(views,view.name)
