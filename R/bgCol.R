@@ -44,6 +44,14 @@ bgCol.gsplot <- function(object, ...){
   return(gsplot(object))
 }
 
+#' create a background color
+#' 
+#' @param col color code or name, 
+#' see \code{\link[grDevices]{colors}}, \code{\link[grDevices]{palette}}. 
+#' Here NULL means color 0.
+#' @param \dots additional arguments passed to \code{\link[graphics]{rect}}
+#' @export
+#' @keywords internal
 bgCol.default <- function(col,...){
   
   if(par()$xlog){
