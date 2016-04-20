@@ -48,23 +48,8 @@ set_inherited_args <- function(fun.name, inherited.args, ..., package='gsplot'){
 }
 
 set_legend_args <- function(object, fun.name, ..., legend.name) {
-  if(is.null(legend.name)) {
-    return(object)
-  }
-  
-  paramsAll <- set_args(fun.name, list(...))
-  
-  if(length(legend.name) > 1){
-    paramsAll_df <- as.data.frame(paramsAll, stringsAsFactors = FALSE)
-
-    for(p in seq(nrow(paramsAll_df))) {
-      paramsAll_list <- as.list(paramsAll_df[p,])
-      legend_args <- get_legend_args(object, fun.name, paramsAll_list, legend.name[p])
-    }
-    
-  } else {
-    legend_args <- get_legend_args(object, fun.name, paramsAll, legend.name)
-  }
+ 
+  object <- modify_legend(object, fun.name, legend.name, ...)
   
   return(object)
 }
