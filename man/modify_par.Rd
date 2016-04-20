@@ -19,6 +19,9 @@ modify par for global, side, or view
 }
 \examples{
 gs <- gsplot()
-gsplot:::modify_par(gs, list(new=TRUE, cex=1.2))
+gs <- gsplot:::modify_par(gs, list(new=TRUE, cex=1.2))
+names(gs$global$par)
+gs <- gsplot:::modify_par(gs, list(new=TRUE, cex=1.4, omi=c(0,0,0,0)))
+names(gs$global$par)
 }
 
