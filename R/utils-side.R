@@ -85,8 +85,13 @@ which_sides <- function(gsplot){
 #' @param gsplot a gsplot object
 #' @return a sides list
 #' @keywords internal
-sides <- function(gsplot){
-  gsplot[which_sides(gsplot)]
+sides <- function(gsplot, by.index=NA){
+  mySides <- gsplot[which_sides(gsplot)]
+  if (!all(is.na(by.index))) {
+    indices <- as.side(names(mySides))
+    mySides <- mySides[indices %in% by.index]
+  }
+  return(mySides)
 }
 
 #' sets the user-defined limits to sides

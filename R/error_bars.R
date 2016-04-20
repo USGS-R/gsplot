@@ -97,7 +97,20 @@ error_bar.gsplot <- function(object, x, y, y.high=0, y.low=0, x.high=0, x.low=0,
     
 }
 
+#' create error bars
+#' 
+#' @param x location in x
+#' @param y location in y
+#' @param y.high offset up
+#' @param y.low offset down
+#' @param x.high offset right
+#' @param x.low offset left
+#' @param epsilon width of bar in relative units
+#' @param \dots additional arguments passed to \code{\link[graphics]{arrows}}
+#' @export
+#' @keywords internal
 error_bar.default <- function(x, y, y.high, y.low, x.high, x.low, epsilon=0.1, ...){
+  warning("this function doesn't do anything")
   return()
 }
 

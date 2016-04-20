@@ -16,3 +16,11 @@ test_that("is gsplot",{
   expect_true(is.gsplot(gsplot()))
   
 })
+
+context("test the override formals")
+
+test_that("can get override for all functions",{
+  for (o in names(gsplot:::pkg.env$fun.details)) {
+    expect_is(gsplot:::formal_names(o), 'character')
+  }
+})

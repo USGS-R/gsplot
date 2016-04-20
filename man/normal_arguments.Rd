@@ -7,7 +7,9 @@
 normal_arguments(fun.name, .dots)
 }
 \arguments{
-\item{.dots}{lazy_dots}
+\item{fun.name}{the name of the rendering function}
+
+\item{.dots}{lazy_dots arguments}
 }
 \description{
 get the arguments that go into the function call, stripping out others and adding config defaults
