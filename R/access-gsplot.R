@@ -183,6 +183,9 @@ as.log <- function(object, view.name){
 #' @export
 view_info <- function(object){
   j <- which_views(object)
+  if (length(j) == 0){
+    return(NULL)
+  }
   viewSides <- sapply(j, function(x) object[[x]][['window']][['side']])
   viewNames <- names(object[j])
   viewLogs <- sapply(viewNames , function(x) as.log(object, x))
