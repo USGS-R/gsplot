@@ -65,22 +65,3 @@ views_with_side <- function(views, side){
   else
     return(which(view.match))
 }
-
-
-#' get the side from a view for an axis
-#' 
-#' @param views a gsplot object or subset of gsplot object containing views
-#' @param view_i an index for views to be used
-#' @param axis 'y' or 'x'
-#' @return the side vector
-#' @keywords internal
-get_view_side <- function(views, view_i, axis){
-  i = which_views(views)[view_i]
-  sides <- views[[i]][['window']][['side']]
-  if (axis=='y')
-    return(sides[which(sides %% 2 == 0)])
-  else if (axis=='x')
-    return(sides[which(sides %% 2 != 0)])
-  else
-    stop('view side undefined for ',axis)
-}
