@@ -8,6 +8,7 @@ can.set <- names(par(no.readonly=TRUE))
 #' 
 #' @param object a gsplot object
 #' @param arguments settings for par
+#' @param side a side vector specifying view, side, or global (NULL)
 #' @return a modified gsplot object
 #' @examples 
 #' gs <- gsplot()

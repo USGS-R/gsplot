@@ -10,6 +10,8 @@ modify_par(object, arguments, side = NULL)
 \item{object}{a gsplot object}
 
 \item{arguments}{settings for par}
+
+\item{side}{a side vector specifying view, side, or global (NULL)}
 }
 \value{
 a modified gsplot object
