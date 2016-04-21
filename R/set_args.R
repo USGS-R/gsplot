@@ -49,7 +49,7 @@ set_inherited_args <- function(fun.name, inherited.args, ..., package='gsplot'){
 
 set_legend_args <- function(object, fun.name, ..., legend.name) {
  
-  object <- modify_legend(object, fun.name, legend.name, ...)
+  object <- add_to_legend(object, fun.name, legend.name, ...)
   
   return(object)
 }

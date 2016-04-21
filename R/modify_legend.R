@@ -17,31 +17,38 @@
 #'          legend()
 #' gs
 #' 
-#' gsplot:::modify_legend('points', x=2:6, y=2:6, legend.name = 'points')
+#' gsplot:::add_to_legend('points', x=2:6, y=2:6, legend.name = 'points')
 #' 
 #' @keywords internal
-modify_legend <- function(object, fun.name, legend.name, ...){
-  if(is.null(legend.name)) {
-    return(object)
-  }
+add_to_legend <- function(object, fun.name, legend.name, ...){
   
-  call.args <- call_arguments(fun.name, ...)[[1]] #exclude embedded
-  
-  if(length(legend.name) > 1){
-    call.args.df <- as.data.frame(call.args, stringsAsFactors = FALSE)
-    
-    for(p in seq(nrow(call.args.df))) {
-      call.args.list <- as.list(call.args.df[p,])
-      fun.legend.args <- get_legend_args(fun.name, call.args.list, legend.name[p], ...)
-      object[['legend']][['legend.args']] <- combine_legend_args(object, fun.legend.args)
+    if(is.null(legend.name)) {
+      return(object)
     }
     
-  } else {
-    fun.legend.args <- get_legend_args(fun.name, call.args, legend.name, ...)
-    object[['legend']][['legend.args']] <- combine_legend_args(object, fun.legend.args)
-  }
-  
-  # // set_legend_args stuff goes here
+    call.args <- call_arguments(fun.name, ...)[[1]] #exclude embedded
+    
+    # add legend$gs.config if it does not already exist
+    legend.exists <- "legend" %in% names(object)
+    legend.args.exist <- "legend.args" %in% names(object[['legend']])
+    if(!legend.exists){object <- modify_legend(object)}
+    
+    # add/add to legend$legend.args
+    if(length(legend.name) > 1){
+      call.args.df <- as.data.frame(call.args, stringsAsFactors = FALSE)
+      
+      for(p in seq(nrow(call.args.df))) {
+        if(p > 1){ legend.args.exist <- TRUE } #legend args will exist after the first loop
+        call.args.list <- as.list(call.args.df[p,])
+        fun.legend.args <- get_legend_args(fun.name, call.args.list, legend.name[p], ...)
+        object[['legend']][['legend.args']] <- combine_legend_args(object, fun.legend.args, legend.args.exist)
+      }
+      
+    } else {
+      fun.legend.args <- get_legend_args(fun.name, call.args, legend.name, ...)
+      object[['legend']][['legend.args']] <- combine_legend_args(object, fun.legend.args, legend.args.exist)
+    }
+
   return(object)
 }
 
@@ -53,9 +60,7 @@ modify_legend <- function(object, fun.name, legend.name, ...){
 #' @param .dots lazy_dots
 #' @keywords internal
 get_legend_args <- function(fun.name, call.args, legend.name, ...){
-  # // do stuff
-  # return(legend_args)
-  
+
   fun.default <- list(legend=legend.name,
                       fill=quote(par("bg")),
                       col=par("col"),
@@ -139,13 +144,14 @@ set_type_params <- function(list, type.name, params){
 #' add the current function call legend info to the overall legend arguments
 #' 
 #' @param object
-#' @param new_legend_args
+#' @param new.legend.args
+#' @param legend.args.exist
 #' @param .dots lazy_dots
 #' @keywords internal
-combine_legend_args <- function(object, new_legend_args, ...){
+combine_legend_args <- function(object, new.legend.args, legend.args.exist, ...){
   
   # look for existing list of legend args in the object
-  if(!"legend" %in% names(object)){
+  if(!legend.args.exist){
     default.args <- formals(graphics::legend)
     overall.legend <- c("x", "y", "bty", "bg", "box.lty", "box.lwd", "box.col", "cex",
                         "xjust", "yjust", "x.intersp", "y.intersp", "adj", "text.width", 
@@ -154,14 +160,34 @@ combine_legend_args <- function(object, new_legend_args, ...){
     not.overall <- default.args[which(!names(default.args) %in% overall.legend)]
     legend.args <- vector("list", length(not.overall))
     names(legend.args) <- names(not.overall)
+    # // set up config legend stuff
   } else {
     legend.args <- object[['legend']][['legend.args']]
   }
   
-  orderedParams <- new_legend_args[match(names(legend.args), names(new_legend_args))]    
+  orderedParams <- new.legend.args[match(names(legend.args), names(new.legend.args))]    
   for (j in seq_along(legend.args)) {
     legend.args[[j]] <- c(legend.args[[j]], orderedParams[[j]])
   }
   
   return(legend.args)
+}
+
+#' add legend configs
+#' 
+#' @param object
+#' @keywords internal
+modify_legend <- function(object, location="topright", legend_offset=0.3, draw=FALSE, ...){
+  # // this should be shared between add_to_legend and legend
+  # // check if legend exists, if not add it (someone could call legend before any legend.names)
+  gsConfig <- list(location = location, legend_offset = legend_offset, draw = draw, ...)
+  
+  arguments <- list(...)
+  if("x" %in% names(arguments)){
+    gsConfig$location <- gsConfig$x
+    gsConfig$x <- NULL
+  }
+  
+  object[['legend']][['gs.config']] <- gsConfig
+  return(object)
 }

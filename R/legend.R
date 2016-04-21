@@ -61,17 +61,9 @@ legend <- function(object, ...){
 
 
 legend.gsplot <- function(object, ..., location="topright", legend_offset=0.3) {
-  arguments <- list(...)
   
-  gsConfig <- list(location = location, legend_offset = legend_offset, ...)
-  
-  if("x" %in% names(arguments)){
-    gsConfig$location <- gsConfig$x
-    gsConfig$x <- NULL
-  }
-  
-  object[['legend']] <- append(object[['legend']], list(gs.config = gsConfig))
-  
+  object <- modify_legend(object, location = location, legend_offset = legend_offset, draw = TRUE, ...)
+
   return(object)
 }
 
@@ -84,9 +76,9 @@ legend.gsplot <- function(object, ..., location="topright", legend_offset=0.3) {
 
 draw_legend <- function(gsplot) {
   
-  if (all(!names(gsplot[['legend']]) %in% "gs.config")){
-    return()
-  }
+  
+  draw <- gsplot[['legend']][['gs.config']][['draw']]
+  if (is.null(draw) || !draw){ return() }
   
   oldXPD <- par()$xpd
   oldBg <- par('bg')
