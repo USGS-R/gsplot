@@ -17,8 +17,6 @@
 #'          legend()
 #' gs
 #' 
-#' gsplot:::add_to_legend('points', x=2:6, y=2:6, legend.name = 'points')
-#' 
 #' @keywords internal
 add_to_legend <- function(object, fun.name, legend.name, ...){
   
