@@ -16,23 +16,11 @@ modify_side <- function(object, side, ...) {
   allArgs <- list(...)
   for (sideName in sideNames) {
     sideNum <- as.side(sideName)
-    sideArgs <- which(side_cares_about_this(names(allArgs), sideNum))
-    if (any(sideArgs)) {
-      addTheseToSide <- allArgs[sideArgs]
-      thisSide <- sides[[sideName]]
-      thisSide <- set_side_lim(allArgs, thisSide, sideNum)
-      thisSide <- set_side_log(allArgs, thisSide, sideNum)
-      thisSide <- set_side_lab(allArgs, thisSide, sideNum)
-      object[[sideName]] <- thisSide
-    }
+    thisSide <- sides[[sideName]]
+    thisSide <- set_side_lim(allArgs, thisSide, sideNum)
+    thisSide <- set_side_log(allArgs, thisSide, sideNum)
+    thisSide <- set_side_lab(allArgs, thisSide, sideNum)
+    object[[sideName]] <- thisSide
   }
   return(object)
-}
-
-
-
-side_cares_about_this <- function(arg.name, side) {
-  #c('log','ylim','xlim','xlab','ylab')
-  return((side %% 2 == 1 & arg.name %in% c('log', 'xlim', 'xlab')) |
-           (side %% 2 == 0 & arg.name %in% c('log', 'ylim', 'ylab')))
 }

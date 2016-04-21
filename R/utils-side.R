@@ -174,10 +174,9 @@ set_side_lim <- function(args, side, side.num){
                     y = c('y','y1','y0','ytop','ybottom'))
   # // need value arguments, need yaxs/xaxs args, need user-specified ylim/xlim values
   usr.lims <- c(NA, NA)
-  if (exists("xlim", args)) {
-    usr.lims <- args$xlim
-  } else if (exists("ylim", args)) {
-    usr.lims <- args$ylim
+  lim.arg = paste0(axis,"lim")
+  if (exists(lim.arg, args)) {
+    usr.lims <- args[[lim.arg]]
   }
   side <- set_usr_lim(usr.lims, side)
   side.vals <- strip_pts(args, include)
