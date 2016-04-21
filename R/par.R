@@ -33,19 +33,10 @@ par.gsplot <- function(object, ...){
     return(object$global$par)
   current_list <- config("par")
   
-  
   # // only add config list items if they aren't in ..., and aren't already set in par (i.e., don't reset them)
   indicesToAdd <- !(names(current_list) %in% names(arguments)) & !(names(current_list) %in% names(object[['par']]))
   arguments <- append(arguments, current_list[indicesToAdd])
   
-  # if ("par" %in% names(object)){
-  #   # // keep any par that shouldn't be overwritten. The rest are dropped/replaced
-  #   cur.par <- names(object[['par']])
-  #   keep.par <- cur.par[!cur.par %in% names(arguments)]
-  #   arguments <- append(arguments, object[['par']][keep.par])
-  #   object[['par']] <- NULL
-  # } 
   object <- modify_par(object, arguments)
-  #object <- append(object, list(par = arguments))
   return(object)
 }
