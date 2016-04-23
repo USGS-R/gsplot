@@ -37,6 +37,6 @@ par.gsplot <- function(object, ...){
   indicesToAdd <- !(names(current_list) %in% names(arguments)) & !(names(current_list) %in% names(object[['par']]))
   arguments <- append(arguments, current_list[indicesToAdd])
   
-  object <- modify_par(object, arguments)
+  object <- modify_global_par(object, arguments)
   return(object)
 }
