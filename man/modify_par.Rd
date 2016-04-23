@@ -4,14 +4,14 @@
 \alias{modify_par}
 \title{modify par for global, side, or view}
 \usage{
-modify_par(object, arguments, side = NULL)
+modify_par(object, arguments, field = "global")
 }
 \arguments{
 \item{object}{a gsplot object}
 
 \item{arguments}{settings for par}
 
-\item{side}{a side vector specifying view, side, or global (NULL)}
+\item{field}{where to modify par. A view name, a side name, or 'global'}
 }
 \value{
 a modified gsplot object
@@ -26,4 +26,5 @@ names(gs$global$par)
 gs <- gsplot:::modify_par(gs, list(new=TRUE, cex=1.4, omi=c(0,0,0,0)))
 names(gs$global$par)
 }
+\keyword{internal}
 
