@@ -7,6 +7,7 @@ add_new_view <- function(object, view.name){
   
   last.view.i <- max(which_views(object), 0)
   object <- append(object, view, after = last.view.i)
+  object <- modify_view_par(object, config('par'), side=as.side(view.name))
   return(object)
 }
 #' add function call to view
