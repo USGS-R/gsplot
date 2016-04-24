@@ -121,7 +121,11 @@ lim <- function(object, side=NULL, axis = NULL, set.undefined=TRUE, if.null=c(0,
       lims <- lim(object, axis=as.axis(side))
       sides <- as.side(names(lims)[sapply(lims, function(x) !any(is.na(x)))])
       closest.side <- sides[which.min(abs(side-sides))][1]
-      lims <- lims[[as.side_name(closest.side)]]
+      if (is.null(closest.side)){
+        lims <- NULL
+      } else {
+        lims <- lims[[as.side_name(closest.side)]]  
+      }
     }
     if (is.null(lims)){
       lims <- if.null
