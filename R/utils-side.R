@@ -253,7 +253,7 @@ append_sides <- function(object, sides, on.exists = c('skip','replace')){
 add_new_side <- function(object, side.name){
   stopifnot(length(side.name) == 1)
   if (side.name %in% side_names(object))
-    stop(view.name, ' already exists, cannot add it.', call. = FALSE)
+    stop(side.name, ' already exists, cannot add it.', call. = FALSE)
   side.template <- list(list(lim = c(NA, NA), log=FALSE, label="", usr.lim=c(FALSE, FALSE)))
   names(side.template) <- side.name
   
