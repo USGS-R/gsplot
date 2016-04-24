@@ -29,13 +29,10 @@ par <- function(object, ...) {
 par.gsplot <- function(object, ...){
   arguments <- list(...)
   
-  if (length(arguments)==0 && !is.null(object$global$par))
+  if (length(arguments)==0 && !is.null(object$global$par)){
+    # // this is ACCESS to par:
     return(object$global$par)
-  current_list <- config("par")
-  
-  # // only add config list items if they aren't in ..., and aren't already set in par (i.e., don't reset them)
-  indicesToAdd <- !(names(current_list) %in% names(arguments)) & !(names(current_list) %in% names(object[['par']]))
-  arguments <- append(arguments, current_list[indicesToAdd])
+  }
   
   object <- modify_global_par(object, arguments)
   return(object)

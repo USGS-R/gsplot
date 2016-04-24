@@ -15,7 +15,11 @@ gsplot <- function(x = NULL, ...) UseMethod("gsplot")
 #' @export
 gsplot.default <- function(...) {
   object <- gsplot(list())
-  par(object, ...)
+  object <- add_new_par(object, 'global')
+  if (length(list(...)) > 0){
+    object <- par(object, ...)
+  }
+  return(object)
 }
 
 #' @rdname gsplot
