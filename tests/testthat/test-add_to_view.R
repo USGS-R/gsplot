@@ -27,7 +27,7 @@ test_that("add new function", {
   obj <- gsplot:::add_to_view(obj, call.args, side=1)
   call.args <- list('lines'=list('x'=1:3, 'y'=3:5))
   obj <- gsplot:::add_to_view(obj, call.args, side=1)
-  expect_equal(names(obj[['view.1.2']]), c('points','points','lines'))
+  expect_equal(names(obj[['view.1.2']]), c('par','points','points','lines'))
 })
 
 context("test call arguments")
