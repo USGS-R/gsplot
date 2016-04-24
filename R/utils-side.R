@@ -64,11 +64,11 @@ as.side_name.character <- function(x){
 
 #' take a named side and turn it into numeric
 #' 
-#' @param side.names vector of side names
+#' @param x a character vector of side of view names (length 1)
 #' @return numeric values for \code{side}
 #' @keywords internal
-as.side <- function(side.names){
-  as.numeric(gsub('side.','',side.names))
+as.side <- function(x){
+  c_unname(lapply(x, function(x) as.numeric(tail(strsplit(x,'[.]')[[1]],-1L))))
 }
 
 #' which indices in the gsplot object are sides
@@ -220,29 +220,47 @@ summarize_side_values <- function(view, param, na.value=NULL, axis=c('x','y'), i
 
 #' add sides list to gsplot object
 #' 
-#' @param gsplot a gsplot object
+#' @param object a gsplot object
 #' @param sides integer vector of sides to add
 #' @param on.exist what to do when the sides already exists
 #' @return a modified gsplot object
 #' @keywords internal
-append_sides <- function(gsplot, sides, on.exists = c('skip','replace')){
+append_sides <- function(object, sides, on.exists = c('skip','replace')){
   
   if (is.null(sides))
-    return(gsplot)
+    return(object)
   on.exists = match.arg(on.exists)
   
-  side_template <- list(lim = c(NA, NA), log=FALSE, label="", usr.lim=c(FALSE, FALSE))
-  
   if (on.exists == 'skip'){
-    sides <- as.side_name(sides)
+    side.names <- as.side_name(sides)
     
-    to_add <- !sides %in% names(gsplot)
-    side_list <- rep(list(side_template), sum(to_add)) %>% setNames(sides[which(to_add)])
-    gsplot <- append(gsplot, side_list)
+    to_add <- !side.names %in% side_names(object)
+    for (side.name in side.names[to_add]){
+      object <- add_new_side(object, side.name)
+    }
+    
   } else if (on.exists == 'replace'){
     stop('on.exists ', on.exists, ' not implemented yet')
   }
-  return(gsplot)
+  return(object)
+}
+
+#' add a new default side to gsplot
+#' 
+#' @param object a gsplot object
+#' @param side.name a character for side name, in the form of 'side.1'
+#' @return a modifies gsplot object
+add_new_side <- function(object, side.name){
+  stopifnot(length(side.name) == 1)
+  if (side.name %in% side_names(object))
+    stop(view.name, ' already exists, cannot add it.', call. = FALSE)
+  side.template <- list(list(lim = c(NA, NA), log=FALSE, label="", usr.lim=c(FALSE, FALSE)))
+  names(side.template) <- side.name
+  
+  last.side.i <- max(which_sides(object), 0)
+  object <- append(object, side.template, after = last.side.i)
+  object <- modify_side_par(object, config('par'), side=as.side(side.name))
+  return(object)
 }
 
 #' automatically fill in sides as pairs if they are single vals
