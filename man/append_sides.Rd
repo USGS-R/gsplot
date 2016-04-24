@@ -4,10 +4,10 @@
 \alias{append_sides}
 \title{add sides list to gsplot object}
 \usage{
-append_sides(gsplot, sides, on.exists = c("skip", "replace"))
+append_sides(object, sides, on.exists = c("skip", "replace"))
 }
 \arguments{
-\item{gsplot}{a gsplot object}
+\item{object}{a gsplot object}
 
 \item{sides}{integer vector of sides to add}
 
