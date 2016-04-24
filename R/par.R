@@ -29,7 +29,7 @@ par <- function(object, ...) {
 par.gsplot <- function(object, ...){
   arguments <- list(...)
   
-  if (length(arguments)==0 && !is.null(object$global$par)){
+  if (length(arguments) == 0){
     # // this is ACCESS to par:
     return(object$global$par)
   }
