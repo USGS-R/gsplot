@@ -95,6 +95,7 @@ which_sides <- function(gsplot){
 #' subset the gsplot object to return only sides
 #' 
 #' @param gsplot a gsplot object
+#' @param by.index retrieve specific indices (NA returns all)
 #' @return a sides list
 #' @keywords internal
 sides <- function(gsplot, by.index=NA){
@@ -132,13 +133,14 @@ locked_sides <- function(sides){
 
 #' set the log value on a side
 #' 
-#' @param sides the sides for the gsplot object (see \code{\link{sides}})
+#' @param args arguments to pull log info from
+#' @param side the side for the gsplot object (see \code{\link{sides}})
 #' @return a modified \code{side}
 #' @keywords internal
 set_side_log <- function(args, side, side.num){
   stopifnot(length(side.num) == 1)
   axis <- as.axis(side.num)
-  log <- args$log
+  log <- ifelse(exists("log", args), args$log, "")
   if (log == "")
     return(side) # // do nothing
   side$log <- grepl(axis,log) || side$log
@@ -147,15 +149,19 @@ set_side_log <- function(args, side, side.num){
 
 #' set the label value on a side
 #' 
-#' @param view a single named view
-#' @param sides the sides for the gsplot object (see \code{\link{sides}})
+#' @param args arguments to pull label from
+#' @param side the side for the gsplot object (see \code{\link{sides}})
+#' @param side.num which side are we talking about
 #' @return a modified \code{sides} list
 #' @keywords internal
 set_side_lab <- function(args, side, side.num){
   stopifnot(length(side.num) == 1)
   axis <- as.axis(side.num)
-  lab <- args[[paste0(axis, "lab")]]
-  side$label <- ifelse(is.expression(lab) || !is.na(lab), lab, side$label)
+  lab.arg <- paste0(axis, "lab")
+  if (exists(lab.arg, args)) {
+    lab <- args[[]]
+    side$label <- ifelse(is.expression(lab) || !is.na(lab), lab, side$label)
+  }
   return(side)
 }
 
@@ -170,8 +176,8 @@ set_side_lim <- function(args, side, side.num){
   stopifnot(length(side.num) == 1)
   axis <- as.axis(side.num)
   include <- switch(axis,
-                    x = c('x','x1','x0','xleft','xright'),
-                    y = c('y','y1','y0','ytop','ybottom'))
+                    x = c('x','x1','x0','xleft','xright', 'data'),
+                    y = c('y','y1','y0','ytop','ybottom', 'data'))
   # // need value arguments, need yaxs/xaxs args, need user-specified ylim/xlim values
   usr.lims <- c(NA, NA)
   lim.arg = paste0(axis,"lim")
@@ -189,7 +195,6 @@ set_side_lim <- function(args, side, side.num){
   }
   return(side)
 }
-
 
 #' unlist and summarize values according to their side
 #' 
@@ -241,7 +246,6 @@ append_sides <- function(gsplot, sides, on.exists = c('skip','replace')){
   
   if (on.exists == 'skip'){
     sides <- as.side_name(sides)
-    axes <- as
     
     to_add <- !sides %in% names(gsplot)
     side_list <- rep(list(side_template), sum(to_add))
