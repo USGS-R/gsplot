@@ -11,6 +11,7 @@
 #' gs <- gsplot:::modify_side(gs, c(1,2), xlim=c(0,12))
 #' 
 modify_side <- function(object, side, ...) {
+  append_sides(object, side, on.exists="skip")
   sides <- sides(object, side)
   sideNames <- names(sides)
   allArgs <- list(...)
