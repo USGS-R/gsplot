@@ -42,24 +42,14 @@ curve <- function(object, ...) {
   override("graphics", "curve", object, ...)
 }
 
-curve.gsplot <- function(object, expr, ..., legend.name=NULL, side=c(1,2)){
+curve.gsplot <- function(object, expr, from=0, to=1, n=101, ..., legend.name=NULL, side=c(1,2)){
   
   expr <- lazy(expr)
-  arguments = set_args('curve',...)
-  dots = lazy_dots(...)
   
-  increment <- (arguments$to-arguments$from)/10000
-  x <- seq(arguments$from, arguments$to, by=increment)
+  x <- seq(from, to, length.out=n)
   y <- lazy_eval(expr, data.frame(x=x))
-  arguments = set_args(fun.name = 'lines', x=x, y=y,  lazy_eval(dots[!names(dots) %in% c('from','to')]))
-  
-  to.gsplot <- list(list(arguments = arguments, gs.config=list(legend.name = legend.name, side = side))) %>% 
-    setNames('lines')
-  
-  object <- gsplot(append(object, to.gsplot))
-  
-  fun.name <- 'lines'
-  object <- set_legend_args(object, fun.name=fun.name, ..., legend.name=legend.name)
+  object <- lines(object, x=x, y=y, ..., legend.name=legend.name, side=side)
+  return(object)
 
   return(object)
 }
