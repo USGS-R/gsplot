@@ -61,17 +61,9 @@ legend <- function(object, ...){
 
 
 legend.gsplot <- function(object, ..., location="topright", legend_offset=0.3) {
-  arguments <- list(...)
   
-  gsConfig <- list(location = location, legend_offset = legend_offset, ...)
-  
-  if("x" %in% names(arguments)){
-    gsConfig$location <- gsConfig$x
-    gsConfig$x <- NULL
-  }
-  
-  object[['legend']] <- append(object[['legend']], list(gs.config = gsConfig))
-  
+  object <- modify_legend(object, location = location, legend_offset = legend_offset, draw = TRUE, ...)
+
   return(object)
 }
 
@@ -84,9 +76,10 @@ legend.gsplot <- function(object, ..., location="topright", legend_offset=0.3) {
 
 draw_legend <- function(gsplot) {
   
-  if (all(!names(gsplot[['legend']]) %in% "gs.config")){
-    return()
-  }
+  
+  draw <- gsplot[['legend']][['gs.config']][['draw']]
+  legend_args_exist <- any(grepl('legend.args', names(gsplot[['legend']])))
+  if (is.null(draw) || !draw || !legend_args_exist){ return() }
   
   oldXPD <- par()$xpd
   oldBg <- par('bg')
@@ -95,28 +88,15 @@ draw_legend <- function(gsplot) {
     
     par(xpd=TRUE)
     
-    if (any(names(gsplot[['legend']]) == "legend.args")) {
+    if("legend.args" %in% names(gsplot[['legend']])) {
     
       default.args <- formals(graphics::legend)
-      overall.legend <- c("x", "y", "bty", "bg", "box.lty", "box.lwd", "box.col", "cex",
-                          "xjust", "yjust", "x.intersp", "y.intersp", "adj", "text.width", 
-                          "merge", "trace", "plot", "ncol", "horiz", "title", "inset", 
-                          "xpd", "title.col", "title.adj", "seg.len")  
-      not.overall <- default.args[which(!names(default.args) %in% overall.legend)]
-      legendParamsALL <- vector("list", length(not.overall))
-      names(legendParamsALL) <- names(not.overall)
-      
-      for(i in which(names(gsplot[['legend']]) %in% 'legend.args')) {
-        orderedParams <- gsplot[['legend']][[i]][match(names(legendParamsALL), names(gsplot[['legend']][[i]]))]    
-        for (j in seq_along(legendParamsALL)) {
-          legendParamsALL[[j]] <- c(legendParamsALL[[j]], orderedParams[[j]])
-        }
-      }
+      legendParamsALL <- gsplot[['legend']][['legend.args']]
       
       overallLegendArgs <- appendLegendPositionConfiguration(gsplot[['legend']][['gs.config']])
       legendParamsALL <- append(legendParamsALL, overallLegendArgs)
       legendOrdered <- legendParamsALL[na.omit(match(names(default.args), names(legendParamsALL)))]
-      
+
       #for above/below, dynamically set the number of columns
       location <- gsplot[['legend']][['gs.config']][['location']]
       if(location == "below" || location == "above") {
@@ -168,27 +148,27 @@ appendLegendPositionConfiguration <- function(gsConfig) {
 }
 
 # What is this for?
-legend_adjusted_margins <- function(gsPlot) {
-  defaults <- config("plot")
-  defaultMargins <- c(3, 3, 3, 3) #default margins should come from config
-  leftRightMarginMultiplier <- 2 #load in config?
-  
-  if(!is.null(gsPlot$legend)) {
-    location <- gsPlot$legend$legend.gs.config$location
-    legend_offset <- ceiling(1 / gsPlot$legend$legend.gs.config$legend_offset)
-    if(location == "below") {
-      mar <- c(defaultMargins[1] + legend_offset, defaultMargins[2], defaultMargins[3], defaultMargins[4])
-    } else if(location == "above") {
-      mar <- c(defaultMargins[1], defaultMargins[2], defaultMargins[3] + legend_offset, defaultMargins[4])
-    } else if(location == "toright") {
-      mar <- c(defaultMargins[1], defaultMargins[2], defaultMargins[3], defaultMargins[4] + (legend_offset * leftRightMarginMultiplier))
-    } else if(location == "toleft") {
-      mar <- c(defaultMargins[1], defaultMargins[2] + (legend_offset * leftRightMarginMultiplier), defaultMargins[3], defaultMargins[4])
-    } else {
-      mar <- defaultMargins
-    }
-  } else {
-    mar <- defaultMargins
-  }
-  return(mar)
-}
+# legend_adjusted_margins <- function(gsPlot) {
+#   defaults <- config("plot")
+#   defaultMargins <- c(3, 3, 3, 3) #default margins should come from config
+#   leftRightMarginMultiplier <- 2 #load in config?
+#   
+#   if(!is.null(gsPlot$legend)) {
+#     location <- gsPlot$legend$legend.gs.config$location
+#     legend_offset <- ceiling(1 / gsPlot$legend$legend.gs.config$legend_offset)
+#     if(location == "below") {
+#       mar <- c(defaultMargins[1] + legend_offset, defaultMargins[2], defaultMargins[3], defaultMargins[4])
+#     } else if(location == "above") {
+#       mar <- c(defaultMargins[1], defaultMargins[2], defaultMargins[3] + legend_offset, defaultMargins[4])
+#     } else if(location == "toright") {
+#       mar <- c(defaultMargins[1], defaultMargins[2], defaultMargins[3], defaultMargins[4] + (legend_offset * leftRightMarginMultiplier))
+#     } else if(location == "toleft") {
+#       mar <- c(defaultMargins[1], defaultMargins[2] + (legend_offset * leftRightMarginMultiplier), defaultMargins[3], defaultMargins[4])
+#     } else {
+#       mar <- defaultMargins
+#     }
+#   } else {
+#     mar <- defaultMargins
+#   }
+#   return(mar)
+# }
