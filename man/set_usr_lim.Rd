@@ -4,15 +4,15 @@
 \alias{set_usr_lim}
 \title{sets the user-defined limits to sides}
 \usage{
-set_usr_lim(lims, sides)
+set_usr_lim(lims, side)
 }
 \arguments{
 \item{lims}{the usr.lims}
 
-\item{sides}{a sides list}
+\item{side}{a side}
 }
 \value{
-the modified sides list
+the modified side
 }
 \description{
 sets the user-defined limits to sides
