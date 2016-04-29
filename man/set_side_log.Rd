@@ -7,7 +7,9 @@
 set_side_log(args, side, side.num)
 }
 \arguments{
-\item{sides}{the sides for the gsplot object (see \code{\link{sides}})}
+\item{args}{arguments to pull log info from}
+
+\item{side}{the side for the gsplot object (see \code{\link{sides}})}
 }
 \value{
 a modified \code{side}
