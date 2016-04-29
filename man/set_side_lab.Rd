@@ -4,7 +4,7 @@
 \alias{set_side_lab}
 \title{set the label value on a side}
 \usage{
-set_side_lab(view, sides)
+set_side_lab(args, side, side.num)
 }
 \arguments{
 \item{view}{a single named view}

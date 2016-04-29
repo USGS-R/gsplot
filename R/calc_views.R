@@ -32,9 +32,9 @@ group_views <- function(gsplot){
     view.name <- as.view_name(c(add_sides[1],add_sides[2]))
     sides <- sides(vew.n.sde)
     named.view <- list(to_draw) %>% setNames(view.name)
-    sides <- set_side_lim(named.view, sides)
-    sides <- set_side_log(named.view, sides)
-    sides <- set_side_lab(named.view, sides)
+#     sides <- set_side_lim(named.view, sides)
+#     sides <- set_side_log(named.view, sides)
+#     sides <- set_side_lab(named.view, sides)
     to_draw[[1]] <- remove_field(to_draw[[1]], param=c('log','ylim','xlim','xlab','ylab'))
     
     vew.n.sde <- append_replace(vew.n.sde, sides)
@@ -137,7 +137,7 @@ remove_field <- function(list, param){
 strip_pts <- function(list, param){
   out <- c()
   for (v in param){
-    if (v %in% names(list) &&  !inherits(list[[v]], c('function','formula')))
+    if (v %in% names(list) && !inherits(list[[v]], c('function','formula')))
       out <- append(out, list[[v]])
     else{
       if (any(sapply(list, is.list))){
@@ -153,6 +153,23 @@ strip_pts <- function(list, param){
       
     }
     
+  }
+  return(out)
+}
+
+strip_pts2 <- function(data, param) {
+  out <- c()
+  if (is.null(names(data))) {
+    out <- append(out, unname_c(data))
+  }
+  for (name in param) {
+    if (name %in% names(data)) {
+      if (is.list(data[[name]])) {
+        out <- append(out, strip_pts2(data[[name]], param))
+      } else {
+        out <- append(out, data[[name]])
+      }
+    }
   }
   return(out)
 }
