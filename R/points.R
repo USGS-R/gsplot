@@ -48,17 +48,20 @@ points <- function(object, ...) {
 points.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
   fun.name <- 'points'
   call.args <- call_arguments(fun.name, ...)
+  
+  object <- modify_side(object, side=side, ...)
+  
   # // this is redundant and hacky - separate already happens w/ call_arguments, and this ignores embedded pars
-  # // config.args <- lazy_eval(separate_args(...)$args)
-  # // config.args <- config.args[!names(config.args) %in% c("", names(call.args[[fun.name]]))]
-  # // object <- modify_side_par(object, config.args, side=side)
-  # // object <- modify_view_par(object, config.args, side=side)
-  # // object <- add_to_view(object, call.args, side=side)
-  # // object <- modify_side(object, side.args, side=side)
+  config.args <- lazy_eval(separate_args(...)$args)
+  config.args <- config.args[!names(config.args) %in% c("", names(call.args[[fun.name]]))]
+  object <- modify_side_par(object, config.args, side=side)
+  object <- modify_view_par(object, config.args, side=side)
+  object <- add_to_view(object, call.args, side=side)
+  return(object)
 
   # // object <- modify_legend(object, call.args, legend.name)
   
-  object <- set_window_args(object, fun.name=fun.name, ..., legend.name=legend.name, side=side, def.funs = c(graphics::plot.xy, graphics::points.default))
+  #object <- set_window_args(object, fun.name=fun.name, ..., legend.name=legend.name, side=side, def.funs = c(graphics::plot.xy, graphics::points.default))
   # object <- set_legend_args(object, fun.name=fun.name, ..., legend.name=legend.name)
-  object <- add_to_legend(object, fun.name=fun.name, legend.name=legend.name, ...)
+  #object <- add_to_legend(object, fun.name=fun.name, legend.name=legend.name, ...)
 }

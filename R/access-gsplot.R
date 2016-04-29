@@ -135,9 +135,6 @@ lim <- function(object, side=NULL, axis = NULL, set.undefined=TRUE, if.null=c(0,
   return(lims)
 }
 
-as.axis <- function(side){
-  ifelse(side %% 2 == 0,'y','x')
-}
 
 #' log for gsplot
 #' 
@@ -190,7 +187,7 @@ view_info <- function(object){
   if (length(j) == 0){
     return(NULL)
   }
-  viewSides <- sapply(j, function(x) object[[x]][['window']][['side']])
+  viewSides <- as.side(names(sides(object)))
   viewNames <- names(object[j])
   viewLogs <- sapply(viewNames , function(x) as.log(object, x))
   viewInfo <- data.frame(t(rbind(viewSides, viewLogs, j, viewNames)), stringsAsFactors = FALSE)

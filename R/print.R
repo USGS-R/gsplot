@@ -46,6 +46,7 @@ print.gsplot <- function(x, ...){
   
   bg.arg <- views$bgCol
   title.arg <- views$title
+  browser()
   view.info <- view_info(views)
   side.names <- side_names(views)
 

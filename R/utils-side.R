@@ -71,14 +71,27 @@ as.side <- function(x){
   c_unname(lapply(x, function(x) as.numeric(tail(strsplit(x,'[.]')[[1]],-1L))))
 }
 
+
 #' take a named or numbered side and give whether it is an x or y axis
 #'
 #' @param side numeric or named \code{side}
 #' @return "x" or "y" character vector
 #' @keywords internal
-as.axis <- function(side) {
+as.axis <- function(x) UseMethod("as.axis")
+
+#' @keywords internal
+#' @export
+as.axis.character <- function(side) {
+  side <- as.side(side)
+  axis <- as.axis(side)
+  return(axis)
+}
+
+#' @keywords internal
+#' @export
+as.axis.numeric <- function(side) {
   axis <- rep("x", length(side))
-  is.y <- as.side(side) %% 2 == 0
+  is.y <- side %% 2 == 0
   axis[is.y] <- "y"
   return(axis)
 }
@@ -159,7 +172,7 @@ set_side_lab <- function(args, side, side.num){
   axis <- as.axis(side.num)
   lab.arg <- paste0(axis, "lab")
   if (exists(lab.arg, args)) {
-    lab <- args[[]]
+    lab <- args[[lab.arg]]
     side$label <- ifelse(is.expression(lab) || !is.na(lab), lab, side$label)
   }
   return(side)
@@ -241,6 +254,8 @@ append_sides <- function(object, sides, on.exists = c('skip','replace')){
   if (is.null(sides))
     return(object)
   on.exists = match.arg(on.exists)
+  
+  side_template <- list(lim = c(NA, NA), log=FALSE, label="", usr.lim=c(FALSE, FALSE))
   
   if (on.exists == 'skip'){
     side.names <- as.side_name(sides)

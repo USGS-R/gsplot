@@ -4,7 +4,7 @@
 \alias{as.axis}
 \title{take a named or numbered side and give whether it is an x or y axis}
 \usage{
-as.axis(side)
+as.axis(x)
 }
 \arguments{
 \item{side}{numeric or named \code{side}}
