@@ -4,7 +4,7 @@
 \alias{add_to_legend}
 \title{add function call to the overall legend}
 \usage{
-add_to_legend(object, fun.name, legend.name, ...)
+add_to_legend(object, fun.name, legend.name, call.args, option.args)
 }
 \description{
 add function call to the overall legend

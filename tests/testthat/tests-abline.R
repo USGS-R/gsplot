@@ -12,7 +12,7 @@ test_that("abline",{
 test_that("abline gsplot",{
   gs = points(gsplot(), c(-2,3), c(-1,5)) %>% 
     abline(h = 0, v = 0, col = "gray60")
-  expect_equal(names(gs$view), c("points","abline","window"))
+  expect_equal(names(gs$view.1.2), c("par","points","abline"))
 })
 
 test_that("segments",{
@@ -35,7 +35,7 @@ test_that("segments gsplot",{
   gs = arrows(gs, x[s], y[s], x[s+1], y[s+1], col= 1:3)
   s <- s[-length(s)]
   gs = segments(gs, x[s], y[s], x[s+2], y[s+2], col= 'pink')
-  expect_equal(names(gs$view), c("points","arrows","segments","window"))
+  expect_equal(names(gs$view), c("par","points","arrows","segments"))
   
 })
 
@@ -59,7 +59,7 @@ test_that("grid",{
          axis(side=3, labels=FALSE) %>%
          grid(side=c(1,2),col="green") %>%
          grid(side=c(3,4))
-  expect_equal(names(gs$view.1.2),c("points","grid","window"))
+  expect_equal(names(gs$view.1.2),c("par", "points","grid"))
   expect_equal(gs$view.1.2$grid$col,"green")
   
 })

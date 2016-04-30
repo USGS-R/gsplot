@@ -48,8 +48,9 @@ grid <- function(object, ...) {
 
 grid.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
   
-  object <- set_window_args(object, fun.name='grid', ..., legend.name=legend.name, side=side, def.funs = graphics::grid)
-  
+  fun.name='grid'
+  object <- apply_view_function(object, fun.name, ..., legend.name=legend.name, side=side)
+  return(object)
 }
 
 draw_custom_grid <- function(object, view.name){

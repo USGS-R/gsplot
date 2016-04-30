@@ -35,6 +35,6 @@ arrows <- function(object, ...) {
 
 arrows.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
   fun.name <- 'arrows'
-  object <- set_window_args(object, fun.name=fun.name, ..., legend.name=legend.name, side=side, def.funs=graphics::arrows)
-  object <- set_legend_args(object, fun.name=fun.name, ..., legend.name=legend.name)
+  object <- apply_view_function(object, fun.name, ..., legend.name=legend.name, side=side)
+  return(object)
 }

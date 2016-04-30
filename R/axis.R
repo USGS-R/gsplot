@@ -82,8 +82,8 @@ axis.gsplot <- function(object, ..., n.minor=0, tcl.minor=0.15, reverse=NULL) {
     
     object <- append(object, to.gsplot)
   }
-  
-  return(gsplot(object))
+  class(object) <- 'gsplot'
+  return(object)
   
 }
 

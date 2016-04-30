@@ -1,8 +1,9 @@
 
 apply_extracted_args <- function(object, extracted.args, side=c(1,2)){
   
-  for (fun.name in names(extracted.args)){
-    object <- do.call(fun.name, args = append(list('object'=object), extracted.args[[fun.name]])) 
+  for (j in seq_along(extracted.args)){
+    fun.name <- names(extracted.args[j])
+    object <- do.call(fun.name, args = append(list('object'=object), extracted.args[[j]])) 
   }
   return(object)
 }
