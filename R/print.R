@@ -46,12 +46,13 @@ print.gsplot <- function(x, ...){
   
   bg.arg <- views$bgCol
   title.arg <- views$title
-  browser()
+  
   view.info <- view_info(views)
   side.names <- side_names(views)
 
   for (side.name in side.names){
     side <- as.side(side.name)
+    par(x[[side.name]]$par)
     set_frame(views, side)
     if(!side %in% defined.sides){ 
       if(all(sapply(views_with_side(views, side), function(x) views(views)[[x]][['window']][['axes']]))){
@@ -95,13 +96,12 @@ print.gsplot <- function(x, ...){
 #' @param \dots additional arguments (not used)
 #' @keywords internal
 print.view <- function(x, ...){
-  plots <- remove_field(x, param = c('window','grid'))
-  window <- x[['window']]
+  plots <- remove_field(x, param = c('par','grid','window'))
   
-  if(window$frame.plot){
-    box()
-  } 
-  par(window[['par']])
+  # if(window$frame.plot){
+  #   box()
+  # } 
+  par(x[['par']])
   
   # -- call functions -- 
   to_gsplot(lapply(plots, function(x) x[!(names(x) %in% c('legend.name'))]))

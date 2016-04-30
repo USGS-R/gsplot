@@ -187,10 +187,12 @@ view_info <- function(object){
   if (length(j) == 0){
     return(NULL)
   }
-  viewSides <- as.side(names(sides(object)))
+  
   viewNames <- names(object[j])
+  x.sides <- as.x_side(viewNames)
+  y.sides <- as.y_side(viewNames)
   viewLogs <- sapply(viewNames , function(x) as.log(object, x))
-  viewInfo <- data.frame(t(rbind(viewSides, viewLogs, j, viewNames)), stringsAsFactors = FALSE)
+  viewInfo <- data.frame(t(rbind(x.sides, y.sides, viewLogs, j, viewNames)), stringsAsFactors = FALSE, row.names = NULL)
   
   names(viewInfo) <- c("x","y","log","index","name")
   

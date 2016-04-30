@@ -4,14 +4,14 @@
 \alias{modify_side}
 \title{modify a side to update it with new arguments}
 \usage{
-modify_side(object, side, ...)
+modify_side(object, args, side)
 }
 \arguments{
 \item{object}{gsplot object}
 
-\item{side}{sides to modify with extra parameters}
+\item{args}{a list of arguments}
 
-\item{\dots}{user arguments to passed through}
+\item{side}{sides to modify with extra parameters}
 }
 \description{
 modify a side to update it with new arguments
