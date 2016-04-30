@@ -55,14 +55,14 @@ print.gsplot <- function(x, ...){
     par(x[[side.name]]$par)
     set_frame(views, side)
     if(!side %in% defined.sides){ 
-      if(all(sapply(views_with_side(views, side), function(x) views(views)[[x]][['window']][['axes']]))){
+      if(x[[side.name]][['axes']]){
         Axis(side=side,x=lim(views, side))
       }
     } else {
       axis <- i.axis[which(defined.sides == side)]
       draw_axis(views, index.axis=axis)
     }
-    if(all(sapply(views_with_side(views, side), function(x) views(views)[[x]][['window']][['ann']]))){
+    if(x[[side.name]]$par$ann){
       mtext(text=label(views, side), side=side, line = 2, las=config("mtext")$las)
     }
   }

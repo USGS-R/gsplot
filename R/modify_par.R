@@ -5,7 +5,7 @@ global.only.par <- c("ask", "fig", "fin", "lheight", "mai", "mar", "mex", "mfcol
                      "ylbias")
 
 side.par <- c('cex.axis', 'col.axis', 'cex.lab', 'col.lab', 'font.axis', 'mgp', 'xaxp', 'yaxp', 
-              'tck', 'tcl', 'las', 'fg', 'xaxt', 'yaxt', 'adj', 'yaxs', 'xaxs','font.lab', 'ylim','xlim')
+              'tck', 'tcl', 'las', 'fg', 'xaxt', 'yaxt', 'adj', 'yaxs', 'xaxs','font.lab', 'ann')
 
 view.par <- user.par[!(user.par %in% side.par) & !(user.par %in% global.only.par)]
 

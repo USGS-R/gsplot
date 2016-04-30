@@ -144,6 +144,19 @@ locked_sides <- function(sides){
   names(lim.locks)[lim.locks]
 }
 
+#' set the axes logical on a side
+#' 
+#' @param args arguments to pull log info from
+#' @param side the side for the gsplot object (see \code{\link{sides}})
+#' @return a modified \code{side}
+#' @keywords internal
+set_side_axes <- function(args, side, side.num){
+  stopifnot(length(side.num) == 1)
+  
+  side$axes <- ifelse(exists("axes", args), args$axes, side$axes)
+  return(side)
+}
+
 #' set the log value on a side
 #' 
 #' @param args arguments to pull log info from
@@ -181,7 +194,7 @@ set_side_lab <- function(args, side, side.num){
 #' sets the side limits according to a new addition
 #' 
 #' @param args pass through args from graphics call
-#' @param side the side for the gsplot object (see \code{\link{side}})
+#' @param side the side for the gsplot object (see \code{\link{as.side}})
 #' @param side.num number of side being worked on
 #' @return a modified \code{sides} list
 #' @keywords internal
@@ -284,7 +297,7 @@ add_new_side <- function(object, side.name){
   stopifnot(length(side.name) == 1)
   if (side.name %in% side_names(object))
     stop(side.name, ' already exists, cannot add it.', call. = FALSE)
-  side.template <- list(list(lim = c(NA, NA), log=FALSE, label="", usr.lim=c(FALSE, FALSE)))
+  side.template <- list(list(lim = c(NA, NA), log=FALSE, label="", axes = TRUE, reverse = FALSE, usr.lim=c(FALSE, FALSE)))
   names(side.template) <- side.name
   
   last.side.i <- max(which_sides(object), 0)

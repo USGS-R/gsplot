@@ -9,7 +9,7 @@ set_side_lim(args, side, side.num)
 \arguments{
 \item{args}{pass through args from graphics call}
 
-\item{side}{the side for the gsplot object (see \code{\link{side}})}
+\item{side}{the side for the gsplot object (see \code{\link{as.side}})}
 
 \item{side.num}{number of side being worked on}
 }

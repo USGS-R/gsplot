@@ -28,9 +28,9 @@ gs <- gsplot() \%>\%
                error_bar(y.high=1))
 gs
 
-gsplot:::call_arguments('points', x=2:6, y=2:6, ylim=c(-1, 11))
-gsplot:::call_arguments('points', x=1:5, y=1:5, xlim=c(0,10), ylim=c(0,10), 
-               callouts(labels=c(rep(NA, 4), "oh")))
+gsplot:::filter_arguments('points', x=2:6, y=2:6, ylim=c(-1, 11))$call.args
+gsplot:::filter_arguments('points', x=1:5, y=1:5, xlim=c(0,10), ylim=c(0,10), 
+               callouts(labels=c(rep(NA, 4), "oh")))$extracted.args
 }
 \keyword{internal}
 

@@ -44,7 +44,7 @@ test_that("side par arguments includes ylim", {
   
   arguments = list(col='yellow',ylim=c(1,10))
   gs <- gsplot()
-  expect_true('ylim' %in% names(gsplot:::modify_side_par(gs, arguments, side=1)$side.1$par))
+  expect_false('ylim' %in% names(gsplot:::modify_side_par(gs, arguments, side=1)$side.1$par))
   
 })
 

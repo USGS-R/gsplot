@@ -17,6 +17,10 @@ test_that("par within view", {
   expect_equal(gs[["side.3"]]$par$las, 1)
   expect_equal(gs[["side.4"]]$par$las, 1)
   
+  gs = points(gsplot(), y=1, x=2, col="blue", pch=18, las=3) %>% 
+    lines(2:3,4:5) %>% 
+    points(3,4,side=c(3,4),las=1, ann=FALSE)
+  
 })
 
 test_that("view_info", {

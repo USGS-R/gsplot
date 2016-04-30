@@ -20,6 +20,7 @@ modify_side <- function(object, args, side) {
     thisSide <- set_side_lim(args, thisSide, sideNum)
     thisSide <- set_side_log(args, thisSide, sideNum)
     thisSide <- set_side_lab(args, thisSide, sideNum)
+    thisSide <- set_side_axes(args, thisSide, sideNum)
     object[[sideName]] <- thisSide
   }
   return(object)

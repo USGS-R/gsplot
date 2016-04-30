@@ -78,7 +78,7 @@ draw_legend <- function(gsplot) {
   
   
   draw <- gsplot[['legend']][['gs.config']][['draw']]
-  legend_args_exist <- any(grepl('legend.args', names(gsplot[['legend']])))
+  legend_args_exist <- exists('legend.args', gsplot[['legend']])
   if (is.null(draw) || !draw || !legend_args_exist){ return() }
   
   oldXPD <- par()$xpd
