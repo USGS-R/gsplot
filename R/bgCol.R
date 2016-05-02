@@ -36,12 +36,10 @@ bgCol <- function(object, ...) {
 
 bgCol.gsplot <- function(object, ...){
 
-  to.gsplot <- set_args("bgCol",..., package = "gsplot")
+  fun.name = "bgCol"
+  object <- gather_function_info(object, fun.name, ..., legend.name=NULL)
+  return(object)
 
-  to.gsplot <- list("bgCol"=to.gsplot)
-  
-  object <- append(object, to.gsplot)
-  return(gsplot(object))
 }
 
 #' create a background color
