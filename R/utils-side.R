@@ -302,7 +302,7 @@ add_new_side <- function(object, side.name){
   
   last.side.i <- max(which_sides(object), 0)
   object <- append(object, side.template, after = last.side.i)
-  object <- modify_side_par(object, config('par'), side=as.side(side.name))
+  object <- modify_side_par(object, arguments=NULL, side=as.side(side.name))
   return(object)
 }
 

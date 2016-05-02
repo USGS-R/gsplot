@@ -5,8 +5,12 @@
 #' (e.g., 'global','view.1.2','side.1', etc)
 #' @return a modified gsplot object
 add_new_par <- function(object, field){
-  if (field %in% names(object))
-    stop(field, ' already exists, cannot add it.', call. = FALSE)
-  object <- modify_par(object, config('par'), field)
+  defaults <- list(c())
+  if (field == 'global'){
+    defaults <- config('par')
+  }
+  if ('par' %in% names(object[[field]]))
+    stop('par in ', field, ' already exists, cannot add it.', call. = FALSE)
+  object <- modify_par(object, arguments=defaults, field)
   return(object)
 }

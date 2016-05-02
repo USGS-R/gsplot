@@ -12,6 +12,7 @@ test_that("par defaults on new side", {
   
   obj <- list()
   obj <- gsplot:::add_new_side(obj, 'side.1')
+  obj <- gsplot:::modify_side_par(obj, arguments =list(las='2'), side=1)
   expect_true('par' %in% names(obj[['side.1']]))
 })
 
