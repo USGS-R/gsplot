@@ -76,7 +76,7 @@ filter_arguments <- function(fun.name, ...){
 }
 
 standard_eval_arguments <- function(.dots){
-  args <- list()
+  args <- NULL
   if (!is.null(.dots)){
     args <- lazy_eval(.dots)
   } 

@@ -33,7 +33,7 @@ print.gsplot <- function(x, ...){
   
   # -- set plot -- 
   views = x
-  
+
   if(!isTRUE(x$gobal$par$new)){
     dev.hold()
     on.exit(dev.flush())
