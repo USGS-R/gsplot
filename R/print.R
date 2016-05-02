@@ -62,13 +62,17 @@ print.gsplot <- function(x, ...){
       axis <- i.axis[which(defined.sides == side)]
       draw_axis(views, index.axis=axis)
     }
-    if(x[[side.name]]$par$ann){
+    if(exists('ann', x[[side.name]]$par) && x[[side.name]]$par$ann){
       mtext(text=label(views, side), side=side, line = 2, las=config("mtext")$las)
     }
   }
   
   for (view.name in view_names(views)){
     par(x$global$par)
+    x.side.name <- as.x_side_name(view.name)
+    y.side.name <- as.y_side_name(view.name)
+    par(x[[x.side.name]]$par)
+    par(x[[y.side.name]]$par)
     set_frame(views, side=view.name)
     if(any(names(views[[view.name]]) %in% 'grid')){
       draw_custom_grid(views,view.name)
