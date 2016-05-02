@@ -78,7 +78,10 @@ draw_legend <- function(gsplot) {
   
   
   draw <- gsplot[['legend']][['gs.config']][['draw']]
-  legend_args_exist <- exists('legend.args', gsplot[['legend']])
+  legend_args_exist <- FALSE
+  if (exists('legend', gsplot)){
+    legend_args_exist <- exists('legend.args', gsplot[['legend']])
+  }
   if (is.null(draw) || !draw || !legend_args_exist){ return() }
   
   oldXPD <- par()$xpd
@@ -146,6 +149,14 @@ appendLegendPositionConfiguration <- function(gsConfig) {
     return(append(gsConfig, list(x = location)))
   }
 }
+
+
+#don't use legend.name more than once
+check_legend_name <- function(legend.name, prev_calls){
+  if(!is.null(legend.name) && sum(prev_calls != 0)){ legend.name <- NULL }
+  return(legend.name)
+}
+
 
 # What is this for?
 # legend_adjusted_margins <- function(gsPlot) {

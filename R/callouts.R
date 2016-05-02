@@ -30,7 +30,7 @@ callouts <- function(object, ...) {
 callouts.gsplot <- function(object, ..., side=c(1,2)){
   
   fun.name='callouts'
-  object <- apply_view_function(object, fun.name, ..., legend.name=NULL, side=side)
+  object <- gather_function_info(object, fun.name, ..., legend.name=NULL, side=side)
   return(object)
 }
 #' Default for adding callouts to a plot.

@@ -31,6 +31,6 @@ segments <- function(object, ...) {
 
 segments.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
   fun.name <- 'segments'
-  object <- apply_view_function(object, fun.name, ..., legend.name=legend.name, side=side)
+  object <- gather_function_info(object, fun.name, ..., legend.name=legend.name, side=side)
   return(object)
 }
