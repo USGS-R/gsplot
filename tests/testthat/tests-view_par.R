@@ -2,7 +2,6 @@ context("view par")
 test_that("par arguments", {
   
   arguments = list(x=3, y=34, col='yellow',las=3)
-  expect_equal(gsplot:::par_arguments(arguments, def.funs=c(graphics::plot.xy, graphics::points.default)), list(las=3))
   expect_equal(gsplot:::formal_arguments(arguments, def.funs=c(graphics::plot.xy, graphics::points.default)), list(x=3, y=34, col='yellow'))
   
 })
