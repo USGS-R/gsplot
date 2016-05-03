@@ -26,19 +26,6 @@ views <- function(gsplot){
   gsplot[which_views(gsplot)]
 }
 
-#' non-views in the gsplot object
-#' 
-#' @param gsplot a gsplot object
-#' @return a subset of the gsplot object that contains only non-views
-#' @keywords internal
-non_views <- function(gsplot, include.sides = TRUE){
-  non.views <- gsplot
-  non.views[which_views(non.views)] <- NULL
-  if (!include.sides)
-    non.views[which_sides(non.views)] <- NULL
-  return(non.views)
-}
-
 #' convert sides vector into view name
 #' 
 #' @param sides a vector of sides (if only length 1, appended via \code{set_sides})

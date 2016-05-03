@@ -133,16 +133,7 @@ set_usr_lim <- function(lims, side){
   return(side)
 }
 
-#' which sides are locked?
-#' 
-#' let's you know what sides have been user-defined
-#' @param sides a sides list
-#' @return names of the sides that are locked
-#' @keywords internal
-locked_sides <- function(sides){
-  lim.locks <- sapply(sides, function(x) all(x$usr.lim))
-  names(lim.locks)[lim.locks]
-}
+
 
 #' set the axes logical on a side
 #' 

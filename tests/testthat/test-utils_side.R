@@ -13,3 +13,9 @@ test_that("side getter returns expected info", {
   expect_equal(length(gsplot:::sides(gs, c(1,2))), 2)
   expect_equal(length(gsplot:::sides(gs, 3)), 0)
 })
+
+test_that("as.axis works as expected",{
+  expect_equal(gsplot:::as.axis('side.1'), 'x')
+  expect_equal(gsplot:::as.axis(1), 'x')
+  expect_equal(gsplot:::as.axis(c('side.1','side.2')), c('x','y'))
+})
