@@ -8,10 +8,20 @@
 #' @examples
 #' gs <- gsplot() %>%
 #'    lines(c(0,10), c(0,10))
-#' gs <- gsplot:::modify_side(gs, c(1,2), xlim=c(0,12))
+#' gs <- gsplot:::modify_side(gs, args = list(x=c(1,2), xlim=c(0,12)), side=1)
 #' 
 modify_side <- function(object, args, side) {
-  object <- append_sides(object, side, on.exists="skip")
+  
+  incoming.side.names <- as.side_name(side)
+  
+  new.sides <- !incoming.side.names %in% side_names(object)
+  
+  if (any(new.sides)){
+    for (side.name in incoming.side.names[new.sides]){
+      object <- add_new_side(object, side.name)
+    }
+  }
+
   sides <- sides(object, side)
   sideNames <- names(sides)
   for (sideName in sideNames) {

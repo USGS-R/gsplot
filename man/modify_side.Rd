@@ -19,7 +19,7 @@ modify a side to update it with new arguments
 \examples{
 gs <- gsplot() \%>\%
    lines(c(0,10), c(0,10))
-gs <- gsplot:::modify_side(gs, c(1,2), xlim=c(0,12))
+gs <- gsplot:::modify_side(gs, args = list(x=c(1,2), xlim=c(0,12)), side=1)
 
 }
 \keyword{internal}

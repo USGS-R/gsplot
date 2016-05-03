@@ -36,8 +36,10 @@ bgCol <- function(object, ...) {
 
 bgCol.gsplot <- function(object, ...){
 
-  fun.name = "bgCol"
-  object <- gather_function_info(object, fun.name, ..., legend.name=NULL)
+  
+  to.gsplot <- filter_arguments(fun.name = "bgCol", ...)$call.args
+  object <- append(object, to.gsplot)
+  class(object) <- 'gsplot'
   return(object)
 
 }

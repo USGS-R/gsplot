@@ -26,8 +26,6 @@ gsplot.default <- function(...) {
 #' @exportMethod gsplot
 gsplot.list <- function(x){
   
-  if (length(x) > 0)
-    x = calc_views(x)
   class(x) <- "gsplot"
   invisible(x) 
 }

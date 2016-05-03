@@ -6,6 +6,8 @@ pkg.env <- new.env()
       list(package='graphics', def.funs=c(graphics::plot.xy, graphics::points.default)),
     'lines' = 
       list(package='graphics', def.funs=c(graphics::plot.xy, graphics::lines.default)),
+    'text' = 
+      list(package='graphics', def.funs=graphics::text.default),
     'plot' = 
       list(package='graphics', def.funs=graphics::plot.xy),
     'bgCol' =

@@ -255,38 +255,6 @@ summarize_side_values <- function(view, param, na.value=NULL, axis=c('x','y'), i
   return(values)
 }
 
-#' add sides list to gsplot object
-#' 
-#' @param object a gsplot object
-#' @param sides integer vector of sides to add
-#' @param on.exist what to do when the sides already exists
-#' @return a modified gsplot object
-#' @keywords internal
-append_sides <- function(object, sides, on.exists = c('skip','replace')){
-  
-  if (is.null(sides))
-    return(object)
-  on.exists = match.arg(on.exists)
-  
-  side_template <- list(lim = c(NA, NA), log=FALSE, label="", usr.lim=c(FALSE, FALSE))
-  
-  if (on.exists == 'skip'){
-    side.names <- as.side_name(sides)
-    
-    to_add <- !side.names %in% side_names(object)
-    for (side.name in side.names[to_add]){
-      object <- add_new_side(object, side.name)
-    }
-
-    to_add <- !sides %in% names(gsplot)
-    side_list <- rep(list(side_template), sum(to_add))
-    side_list <- setNames(side_list, sides[which(to_add)])
-    gsplot <- append(gsplot, side_list)
-  } else if (on.exists == 'replace'){
-    stop('on.exists ', on.exists, ' not implemented yet')
-  }
-  return(object)
-}
 
 #' add a new default side to gsplot
 #' 
@@ -302,7 +270,7 @@ add_new_side <- function(object, side.name){
   
   last.side.i <- max(which_sides(object), 0)
   object <- append(object, side.template, after = last.side.i)
-  object <- modify_side_par(object, arguments=NULL, side=as.side(side.name))
+  object <- modify_side_par(object, arguments=list(c()), side=as.side(side.name))
   return(object)
 }
 

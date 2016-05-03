@@ -67,18 +67,17 @@ axis.gsplot <- function(object, ..., n.minor=0, tcl.minor=0.15, reverse=NULL) {
   
   fun.name <- "axis"
   
-  user_args <- function_args(name=fun.name, package="graphics", ...)
+  user_args <- filter_arguments(fun.name = fun.name, ...)$call.args
   
-  sides <- user_args$side
-  user_args[["side"]] <- NULL
+  sides <- user_args[[fun.name]]$side
+  user_args[[fun.name]]$side <- NULL
   
   for(i in sides){
-    arguments1 <- append(list(side=i), user_args)
-    
-    to.gsplot <- list(list(arguments = do.call(set_args, c(fun.name, arguments1)),  
-                           gs.config=list(n.minor=n.minor, tcl.minor=tcl.minor, 
-                                          reverse=reverse))) %>% 
-      setNames(fun.name)
+    arguments1 <- list(arguments = append(list(side=i), user_args[[fun.name]]), 
+                       gs.config=list(n.minor=n.minor, tcl.minor=tcl.minor, 
+                                      reverse=reverse))
+    to.gsplot <- list(arguments1)
+    names(to.gsplot) <- fun.name
     
     object <- append(object, to.gsplot)
   }
