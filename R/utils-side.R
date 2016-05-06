@@ -213,40 +213,6 @@ set_side_lim <- function(args, side, side.num){
   return(side)
 }
 
-#' unlist and summarize values according to their side
-#' 
-#' @param view a single view to be used (named list, e.g., list(view.1.2=...))
-#' @param na.value what to return when a \code{param} has no values
-#' @param axis 'x' or 'y'
-#' @param ignore fields in the \code{view} to ignore
-#' @param skip.side a vector of side names to leave out 
-#' (if, for example, they are locked and it doesn't matter what they contain)
-#' @return a list of values for \code{param} indexed by 'side' names
-#' @keywords internal
-summarize_side_values <- function(view, param, na.value=NULL, axis=c('x','y'), ignore='gs.config', skip.side=NA){
-  axis <- match.arg(axis)
-  side_i <- c('x'=1,'y'=2)
-  
-  view_nm <- names(view)[which_views(view)] #// is it a view? if not, pass through
-  if (length(view_nm) == 0){
-    return(na.value)
-  }
-  
-  side <- as.side_name(view_nm)[side_i[[axis]]]
-  
-  if (side %in% skip.side)
-    return(na.value)
-  
-  x <- view[!names(view) %in% ignore]
-  valStuff <- lapply(x, function(x) strip_pts(x[[1]], param))
-  if (length(valStuff) == 1 & is.na(valStuff))
-    return(na.value)
-  values <- list(c_unname(valStuff)) %>% 
-    setNames(side)
-  return(values)
-}
-
-
 #' add a new default side to gsplot
 #' 
 #' @param object a gsplot object
