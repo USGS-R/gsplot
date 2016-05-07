@@ -5,10 +5,11 @@
 #' @param x gsplot object
 #' @param \dots Further graphical parameters may also be supplied as arguments.
 #' 
-#' @importFrom graphics mtext
-#' @importFrom graphics plot.new
-#' @importFrom graphics box
-#' @importFrom graphics plot.xy
+#' @importFrom graphics mtext plot.new box plot.xy
+#' @importFrom graphics Axis axTicks plot.window
+#' @importFrom grDevices dev.flush dev.hold
+#' @importFrom stats median na.omit
+#' @importFrom utils find getS3method packageName tail
 #' @export
 #' @examples
 #' gs <- gsplot() %>%
