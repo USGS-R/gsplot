@@ -27,27 +27,27 @@ test_that("add new function", {
   obj <- gsplot:::add_to_view(obj, call.args, side=1)
   call.args <- list('lines'=list('x'=1:3, 'y'=3:5))
   obj <- gsplot:::add_to_view(obj, call.args, side=1)
-  expect_equal(names(obj[['view.1.2']]), c('points','points','lines'))
+  expect_equal(names(obj[['view.1.2']]), c('par','points','points','lines'))
 })
 
 context("test call arguments")
 
 test_that("call args don't have side arguments",{
-  call.args <- gsplot:::call_arguments('points', x=2:6, y=2:6, ylim=c(-1, 11))
+  call.args <- gsplot:::filter_arguments('points', x=2:6, y=2:6, ylim=c(-1, 11))$call.args
   expect_null(call.args$points$ylim)
   expect_equal(call.args$points$y, c(2:6))
   
 })
 
 test_that("embedded arguments are captured",{
-  call.args <- gsplot:::call_arguments('points', x=1:5, y=1:5, xlim=c(0,10), ylim=c(0,10), 
+  filtered.args <- gsplot:::filter_arguments('points', x=1:5, y=1:5, xlim=c(0,10), ylim=c(0,10), 
                                        callouts(labels=c(rep(NA, 4), "oh")))
-  expect_null(call.args$points$ylim)
-  expect_equal(call.args$callouts$y, c(1:5))
+  expect_null(filtered.args$call.args$points$ylim)
+  expect_equal(filtered.args$extracted.args$callouts$y, c(1:5))
   
 })
 
 test_that("can embed a graphics function",{
-  call.args <- gsplot:::call_arguments('points', x=1:5, y=1:5, xlim=c(0,10), ylim=c(0,10), lines(col='red'))
-  expect_equal(call.args$lines$y, c(1:5))
+  filtered.args <- gsplot:::filter_arguments('points', x=1:5, y=1:5, xlim=c(0,10), ylim=c(0,10), lines(col='red'))
+  expect_equal(filtered.args$extracted.args$lines$y, c(1:5))
 })

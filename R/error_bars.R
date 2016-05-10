@@ -113,9 +113,3 @@ error_bar.default <- function(x, y, y.high, y.low, x.high, x.low, epsilon=0.1, .
   warning("this function doesn't do anything")
   return()
 }
-
-#don't use legend.name more than once
-check_legend_name <- function(legend.name, prev_calls){
-  if(!is.null(legend.name) && sum(prev_calls != 0)){ legend.name <- NULL }
-  return(legend.name)
-}

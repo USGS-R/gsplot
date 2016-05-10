@@ -121,7 +121,11 @@ lim <- function(object, side=NULL, axis = NULL, set.undefined=TRUE, if.null=c(0,
       lims <- lim(object, axis=as.axis(side))
       sides <- as.side(names(lims)[sapply(lims, function(x) !any(is.na(x)))])
       closest.side <- sides[which.min(abs(side-sides))][1]
-      lims <- lims[[as.side_name(closest.side)]]
+      if (is.null(closest.side)){
+        lims <- NULL
+      } else {
+        lims <- lims[[as.side_name(closest.side)]]  
+      }
     }
     if (is.null(lims)){
       lims <- if.null
@@ -131,9 +135,6 @@ lim <- function(object, side=NULL, axis = NULL, set.undefined=TRUE, if.null=c(0,
   return(lims)
 }
 
-as.axis <- function(side){
-  ifelse(side %% 2 == 0,'y','x')
-}
 
 #' log for gsplot
 #' 
@@ -183,10 +184,15 @@ as.log <- function(object, view.name){
 #' @export
 view_info <- function(object){
   j <- which_views(object)
-  viewSides <- sapply(j, function(x) object[[x]][['window']][['side']])
+  if (length(j) == 0){
+    return(NULL)
+  }
+  
   viewNames <- names(object[j])
+  x.sides <- as.x_side(viewNames)
+  y.sides <- as.y_side(viewNames)
   viewLogs <- sapply(viewNames , function(x) as.log(object, x))
-  viewInfo <- data.frame(t(rbind(viewSides, viewLogs, j, viewNames)), stringsAsFactors = FALSE)
+  viewInfo <- data.frame(t(rbind(x.sides, y.sides, viewLogs, j, viewNames)), stringsAsFactors = FALSE, row.names = NULL)
   
   names(viewInfo) <- c("x","y","log","index","name")
   

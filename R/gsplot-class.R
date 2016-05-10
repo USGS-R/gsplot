@@ -14,15 +14,18 @@ gsplot <- function(x = NULL, ...) UseMethod("gsplot")
 #' @rdname gsplot
 #' @export
 gsplot.default <- function(...) {
-  par.gsplot(gsplot.list(list()), ...)
+  object <- gsplot(list())
+  object <- add_new_par(object, 'global')
+  if (length(list(...)) > 0){
+    object <- par(object, ...)
+  }
+  return(object)
 }
 
 #' @rdname gsplot
 #' @exportMethod gsplot
 gsplot.list <- function(x){
   
-  if (length(x) > 0)
-    x = calc_views(x)
   class(x) <- "gsplot"
   invisible(x) 
 }

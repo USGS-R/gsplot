@@ -4,10 +4,10 @@
 \alias{as.side}
 \title{take a named side and turn it into numeric}
 \usage{
-as.side(side.names)
+as.side(x)
 }
 \arguments{
-\item{side.names}{vector of side names}
+\item{x}{a character vector of side of view names (length 1)}
 }
 \value{
 numeric values for \code{side}

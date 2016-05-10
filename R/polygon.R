@@ -37,6 +37,6 @@ polygon <- function(object, ...) {
 
 polygon.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
   fun.name <- 'polygon'
-  object <- set_window_args(object, fun.name=fun.name, ..., legend.name=legend.name, side=side, def.funs=graphics::polygon)
-  object <- set_legend_args(object, fun.name=fun.name, ..., legend.name=legend.name)
+  object <- gather_function_info(object, fun.name, ..., legend.name=legend.name, side=side)
+  return(object)
 }

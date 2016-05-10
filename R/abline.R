@@ -30,6 +30,6 @@ abline <- function(object, ...) {
 
 abline.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
   fun.name <- 'abline'
-  object <- set_window_args(object, fun.name=fun.name, ..., legend.name=legend.name, side=side, def.funs=c(graphics::abline, graphics::plot.xy))
-  object <- set_legend_args(object, fun.name=fun.name, ..., legend.name=legend.name)
+  object <- gather_function_info(object, fun.name, ..., legend.name=legend.name, side=side)
+  return(object)
 }

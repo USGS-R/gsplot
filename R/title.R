@@ -33,11 +33,12 @@ title <- function(object, ...) {
 
 
 title.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
-  to.gsplot <- set_args("title",..., package = "graphics")
+  to.gsplot <- set_args("title", ..., package = "graphics")
   
   to.gsplot <- list("title"=to.gsplot)
   
   object <- append(object, to.gsplot)
-  return(gsplot(object))
+  class(object) <- 'gsplot'
+  return(object)
   # set_window_args(object, fun.name='title', ..., legend.name=legend.name, side=side, def.funs=graphics::title)
 }

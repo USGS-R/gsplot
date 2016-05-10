@@ -4,12 +4,14 @@
 \alias{set_side_lab}
 \title{set the label value on a side}
 \usage{
-set_side_lab(view, sides)
+set_side_lab(args, side, side.num)
 }
 \arguments{
-\item{view}{a single named view}
+\item{args}{arguments to pull label from}
 
-\item{sides}{the sides for the gsplot object (see \code{\link{sides}})}
+\item{side}{the side for the gsplot object (see \code{\link{sides}})}
+
+\item{side.num}{which side are we talking about}
 }
 \value{
 a modified \code{sides} list

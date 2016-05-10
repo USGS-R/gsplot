@@ -18,13 +18,12 @@
 #' gs
 #' 
 #' @keywords internal
-add_to_legend <- function(object, fun.name, legend.name, ...){
+add_to_legend <- function(object, fun.name, legend.name, call.args, option.args){
   
     if(is.null(legend.name)) {
       return(object)
     }
     
-    call.args <- call_arguments(fun.name, ...)[[1]] #exclude embedded
     
     # add legend$gs.config if it does not already exist
     legend.exists <- "legend" %in% names(object)
@@ -38,12 +37,12 @@ add_to_legend <- function(object, fun.name, legend.name, ...){
       for(p in seq(nrow(call.args.df))) {
         if(p > 1){ legend.args.exist <- TRUE } #legend args will exist after the first loop
         call.args.list <- as.list(call.args.df[p,])
-        fun.legend.args <- get_legend_args(fun.name, call.args.list, legend.name[p], ...)
+        fun.legend.args <- get_legend_args(fun.name, call.args.list, legend.name[p], option.args)
         object[['legend']][['legend.args']] <- combine_legend_args(object, fun.legend.args, legend.args.exist)
       }
       
     } else {
-      fun.legend.args <- get_legend_args(fun.name, call.args, legend.name, ...)
+      fun.legend.args <- get_legend_args(fun.name, call.args, legend.name, option.args)
       object[['legend']][['legend.args']] <- combine_legend_args(object, fun.legend.args, legend.args.exist)
     }
 
