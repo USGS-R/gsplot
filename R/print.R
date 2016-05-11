@@ -40,7 +40,7 @@ print.gsplot <- function(x, ...){
     on.exit(dev.flush())
     plot.new()
   }
-  
+
   par(x$global$par)
   i.axis <- which(names(views) %in% 'axis')
   defined.sides <- sapply(i.axis, function(x) views[[x]][['arguments']][['side']])
@@ -57,7 +57,7 @@ print.gsplot <- function(x, ...){
     set_frame(views, side)
     if(!side %in% defined.sides){ 
       if(x[[side.name]][['axes']]){
-        Axis(side=side,x=lim(views, side))
+        do.call('Axis', append(list(side=side,x=lim(views, side)), config('axis')))
       }
     } else {
       axis <- i.axis[which(defined.sides == side)]
