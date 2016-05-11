@@ -40,11 +40,13 @@ callouts.gsplot <- function(object, ..., side=c(1,2)){
 #' @param labels text to be added to callout
 #' @param length relative (percentage of window width and height) distance for callout
 #' @param angle callout line angle
-#' @param cex passed to text for font size formatting
+#' @param cex passed to \code{\link[graphics]{text}} for font size formatting
+#' @param lwd passed to \code{\link[graphics]{arrows}} for line weights
+#' @param lty passed to \code{\link[graphics]{arrows}} for line type
 #' 
 #' @rdname callouts
 #' @export
-callouts.default <- function(x, y=NULL, labels=NA, length=0.1, angle='auto', cex=par()$cex, ...){
+callouts.default <- function(x, y=NULL, labels=NA, length=0.1, angle='auto', cex=par()$cex, lwd=par()$lwd, lty=par()$lty, ...){
   
   if (is.null(y)) {
     warning("y=NULL not currently supported in callouts.default")

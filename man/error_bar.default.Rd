@@ -4,7 +4,8 @@
 \alias{error_bar.default}
 \title{create error bars}
 \usage{
-error_bar.default(x, y, y.high, y.low, x.high, x.low, epsilon = 0.1, ...)
+error_bar.default(x, y, y.high, y.low, x.high, x.low, epsilon = 0.1, lwd, lty,
+  col, ...)
 }
 \arguments{
 \item{x}{location in x}

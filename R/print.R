@@ -53,7 +53,7 @@ print.gsplot <- function(x, ...){
 
   for (side.name in side.names){
     side <- as.side(side.name)
-    par(x[[side.name]]$par)
+    old.par <- par(x[[side.name]]$par)
     set_frame(views, side)
     if(!side %in% defined.sides){ 
       if(x[[side.name]][['axes']]){
@@ -66,6 +66,7 @@ print.gsplot <- function(x, ...){
     if(!exists('ann', x[[side.name]]$par) || (exists('ann', x[[side.name]]$par) && x[[side.name]]$par$ann)){
       mtext(text=label(views, side), side=side, line = 2, las=config("mtext")$las)
     }
+    par(old.par)
   }
   
   for (view.name in view_names(views)){
@@ -106,10 +107,11 @@ print.view <- function(x, ...){
   # if(window$frame.plot){
   #   box()
   # } 
-  par(x[['par']])
+  old.par <- par(x[['par']])
   
   # -- call functions -- 
   to_gsplot(lapply(plots, function(x) x[!(names(x) %in% c('legend.name'))]))
+  par(old.par)
 }
 
 to_gsplot <- function(x){
