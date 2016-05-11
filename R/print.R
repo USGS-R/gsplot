@@ -63,7 +63,7 @@ print.gsplot <- function(x, ...){
       axis <- i.axis[which(defined.sides == side)]
       draw_axis(views, index.axis=axis)
     }
-    if(!exists('ann', x[[side.name]]$par) || (exists('ann', x[[side.name]]$par) && x[[side.name]]$par$ann)){
+    if(par('ann')){
       mtext(text=label(views, side), side=side, line = 2, las=config("mtext")$las)
     }
     par(old.par)
