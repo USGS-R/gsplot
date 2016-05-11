@@ -47,13 +47,6 @@ points <- function(object, ...) {
 
 points.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
   fun.name <- 'points'
-  call.args <- call_arguments(fun.name, ...)
-  # // object <- add_to_view(object, call.args, side=side)
-  # // object <- modify_side(object, side.args, side=side)
-  # // object <- modify_par(object, par.args)
-  # // object <- modify_legend(object, call.args, legend.name)
-  
-  object <- set_window_args(object, fun.name=fun.name, ..., legend.name=legend.name, side=side, def.funs = c(graphics::plot.xy, graphics::points.default))
-  # object <- set_legend_args(object, fun.name=fun.name, ..., legend.name=legend.name)
-  object <- add_to_legend(object, fun.name=fun.name, legend.name=legend.name, ...)
+  object <- gather_function_info(object, fun.name, ..., legend.name=legend.name, side=side)
+  return(object)
 }

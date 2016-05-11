@@ -5,10 +5,11 @@
 #' @param x gsplot object
 #' @param \dots Further graphical parameters may also be supplied as arguments.
 #' 
-#' @importFrom graphics mtext
-#' @importFrom graphics plot.new
-#' @importFrom graphics box
-#' @importFrom graphics plot.xy
+#' @importFrom graphics mtext plot.new box plot.xy
+#' @importFrom graphics Axis axTicks plot.window
+#' @importFrom grDevices dev.flush dev.hold
+#' @importFrom stats median na.omit
+#' @importFrom utils find getS3method packageName tail
 #' @export
 #' @examples
 #' gs <- gsplot() %>%
@@ -33,40 +34,46 @@ print.gsplot <- function(x, ...){
   
   # -- set plot -- 
   views = x
-  
-  if(!isTRUE(x[['par']][['new']])){
+
+  if(!isTRUE(x$gobal$par$new)){
     dev.hold()
     on.exit(dev.flush())
     plot.new()
   }
   
-  par(views[['par']])
+  par(x$global$par)
   i.axis <- which(names(views) %in% 'axis')
   defined.sides <- sapply(i.axis, function(x) views[[x]][['arguments']][['side']])
   
   bg.arg <- views$bgCol
   title.arg <- views$title
+  
   view.info <- view_info(views)
   side.names <- side_names(views)
 
   for (side.name in side.names){
     side <- as.side(side.name)
+    par(x[[side.name]]$par)
     set_frame(views, side)
     if(!side %in% defined.sides){ 
-      if(all(sapply(views_with_side(views, side), function(x) views(views)[[x]][['window']][['axes']]))){
+      if(x[[side.name]][['axes']]){
         Axis(side=side,x=lim(views, side))
       }
     } else {
       axis <- i.axis[which(defined.sides == side)]
       draw_axis(views, index.axis=axis)
     }
-    if(all(sapply(views_with_side(views, side), function(x) views(views)[[x]][['window']][['ann']]))){
+    if(exists('ann', x[[side.name]]$par) && x[[side.name]]$par$ann){
       mtext(text=label(views, side), side=side, line = 2, las=config("mtext")$las)
     }
   }
   
   for (view.name in view_names(views)){
-    par(views[['par']])
+    par(x$global$par)
+    x.side.name <- as.x_side_name(view.name)
+    y.side.name <- as.y_side_name(view.name)
+    par(x[[x.side.name]]$par)
+    par(x[[y.side.name]]$par)
     set_frame(views, side=view.name)
     if(any(names(views[[view.name]]) %in% 'grid')){
       draw_custom_grid(views,view.name)
@@ -94,13 +101,12 @@ print.gsplot <- function(x, ...){
 #' @param \dots additional arguments (not used)
 #' @keywords internal
 print.view <- function(x, ...){
-  plots <- remove_field(x, param = c('window','grid'))
-  window <- x[['window']]
+  plots <- remove_field(x, param = c('par','grid','window'))
   
-  if(window$frame.plot){
-    box()
-  } 
-  par(window[['par']])
+  # if(window$frame.plot){
+  #   box()
+  # } 
+  par(x[['par']])
   
   # -- call functions -- 
   to_gsplot(lapply(plots, function(x) x[!(names(x) %in% c('legend.name'))]))

@@ -1,4 +1,13 @@
 
+apply_extracted_args <- function(object, extracted.args, side=c(1,2)){
+  
+  for (j in seq_along(extracted.args)){
+    fun.name <- names(extracted.args[j])
+    object <- do.call(fun.name, args = append(list('object'=object), extracted.args[[j]])) 
+  }
+  return(object)
+}
+
 add_new_view <- function(object, view.name){
   if (view.name %in% view_names(object))
     stop(view.name, ' already exists, cannot add it.', call. = FALSE)
@@ -7,6 +16,7 @@ add_new_view <- function(object, view.name){
   
   last.view.i <- max(which_views(object), 0)
   object <- append(object, view, after = last.view.i)
+  object <- add_new_par(object, field = view.name)
   return(object)
 }
 #' add function call to view
@@ -46,17 +56,31 @@ add_to_view <- function(object, call.args, side){
 #'                error_bar(y.high=1))
 #' gs
 #' 
-#' gsplot:::call_arguments('points', x=2:6, y=2:6, ylim=c(-1, 11))
-#' gsplot:::call_arguments('points', x=1:5, y=1:5, xlim=c(0,10), ylim=c(0,10), 
-#'                callouts(labels=c(rep(NA, 4), "oh")))
+#' gsplot:::filter_arguments('points', x=2:6, y=2:6, ylim=c(-1, 11))$call.args
+#' gsplot:::filter_arguments('points', x=1:5, y=1:5, xlim=c(0,10), ylim=c(0,10), 
+#'                callouts(labels=c(rep(NA, 4), "oh")))$extracted.args
 #' @keywords internal
-call_arguments <- function(fun.name, ...){
+filter_arguments <- function(fun.name, ...){
   dots <- separate_args(...)
   
-  norm.args <- normal_arguments(fun.name, dots$args)
-  embed.args <- embedded_arguments(fun.name, dots$e.fun, parent.args=norm.args[[fun.name]])
-  view.fun.args <- append(norm.args, embed.args)
-  return(view.fun.args)
+  standard.eval.args <- standard_eval_arguments(dots$args)
+  function.args <- function_call_args(fun.name, standard.eval.args)
+  option.args <- standard.eval.args[!names(standard.eval.args) %in% c("", names(function.args[[1]]))]
+  
+  extracted.args <- nonstandard_eval_arguments(fun.name, dots$e.fun, parent.args=function.args[[fun.name]])
+  
+  arguments <- list('call.args' = function.args,
+                    'option.args' = option.args,
+                    'extracted.args' = extracted.args)
+  return(arguments)
+}
+
+standard_eval_arguments <- function(.dots){
+  args <- NULL
+  if (!is.null(.dots)){
+    args <- lazy_eval(.dots)
+  } 
+  return(args)
 }
 
 #' get the arguments that go into the function call, stripping out others and adding config defaults
@@ -64,18 +88,14 @@ call_arguments <- function(fun.name, ...){
 #' @param fun.name the name of the rendering function
 #' @param .dots lazy_dots arguments
 #' @keywords internal
-normal_arguments <- function(fun.name, .dots){
+function_call_args <- function(fun.name, all.args){
 
   fun.defaults <- function_defaults(fun.name)
-  
-  if (!is.null(.dots))
-    arguments = set_args(fun.name, lazy_eval(.dots), package=fun.defaults$package)
-  else
-    arguments = set_args(fun.name, package=fun.defaults$package)
-  
-  args <- list(formal_arguments(arguments, fun.defaults$def.funs, keep.names = names(config(fun.name))))
-  names(args) <- fun.name
-  return(args)
+
+  args <- set_args(fun.name, all.args, package=fun.defaults$package)
+  call.args <- list(formal_arguments(args, fun.defaults$def.funs, keep.names = names(config(fun.name))))
+  names(call.args) <- fun.name
+  return(call.args)
 }
 
 #' get the embedded arguments that go into the function call
@@ -84,14 +104,14 @@ normal_arguments <- function(fun.name, .dots){
 #' @param embedded.dots expressions to be evaluated within \code{parent.args} data
 #' @param parent.args data that should be accessible when evaluating \code{embedded.dots}
 #' @keywords internal
-embedded_arguments <- function(fun.name, embedded.dots, parent.args){
+nonstandard_eval_arguments <- function(fun.name, embedded.dots, parent.args){
 
   args <- list()
   if (!is.null(embedded.dots)){
     for (i in seq_len(length(embedded.dots))){
       fun.name = names(embedded.dots)[i]
       package <- function_defaults(fun.name, out='package')
-      embed.args = list(set_inherited_args(fun.name, parent.args, embedded.dots[[i]], package=package))
+      embed.args = list(append(embedded.dots[[i]], function_args(package, fun.name, parent.args, drop=TRUE)))
       names(embed.args) <- fun.name
       args <- append(args, embed.args)
     }

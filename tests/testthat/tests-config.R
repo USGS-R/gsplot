@@ -22,7 +22,7 @@ test_that("persisting to config alters environment", {
 })
 
 test_that("formals are correctly retrieved", {
-  expect_equal(length(config("par")), 6)
+  expect_equal(length(config("par")), 7)
   expect_equal(names(config("points")), c("pch", "col"))
   expect_equal(length(config("arrows")), 0)
 })

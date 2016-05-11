@@ -8,6 +8,8 @@ sides(gsplot, by.index = NA)
 }
 \arguments{
 \item{gsplot}{a gsplot object}
+
+\item{by.index}{retrieve specific indices (NA returns all)}
 }
 \value{
 a sides list

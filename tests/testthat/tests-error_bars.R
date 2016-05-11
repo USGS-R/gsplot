@@ -27,7 +27,14 @@ test_that("testing content of gsplot list for NA given", {
   expect_lt(gs$view$arrows$x1, gs$view$arrows$x0)
   
 })
-
+test_that("testing content of gsplot list for NA given", {
+  gs <- gsplot()
+  
+  gs <- points(gs, c(0,3), c(2,4)) %>% 
+    error_bar(c(0,3), c(2,4), x.high=c(NA,1))
+  
+  expect_gt(gs$view$arrows$x1, gs$view$arrows$x0)
+})
 test_that("testing content of gsplot list for embedded error bar", {
   
   
@@ -39,5 +46,9 @@ test_that("testing content of gsplot list for embedded error bar", {
   expect_true(gs$view$arrows$x1 == 2)
   
 })
+
+test_that("warning for calling default method", {
+  expect_warning(error_bar(c(0,3), c(2,4), x.low=c(NA,1)))
+})  
 
 

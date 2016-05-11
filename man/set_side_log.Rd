@@ -4,15 +4,15 @@
 \alias{set_side_log}
 \title{set the log value on a side}
 \usage{
-set_side_log(view, sides)
+set_side_log(args, side, side.num)
 }
 \arguments{
-\item{view}{a single named view}
+\item{args}{arguments to pull log info from}
 
-\item{sides}{the sides for the gsplot object (see \code{\link{sides}})}
+\item{side}{the side for the gsplot object (see \code{\link{sides}})}
 }
 \value{
-a modified \code{sides} list
+a modified \code{side}
 }
 \description{
 set the log value on a side

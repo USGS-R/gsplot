@@ -41,6 +41,8 @@ symbols <- function(object, ...) {
 }
 
 symbols.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
-  set_window_args(object, fun.name="symbols", ..., legend.name=legend.name, side=side, def.funs=graphics::symbols)
+  fun.name <- 'symbols'
+  object <- gather_function_info(object, fun.name, ..., legend.name=legend.name, side=side)
+  return(object)
 }
 

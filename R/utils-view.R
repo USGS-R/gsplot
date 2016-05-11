@@ -26,19 +26,6 @@ views <- function(gsplot){
   gsplot[which_views(gsplot)]
 }
 
-#' non-views in the gsplot object
-#' 
-#' @param gsplot a gsplot object
-#' @return a subset of the gsplot object that contains only non-views
-#' @keywords internal
-non_views <- function(gsplot, include.sides = TRUE){
-  non.views <- gsplot
-  non.views[which_views(non.views)] <- NULL
-  if (!include.sides)
-    non.views[which_sides(non.views)] <- NULL
-  return(non.views)
-}
-
 #' convert sides vector into view name
 #' 
 #' @param sides a vector of sides (if only length 1, appended via \code{set_sides})
@@ -58,29 +45,6 @@ as.view_name <- function(sides){
 views_with_side <- function(views, side){
   if(length(side) > 1)
     stop('side can only be length of 1')
-  with.side = lapply(views, function(x) any(x[['window']][['side']] %in% side))
-  view.match = unname(unlist(with.side[which_views(views)]))
-  if (is.null(view.match) || !any(view.match))
-    return(NULL)
-  else
-    return(which(view.match))
-}
-
-
-#' get the side from a view for an axis
-#' 
-#' @param views a gsplot object or subset of gsplot object containing views
-#' @param view_i an index for views to be used
-#' @param axis 'y' or 'x'
-#' @return the side vector
-#' @keywords internal
-get_view_side <- function(views, view_i, axis){
-  i = which_views(views)[view_i]
-  sides <- views[[i]][['window']][['side']]
-  if (axis=='y')
-    return(sides[which(sides %% 2 == 0)])
-  else if (axis=='x')
-    return(sides[which(sides %% 2 != 0)])
-  else
-    stop('view side undefined for ',axis)
+  view.match <- which(grepl(paste0('.',side), names(views(views))))
+  return(view.match)
 }
