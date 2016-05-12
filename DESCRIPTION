@@ -1,8 +1,8 @@
 Package: gsplot
 Type: Package
 Title: Geological Survey Plotting
-Version: 0.6.0
-Date: 2016-04-09
+Version: 0.6.1
+Date: 2016-05-12
 Authors@R: c( person("Jordan", "Read", role = "aut",
     email = "jread@usgs.gov"),
     person("Laura", "DeCicco", role = c("aut","cre"),
