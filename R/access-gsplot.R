@@ -113,8 +113,14 @@ lim <- function(object, side=NULL, axis = NULL, set.undefined=TRUE, if.null=c(0,
     
   }
   
-  lims <- lapply(side.names, function(x) object[[x]]$lim) %>% 
-    setNames(side.names)
+  lims <- lapply(side.names, function(x) {
+    lim <- object[[x]]$lim
+    if (object[[x]]$reverse){
+      lim <- rev(lim)
+    }
+    return(lim)
+  })
+  names(lims) <- side.names
   if (!is.null(side) && length(side)==1){
     lims <- lims[[1]]
     if (set.undefined && all(is.na(lims))){

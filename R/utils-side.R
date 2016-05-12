@@ -222,7 +222,10 @@ add_new_side <- function(object, side.name){
   stopifnot(length(side.name) == 1)
   if (side.name %in% side_names(object))
     stop(side.name, ' already exists, cannot add it.', call. = FALSE)
-  side.template <- list(list(lim = c(NA, NA), log=FALSE, label="", axes = TRUE, reverse = FALSE, usr.lim=c(FALSE, FALSE)))
+  side.template <- list(list(
+    axis = set_args('axis', side=as.side(side.name), package='graphics'), 
+    lim = c(NA, NA), log=FALSE, label="", axes = TRUE, reverse = FALSE, usr.lim=c(FALSE, FALSE)))
+  
   names(side.template) <- side.name
   
   last.side.i <- max(which_sides(object), 0)
