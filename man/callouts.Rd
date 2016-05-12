@@ -8,7 +8,7 @@
 callouts(object, ...)
 
 callouts.default(x, y = NULL, labels = NA, length = 0.1, angle = "auto",
-  cex = par()$cex, ...)
+  cex = par()$cex, lwd = par()$lwd, lty = par()$lty, ...)
 }
 \arguments{
 \item{object}{gsplot object}
@@ -23,7 +23,11 @@ callouts.default(x, y = NULL, labels = NA, length = 0.1, angle = "auto",
 
 \item{angle}{callout line angle}
 
-\item{cex}{passed to text for font size formatting}
+\item{cex}{passed to \code{\link[graphics]{text}} for font size formatting}
+
+\item{lwd}{passed to \code{\link[graphics]{arrows}} for line weights}
+
+\item{lty}{passed to \code{\link[graphics]{arrows}} for line type}
 
 \item{\dots}{Further graphical parameters may also be supplied as arguments. See 'Details'.}
 }
