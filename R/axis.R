@@ -86,6 +86,10 @@ axis.gsplot <- function(object, ..., n.minor=0, tcl.minor=0.15, reverse=NULL) {
   
 }
 
+draw_axis_2 <- function(axis.args){
+  do.call('axis',axis.args)
+}
+
 draw_axis <- function(gsplot, index.axis) {
 
   draw_axis_execute <- function(axisParams, n.minor, index){

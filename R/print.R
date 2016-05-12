@@ -40,10 +40,8 @@ print.gsplot <- function(x, ...){
     on.exit(dev.flush())
     plot.new()
   }
-
+  browser()
   par(x$global$par)
-  i.axis <- which(names(views) %in% 'axis')
-  defined.sides <- sapply(i.axis, function(x) views[[x]][['arguments']][['side']])
   
   bg.arg <- views$bgCol
   title.arg <- views$title
@@ -55,14 +53,10 @@ print.gsplot <- function(x, ...){
     side <- as.side(side.name)
     old.par <- par(x[[side.name]]$par)
     set_frame(views, side)
-    if(!side %in% defined.sides){ 
-      if(x[[side.name]][['axes']]){
-        do.call('Axis', append(list(side=side,x=lim(views, side)), config('axis')))
-      }
-    } else {
-      axis <- i.axis[which(defined.sides == side)]
-      draw_axis(views, index.axis=axis)
+    if(x[[side.name]][['axes']]){
+      draw_axis_2(x[[side.name]][['axis']])
     }
+    
     if(par('ann')){
       mtext(text=label(views, side), side=side, line = 2, las=config("mtext")$las)
     }
@@ -89,8 +83,8 @@ print.gsplot <- function(x, ...){
     par(new=TRUE)
   }
   
-  i.axis.noview <- i.axis[which(!defined.sides %in% c(view.info$x, view.info$y))]
-  draw_axis(views, index.axis=i.axis.noview)
+  #i.axis.noview <- i.axis[which(!defined.sides %in% c(view.info$x, view.info$y))]
+  #draw_axis(views, index.axis=i.axis.noview)
 
   draw_legend(views)
   par(new=FALSE)
