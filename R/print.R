@@ -40,7 +40,7 @@ print.gsplot <- function(x, ...){
     on.exit(dev.flush())
     plot.new()
   }
-  browser()
+
   par(x$global$par)
   
   bg.arg <- views$bgCol
@@ -54,7 +54,7 @@ print.gsplot <- function(x, ...){
     old.par <- par(x[[side.name]]$par)
     set_frame(views, side)
     if(x[[side.name]][['axes']]){
-      draw_axis_2(x[[side.name]][['axis']])
+      draw_axis(x[[side.name]][['axis']])
     }
     
     if(par('ann')){

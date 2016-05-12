@@ -14,7 +14,7 @@ test_that("axis",{
 test_that("axis gsplot",{
   gs = points(gsplot(mar=c(1,1,1,1)), c(-2,3), c(-1,5)) %>% 
     axis(3)
-  expect_true(all(names(gs) %in% c("view.1.2", "side.1", "side.2", "global", "axis","legend")))
+  expect_true(all(names(gs) %in% c("side.1", "side.2", "side.3", "view.1.2", "global")))
   
   gs <- gsplot() %>%
      lines(1:5, c(1,10,100,1000,10000), log="y", axes=FALSE) %>%

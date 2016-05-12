@@ -71,83 +71,78 @@ axis.gsplot <- function(object, ..., n.minor=0, tcl.minor=0.15, reverse=NULL) {
   
   sides <- user_args[[fun.name]]$side
   user_args[[fun.name]]$side <- NULL
+  user_args[[fun.name]]$n.minor <- n.minor
+  user_args[[fun.name]]$tcl.minor <- tcl.minor
   
-  for(i in sides){
-    arguments1 <- list(arguments = append(list(side=i), user_args[[fun.name]]), 
-                       gs.config=list(n.minor=n.minor, tcl.minor=tcl.minor, 
-                                      reverse=reverse))
-    to.gsplot <- list(arguments1)
-    names(to.gsplot) <- fun.name
+  for(side in sides){
+    # append the side and give it defaults if it doesn't exist
+    object <- modify_side(object, args = list(), side=side) 
     
-    object <- append(object, to.gsplot)
+    object[[as.side_name(side)]][['axis']] <- append_replace(object[[as.side_name(side)]][['axis']], user_args[[fun.name]])
+    if (!is.null(reverse)){
+      object[[as.side_name(side)]][['reverse']] <- reverse
+    }
   }
   class(object) <- 'gsplot'
   return(object)
   
 }
 
-draw_axis_2 <- function(axis.args){
-  do.call('axis',axis.args)
-}
-
-draw_axis <- function(gsplot, index.axis) {
-
-  draw_axis_execute <- function(axisParams, n.minor, index){
-    
-    if(n.minor == 0){
-      axis(axisParams)
-    } else {
-      axis(axisParams)
-      n.minor <- n.minor + 1
-      
-      # Minor axis:
-
-      #if user hasn't specified "at", calculate it
-      if(is.null(axisParams$at)){
-        at <- axTicks(axisParams$side)
-      } else {
-        at <- axisParams$at
-      }
-      
-      newAT <- c()
-      
-      if(axisParams$side %% 2 == 0){
-        logScale <- par()$ylog
-      } else {
-        logScale <- par()$xlog
-      }
-        
-      if(logScale){
-        spacing <- median(diff(log10(at)))
-        at <- c(10^(log10(at[1])-spacing),at,10^(log10(at[length(at)])+spacing))
-      } else {
-        spacing <- median(diff(at))
-        at <- c(at[1]-spacing,at,at[length(at)]+spacing)
-      }
-      
-      for(i in 2:length(at)){
-        newAT <- c(newAT, seq(at[i-1], length.out = n.minor, by= (at[i]-at[i-1])/n.minor))
-      }
-      
-      axisParams$at <- newAT
-      axisParams$tcl <- gsplot[[index]][['gs.config']]$tcl.minor
-      axisParams$labels <- FALSE
-      axis(axisParams)
-    }
-  }
+draw_axis <- function(axis.args){
   
-  if(length(index.axis) == 1){
-    axisParams <- gsplot[[index.axis]][['arguments']]
-    n.minor <- gsplot[[index.axis]][['gs.config']]$n.minor
-    draw_axis_execute(axisParams, n.minor, index.axis)
+  # need a cleaner way to extract the non-axis args (such as n.minor and tcl.minor)
+  
+  if(!exists('n.minor',axis.args) || axis.args$n.minor == 0){
+    axis.args$n.minor <- NULL
+    axis.args$tcl <- NULL
+    axis(axis.args)
   } else {
+    n.minor <- axis.args$n.minor + 1
     
-    for(i in index.axis){
-      axisParams <- gsplot[[i]][['arguments']]
-      n.minor <- gsplot[[i]][['gs.config']]$n.minor
-      draw_axis_execute(axisParams, n.minor, i)
+    tcl <- NULL
+    if (exists('tcl.minor',axis.args)){
+      tcl <- axis.args$tcl.minor
     }
     
+    axis.args$n.minor <- NULL
+    axis.args$tcl <- NULL
+    
+    axis(axis.args)
+    
+    
+    
+    # Minor axis:
+    
+    #if user hasn't specified "at", calculate it
+    if(is.null(axis.args$at)){
+      at <- axTicks(axis.args$side)
+    } else {
+      at <- axis.args$at
+    }
+    
+    newAT <- c()
+    
+    if(axis.args$side %% 2 == 0){
+      logScale <- par()$ylog
+    } else {
+      logScale <- par()$xlog
+    }
+    
+    if(logScale){
+      spacing <- median(diff(log10(at)))
+      at <- c(10^(log10(at[1])-spacing),at,10^(log10(at[length(at)])+spacing))
+    } else {
+      spacing <- median(diff(at))
+      at <- c(at[1]-spacing,at,at[length(at)]+spacing)
+    }
+    
+    for(i in 2:length(at)){
+      newAT <- c(newAT, seq(at[i-1], length.out = n.minor, by= (at[i]-at[i-1])/n.minor))
+    }
+    
+    axis.args$at <- newAT
+    axis.args$labels <- FALSE
+    axis.args$tcl <- tcl
+    axis(axis.args)
   }
-
 }
