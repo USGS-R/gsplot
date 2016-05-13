@@ -109,7 +109,7 @@ error_bar.gsplot <- function(object, x, y, y.high=0, y.low=0, x.high=0, x.low=0,
 #' @param \dots additional arguments passed to \code{\link[graphics]{arrows}}
 #' @export
 #' @keywords internal
-error_bar.default <- function(x, y, y.high, y.low, x.high, x.low, epsilon=0.1, ...){
+error_bar.default <- function(x, y, y.high, y.low, x.high, x.low, epsilon=0.1, lwd, lty, col, ...){
   warning("this function doesn't do anything")
   return()
 }

@@ -94,7 +94,7 @@ myplot <- myplot %>% points(4,3,col="blue")
 myplot
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-3-1.png)<!-- -->
+![](README_files/figure-markdown_github/unnamed-chunk-3-1.png)
 
 <a name="legend"></a>
 
@@ -128,7 +128,7 @@ myplot <- gsplot() %>%
 myplot
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-5-1.png)<!-- -->
+![](README_files/figure-markdown_github/unnamed-chunk-5-1.png)
 
 <a name="limits"></a>
 
@@ -153,7 +153,7 @@ limitsplot <- gsplot() %>%
 limitsplot
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-7-1.png)<!-- -->
+![](README_files/figure-markdown_github/unnamed-chunk-7-1.png)
 
 <a name="error"></a>
 
@@ -179,7 +179,7 @@ errorbarplot <- gsplot() %>%
 errorbarplot
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-9-1.png)<!-- -->
+![](README_files/figure-markdown_github/unnamed-chunk-9-1.png)
 
 <a name="callouts"></a>
 
@@ -204,7 +204,7 @@ calloutsplot <- gsplot() %>%
 calloutsplot
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-11-1.png)<!-- -->
+![](README_files/figure-markdown_github/unnamed-chunk-11-1.png)
 
 <a name="reverse"></a>
 
@@ -226,7 +226,7 @@ reverseplot <- gsplot() %>%
 reverseplot
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-13-1.png)<!-- -->
+![](README_files/figure-markdown_github/unnamed-chunk-13-1.png)
 
 <a name="embed"></a>
 
@@ -256,7 +256,7 @@ embedplot <- gsplot() %>%
 embedplot
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-15-1.png)<!-- -->
+![](README_files/figure-markdown_github/unnamed-chunk-15-1.png)
 
 <a name="base"></a>
 
@@ -272,7 +272,7 @@ gs
 points(1.2,2.5)
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-16-1.png)<!-- -->
+![](README_files/figure-markdown_github/unnamed-chunk-16-1.png)
 
 Improved workflow examples
 --------------------------
@@ -295,7 +295,7 @@ demoPlot <- gsplot() %>%
 demoPlot
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-17-1.png)<!-- -->
+![](README_files/figure-markdown_github/unnamed-chunk-17-1.png)
 
 ``` r
 gs <- gsplot() %>%
@@ -305,12 +305,12 @@ gs <- gsplot() %>%
         ylab="logged y axis", xlab="logged x axis", log='xy') %>%
   callouts(x=8, y=4, lwd=2, angle=45, labels="Not sure about this one") %>%
   title("logged axes") %>%
-  axis(side=c(1,2,3,4), labels=FALSE, n.minor=4) %>%
-  axis(side=c(1,2))
+  axis(side=c(3,4), labels=FALSE, n.minor=4) %>%
+  axis(side=c(1,2), n.minor=4)
 gs
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-18-1.png)<!-- -->
+![](README_files/figure-markdown_github/unnamed-chunk-18-1.png)
 
 ``` r
 usrDef <- gsplot(mar=c(4,4,4,4), xaxs='r', yaxs='r') %>% 
@@ -322,7 +322,7 @@ usrDef <- gsplot(mar=c(4,4,4,4), xaxs='r', yaxs='r') %>%
 usrDef
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-19-1.png)<!-- -->
+![](README_files/figure-markdown_github/unnamed-chunk-19-1.png)
 
 Disclaimer
 ----------
