@@ -61,9 +61,7 @@ legend <- function(object, ...){
 
 
 legend.gsplot <- function(object, ..., location="topright", legend_offset=0.3) {
-  
   object <- modify_legend(object, location = location, legend_offset = legend_offset, draw = TRUE, ...)
-
   return(object)
 }
 
@@ -76,13 +74,14 @@ legend.gsplot <- function(object, ..., location="topright", legend_offset=0.3) {
 
 draw_legend <- function(gsplot) {
   
+  default.args <- formals(graphics::legend)
   
   draw <- gsplot[['legend']][['gs.config']][['draw']]
   legend_args_exist <- FALSE
   if (exists('legend', gsplot)){
     legend_args_exist <- exists('legend.args', gsplot[['legend']])
   }
-  if (is.null(draw) || !draw || !legend_args_exist){ return() }
+  if (is.null(draw) || !draw){ return() }
   
   oldXPD <- par()$xpd
   oldBg <- par('bg')
@@ -93,7 +92,6 @@ draw_legend <- function(gsplot) {
     
     if("legend.args" %in% names(gsplot[['legend']])) {
     
-      default.args <- formals(graphics::legend)
       legendParamsALL <- gsplot[['legend']][['legend.args']]
       
       overallLegendArgs <- appendLegendPositionConfiguration(gsplot[['legend']][['gs.config']])
@@ -119,6 +117,7 @@ draw_legend <- function(gsplot) {
     
     } else {
       legendComplete <- appendLegendPositionConfiguration(gsplot[['legend']][[index]])
+      legendComplete <- legendComplete[na.omit(match(names(default.args), names(legendComplete)))]
     }
     
     legend(legendComplete)

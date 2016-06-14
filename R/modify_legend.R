@@ -85,7 +85,7 @@ get_legend_args <- function(fun.name, call.args, legend.name, ...){
     call.args <- set_type_params(call.args, type.name, params.needed)
     if(type.name %in% c('p', 'lchsS')) {fun.name <- switch(type.name, p="points", lchsS="lines")}
   }
-  
+  fun.specific <- list()
   if (fun.name == "points") {
     pt.names <- c("lwd","bg","cex")
     names(call.args) <- replace(names(call.args), which(names(call.args) %in% pt.names), 
@@ -184,7 +184,6 @@ modify_legend <- function(object, location="topright", legend_offset=0.3, draw=F
     gsConfig$location <- gsConfig$x
     gsConfig$x <- NULL
   }
-  
-  object[['legend']][['gs.config']] <- gsConfig
+  object[['legend']] <- append(object[['legend']], list(gs.config=gsConfig))
   return(object)
 }
