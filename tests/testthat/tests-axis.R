@@ -33,7 +33,7 @@ test_that("axis reverse",{
     axis(2, reverse=TRUE)
   
   expect_true(gs$side.2$reverse)
-  expect_equal(ylim(gs)$side.2, c(10,1))
+  expect_equal(ylim(gs, side=2), c(10,1))
   
   gs2 <- gsplot() %>%
     points(1:10, 1:10) %>%
@@ -41,7 +41,7 @@ test_that("axis reverse",{
     axis(3, reverse=TRUE)
   
   expect_true(gs2$side.3$reverse)
-  expect_equal(ylim(gs2)$side.3, c(10,1))
+  expect_equal(ylim(gs2, side=3), c(10,1))
   
 })
 
