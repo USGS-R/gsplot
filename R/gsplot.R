@@ -10,14 +10,17 @@ pkg.env <- new.env()
       list(package='graphics', def.funs=graphics::text.default),
     'plot' = 
       list(package='graphics', def.funs=graphics::plot.xy),
+    'barplot' = 
+      list(package='graphics', def.funs=graphics::barplot.default),
     'bgCol' =
       list(package='gsplot', def.funs=gsplot::bgCol.default),
     'callouts' =
       list(package='gsplot', def.funs=gsplot::callouts.default),
     'error_bar' =
       list(package='gsplot', def.funs=gsplot::error_bar.default),
+    
     "par" = c(),"axis" = c(), "abline" = c(), "legend" = c(), 
-    "title" = c(), "text" = c(), "mtext" = c(), "grid" = c(), 
+    "title" = c(), "mtext" = c(), "grid" = c(), 
     "segments" = c(), "arrows" = c(), "rect" = c(), 
     "polygon" = c(), "symbols" = c(), "curve" = c()
   )
