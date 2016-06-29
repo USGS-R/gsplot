@@ -4,14 +4,12 @@
 \alias{bgCol.default}
 \title{create a background color}
 \usage{
-bgCol.default(col, ...)
+bgCol.default(col = NULL)
 }
 \arguments{
 \item{col}{color code or name, 
 see \code{\link[grDevices]{colors}}, \code{\link[grDevices]{palette}}. 
 Here NULL means color 0.}
-
-\item{\dots}{additional arguments passed to \code{\link[graphics]{rect}}}
 }
 \description{
 create a background color

@@ -36,10 +36,8 @@ bgCol <- function(object, ...) {
 
 bgCol.gsplot <- function(object, ...){
 
-  
   to.gsplot <- filter_arguments(fun.name = "bgCol", ...)$call.args
-  object <- append(object, to.gsplot)
-  class(object) <- 'gsplot'
+  object$global$bgCol <- append_replace(object$global$bgCol, to.gsplot)
   return(object)
 
 }
@@ -49,10 +47,9 @@ bgCol.gsplot <- function(object, ...){
 #' @param col color code or name, 
 #' see \code{\link[grDevices]{colors}}, \code{\link[grDevices]{palette}}. 
 #' Here NULL means color 0.
-#' @param \dots additional arguments passed to \code{\link[graphics]{rect}}
 #' @export
 #' @keywords internal
-bgCol.default <- function(col,...){
+bgCol.default <- function(col=NULL){
   
   if(par()$xlog){
     x1 <- 10^(par("usr")[1])
@@ -70,7 +67,7 @@ bgCol.default <- function(col,...){
     y2 <- par("usr")[4]  
   }
   
-  rect(x1,y1,x2,y2,col = col, border = NA, ...)
+  rect(x1,y1,x2,y2,col = col, border = NA)
   
 }
 

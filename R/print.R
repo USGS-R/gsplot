@@ -43,8 +43,8 @@ print.gsplot <- function(x, ...){
 
   par(x$global$par)
   
-  bg.arg <- views$bgCol
-  title.arg <- views$title
+  bg.arg <- views$global$bgCol
+  title.arg <- views$global$title
   
   view.info <- view_info(views)
   side.names <- side_names(views)
