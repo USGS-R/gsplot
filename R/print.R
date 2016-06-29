@@ -73,13 +73,15 @@ print.gsplot <- function(x, ...){
     if(any(names(views[[view.name]]) %in% 'grid')){
       draw_custom_grid(views,view.name)
     }
-    print.view(views[[view.name]])
-        # -- initial view --
+    # -- initial view --
     if(view.name == view_names(views)[1]){
       if (!is.null(bg.arg))
         bgCol(bg.arg)
       title(title.arg)
     }
+    
+    print.view(views[[view.name]])
+    
     par(new=TRUE)
   }
   
