@@ -10,6 +10,8 @@ test_that("mtext on correct side", {
   expect_true(4 %in% gsplot:::as.side(names(gs[i])))
   warning('skipping axes test in mtext. not sure why this was here')
   #expect_false(gs$side.4$axes)
+  
+  expect_equal(gs$view.1.4$mtext$side, 4)
 })
 
 
