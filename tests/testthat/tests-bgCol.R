@@ -11,7 +11,7 @@ test_that("testing content of gsplot list for bgCol", {
     lines(20:30,20:30, side=c(3,4)) %>%
     bgCol(col="coral2")
   
-  expect_true(any(names(gs) %in% "bgCol"))
+  expect_true(any(names(gs$global) %in% "bgCol"))
   
 })
 
