@@ -141,7 +141,7 @@ lim.gsplot <- function(object, side=NULL, axis = NULL, set.undefined=TRUE, if.nu
           tmp.lims <- lims[[tmp.side.name]]
           def.sides.axis.match <- def.sides[as.axis(def.sides) == as.axis(tmp.side)]
           closest.side <- def.sides.axis.match[which.min(abs(tmp.side-def.sides.axis.match))]
-          if (is.null(closest.side)){
+          if (length(closest.side) == 0){
             tmp.lims <- NULL
           } else {
             tmp.lims <- lims[[as.side_name(closest.side)]]  
