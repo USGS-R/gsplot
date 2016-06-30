@@ -24,6 +24,7 @@ gather_function_info <- function(object, fun.name, ..., legend.name, side){
   call.args <- arguments$call.args
   option.args <- arguments$option.args
   extracted.args <- arguments$extracted.args
+  side <- set_sides(side)
   
   object <- apply_extracted_args(object, extracted.args, side=side) 
   
