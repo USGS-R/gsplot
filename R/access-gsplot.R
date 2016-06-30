@@ -144,7 +144,11 @@ lim.gsplot <- function(object, side=NULL, axis = NULL, set.undefined=TRUE, if.nu
             tmp.lims <- NULL
           } else {
             tmp.lims <- lims[[as.side_name(closest.side)]]  
-            # add warning about reverse stuff
+            match.reverse <- object[[tmp.side]]$reverse == object[[closest.side]]$reverse
+            if(!match.reverse){
+              warning(paste("undefined limits for side", tmp.side, 
+                            ", cannot reverse; therefore, matching side", closest.side))
+            }
           }
           lims[[tmp.side]] <- tmp.lims
         }
