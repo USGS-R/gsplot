@@ -156,30 +156,3 @@ check_legend_name <- function(legend.name, prev_calls){
   if(!is.null(legend.name) && sum(prev_calls != 0)){ legend.name <- NULL }
   return(legend.name)
 }
-
-
-# What is this for?
-# legend_adjusted_margins <- function(gsPlot) {
-#   defaults <- config("plot")
-#   defaultMargins <- c(3, 3, 3, 3) #default margins should come from config
-#   leftRightMarginMultiplier <- 2 #load in config?
-#   
-#   if(!is.null(gsPlot$legend)) {
-#     location <- gsPlot$legend$legend.gs.config$location
-#     legend_offset <- ceiling(1 / gsPlot$legend$legend.gs.config$legend_offset)
-#     if(location == "below") {
-#       mar <- c(defaultMargins[1] + legend_offset, defaultMargins[2], defaultMargins[3], defaultMargins[4])
-#     } else if(location == "above") {
-#       mar <- c(defaultMargins[1], defaultMargins[2], defaultMargins[3] + legend_offset, defaultMargins[4])
-#     } else if(location == "toright") {
-#       mar <- c(defaultMargins[1], defaultMargins[2], defaultMargins[3], defaultMargins[4] + (legend_offset * leftRightMarginMultiplier))
-#     } else if(location == "toleft") {
-#       mar <- c(defaultMargins[1], defaultMargins[2] + (legend_offset * leftRightMarginMultiplier), defaultMargins[3], defaultMargins[4])
-#     } else {
-#       mar <- defaultMargins
-#     }
-#   } else {
-#     mar <- defaultMargins
-#   }
-#   return(mar)
-# }
