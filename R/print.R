@@ -43,6 +43,9 @@ print.gsplot <- function(x, ...){
 
   par(x$global$par)
   bgCol(x$global$bgCol)
+  if (x$global$config$frame.plot){
+    box()
+  }
   title(x$global$title)
   
   view.info <- view_info(views)

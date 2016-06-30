@@ -14,7 +14,7 @@ gsplot <- function(x = NULL, ...) UseMethod("gsplot")
 #' @rdname gsplot
 #' @export
 gsplot.default <- function(...) {
-  object <- gsplot(list())
+  object <- gsplot(list(global=list('config'=list(frame.plot=TRUE))))
   object <- add_new_par(object, 'global')
   if (length(list(...)) > 0){
     object <- par(object, ...)

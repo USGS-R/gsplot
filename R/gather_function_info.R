@@ -28,6 +28,7 @@ gather_function_info <- function(object, fun.name, ..., legend.name, side){
   
   object <- apply_extracted_args(object, extracted.args, side=side) 
   
+  object <- modify_config(object, option.args)
   object <- modify_side(object, c(call.args, option.args), side=side)
   object <- modify_side_par(object, option.args, side=side)
   object <- modify_view_par(object, option.args, side=side)
