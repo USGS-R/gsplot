@@ -101,7 +101,7 @@ get_legend_args <- function(fun.name, call.args, legend.name, ...){
                          lty=1,
                          lwd=1)
     
-  } else if (fun.name %in% c("polygon", "rect", "barplot")) {
+  } else if (fun.name %in% c("polygon", "rect")) {
     names(call.args) <- replace(names(call.args), which(names(call.args)=="col"), "fill")
     call.args$lty <- NA #lty/lwd should always be NA for polygon & rectangles in the legend
     call.args$lwd <- NA  

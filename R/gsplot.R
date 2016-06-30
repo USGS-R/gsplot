@@ -10,8 +10,6 @@ pkg.env <- new.env()
       list(package='graphics', def.funs=graphics::text.default),
     'plot' = 
       list(package='graphics', def.funs=graphics::plot.xy),
-    'barplot' = 
-      list(package='graphics', def.funs=graphics::barplot.default),
     'bgCol' =
       list(package='gsplot', def.funs=gsplot::bgCol.default),
     'callouts' =
