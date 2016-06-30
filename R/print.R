@@ -43,9 +43,10 @@ print.gsplot <- function(x, ...){
 
   par(x$global$par)
   
-  bg.arg <- views$bgCol
-  title.arg <- views$title
-  
+  bg.arg <- views$global$bgCol
+  title.arg <- views$global$title
+  bgCol(bg.arg)
+  title(title.arg)
   view.info <- view_info(views)
   side.names <- side_names(views)
 
@@ -73,13 +74,9 @@ print.gsplot <- function(x, ...){
     if(any(names(views[[view.name]]) %in% 'grid')){
       draw_custom_grid(views,view.name)
     }
+
     print.view(views[[view.name]])
-        # -- initial view --
-    if(view.name == view_names(views)[1]){
-      if (!is.null(bg.arg))
-        bgCol(bg.arg)
-      title(title.arg)
-    }
+    
     par(new=TRUE)
   }
   
