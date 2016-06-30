@@ -41,7 +41,8 @@ test_that("axis reverse",{
     axis(3, reverse=TRUE)
   
   expect_true(gs2$side.3$reverse)
-  expect_equal(ylim(gs2, side=3), c(10,1))
+  expect_equal(xlim(gs2, side=3), c(10,1))
+  expect_error(ylim(gs2, side=3))
   
 })
 
