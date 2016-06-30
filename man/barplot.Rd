@@ -22,8 +22,7 @@ gs <- gsplot() \%>\%
    beside = FALSE,
    width = c(465, 840, 37),
    col = c(1, 2),
-   legend.text = c("A", "B"),
-   args.legend = list(x = "topleft"))   
+   legend.name = c("A", "B"))   
 gs
 
 }
