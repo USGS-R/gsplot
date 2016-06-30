@@ -159,7 +159,7 @@ lim.gsplot <- function(object, side=NULL, axis = NULL, set.undefined=TRUE, if.nu
   if (!is.null(lims) && !is.null(side) && length(side)==1){ ## move this to the end
     lims <- lims[[side.names]]
   } else {
-    lims <- lims[use.sides]
+    lims <- lims[side.names]
   }
   
   if (is.null(lims)){
