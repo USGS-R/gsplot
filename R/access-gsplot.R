@@ -104,7 +104,7 @@ lim.gsplot <- function(object, side=NULL, axis = NULL, set.undefined=TRUE, if.nu
   if (!is.null(side)) {
     side.names <- as.side_name(side)
     side.axis <- as.axis(side)
-    if(side.axis != axis){ stop(paste("side", side, "does not have an", axis, "limit"))}
+    if(side.axis != axis){ stop(paste("side", side, "does not have", axis, "limits"))}
   } else {
     if (!is.null(axis)){
       sides <- as.side(names(sides(object)))
