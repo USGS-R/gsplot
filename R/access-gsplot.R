@@ -131,6 +131,7 @@ lim <- function(object, side=NULL, axis = NULL, set.undefined=TRUE, if.null=c(0,
         lims <- NULL
       } else {
         lims <- lims[[as.side_name(closest.side)]]  
+        # add warning about reverse stuff
       }
     }
     if (is.null(lims)){
