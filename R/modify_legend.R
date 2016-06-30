@@ -23,27 +23,22 @@ add_to_legend <- function(object, fun.name, legend.name, call.args, option.args)
     if(is.null(legend.name)) {
       return(object)
     }
-    
-    
-    # add legend$gs.config if it does not already exist
-    legend.exists <- "legend" %in% names(object)
-    legend.args.exist <- "legend.args" %in% names(object[['legend']])
-    if(!legend.exists){object <- modify_legend(object)}
-    
-    # add/add to legend$legend.args
+    if(!exists("legend", object)) {object$legend <- list()}
+    if(!exists("legend.auto", object$legend)) {object$legend$legend.auto <- create_empty_legend()}
+
+    # add/add to legend$legend.auto
     if(length(legend.name) > 1){
       call.args.df <- as.data.frame(call.args, stringsAsFactors = FALSE)
       
       for(p in seq(nrow(call.args.df))) {
-        if(p > 1){ legend.args.exist <- TRUE } #legend args will exist after the first loop
         call.args.list <- as.list(call.args.df[p,])
         fun.legend.args <- get_legend_args(fun.name, call.args.list, legend.name[p], option.args)
-        object[['legend']][['legend.args']] <- combine_legend_args(object, fun.legend.args, legend.args.exist)
+        object[['legend']][['legend.auto']] <- combine_legend_args(object, fun.legend.args)
       }
       
     } else {
       fun.legend.args <- get_legend_args(fun.name, call.args, legend.name, option.args)
-      object[['legend']][['legend.args']] <- combine_legend_args(object, fun.legend.args, legend.args.exist)
+      object[['legend']][['legend.auto']] <- combine_legend_args(object, fun.legend.args)
     }
 
   return(object)
@@ -145,29 +140,34 @@ set_type_params <- function(list, type.name, params){
 #' @param legend.args.exist
 #' @param .dots lazy_dots
 #' @keywords internal
-combine_legend_args <- function(object, new.legend.args, legend.args.exist, ...){
+combine_legend_args <- function(object, new.legend.args, ...){
   
-  # look for existing list of legend args in the object
-  if(!legend.args.exist){
-    default.args <- formals(graphics::legend)
-    overall.legend <- c("x", "y", "bty", "bg", "box.lty", "box.lwd", "box.col", "cex",
-                        "xjust", "yjust", "x.intersp", "y.intersp", "adj", "text.width", 
-                        "merge", "trace", "plot", "ncol", "horiz", "title", "inset", 
-                        "xpd", "title.col", "title.adj", "seg.len")  
-    not.overall <- default.args[which(!names(default.args) %in% overall.legend)]
-    legend.args <- vector("list", length(not.overall))
-    names(legend.args) <- names(not.overall)
-    # // set up config legend stuff
-  } else {
-    legend.args <- object[['legend']][['legend.args']]
-  }
+  legend.args <- object[['legend']][['legend.auto']]
   
-  orderedParams <- new.legend.args[match(names(legend.args), names(new.legend.args))]    
+  orderedParams <- new.legend.args[match(names(legend.args), names(new.legend.args))]
   for (j in seq_along(legend.args)) {
     legend.args[[j]] <- c(legend.args[[j]], orderedParams[[j]])
   }
   
   return(legend.args)
+}
+
+#' Set up an empty legend
+#'
+create_empty_legend <- function() {
+  default.args <- formals(graphics::legend)
+  overall.legend <- c("x", "y", "bty", "bg", "box.lty", "box.lwd", "box.col", "cex",
+                      "xjust", "yjust", "x.intersp", "y.intersp", "adj", "text.width", 
+                      "merge", "trace", "plot", "ncol", "horiz", "title", "inset", 
+                      "xpd", "title.col", "title.adj", "seg.len")  
+  not.overall <- default.args[which(!names(default.args) %in% overall.legend)]
+  legend <- vector("list", length(not.overall))
+  names(legend) <- names(not.overall)
+  
+  # add draw = FALSE as default
+  legend$draw <- FALSE
+  
+  return(legend)
 }
 
 #' add legend configs
@@ -177,13 +177,23 @@ combine_legend_args <- function(object, new.legend.args, legend.args.exist, ...)
 modify_legend <- function(object, location="topright", legend_offset=0.3, draw=FALSE, ...){
   # // this should be shared between add_to_legend and legend
   # // check if legend exists, if not add it (someone could call legend before any legend.names)
-  gsConfig <- list(location = location, legend_offset = legend_offset, draw = draw, ...)
-  
+  legend.config <- list(location = location, legend_offset = legend_offset, draw = draw, ...)
+
   arguments <- list(...)
-  if("x" %in% names(arguments)){
-    gsConfig$location <- gsConfig$x
-    gsConfig$x <- NULL
+  legend.index <- ifelse("legend" %in% names(arguments), length(grep("legend.\\d+", names(object$legend))) + 1, "auto")
+  
+  if ("x" %in% names(arguments)){
+    legend.config$location <- legend.config$x
+    legend.config$x <- NULL
   }
-  object[['legend']] <- append(object[['legend']], list(gs.config=gsConfig))
+  if (legend.index == 'auto') {
+    # Merge new legend config into existing auto legend if it exists
+    auto.legend <- object$legend$legend.auto
+    # if draw is true, stay true
+    legend.config$draw <- legend.config$draw || is.null(auto.legend) || auto.legend$draw
+    auto.legend[names(legend.config)] <- legend.config
+    legend.config <- auto.legend
+  }
+  object[['legend']][[paste0("legend.", legend.index)]] <- legend.config
   return(object)
 }
