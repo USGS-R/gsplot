@@ -54,9 +54,9 @@ add_to_legend <- function(object, fun.name, legend.name, call.args, option.args)
 #' @param fun.name
 #' @param call.args
 #' @param legend.name
-#' @param .dots lazy_dots
+#' @param option.args args extracted out as options
 #' @keywords internal
-get_legend_args <- function(fun.name, call.args, legend.name, ...){
+get_legend_args <- function(fun.name, call.args, legend.name, option.args){
 
   fun.default <- list(legend=legend.name,
                       fill=quote(par("bg")),
@@ -108,7 +108,7 @@ get_legend_args <- function(fun.name, call.args, legend.name, ...){
     fun.specific <- list(border=par("fg"))
   }
   
-  usr.args <- call.args[which(names(call.args) %in% names(fun.default))]
+  usr.args <- c(call.args[which(names(call.args) %in% names(fun.default))], option.args[which(names(option.args) %in% names(fun.default))])
   fun.all <- replace(fun.default, match(names(fun.specific), names(fun.default)), fun.specific)
   add.args <- fun.all[!names(fun.all) %in% names(usr.args)]
   fun.legend.args <- append(usr.args, add.args)  

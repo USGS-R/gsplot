@@ -4,10 +4,10 @@
 \alias{get_legend_args}
 \title{get the arguments that go into the legend for a single function call}
 \usage{
-get_legend_args(fun.name, call.args, legend.name, ...)
+get_legend_args(fun.name, call.args, legend.name, option.args)
 }
 \arguments{
-\item{.dots}{lazy_dots}
+\item{option.args}{args extracted out as options}
 }
 \description{
 get the arguments that go into the legend for a single function call
