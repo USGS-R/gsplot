@@ -97,11 +97,15 @@ ylim.gsplot <- function(object, side=NULL, set.undefined=TRUE){
 #' @export
 lim <- function(object, side, axis, set.undefined, if.null) UseMethod("lim")
 
-lim <- function(object, side=NULL, axis = NULL, set.undefined=TRUE, if.null=c(0,1)){
-  side.names <- names(sides(object))
-  if (!is.null(side))
+#' @export
+lim.gsplot <- function(object, side=NULL, axis = NULL, set.undefined=TRUE, if.null=c(0,1)){
+  all.side.names <- names(sides(object))
+  side.names <- all.side.names
+  if (!is.null(side)) {
     side.names <- as.side_name(side)
-  else {
+    side.axis <- as.axis(side)
+    if(side.axis != axis){ stop(paste("side", side, "does not have an", axis, "limit"))}
+  } else {
     if (!is.null(axis)){
       sides <- as.side(names(sides(object)))
       if (axis == 'y')
@@ -113,32 +117,51 @@ lim <- function(object, side=NULL, axis = NULL, set.undefined=TRUE, if.null=c(0,
     
   }
   
-  lims <- lapply(side.names, function(x) {
+  lims <- lapply(all.side.names, function(x) {
     lim <- object[[x]]$lim
     if (object[[x]]$reverse){
       lim <- rev(lim)
     }
     return(lim)
   })
-  names(lims) <- side.names
-  if (!is.null(side) && length(side)==1){
-    lims <- lims[[1]]
-    if (set.undefined && all(is.na(lims))){
-      lims <- lim(object, axis=as.axis(side))
-      sides <- as.side(names(lims)[sapply(lims, function(x) !any(is.na(x)))])
-      closest.side <- sides[which.min(abs(side-sides))][1]
-      if (is.null(closest.side)){
-        lims <- NULL
-      } else {
-        lims <- lims[[as.side_name(closest.side)]]  
-        # add warning about reverse stuff
+  names(lims) <- all.side.names
+  
+  if(set.undefined){  
+    # get names of all sides on the same axis (x or y) that are not completely NA
+    which.undef <- sapply(lims, function(x) all(is.na(x)))
+    if(all(which.undef)){
+      lims <- NULL
+    } else {
+      undef.sides <- as.side(all.side.names[which.undef]) 
+      def.sides <- as.side(all.side.names[!which.undef])
+      if(is.null(side) || side %in% undef.sides){
+        for (tmp.side in undef.sides){
+          # find side closest to the undefined side (must be same axis)
+          tmp.lims <- lims[[tmp.side]]
+          def.sides.axis.match <- def.sides[as.axis(def.sides) == as.axis(tmp.side)]
+          closest.side <- def.sides.axis.match[which.min(abs(tmp.side-def.sides.axis.match))]
+          if (is.null(closest.side)){
+            tmp.lims <- NULL
+          } else {
+            tmp.lims <- lims[[as.side_name(closest.side)]]  
+            # add warning about reverse stuff
+          }
+          lims[[tmp.side]] <- tmp.lims
+        }
       }
     }
-    if (is.null(lims)){
-      lims <- if.null
-    }
   }
-    
+  
+  if (!is.null(lims) && !is.null(side) && length(side)==1){ ## move this to the end
+    lims <- lims[[side.names]]
+  } else {
+    lims <- lims[use.sides]
+  }
+  
+  if (is.null(lims)){
+    lims <- if.null
+  }
+  
   return(lims)
 }
 
