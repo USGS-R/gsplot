@@ -137,20 +137,21 @@ lim.gsplot <- function(object, side=NULL, axis = NULL, set.undefined=TRUE, if.nu
       if(is.null(side) || side %in% undef.sides){
         for (tmp.side in undef.sides){
           # find side closest to the undefined side (must be same axis)
-          tmp.lims <- lims[[tmp.side]]
+          tmp.side.name <- as.side_name(tmp.side)
+          tmp.lims <- lims[[tmp.side.name]]
           def.sides.axis.match <- def.sides[as.axis(def.sides) == as.axis(tmp.side)]
           closest.side <- def.sides.axis.match[which.min(abs(tmp.side-def.sides.axis.match))]
           if (is.null(closest.side)){
             tmp.lims <- NULL
           } else {
             tmp.lims <- lims[[as.side_name(closest.side)]]  
-            match.reverse <- object[[tmp.side]]$reverse == object[[closest.side]]$reverse
+            match.reverse <- object[[tmp.side.name]]$reverse == object[[as.side_name(closest.side)]]$reverse
             if(!match.reverse){
               warning(paste("undefined limits for side", tmp.side, 
                             ", cannot reverse; therefore, matching side", closest.side))
             }
           }
-          lims[[tmp.side]] <- tmp.lims
+          lims[[tmp.side.name]] <- tmp.lims
         }
       }
     }
