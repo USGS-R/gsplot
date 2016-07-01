@@ -180,7 +180,8 @@ modify_legend <- function(object, location="topright", legend_offset=0.3, draw=F
   legend.config <- list(location = location, legend_offset = legend_offset, draw = draw, ...)
 
   arguments <- list(...)
-  legend.index <- ifelse("legend" %in% names(arguments), length(grep("legend.\\d+", names(object$legend))) + 1, "auto")
+  # auto is used when "legend" arg comes from "legend.name" in gsplot calls
+  legend.index <- ifelse("legend" %in% names(legend.config),length(grep("legend.\\d+", names(object$legend))) + 1, "auto")
   
   if ("x" %in% names(arguments)){
     legend.config$location <- legend.config$x

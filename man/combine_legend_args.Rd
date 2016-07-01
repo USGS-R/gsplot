@@ -4,7 +4,7 @@
 \alias{combine_legend_args}
 \title{add the current function call legend info to the overall legend arguments}
 \usage{
-combine_legend_args(object, new.legend.args, legend.args.exist, ...)
+combine_legend_args(object, new.legend.args, ...)
 }
 \arguments{
 \item{.dots}{lazy_dots}
