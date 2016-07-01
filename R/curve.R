@@ -39,7 +39,7 @@
 #'    legend()
 #' gs
 curve <- function(object, ...) {
-  override("graphics", "curve", object, ...)
+  override(package="graphics", name="curve", object=object, ...)
 }
 
 curve.gsplot <- function(object, expr, from=0, to=1, n=101, ..., legend.name=NULL, side=c(1,2)){
