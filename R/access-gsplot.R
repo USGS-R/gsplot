@@ -104,7 +104,10 @@ lim.gsplot <- function(object, side=NULL, axis = NULL, set.undefined=TRUE, if.nu
   if (!is.null(side)) {
     side.names <- as.side_name(side)
     side.axis <- as.axis(side)
-    if(!is.null(axis) && side.axis != axis){ warning(paste("side", side, "does not have", axis, "limits"))}
+    side.wrong.axis <- side.names[side.axis != axis]
+    if(!is.null(axis) && length(side.wrong.axis) > 0){ 
+      warning(paste("no", axis, "axis limits for", paste(side.wrong.axis, collapse="+")))
+    }
   } else {
     if (!is.null(axis)){
       sides <- as.side(names(sides(object)))
@@ -126,14 +129,23 @@ lim.gsplot <- function(object, side=NULL, axis = NULL, set.undefined=TRUE, if.nu
   })
   names(lims) <- all.side.names
   
+  sides.notexist <- side.names[which(!side.names %in% all.side.names)]
+  for(s in sides.notexist){
+    lims[[s]] <- c(NA,NA)
+  }
+  
   if(set.undefined){  
     # get names of all sides on the same axis (x or y) that are not completely NA
     which.undef <- sapply(lims, function(x) all(is.na(x)))
+    which.undef.names <- names(lims)[which.undef]
+    # only set undefined lims for sides that exist in the object, skip if the sides do not exist
+    which.undef.names <- which.undef.names[which.undef.names %in% all.side.names]
+    which.def.names <- names(lims)[!which.undef]
     if(all(which.undef)){
       lims <- NULL
-    } else {
-      undef.sides <- as.side(all.side.names[which.undef]) 
-      def.sides <- as.side(all.side.names[!which.undef])
+    } else if(length(which.undef.names) > 0){
+      undef.sides <- as.side(which.undef.names) 
+      def.sides <- as.side(which.def.names)
       if(is.null(side) || side %in% undef.sides){
         for (tmp.side in undef.sides){
           # find side closest to the undefined side (must be same axis)
