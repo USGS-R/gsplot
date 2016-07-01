@@ -144,8 +144,8 @@ lim.gsplot <- function(object, side=NULL, axis = NULL, set.undefined=TRUE, if.nu
     if(all(which.undef)){
       lims <- NULL
     } else if(length(which.undef.names) > 0){
-      undef.sides <- as.side(all.side.names[which.undef.names]) 
-      def.sides <- as.side(all.side.names[which.def.names])
+      undef.sides <- as.side(which.undef.names) 
+      def.sides <- as.side(which.def.names)
       if(is.null(side) || side %in% undef.sides){
         for (tmp.side in undef.sides){
           # find side closest to the undefined side (must be same axis)
