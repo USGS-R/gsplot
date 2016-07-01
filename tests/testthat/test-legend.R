@@ -21,13 +21,12 @@ test_that("gsplot legend works", {
     legend(location="bottomright", bg="lightgrey")
   
   expect_is(gs, "gsplot")
-  expect_equal(gs$legend$gs.config$bg, "lightgrey")
-  expect_equal(gs$legend$gs.config$location, "bottomright")
-  expect_equal(length(which(names(gs$legend)=="legend.args")), 1)
-  expect_equal(gs$legend$legend.args$fill[[1]], quote(par("bg")))
-  expect_true(is.na(gs$legend$legend.args$lwd[4]))
-  expect_true(is.na(gs$legend$legend.args$density[2]))
-  # expect_equal(gs$legend$legend.args$text.font[[3]], 2)
+  expect_equal(gs$legend$legend.auto$bg, "lightgrey")
+  expect_equal(gs$legend$legend.auto$location, "bottomright")
+  expect_equal(gs$legend$legend.auto$fill[[1]], quote(par("bg")))
+  expect_true(is.na(gs$legend$legend.auto$lwd[4]))
+  expect_true(is.na(gs$legend$legend.auto$density[2]))
+  expect_equal(gs$legend$legend.auto$text.font[[3]], 2)
   # text.font not changing + error_bar comes through as "arrows" for legend.name
  
 })

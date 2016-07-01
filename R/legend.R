@@ -61,9 +61,7 @@ legend <- function(object, ...){
 
 
 legend.gsplot <- function(object, ..., location="topright", legend_offset=0.3) {
-  
   object <- modify_legend(object, location = location, legend_offset = legend_offset, draw = TRUE, ...)
-
   return(object)
 }
 
@@ -76,78 +74,78 @@ legend.gsplot <- function(object, ..., location="topright", legend_offset=0.3) {
 
 draw_legend <- function(gsplot) {
   
+  default.args <- formals(graphics::legend)
   
-  draw <- gsplot[['legend']][['gs.config']][['draw']]
-  legend_args_exist <- FALSE
-  if (exists('legend', gsplot)){
-    legend_args_exist <- exists('legend.args', gsplot[['legend']])
-  }
-  if (is.null(draw) || !draw || !legend_args_exist){ return() }
+  if ("legend" %in% names(gsplot)){
   
-  oldXPD <- par()$xpd
-  oldBg <- par('bg')
-  
-  for(index in which(names(gsplot[['legend']]) %in% "gs.config")){
+    # TODO rather than preserve individual pars we should par-scope this draw_legend call
+    # and par scope each run of the for loop
+    oldXPD <- par()$xpd
+    oldBg <- par('bg')
     
-    par(xpd=TRUE)
-    
-    if("legend.args" %in% names(gsplot[['legend']])) {
-    
-      default.args <- formals(graphics::legend)
-      legendParamsALL <- gsplot[['legend']][['legend.args']]
+    for (legend.name in names(gsplot[['legend']])) {
       
-      overallLegendArgs <- appendLegendPositionConfiguration(gsplot[['legend']][['gs.config']])
-      legendParamsALL <- append(legendParamsALL, overallLegendArgs)
-      legendOrdered <- legendParamsALL[na.omit(match(names(default.args), names(legendParamsALL)))]
-
-      #for above/below, dynamically set the number of columns
-      location <- gsplot[['legend']][['gs.config']][['location']]
-      if(location == "below" || location == "above") {
-        itemsPerCol <- 3 #TODO load this from config
-        cols <- length(legendOrdered$legend) %/% 3;
-        if(length(legendOrdered$legend) %% 3 > 0) {
-          cols <- cols + 1
+      par(xpd=TRUE)
+      
+      legend <- gsplot[['legend']][[legend.name]]
+      if (legend$draw) {
+        legend <- appendLegendColumnInfo(legend)
+        legend <- appendLegendPositionConfiguration(legend)
+        # set required legend argument to NA if not exists
+        if (!"legend" %in% names(legend)) {
+         legend$legend <- NA
         }
-        legendOrdered$ncol <- ifelse(is.null(legendOrdered$ncol), cols, legendOrdered$ncol)
-      }
   
-      #set bg so that fill/border/etc args are correct, then evaluate any quoted list items
-      if(any(names(overallLegendArgs) %in% c("bg"))) {
-        par(bg=overallLegendArgs$bg)
+        #set bg so that fill/border/etc args are correct, then evaluate any quoted list items
+        if (any(names(legend) %in% c("bg"))) {
+          par(bg=legend$bg)
+        }
+        legend <- lapply(legend, function(x) {unname(sapply(x, function(x) {eval(x)}))})
+        # clean out arguments not allowed by legend 
+        legend <- legend[na.omit(match(names(default.args), names(legend)))]
+        legend(legend)
+        par(xpd=oldXPD)
+        par(bg=oldBg)
       }
-      legendComplete <- lapply(legendOrdered, function(x) {unname(sapply(x, function(x) {eval(x)}))})
-    
-    } else {
-      legendComplete <- appendLegendPositionConfiguration(gsplot[['legend']][[index]])
     }
-    
-    legend(legendComplete)
-    par(xpd=oldXPD)
-    par(bg=oldBg)
   }
-
 }
 
-appendLegendPositionConfiguration <- function(gsConfig) {
+appendLegendPositionConfiguration <- function(legend) {
   #TODO support explicit x/y coords
-  legend_offset <- gsConfig$legend_offset
-  location <- gsConfig$location
-  gsConfig$legend_offset <- NULL
-  gsConfig$location <- NULL
+  legend_offset <- legend$legend_offset
+  location <- legend$location
+  legend$legend_offset <- NULL
   
   if(location == "below") {
-    return(append(gsConfig, list(x = "bottom", y = NULL, inset=c(0, -legend_offset), bty="n")))
+    return(append(legend, list(x = "bottom", y = NULL, inset=c(0, -legend_offset), bty="n")))
   } else if(location == "above") {
-    return(append(gsConfig, list(x = "top", y = NULL, inset=c(0, -legend_offset), bty="n")))
+    return(append(legend, list(x = "top", y = NULL, inset=c(0, -legend_offset), bty="n")))
   } else if(location == "toright") {
-    return(append(gsConfig, list(x = "right", y = NULL, inset=c(-legend_offset, 0), bty="n")))
+    return(append(legend, list(x = "right", y = NULL, inset=c(-legend_offset, 0), bty="n")))
   } else if(location == "toleft") {
-    return(append(gsConfig, list(x = "left", y = NULL, inset=c(-legend_offset, 0), bty="n")))
-  } else if("x" %in% names(gsConfig)){
-    return(gsConfig)
+    return(append(legend, list(x = "left", y = NULL, inset=c(-legend_offset, 0), bty="n")))
+  } else if("x" %in% names(legend)){
+    return(legend)
   } else {
-    return(append(gsConfig, list(x = location)))
+    return(append(legend, list(x = location)))
   }
+}
+
+#' Based on location set legend columns
+#' 
+#' @param legend to set columns on
+appendLegendColumnInfo <- function(legend) {
+  location <- legend[['location']]
+  if (location == "below" || location == "above") {
+    itemsPerCol <- 3 # TODO load this from config
+    cols <- length(legend$legend) %/% itemsPerCol;
+    if(length(legend$legend) %% itemsPerCol > 0) {
+      cols <- cols + 1
+    }
+    legend$ncol <- ifelse(is.null(legend$ncol), cols, legend$ncol)
+  }
+  return(legend)
 }
 
 
