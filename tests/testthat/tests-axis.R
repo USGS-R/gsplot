@@ -24,3 +24,25 @@ test_that("axis gsplot",{
   expect_false(gs$side.2$axes)
   
 })
+
+test_that("axis reverse",{
+  
+  gs <- gsplot() %>%
+    points(1:10, 1:10) %>%
+    axis(1, at = seq(0,10,by=0.1),labels=FALSE, tcl=0.15) %>%
+    axis(2, reverse=TRUE)
+  
+  expect_true(gs$side.2$reverse)
+  expect_equal(ylim(gs, side=2), c(10,1))
+  
+  gs2 <- gsplot() %>%
+    points(1:10, 1:10, side=c(3,2)) %>%
+    points(1:10, 1:10, side=c(1,2)) %>% 
+    axis(3, reverse=TRUE)
+  
+  expect_true(gs2$side.3$reverse)
+  expect_equal(xlim(gs2, side=3), c(10,1))
+  expect_warning(ylim(gs2, side=3))
+  
+})
+
