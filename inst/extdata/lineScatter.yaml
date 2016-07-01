@@ -1,0 +1,56 @@
+xaxs: "i"   #needs to be "s", but style is unimplemented
+yaxs: "i"
+tcl: 0.3
+mgp: [1.5, 0.3, 0.0]
+yaxt: "s"
+xaxt: "s"
+cex.axis: 0.6
+cex.lab: 0.7
+ann: TRUE
+lwd: 0.8
+las: 1
+points:
+  pch: 19
+  col: "darkblue"
+lines: 
+  col: "black"
+  lty: 1
+  lwd: 1
+  labels: FALSE
+abline:
+  col: "grey"
+  lty: 1
+  lwd: 1
+axis:
+  labels: TRUE
+  tick: TRUE 
+  line: NULL 
+  pos: NULL
+  outer: FALSE
+  las: 1
+  lwd: 0.8
+title: NULL
+text: NULL
+mtext: 
+  las: 0
+grid:
+  col: "gray20"
+  lwd: 0.6
+  lty: 1
+segments: NULL
+error_bar:
+  y.high: 0 
+  y.low: 0 
+  x.high: 0
+  x.low: 0
+  epsilon: 0.1
+arrows: NULL
+callouts:
+  col: 'black'
+bgCol: 
+  col: 'lightgrey'
+legend:
+  title: 'EXPLANATION'
+  lwd: 0.6
+  location: "topright"
+
