@@ -13,7 +13,7 @@ side_names <- function(object){
 #' @return an integer vector of x sides
 #' @keywords internal
 as.x_side <- function(view.name){
-  unname(sapply(view.name, function(x) as.numeric(strsplit(x,'[.]')[[1]][2])))
+  unname(sapply(view.name, function(x) get_sides_x(as.side(x))))
 }
 
 #' take a view name and extract the named x sides
@@ -31,7 +31,7 @@ as.x_side_name <- function(view.name){
 #' @return an integer vector of y sides
 #' @keywords internal
 as.y_side <- function(view.name){
-  unname(sapply(view.name, function(x) as.numeric(strsplit(x,'[.]')[[1]][3])))
+  unname(sapply(view.name, function(x) get_sides_y(as.side(x))))
 }
 
 #' take a view name and extract the named y sides
@@ -247,4 +247,22 @@ set_sides <- function(sides){
       sides = c(sides,2)
   } 
   return(sides)
+}
+
+#' return sides that are either x (odd)
+#' 
+#' @param sides an integer vector of any length 
+#' @return the side that corresponds to x
+#' @keywords internal
+get_sides_x <- function(sides){
+    sides[sides %% 2 != 0]
+}
+
+#' return sides that are either y (even)
+#' 
+#' @param sides an integer vector of any length 
+#' @return the side that corresponds to y
+#' @keywords internal
+get_sides_y <- function(sides){
+  sides[sides %% 2 == 0]
 }
