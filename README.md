@@ -20,52 +20,16 @@ Overview
 
 The goal of this package is to simplify plotting in R. This includes improving the basic workflow and using defaults that tend to adhear to USGS style guidelines. Extra features and functions are included that are not available in base for common USGS elements (error bars, callouts, reverse y axes, etc.). This is intended to make the plotting code more concise and easier to interpret for the sake of reproducibility.
 
-<table style="width:57%;">
-<colgroup>
-<col width="19%" />
-<col width="37%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th align="left">Feature</th>
-<th align="left">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left"><a href="#pipes">Piping and plots as objects</a></td>
-<td align="left">Easily add features to your plot.</td>
-</tr>
-<tr class="even">
-<td align="left"><a href="#legend">Automatic legend</a></td>
-<td align="left">For each plot feature, a corresponding legend name can be specified. Eliminates the need to duplicate <code>par</code> arguments.</td>
-</tr>
-<tr class="odd">
-<td align="left"><a href="#limits">Automatic limits</a></td>
-<td align="left">Automatically regenerate limits of plot when new features are added.</td>
-</tr>
-<tr class="even">
-<td align="left"><a href="#error">Error bars</a></td>
-<td align="left">Apply error bars to points by specifying the upper and lower offsets.</td>
-</tr>
-<tr class="odd">
-<td align="left"><a href="#callouts">Callouts</a></td>
-<td align="left">Add a line and label in one call.</td>
-</tr>
-<tr class="even">
-<td align="left"><a href="#reverse">Axes reversal</a></td>
-<td align="left">Reverse the axis by specifying one argument to <code>axis()</code>.</td>
-</tr>
-<tr class="odd">
-<td align="left"><a href="#embed">Embedded functions</a></td>
-<td align="left">Add extra plot features within a points call (no duplication of x/y values)</td>
-</tr>
-<tr class="even">
-<td align="left"><a href="#base">Compatibility with base</a></td>
-<td align="left">Can start a plot using <code>gsplot</code>, and add base R features afterwards.</td>
-</tr>
-</tbody>
-</table>
+| Feature                               | Description                                                                                                            |
+|---------------------------------------|------------------------------------------------------------------------------------------------------------------------|
+| [Piping and plots as objects](#pipes) | Easily add features to your plot.                                                                                      |
+| [Automatic legend](#legend)           | For each plot feature, a corresponding legend name can be specified. Eliminates the need to duplicate `par` arguments. |
+| [Automatic limits](#limits)           | Automatically regenerate limits of plot when new features are added.                                                   |
+| [Error bars](#error)                  | Apply error bars to points by specifying the upper and lower offsets.                                                  |
+| [Callouts](#callouts)                 | Add a line and label in one call.                                                                                      |
+| [Axes reversal](#reverse)             | Reverse the axis by specifying one argument to `axis()`.                                                               |
+| [Embedded functions](#embed)          | Add extra plot features within a points call (no duplication of x/y values)                                            |
+| [Compatibility with base](#base)      | Can start a plot using `gsplot`, and add base R features afterwards.                                                   |
 
 <a name="pipes"></a>
 
@@ -94,7 +58,7 @@ myplot <- myplot %>% points(4,3,col="blue")
 myplot
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-3-1.png)
+![](README_files/figure-markdown_github/unnamed-chunk-3-1.png)<!-- -->
 
 <a name="legend"></a>
 
@@ -128,7 +92,7 @@ myplot <- gsplot() %>%
 myplot
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-5-1.png)
+![](README_files/figure-markdown_github/unnamed-chunk-5-1.png)<!-- -->
 
 <a name="limits"></a>
 
@@ -153,7 +117,7 @@ limitsplot <- gsplot() %>%
 limitsplot
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-7-1.png)
+![](README_files/figure-markdown_github/unnamed-chunk-7-1.png)<!-- -->
 
 <a name="error"></a>
 
@@ -179,7 +143,7 @@ errorbarplot <- gsplot() %>%
 errorbarplot
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-9-1.png)
+![](README_files/figure-markdown_github/unnamed-chunk-9-1.png)<!-- -->
 
 <a name="callouts"></a>
 
@@ -204,7 +168,7 @@ calloutsplot <- gsplot() %>%
 calloutsplot
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-11-1.png)
+![](README_files/figure-markdown_github/unnamed-chunk-11-1.png)<!-- -->
 
 <a name="reverse"></a>
 
@@ -226,7 +190,7 @@ reverseplot <- gsplot() %>%
 reverseplot
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-13-1.png)
+![](README_files/figure-markdown_github/unnamed-chunk-13-1.png)<!-- -->
 
 <a name="embed"></a>
 
@@ -256,7 +220,7 @@ embedplot <- gsplot() %>%
 embedplot
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-15-1.png)
+![](README_files/figure-markdown_github/unnamed-chunk-15-1.png)<!-- -->
 
 <a name="base"></a>
 
@@ -272,7 +236,7 @@ gs
 points(1.2,2.5)
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-16-1.png)
+![](README_files/figure-markdown_github/unnamed-chunk-16-1.png)<!-- -->
 
 Improved workflow examples
 --------------------------
@@ -295,7 +259,7 @@ demoPlot <- gsplot() %>%
 demoPlot
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-17-1.png)
+![](README_files/figure-markdown_github/unnamed-chunk-17-1.png)<!-- -->
 
 ``` r
 gs <- gsplot() %>%
@@ -310,7 +274,7 @@ gs <- gsplot() %>%
 gs
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-18-1.png)
+![](README_files/figure-markdown_github/unnamed-chunk-18-1.png)<!-- -->
 
 ``` r
 usrDef <- gsplot(mar=c(4,4,4,4), xaxs='r', yaxs='r') %>% 
@@ -322,7 +286,7 @@ usrDef <- gsplot(mar=c(4,4,4,4), xaxs='r', yaxs='r') %>%
 usrDef
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-19-1.png)
+![](README_files/figure-markdown_github/unnamed-chunk-19-1.png)<!-- -->
 
 Disclaimer
 ----------
