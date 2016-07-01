@@ -104,7 +104,10 @@ lim.gsplot <- function(object, side=NULL, axis = NULL, set.undefined=TRUE, if.nu
   if (!is.null(side)) {
     side.names <- as.side_name(side)
     side.axis <- as.axis(side)
-    if(!is.null(axis) && side.axis != axis){ warning(paste("side", side, "does not have", axis, "limits"))}
+    side.wrong.axis <- side.names[side.axis != axis]
+    if(!is.null(axis) && length(side.wrong.axis) > 0){ 
+      warning(paste("no", axis, "axis limits for", paste(side.wrong.axis, collapse="+")))
+    }
   } else {
     if (!is.null(axis)){
       sides <- as.side(names(sides(object)))
