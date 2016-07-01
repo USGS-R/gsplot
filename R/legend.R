@@ -76,7 +76,7 @@ draw_legend <- function(gsplot) {
   
   default.args <- formals(graphics::legend)
   
-  if (exists('legend', gsplot)){
+  if ("legend" %in% names(gsplot)){
   
     # TODO rather than preserve individual pars we should par-scope this draw_legend call
     # and par scope each run of the for loop
@@ -92,7 +92,7 @@ draw_legend <- function(gsplot) {
         legend <- appendLegendColumnInfo(legend)
         legend <- appendLegendPositionConfiguration(legend)
         # set required legend argument to NA if not exists
-        if (!exists("legend", legend)) {
+        if (!"legend" %in% names(legend)) {
          legend$legend <- NA
         }
   
