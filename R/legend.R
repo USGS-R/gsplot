@@ -92,7 +92,9 @@ draw_legend <- function(gsplot) {
         legend <- appendLegendColumnInfo(legend)
         legend <- appendLegendPositionConfiguration(legend)
         # set required legend argument to NA if not exists
-        legend$legend <- ifelse(exists("legend", legend), legend$legend, NA)
+        if (!exists("legend", legend)) {
+         legend$legend <- NA
+        }
   
         #set bg so that fill/border/etc args are correct, then evaluate any quoted list items
         if (any(names(legend) %in% c("bg"))) {
