@@ -30,24 +30,32 @@ remove_field <- function(list, param){
 
 strip_pts <- function(list, param){
   out <- c()
+  out.class <- 'numeric'
   for (v in param){
-    if (v %in% names(list) && !inherits(list[[v]], c('function','formula')))
-      out <- append(out, list[[v]])
-    else{
+    if (v %in% names(list) && !inherits(list[[v]], c('function','formula'))) {
+      v.vals <- list[[v]]
+      out <- append(out, v.vals)
+      out.class <- ifelse(!all(is.na(v.vals)), class(v.vals), out.class)
+    } else {
       if (any(sapply(list, is.list))){
         u.list <- unname_c(list[sapply(list, is.list)])
-        if(v %in% names(u.list))
-          out <- append(out, u.list[[v]])
-        else if (any(sapply(u.list, function(x) any(names(x) %in% v))))
-          out <- append(out, u.list[[which(sapply(u.list, function(x) any(names(x) %in% v)))]][[v]])
-        else
+        if(v %in% names(u.list)) {
+          v.vals <- u.list[[v]]
+          out <- append(out, v.vals)
+          out.class <- ifelse(!all(is.na(v.vals)), class(v.vals), out.class)
+        } else if (any(sapply(u.list, function(x) any(names(x) %in% v)))) {
+          v.vals <- u.list[[which(sapply(u.list, function(x) any(names(x) %in% v)))]][[v]]
+          out <- append(out, v.vals)
+          out.class <- ifelse(!all(is.na(v.vals)), class(v.vals), out.class)
+        } else {
           out <- append(out, NA)
+        }
       } else
         out <- append(out, NA)
-      
     }
     
   }
+  class(out) <- out.class
   return(out)
 }
 
