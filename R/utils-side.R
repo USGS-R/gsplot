@@ -128,6 +128,7 @@ sides <- function(gsplot, by.index=NA){
 #' @keywords internal
 set_usr_lim <- function(lims, side){
   to.set <- !is.na(lims)
+  if(any(to.set)) class(side$lim) <- class(lims) 
   side$lim[to.set] <- lims[to.set]
   side$usr.lim[to.set] <- TRUE
   return(side)
