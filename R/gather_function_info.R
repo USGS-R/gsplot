@@ -15,7 +15,8 @@
 #' @param \dots arguments to be used in the above mentioned functions
 #' @param legend.name the name to use for the legend name (can be \code{NULL})
 #' @param side the side(s) that the arguments apply to
-#' 
+#' @param where location to put \code{call.args}.
+#' Can be "first" or "last". Used in \code{\link{add_to_view}}
 #' @return a code{gsplot} object
 #' @keywords internal
 gather_function_info <- function(object, fun.name, ..., legend.name, side, where){

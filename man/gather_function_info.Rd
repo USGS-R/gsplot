@@ -15,6 +15,9 @@ gather_function_info(object, fun.name, ..., legend.name, side, where)
 
 \item{side}{the side(s) that the arguments apply to}
 
+\item{where}{location to put \code{call.args}.
+Can be "first" or "last". Used in \code{\link{add_to_view}}}
+
 \item{\dots}{arguments to be used in the above mentioned functions}
 }
 \value{
