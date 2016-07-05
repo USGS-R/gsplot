@@ -14,7 +14,7 @@ Authors@R: c( person("Jordan", "Read", role = "aut",
     person("Megen","Hines", role="aut",
     email = "mhines@usgs.gov"),
     person("Lindsay","Carr", role="aut",
-    email = "lcarr@usgs.gov"))
+    email = "lcarr@usgs.gov"),
     person("David","Watkins", role="aut",
     email = "wwatkins@usgs.gov"))
 License: CC0
