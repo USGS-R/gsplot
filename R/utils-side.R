@@ -203,14 +203,17 @@ set_side_lim <- function(args, side, side.num){
     usr.lims <- args[[lim.arg]]
   }
   side <- set_usr_lim(usr.lims, side)
-  side.vals <- strip_pts(args, include)
-  
-  if (any(!is.na(side.vals))){
-    data.range <- range(c(side.vals[is.finite(side.vals)], side$lim), na.rm = TRUE)
-    free.lim <- !side$usr.lim
-    data.range[!free.lim] <- side$lim[!free.lim]
-    side$lim <- data.range
+
+  free.lim <- !side$usr.lim
+  if(any(free.lim)){
+    side.vals <- strip_pts(args, include)
+    if (any(!is.na(side.vals))){
+      data.range <- range(c(side.vals[is.finite(side.vals)], side$lim), na.rm = TRUE)
+      data.range[!free.lim] <- side$lim[!free.lim]
+      side$lim <- data.range
+    }
   }
+  
   return(side)
 }
 
