@@ -30,7 +30,7 @@ test_that("class retained: no data", {
   date_lims <- c(as.POSIXct("2010-01-01"), as.POSIXct("2015-01-01"))
   gs <- gsplot() %>% lines(as.POSIXct(NA), as.numeric(NA), xlim=date_lims, ylim=c(0,100))
   # side 1 limits came back as numeric before fix to retain classes
-  expect_is(gs$side.1$lim, "Date")
+  expect_is(gs$side.1$lim, "POSIXct")
 
 })
 
