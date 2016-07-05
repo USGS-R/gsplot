@@ -1,8 +1,8 @@
 Package: gsplot
 Type: Package
 Title: Geological Survey Plotting
-Version: 0.6.1
-Date: 2016-05-12
+Version: 0.6.9
+Date: 2016-07-05
 Authors@R: c( person("Jordan", "Read", role = "aut",
     email = "jread@usgs.gov"),
     person("Laura", "DeCicco", role = c("aut","cre"),
@@ -14,7 +14,9 @@ Authors@R: c( person("Jordan", "Read", role = "aut",
     person("Megen","Hines", role="aut",
     email = "mhines@usgs.gov"),
     person("Lindsay","Carr", role="aut",
-    email = "lcarr@usgs.gov"))
+    email = "lcarr@usgs.gov"),
+    person("David","Watkins", role="aut",
+    email = "wwatkins@usgs.gov"))
 License: CC0
 Description: Workflow and plotting style defaults created for the U.S.
     Geological Survey.
