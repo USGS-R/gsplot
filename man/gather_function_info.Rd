@@ -4,7 +4,7 @@
 \alias{gather_function_info}
 \title{collect the \dots and apply them appropriately to gsplot}
 \usage{
-gather_function_info(object, fun.name, ..., legend.name, side)
+gather_function_info(object, fun.name, ..., legend.name, side, where)
 }
 \arguments{
 \item{object}{a gsplot object}

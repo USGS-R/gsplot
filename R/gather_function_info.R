@@ -18,7 +18,7 @@
 #' 
 #' @return a code{gsplot} object
 #' @keywords internal
-gather_function_info <- function(object, fun.name, ..., legend.name, side){
+gather_function_info <- function(object, fun.name, ..., legend.name, side, where){
   arguments <- filter_arguments(fun.name, ..., side=side)
   
   call.args <- arguments$call.args
@@ -33,7 +33,7 @@ gather_function_info <- function(object, fun.name, ..., legend.name, side){
   object <- modify_side_par(object, option.args, side=side)
   object <- modify_view_par(object, option.args, side=side)
   
-  object <- add_to_view(object, call.args, side=side)
+  object <- add_to_view(object, call.args, side=side, where=where)
   
   object <- add_to_legend(object, fun.name, legend.name, call.args[[1]], option.args)
   
