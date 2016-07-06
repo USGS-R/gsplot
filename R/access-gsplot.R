@@ -52,7 +52,6 @@ label <- function(object, side, axis){
   return(labels)
 }
 
-
 #' xlim for gsplot
 #' 
 #' get the xlim for views in gsplot object
