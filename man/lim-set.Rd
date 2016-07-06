@@ -9,9 +9,9 @@ lim(object, side) <- value
 \arguments{
 \item{object}{a gsplot object}
 
-\item{value}{the new limits to use (vector)}
+\item{value}{the new limits to use (vector), or a named list}
 
-\item{side}{which side(s) to use}
+\item{side}{which side(s) to use (NULL when value is a list)}
 }
 \description{
 set the lim for views in gsplot object
@@ -20,7 +20,16 @@ set the lim for views in gsplot object
 myplot <- gsplot() \%>\% 
   points(1:3, 2:4) \%>\%
   lines(1:5, 5:1)
+# numeric side:
 lim(myplot, side=1)<-c(1,4)
+
+# named side:
+lim(myplot, 'side.1')<-c(1.1,3.9)
+lim(myplot, 1)
+
+# named list
+lim(myplot) <- list('side.1' = c(1.1,3.9))
+
 myplot
 }
 
