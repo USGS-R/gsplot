@@ -68,3 +68,11 @@ test_that('grid args are passed through', {
   expect_identical(gs$view.1.2$grid$col, "lightblue")
   expect_identical(gs$view.1.2$grid$lty, "dashed")
 })
+
+test_that('grid ny/nx args should not cause a warning', {
+  gs <- gsplot() %>% 
+    points(1:10,1:10) %>% 
+    grid(nx=2, ny=10)
+  
+  expect_silent(gs)
+})
