@@ -66,23 +66,26 @@ draw_custom_grid <- function(object, view.name){
   at <- list()
   for (side.name in side.names){
     side.axis <- as.axis(side.name)
-    if(side.axis == "x") 
+    if(side.axis == "x") {
       n.side <- grid.args$nx 
-    else 
+    } else { 
       n.side <- grid.args$ny
+    }
     
     if(is.null(n.side)){
       usr.at <- axis_axTicks(object, as.side(side.name))
-      if (is.null(usr.at))
+      if (is.null(usr.at)) {
         at[[side.name]] <- grid_axTicks(object, as.side(side.name))
-      else
+      } else {
         at[[side.name]] <- usr.at
+      }
     } else {
       plot.lims <- lim(object, as.side(side.name))
-      if(is.na(n.side))
+      if(is.na(n.side)) {
         at[[side.name]] <- NULL
-      else
+      } else {
         at[[side.name]] <- seq.int(plot.lims[1], plot.lims[2], length.out = n.side + 1)
+      }
     }
   }
   
