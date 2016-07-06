@@ -32,3 +32,9 @@
   }
   return(object)
 }
+
+#' @export
+`[<-.gsplot_limit` <- function(x, i, j, value){
+  # do something special here?
+}
+
