@@ -18,7 +18,7 @@
 #' gs
 #' 
 #' @keywords internal
-add_to_legend <- function(object, fun.name, legend.name, call.args, option.args){
+add_to_legend <- function(object, fun.name, legend.name, call.args, option.args, where){
   
     if(is.null(legend.name)) {
       return(object)
@@ -33,12 +33,12 @@ add_to_legend <- function(object, fun.name, legend.name, call.args, option.args)
       for(p in seq(nrow(call.args.df))) {
         call.args.list <- as.list(call.args.df[p,])
         fun.legend.args <- get_legend_args(fun.name, call.args.list, legend.name[p], option.args)
-        object[['legend']][['legend.auto']] <- combine_legend_args(object, fun.legend.args)
+        object[['legend']][['legend.auto']] <- combine_legend_args(object, fun.legend.args, where=where)
       }
       
     } else {
       fun.legend.args <- get_legend_args(fun.name, call.args, legend.name, option.args)
-      object[['legend']][['legend.auto']] <- combine_legend_args(object, fun.legend.args)
+      object[['legend']][['legend.auto']] <- combine_legend_args(object, fun.legend.args, where=where)
     }
 
   return(object)
@@ -140,13 +140,23 @@ set_type_params <- function(list, type.name, params){
 #' @param legend.args.exist
 #' @param .dots lazy_dots
 #' @keywords internal
-combine_legend_args <- function(object, new.legend.args, ...){
+combine_legend_args <- function(object, new.legend.args, ..., where){
+  
+  if (missing(where)){
+    where <- 'last'
+  }
+  where <- match.arg(where, c('last','first'))
   
   legend.args <- object[['legend']][['legend.auto']]
   
   orderedParams <- new.legend.args[match(names(legend.args), names(new.legend.args))]
   for (j in seq_along(legend.args)) {
-    legend.args[[j]] <- c(legend.args[[j]], orderedParams[[j]])
+    if (where == 'first'){
+      legend.args[[j]] <- c(orderedParams[[j]], legend.args[[j]])  
+    } else {
+      legend.args[[j]] <- c(legend.args[[j]], orderedParams[[j]])  
+    }
+    
   }
   
   return(legend.args)

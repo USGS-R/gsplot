@@ -24,9 +24,15 @@ add_new_view <- function(object, view.name){
 #' @param object a gsplot object
 #' @param call.args a named list of function calls
 #' @param side a numeric vector of side(s) appropriate for creating a view name
+#' @param where location to put \code{call.args} (defaults to "last" if missing). 
+#' Can be "first" or "last"
 #' @return a modified object with the function added to the proper view
 #' @keywords internal
-add_to_view <- function(object, call.args, side){
+add_to_view <- function(object, call.args, side, where){
+  if (missing(where)){
+    where <- 'last'
+  }
+  where <- match.arg(where, c('last','first'))
   view.name <- as.view_name(side)
   new.view <- !view.name %in% view_names(object)
   
@@ -34,7 +40,11 @@ add_to_view <- function(object, call.args, side){
     object <- add_new_view(object, view.name)
   }
   
-  object[[view.name]] <- append(object[[view.name]], call.args)
+  after <- switch(where,
+                  first = 0,
+                  last = length(object[[view.name]]))
+  
+  object[[view.name]] <- append(object[[view.name]], call.args, after=after)
   return(object)
 }
 
@@ -64,7 +74,12 @@ filter_arguments <- function(fun.name, ...){
   dots <- separate_args(...)
   
   standard.eval.args <- standard_eval_arguments(dots$args)
-  function.args <- function_call_args(fun.name, standard.eval.args)
+  if (is.null(fun.name)){
+    function.args <- NULL
+  } else {
+    function.args <- function_call_args(fun.name, standard.eval.args)
+  }
+  
   option.args <- standard.eval.args[!names(standard.eval.args) %in% c("", names(function.args[[1]]))]
   
   extracted.args <- nonstandard_eval_arguments(fun.name, dots$e.fun, parent.args=function.args[[fun.name]])

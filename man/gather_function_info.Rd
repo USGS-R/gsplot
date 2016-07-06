@@ -4,7 +4,7 @@
 \alias{gather_function_info}
 \title{collect the \dots and apply them appropriately to gsplot}
 \usage{
-gather_function_info(object, fun.name, ..., legend.name, side)
+gather_function_info(object, fun.name, ..., legend.name, side, where)
 }
 \arguments{
 \item{object}{a gsplot object}
@@ -14,6 +14,9 @@ gather_function_info(object, fun.name, ..., legend.name, side)
 \item{legend.name}{the name to use for the legend name (can be \code{NULL})}
 
 \item{side}{the side(s) that the arguments apply to}
+
+\item{where}{location to put \code{call.args}.
+Can be "first" or "last". Used in \code{\link{add_to_view}}}
 
 \item{\dots}{arguments to be used in the above mentioned functions}
 }
