@@ -36,7 +36,7 @@ gather_function_info <- function(object, fun.name, ..., legend.name, side, where
   
   object <- add_to_view(object, call.args, side=side, where=where)
   
-  object <- add_to_legend(object, fun.name, legend.name, call.args[[1]], option.args)
+  object <- add_to_legend(object, fun.name, legend.name, call.args[[1]], option.args, where=where)
   
   class(object) <- 'gsplot'
   return(object)
