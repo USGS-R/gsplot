@@ -46,3 +46,16 @@ test_that("axis reverse",{
   
 })
 
+
+context("axis user flipped on")
+
+test_that("axis user FALSE by default",{
+  expect_false(gsplot:::add_new_side(gsplot(), 'side.1')$side.1$usr.axes)
+})
+
+test_that("axis user flipped to TRUE when specified",{
+  gs <- gsplot:::add_new_side(gsplot(), 'side.1')
+  class(gs) <- 'gsplot'
+  gs <- axis(gs, 1)
+  expect_true(gs$side.1$usr.axes)
+})
