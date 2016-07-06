@@ -33,13 +33,13 @@ test_that('grid lines work vertically', {
   expect_identical(gs$view.1.2$grid$lwd, 1)
   expect_identical(gs$view.1.2$grid$lty, 2)
   expect_identical(gs$view.1.2$grid$nx, 10)
-  expect_null(gs$view.1.2$grid$ny)
+  expect_identical(gs$view.1.2$grid$ny, 0)
   
   gs.NA <- gsplot() %>% 
     points(1:10,1:10) %>% 
-    grid(nx=10, ny=0)
+    grid(nx=10, ny=NA)
   
-  expect_null(gs.NA$view.1.2$grid$ny)
+  expect_true(is.na(gs.NA$view.1.2$grid$ny))
 })
 
 test_that('grid lines work horizontally', {
@@ -51,13 +51,13 @@ test_that('grid lines work horizontally', {
   expect_identical(gs$view.1.2$grid$lwd, 1)
   expect_identical(gs$view.1.2$grid$lty, 2)
   expect_identical(gs$view.1.2$grid$ny, 10)
-  expect_null(gs$view.1.2$grid$nx)
+  expect_identical(gs$view.1.2$grid$nx, 0)
   
   gs.NA <- gsplot() %>% 
     points(1:10,1:10) %>% 
     grid(nx=NA, ny=10)
   
-  expect_null(gs.NA$view.1.2$grid$nx)
+  expect_true(is.na(gs.NA$view.1.2$grid$nx))
 })
 
 test_that('grid args are passed through', {
