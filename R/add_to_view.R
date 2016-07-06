@@ -74,7 +74,12 @@ filter_arguments <- function(fun.name, ...){
   dots <- separate_args(...)
   
   standard.eval.args <- standard_eval_arguments(dots$args)
-  function.args <- function_call_args(fun.name, standard.eval.args)
+  if (is.null(fun.name)){
+    function.args <- NULL
+  } else {
+    function.args <- function_call_args(fun.name, standard.eval.args)
+  }
+  
   option.args <- standard.eval.args[!names(standard.eval.args) %in% c("", names(function.args[[1]]))]
   
   extracted.args <- nonstandard_eval_arguments(fun.name, dots$e.fun, parent.args=function.args[[fun.name]])
