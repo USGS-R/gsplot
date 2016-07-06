@@ -9,7 +9,7 @@
 #'          points(x=1:5, y=1:5, xlim=c(0,10)) %>% 
 #'          view(ylim=c(0, 8.5))
 #'                
-#' gs
+#' ylim(gs)
 #' @export
 view <- function(object, ...) {
   UseMethod(generic = 'view', object = object)
