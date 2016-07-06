@@ -4,7 +4,7 @@
 \alias{add_to_view}
 \title{add function call to view}
 \usage{
-add_to_view(object, call.args, side)
+add_to_view(object, call.args, side, where)
 }
 \arguments{
 \item{object}{a gsplot object}
@@ -12,6 +12,9 @@ add_to_view(object, call.args, side)
 \item{call.args}{a named list of function calls}
 
 \item{side}{a numeric vector of side(s) appropriate for creating a view name}
+
+\item{where}{location to put \code{call.args} (defaults to "last" if missing). 
+Can be "first" or "last"}
 }
 \value{
 a modified object with the function added to the proper view

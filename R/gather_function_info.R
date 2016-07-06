@@ -15,10 +15,11 @@
 #' @param \dots arguments to be used in the above mentioned functions
 #' @param legend.name the name to use for the legend name (can be \code{NULL})
 #' @param side the side(s) that the arguments apply to
-#' 
+#' @param where location to put \code{call.args}.
+#' Can be "first" or "last". Used in \code{\link{add_to_view}}
 #' @return a code{gsplot} object
 #' @keywords internal
-gather_function_info <- function(object, fun.name, ..., legend.name, side){
+gather_function_info <- function(object, fun.name, ..., legend.name, side, where){
   arguments <- filter_arguments(fun.name, ..., side=side)
   
   call.args <- arguments$call.args
@@ -33,9 +34,9 @@ gather_function_info <- function(object, fun.name, ..., legend.name, side){
   object <- modify_side_par(object, option.args, side=side)
   object <- modify_view_par(object, option.args, side=side)
   
-  object <- add_to_view(object, call.args, side=side)
+  object <- add_to_view(object, call.args, side=side, where=where)
   
-  object <- add_to_legend(object, fun.name, legend.name, call.args[[1]], option.args)
+  object <- add_to_legend(object, fun.name, legend.name, call.args[[1]], option.args, where=where)
   
   class(object) <- 'gsplot'
   return(object)
