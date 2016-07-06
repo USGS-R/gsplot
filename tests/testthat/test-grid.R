@@ -6,8 +6,8 @@ test_that('automatic grid lines work', {
     grid()
   
   expect_identical(gs$view.1.2$grid$col, "grey")
-  expect_identical(gs$view.1.2$grid$lwd, 1)
-  expect_identical(gs$view.1.2$grid$lty, 2)
+  expect_equal(gs$view.1.2$grid$lwd, 1)
+  expect_equal(gs$view.1.2$grid$lty, 2)
   expect_null(gs$view.1.2$grid$nx)
   expect_null(gs$view.1.2$grid$ny)
 })
@@ -18,10 +18,10 @@ test_that('grid lines work for horizontal and vertical', {
     grid(nx=10, ny=5)
   
   expect_identical(gs$view.1.2$grid$col, "grey")
-  expect_identical(gs$view.1.2$grid$lwd, 1)
-  expect_identical(gs$view.1.2$grid$lty, 2)
-  expect_identical(gs$view.1.2$grid$nx, 10)
-  expect_identical(gs$view.1.2$grid$ny, 5)
+  expect_equal(gs$view.1.2$grid$lwd, 1)
+  expect_equal(gs$view.1.2$grid$lty, 2)
+  expect_equal(gs$view.1.2$grid$nx, 10)
+  expect_equal(gs$view.1.2$grid$ny, 5)
 })
 
 test_that('grid lines work vertically', {
@@ -30,10 +30,10 @@ test_that('grid lines work vertically', {
     grid(nx=10, ny=0)
   
   expect_identical(gs$view.1.2$grid$col, "grey")
-  expect_identical(gs$view.1.2$grid$lwd, 1)
-  expect_identical(gs$view.1.2$grid$lty, 2)
-  expect_identical(gs$view.1.2$grid$nx, 10)
-  expect_identical(gs$view.1.2$grid$ny, 0)
+  expect_equal(gs$view.1.2$grid$lwd, 1)
+  expect_equal(gs$view.1.2$grid$lty, 2)
+  expect_equal(gs$view.1.2$grid$nx, 10)
+  expect_equal(gs$view.1.2$grid$ny, 0)
   
   gs.NA <- gsplot() %>% 
     points(1:10,1:10) %>% 
@@ -48,10 +48,10 @@ test_that('grid lines work horizontally', {
     grid(nx=0, ny=10)
   
   expect_identical(gs$view.1.2$grid$col, "grey")
-  expect_identical(gs$view.1.2$grid$lwd, 1)
-  expect_identical(gs$view.1.2$grid$lty, 2)
-  expect_identical(gs$view.1.2$grid$ny, 10)
-  expect_identical(gs$view.1.2$grid$nx, 0)
+  expect_equal(gs$view.1.2$grid$lwd, 1)
+  expect_equal(gs$view.1.2$grid$lty, 2)
+  expect_equal(gs$view.1.2$grid$ny, 10)
+  expect_equal(gs$view.1.2$grid$nx, 0)
   
   gs.NA <- gsplot() %>% 
     points(1:10,1:10) %>% 
