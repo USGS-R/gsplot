@@ -55,7 +55,7 @@ print.gsplot <- function(x, ...){
     side <- as.side(side.name)
     old.par <- par(x[[side.name]]$par)
     set_frame(views, side)
-    if(x[[side.name]][['axes']]){
+    if(x[[side.name]][['axes']] | x[[side.name]][['usr.axes']]){
       draw_axis(x[[side.name]][['axis']])
     }
     
