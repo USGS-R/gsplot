@@ -55,24 +55,31 @@ grid.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
 
 draw_custom_grid <- function(object, view.name){
    
- 
-  window = object[[view.name]][['window']]
-  
   view.name <- names(object[view.name])
   side.names <- as.side_name(view.name)
   
   grid.args <- set_args("grid", object[[view.name]][['grid']], package = "graphics")
-  grid.args <- remove_field(grid.args, "equilogs")
-  at <- list()
-  for (side.name in side.names){
-    usr.at <- axis_axTicks(object, as.side(side.name))
-    if (is.null(usr.at))
-      at[[side.name]] <- grid_axTicks(object, as.side(side.name))
-    else
-      at[[side.name]] <- usr.at
+  x.side <- as.x_side_name(view.name)
+  y.side <- as.y_side_name(view.name)
+  if (is.null(grid.args$nx)){
+    at <- axis_axTicks(object, as.side(x.side))
+    if (is.null(at)){
+      at <- grid_axTicks(object, as.side(x.side))
+    }
+    abline(v=at[[as.x_side_name(view.name)]], remove_field(grid.args, "equilogs"))
+  } else {
+    do.call(graphics::grid, args = append(list('ny'=NA), remove_field(grid.args, "ny")))
   }
   
-  abline(h=at[[as.y_side_name(view.name)]], v=at[[as.x_side_name(view.name)]], grid.args)
+  if (is.null(grid.args$ny)){
+    at <- axis_axTicks(object, as.side(y.side))
+    if (is.null(at)){
+      at <- grid_axTicks(object, as.side(y.side))
+    }
+    abline(h=at[[as.y_side_name(view.name)]], remove_field(grid.args, "equilogs"))
+  } else {
+    do.call(graphics::grid, args = append(list('nx'=NA), remove_field(grid.args, "nx")))
+  }
     
 }
 
