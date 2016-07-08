@@ -149,13 +149,16 @@ combine_legend_args <- function(object, new.legend.args, ..., where){
   
   legend.args <- object[['legend']][['legend.auto']]
   
-  orderedParams <- new.legend.args[match(names(legend.args), names(new.legend.args))]
   for (j in seq_along(legend.args)) {
     if (where == 'first'){
       legend.args[[j]] <- c(orderedParams[[j]], legend.args[[j]])  
     } else {
       legend.args[[j]] <- c(legend.args[[j]], orderedParams[[j]])  
     }
+  which.overall.args <- which(names(legend.args) %in% get_legend_arg_names(overall = TRUE))
+  overall.args <- legend.args[which.overall.args]
+  item.args <- legend.args[-which.overall.args]
+  ordered.new.args <- new.legend.args[match(get_legend_arg_names(indiv = TRUE), names(new.legend.args))]
     
   }
   
