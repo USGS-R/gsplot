@@ -149,20 +149,28 @@ combine_legend_args <- function(object, new.legend.args, ..., where){
   
   legend.args <- object[['legend']][['legend.auto']]
   
-  for (j in seq_along(legend.args)) {
-    if (where == 'first'){
-      legend.args[[j]] <- c(orderedParams[[j]], legend.args[[j]])  
-    } else {
-      legend.args[[j]] <- c(legend.args[[j]], orderedParams[[j]])  
-    }
   which.overall.args <- which(names(legend.args) %in% get_legend_arg_names(overall = TRUE))
   overall.args <- legend.args[which.overall.args]
   item.args <- legend.args[-which.overall.args]
   ordered.new.args <- new.legend.args[match(get_legend_arg_names(indiv = TRUE), names(new.legend.args))]
+  
+  if(length(item.args) > 0){
     
+    for (j in seq_along(item.args)) {
+      if (where == 'first'){
+        item.args[[j]] <- c(ordered.new.args[[j]], item.args[[j]])  
+      } else {
+        item.args[[j]] <- c(item.args[[j]], ordered.new.args[[j]])  
+      }
+      
+    }
+  } else {
+    item.args <- ordered.new.args
   }
   
-  return(legend.args)
+  combined.legend.args <- append(overall.args, item.args)
+  
+  return(combined.legend.args)
 }
 
 #' Set up an empty legend
