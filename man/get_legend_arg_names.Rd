@@ -8,9 +8,11 @@ get_legend_arg_names(overall = FALSE, indiv = FALSE,
   names.args = names(formals(graphics::legend)))
 }
 \arguments{
-\item{overall}{logical indicating whether overall legend arguments should be returned}
+\item{overall}{logical indicating whether overall legend arguments should be returned. These arguments impact 
+the legend style (e.g. title, box.lwd, location, etc)}
 
-\item{indiv}{logical indiciating whether arguments applicable to each legend entry should be returned}
+\item{indiv}{logical indiciating whether arguments applicable to each legend entry should be returned. These are 
+the arguments that apply to each individual entry within the legend (e.g. lty, lwd, pch, text.font, etc)}
 }
 \description{
 get vector of legend arguments - overall or for each entry
