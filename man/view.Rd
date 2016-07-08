@@ -7,7 +7,9 @@
 view(object, ...)
 }
 \arguments{
-\item{\dots}{}
+\item{object}{gsplot object}
+
+\item{\dots}{Further graphical parameters may also be supplied as arguments. See 'Details'.}
 }
 \description{
 supports configuration arguments (e.g., xlim)
@@ -17,6 +19,6 @@ gs <- gsplot() \%>\%
          points(x=1:5, y=1:5, xlim=c(0,10)) \%>\% 
          view(ylim=c(0, 8.5))
                
-gs
+ylim(gs)
 }
 
