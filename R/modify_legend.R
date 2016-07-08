@@ -151,7 +151,7 @@ combine_legend_args <- function(object, new.legend.args, ..., where){
   
   is.overall.arg <- names(legend.args) %in% get_legend_arg_names(overall = TRUE)
   overall.args <- legend.args[is.overall.arg]
-  item.args <- legend.args[-is.overall.arg]
+  item.args <- legend.args[!is.overall.arg]
   ordered.new.args <- new.legend.args[match(get_legend_arg_names(indiv = TRUE), names(new.legend.args))]
   
   if(length(item.args) > 0){
