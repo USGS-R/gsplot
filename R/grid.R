@@ -56,29 +56,29 @@ grid.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
 draw_custom_grid <- function(object, view.name){
    
   view.name <- names(object[view.name])
-  side.names <- as.side_name(view.name)
   
   grid.args <- set_args("grid", object[[view.name]][['grid']], package = "graphics")
-  x.side <- as.x_side_name(view.name)
-  y.side <- as.y_side_name(view.name)
+  
   if (is.null(grid.args$nx)){
+    x.side <- as.x_side_name(view.name)
     at <- axis_axTicks(object, as.side(x.side))
     if (is.null(at)){
       at <- grid_axTicks(object, as.side(x.side))
     }
-    abline(v=at[[as.x_side_name(view.name)]], remove_field(grid.args, "equilogs"))
+    abline(v=at, remove_field(grid.args, c("equilogs", "nx", "ny")))
   } else {
-    do.call(graphics::grid, args = append(list('ny'=NA), remove_field(grid.args, "ny")))
+    grid(ny=NA, remove_field(grid.args, "ny"))
   }
   
   if (is.null(grid.args$ny)){
+    y.side <- as.y_side_name(view.name)
     at <- axis_axTicks(object, as.side(y.side))
     if (is.null(at)){
       at <- grid_axTicks(object, as.side(y.side))
     }
-    abline(h=at[[as.y_side_name(view.name)]], remove_field(grid.args, "equilogs"))
+    abline(h=at, remove_field(grid.args, c("equilogs", "nx", "ny")))
   } else {
-    do.call(graphics::grid, args = append(list('nx'=NA), remove_field(grid.args, "nx")))
+    grid(nx=NA, remove_field(grid.args, "nx"))
   }
     
 }
