@@ -208,3 +208,30 @@ modify_legend <- function(object, location="topright", legend_offset=0.3, draw=F
   object[['legend']][[paste0("legend.", legend.index)]] <- legend.config
   return(object)
 }
+
+#' get vector of legend arguments - overall or for each entry
+#' 
+#' @param overall logical indicating whether overall legend arguments should be returned
+#' @param indiv logical indiciating whether arguments applicable to each legend entry should be returned
+#' @keywords internal
+get_legend_arg_names <- function(overall = FALSE, indiv = FALSE, names.args = names(formals(graphics::legend))){
+  # default.args <- formals(graphics::legend)
+  overall.legend.graphics <- c("x", "y", "bty", "bg", "box.lty", "box.lwd", "box.col", "cex",
+                               "xjust", "yjust", "x.intersp", "y.intersp", "adj", "text.width", 
+                               "merge", "trace", "plot", "ncol", "horiz", "title", "inset", 
+                               "xpd", "title.col", "title.adj", "seg.len")  
+  overall.legend.gsplot <- c('location', 'legend_offset', 'draw')
+  overall.legend <- c(overall.legend.gsplot, overall.legend.graphics)
+  not.overall <- names.args[which(!names.args %in% overall.legend)]
+  return.args <- list(overall = overall.legend, indiv = not.overall)
+  
+  if(overall && !indiv){
+    return.args <- return.args[['overall']]
+  } else if (!overall && indiv){
+    return.args <- return.args[['indiv']]
+  } else if (!overall && !indiv) {
+    return.args <- NULL
+  }
+  
+  return(return.args)
+}
