@@ -4,8 +4,7 @@
 \alias{get_legend_arg_names}
 \title{get vector of legend arguments - overall or for each entry}
 \usage{
-get_legend_arg_names(overall = FALSE, indiv = FALSE,
-  names.args = names(formals(graphics::legend)))
+get_legend_arg_names(overall = FALSE, indiv = FALSE)
 }
 \arguments{
 \item{overall}{logical indicating whether overall legend arguments should be returned. These arguments impact 

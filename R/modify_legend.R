@@ -222,8 +222,8 @@ modify_legend <- function(object, location="topright", legend_offset=0.3, draw=F
 #' @param indiv logical indiciating whether arguments applicable to each legend entry should be returned. These are 
 #' the arguments that apply to each individual entry within the legend (e.g. lty, lwd, pch, text.font, etc)
 #' @keywords internal
-get_legend_arg_names <- function(overall = FALSE, indiv = FALSE, names.args = names(formals(graphics::legend))){
-  # default.args <- formals(graphics::legend)
+get_legend_arg_names <- function(overall = FALSE, indiv = FALSE){
+  names.args <- formal_names('legend')
   overall.legend.graphics <- c("x", "y", "bty", "bg", "box.lty", "box.lwd", "box.col", "cex",
                                "xjust", "yjust", "x.intersp", "y.intersp", "adj", "text.width", 
                                "merge", "trace", "plot", "ncol", "horiz", "title", "inset", 
