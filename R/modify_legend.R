@@ -165,14 +165,9 @@ combine_legend_args <- function(object, new.legend.args, ..., where){
 #' Set up an empty legend
 #'
 create_empty_legend <- function() {
-  default.args <- formals(graphics::legend)
-  overall.legend <- c("x", "y", "bty", "bg", "box.lty", "box.lwd", "box.col", "cex",
-                      "xjust", "yjust", "x.intersp", "y.intersp", "adj", "text.width", 
-                      "merge", "trace", "plot", "ncol", "horiz", "title", "inset", 
-                      "xpd", "title.col", "title.adj", "seg.len")  
-  not.overall <- default.args[which(!names(default.args) %in% overall.legend)]
+  not.overall <- get_legend_arg_names(indiv = TRUE)
   legend <- vector("list", length(not.overall))
-  names(legend) <- names(not.overall)
+  names(legend) <- not.overall
   
   # add draw = FALSE as default
   legend$draw <- FALSE
