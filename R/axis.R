@@ -90,12 +90,12 @@ axis.gsplot <- function(object, ..., n.minor=0, tcl.minor=0.15, reverse=NULL) {
 
 draw_axis <- function(object, side.args){
   axis.args <- side.args$axis
-  axis.args$at <- get_axTicks(object, axis.args$side)
 
   if(all(is.na(side.args$lim)) || is.numeric(side.args$lim)){
     fun.name <- 'axis'
   } else {
     fun.name <- paste0('axis.', class(side.args$lim)[1L])
+    axis.args$at <- get_axTicks(object, axis.args$side)
   }
   
   # need a cleaner way to extract the non-axis args (such as n.minor and tcl.minor)
