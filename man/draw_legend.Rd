@@ -4,7 +4,7 @@
 \alias{draw_legend}
 \title{gsplot draw_legend}
 \usage{
-draw_legend(gsplot, view.usr)
+draw_legend(gsplot)
 }
 \arguments{
 \item{gsplot}{the gsplot to render legend}

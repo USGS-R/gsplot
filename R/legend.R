@@ -72,7 +72,7 @@ legend.gsplot <- function(object, ..., location="topright", legend_offset=0.3) {
 #' 
 #' @param gsplot the gsplot to render legend
 
-draw_legend <- function(gsplot, view.usr) {
+draw_legend <- function(gsplot) {
   
   default.args <- formals(graphics::legend)
   
@@ -103,7 +103,6 @@ draw_legend <- function(gsplot, view.usr) {
         legend <- lapply(legend, function(x) {unname(sapply(x, function(x) {eval(x)}))})
         # clean out arguments not allowed by legend 
         legend <- legend[na.omit(match(names(default.args), names(legend)))]
-        par(usr=view.usr)
         legend(legend)
         par(xpd=oldXPD)
         par(bg=oldBg)
