@@ -88,14 +88,15 @@ axis.gsplot <- function(object, ..., n.minor=0, tcl.minor=0.15, reverse=NULL) {
   
 }
 
-draw_axis <- function(object, side.args){
-  axis.args <- side.args$axis
+draw_axis <- function(object, side.name){
+  axis.args <- object[[side.name]][['axis']]
+  side.lim <- object[[side.name]][['lim']]
 
-  if(all(is.na(side.args$lim)) || is.numeric(side.args$lim)){
+  if(all(is.na(side.lim)) || is.numeric(side.lim)){
     fun.name <- 'axis'
   } else {
-    fun.name <- paste0('axis.', class(side.args$lim)[1L])
-    axis.args$at <- get_axTicks(object, axis.args$side)
+    fun.name <- paste0('axis.', class(side.lim)[1L])
+    axis.args$at <- get_axTicks(object, as.side(side.name))
   }
   
   # need a cleaner way to extract the non-axis args (such as n.minor and tcl.minor)

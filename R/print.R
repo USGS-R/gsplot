@@ -71,7 +71,7 @@ print.gsplot <- function(x, ...){
     old.par <- par(x[[side.name]]$par)
     set_frame(views, side)
     if(x[[side.name]][['axes']] | x[[side.name]][['usr.axes']]){
-      draw_axis(x, x[[side.name]])
+      draw_axis(x, side.name)
     }
     
     if(par('ann')){
