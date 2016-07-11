@@ -64,6 +64,8 @@ print.gsplot <- function(x, ...){
     par(new=TRUE)
   }
   
+  view.usr <- par('usr')
+  
   for (side.name in side.names){
     side <- as.side(side.name)
     old.par <- par(x[[side.name]]$par)
@@ -81,7 +83,7 @@ print.gsplot <- function(x, ...){
   #i.axis.noview <- i.axis[which(!defined.sides %in% c(view.info$x, view.info$y))]
   #draw_axis(views, index.axis=i.axis.noview)
 
-  draw_legend(views)
+  draw_legend(views, view.usr)
   if (x$global$config$frame.plot){
     box()
   }
