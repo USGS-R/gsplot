@@ -115,12 +115,7 @@ grid_axTicks <- function(object, side){
 #' @return a series of ticks as a vector, or NULL if they weren't specified
 #' @keywords internal
 axis_axTicks <- function(object, side){
-  i <- which(names(object) %in% 'axis')
-  defined.sides <- sapply(i, function(x) object[[x]][['arguments']][['side']])
-  usr.at <- NULL
-  if(side %in% defined.sides){
-    axes.index <- i[defined.sides == side]
-    usr.at <- object[axes.index][['axis']][['arguments']][['at']]
-  }
+  i <- grep(as.side_name(side), names(object))
+  usr.at <- object[[i]][['axis']][['at']]
   return(usr.at)
 }
