@@ -95,7 +95,7 @@ draw_axis <- function(axis.args){
   if(!exists('n.minor',axis.args) || axis.args$n.minor == 0){
     axis.args$n.minor <- NULL
     axis.args$tcl.minor <- NULL
-    axis(axis.args)
+    do.call("Axis", axis.args)
   } else {
     n.minor <- axis.args$n.minor + 1
     
@@ -108,7 +108,7 @@ draw_axis <- function(axis.args){
     axis.args$n.minor <- NULL
     axis.args$tcl.minor <- NULL
     
-    axis(axis.args)
+    do.call("Axis", axis.args)
     
     
     
