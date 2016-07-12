@@ -144,6 +144,6 @@ draw_axis <- function(axis.args){
     axis.args$at <- newAT
     axis.args$labels <- FALSE
     axis.args$tcl <- tcl
-    axis(axis.args)
+    do.call("Axis", axis.args)
   }
 }
