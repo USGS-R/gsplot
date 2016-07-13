@@ -35,6 +35,7 @@ Feature                                 | Description                 |
 [Callouts](#callouts)                   | Add a line and label in one call. |
 [Axes reversal](#reverse)               | Reverse the axis by specifying one argument to `axis()`.  |
 [Embedded functions](#embed)            | Add extra plot features within a points call (no duplication of x/y values)  |       
+[Change rendering order](#where)        | Manipulate what order plot features are rendered in by specifying the argument `where`  |
 [Compatibility with base](#base) | Can start a plot using `gsplot`, and add base R features afterwards.  | 
 
 ```{r table_plots, echo=FALSE, message=FALSE}
@@ -216,6 +217,37 @@ embedplot <- gsplot() %>%
          error_bar(y.high = 1, y.low = 0.5),
          callouts(labels = paste("pt", 1:5))) 
 embedplot
+```
+
+<a name="where"></a>
+
+#### Change rendering order
+
+For each plot feature that is added (`points`, `lines`, `callouts`, etc), you can specify if it should render in it's current position (after everything above it) or whether it should go before everything else. Simply add the argument `where = 'first'` or leave the default `where = "last"`.
+
+```{r message=FALSE, warning=FALSE}
+renderorderplot <- gsplot() %>% 
+  points(1:5, 1:5, col = "blue", legend.name = "data pts") %>% 
+  callouts(2,2, labels = "my note") %>% 
+  legend(location = "below", legend_offset=0.5)
+renderorderplot
+```
+
+Say we have the plot above, but would like to add two red points. 
+
+```{r message=FALSE, warning=FALSE}
+renderorderplot_add <- renderorderplot %>% 
+  points(c(2.5,3), c(2,3), pch = 18, cex = 3, legend.name = "additional pts") 
+renderorderplot_add
+
+```
+
+Easy to do with `gsplot`, but now the two red points are covering up my things in my original plot. We can easily change this by using the `where` argument when adding to the plot. It was also update the order of the legend.
+
+```{r message=FALSE, warning=FALSE}
+renderorderplot_order <- renderorderplot %>% 
+  points(c(2.5,3), c(2,3), pch = 18, cex = 3, legend.name = "additional pts", where = "first") 
+renderorderplot_order
 ```
 
 <a name="base"></a>

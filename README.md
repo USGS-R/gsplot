@@ -61,6 +61,10 @@ The goal of this package is to simplify plotting in R. This includes improving t
 <td align="left">Add extra plot features within a points call (no duplication of x/y values)</td>
 </tr>
 <tr class="even">
+<td align="left"><a href="#where">Change rendering order</a></td>
+<td align="left">Manipulate what order plot features are rendered in by specifying the argument <code>where</code></td>
+</tr>
+<tr class="odd">
 <td align="left"><a href="#base">Compatibility with base</a></td>
 <td align="left">Can start a plot using <code>gsplot</code>, and add base R features afterwards.</td>
 </tr>
@@ -258,6 +262,42 @@ embedplot
 
 ![](README_files/figure-markdown_github/unnamed-chunk-15-1.png)
 
+<a name="where"></a>
+
+#### Change rendering order
+
+For each plot feature that is added (`points`, `lines`, `callouts`, etc), you can specify if it should render in it's current position (after everything above it) or whether it should go before everything else. Simply add the argument `where = 'first'` or leave the default `where = "last"`.
+
+``` r
+renderorderplot <- gsplot() %>% 
+  points(1:5, 1:5, col = "blue", legend.name = "data pts") %>% 
+  callouts(2,2, labels = "my note") %>% 
+  legend(location = "below", legend_offset=0.5)
+renderorderplot
+```
+
+![](README_files/figure-markdown_github/unnamed-chunk-16-1.png)
+
+Say we have the plot above, but would like to add two red points.
+
+``` r
+renderorderplot_add <- renderorderplot %>% 
+  points(c(2.5,3), c(2,3), pch = 18, cex = 3, legend.name = "additional pts") 
+renderorderplot_add
+```
+
+![](README_files/figure-markdown_github/unnamed-chunk-17-1.png)
+
+Easy to do with `gsplot`, but now the two red points are covering up my things in my original plot. We can easily change this by using the `where` argument when adding to the plot. It was also update the order of the legend.
+
+``` r
+renderorderplot_order <- renderorderplot %>% 
+  points(c(2.5,3), c(2,3), pch = 18, cex = 3, legend.name = "additional pts", where = "first") 
+renderorderplot_order
+```
+
+![](README_files/figure-markdown_github/unnamed-chunk-18-1.png)
+
 <a name="base"></a>
 
 #### Compatibility with base plotting
@@ -273,7 +313,7 @@ gs
 points(as.Date("2010-11-15"),2.5)
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-16-1.png)
+![](README_files/figure-markdown_github/unnamed-chunk-19-1.png)
 
 Improved workflow examples
 --------------------------
@@ -296,7 +336,7 @@ demoPlot <- gsplot() %>%
 demoPlot
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-17-1.png)
+![](README_files/figure-markdown_github/unnamed-chunk-20-1.png)
 
 ``` r
 gs <- gsplot() %>%
@@ -311,7 +351,7 @@ gs <- gsplot() %>%
 gs
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-18-1.png)
+![](README_files/figure-markdown_github/unnamed-chunk-21-1.png)
 
 ``` r
 usrDef <- gsplot(mar=c(4,4,4,4), xaxs='r', yaxs='r') %>% 
@@ -323,7 +363,7 @@ usrDef <- gsplot(mar=c(4,4,4,4), xaxs='r', yaxs='r') %>%
 usrDef
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-19-1.png)
+![](README_files/figure-markdown_github/unnamed-chunk-22-1.png)
 
 Disclaimer
 ----------
