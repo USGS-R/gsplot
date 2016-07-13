@@ -92,19 +92,14 @@ draw_axis <- function(object, side.name){
   axis.args <- object[[side.name]][['axis']]
   side.lim <- object[[side.name]][['lim']]
 
-  if(all(is.na(side.lim)) || is.numeric(side.lim)){
-    fun.name <- 'axis'
-  } else {
-    fun.name <- paste0('axis.', class(side.lim)[1L])
-    axis.args$at <- get_axTicks(object, as.side(side.name))
-  }
+  axis.args$at <- get_axTicks(object, as.side(side.name))
   
   # need a cleaner way to extract the non-axis args (such as n.minor and tcl.minor)
   
   if(!exists('n.minor',axis.args) || axis.args$n.minor == 0){
     axis.args$n.minor <- NULL
     axis.args$tcl.minor <- NULL
-    do.call(fun.name, axis.args)
+    do.call('Axis', axis.args)
   } else {
     n.minor <- axis.args$n.minor + 1
     
@@ -117,7 +112,7 @@ draw_axis <- function(object, side.name){
     axis.args$n.minor <- NULL
     axis.args$tcl.minor <- NULL
     
-    do.call(fun.name, axis.args)
+    do.call('Axis', axis.args)
     
     
     
@@ -153,6 +148,6 @@ draw_axis <- function(object, side.name){
     axis.args$at <- newAT
     axis.args$labels <- FALSE
     axis.args$tcl <- tcl
-    do.call(fun.name, axis.args)
+    do.call('Axis', axis.args)
   }
 }

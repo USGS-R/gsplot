@@ -96,8 +96,7 @@ grid_axTicks <- function(object, side){
   if(is.numeric(lim)){
     at <- axTicks(side)
   } else{
-    fun <- getFromNamespace(paste0('axis.',class(lim)[1L]),'graphics')
-    at <- fun(side, x = lim, lwd=0, lwd.ticks=0, labels = FALSE)
+    at <- Axis(side = side, x = pretty(lim), lwd=0, lwd.ticks=0, labels = FALSE)
   }
   return(at)
 }
