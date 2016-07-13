@@ -265,11 +265,12 @@ embedplot
 If you need to use a feature that `gsplot` has yet to implement, you can always start with `gsplot` and add on using base R. The reverse is (starting with base and then using `gsplot`) is not supported.
 
 ``` r
+date_vector <- seq(as.Date("2010-10-01"), as.Date("2011-09-30"), by="months")
 gs <- gsplot() %>% 
-  points(1,2)
+  points(date_vector, 1:12)
 gs
 
-points(1.2,2.5)
+points(as.Date("2010-11-15"),2.5)
 ```
 
 ![](README_files/figure-markdown_github/unnamed-chunk-16-1.png)
