@@ -62,7 +62,7 @@ The goal of this package is to simplify plotting in R. This includes improving t
 </tr>
 <tr class="even">
 <td align="left"><a href="#where">Change rendering order</a></td>
-<td align="left">Manipulate what order plot features are rendered in by specifying the argument <code>where</code></td>
+<td align="left">Manipulate what order plot features are rendered by specifying the argument <code>where</code></td>
 </tr>
 <tr class="odd">
 <td align="left"><a href="#base">Compatibility with base</a></td>
@@ -272,7 +272,7 @@ For each plot feature that is added (`points`, `lines`, `callouts`, etc), you ca
 renderorderplot <- gsplot() %>% 
   points(1:5, 1:5, col = "blue", legend.name = "data pts") %>% 
   callouts(2,2, labels = "my note") %>% 
-  legend(location = "below", legend_offset=0.5)
+  legend(location = "topleft", legend_offset=0.5)
 renderorderplot
 ```
 
