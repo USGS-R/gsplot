@@ -124,4 +124,5 @@ get_axTicks <- function(object, side){
   if (is.null(at)){
     at <- grid_axTicks(object, side)
   }
+  return(at)
 }
