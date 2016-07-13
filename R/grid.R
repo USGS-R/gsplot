@@ -61,10 +61,7 @@ draw_custom_grid <- function(object, view.name){
   
   if (is.null(grid.args$nx)){
     x.side <- as.x_side_name(view.name)
-    at <- axis_axTicks(object, as.side(x.side))
-    if (is.null(at)){
-      at <- grid_axTicks(object, as.side(x.side))
-    }
+    at <- get_axTicks(object, as.side(x.side))
     abline(v=at, remove_field(grid.args, c("equilogs", "nx", "ny")))
   } else {
     grid(ny=NA, remove_field(grid.args, "ny"))
@@ -72,10 +69,7 @@ draw_custom_grid <- function(object, view.name){
   
   if (is.null(grid.args$ny)){
     y.side <- as.y_side_name(view.name)
-    at <- axis_axTicks(object, as.side(y.side))
-    if (is.null(at)){
-      at <- grid_axTicks(object, as.side(y.side))
-    }
+    at <- get_axTicks(object, as.side(y.side))
     abline(h=at, remove_field(grid.args, c("equilogs", "nx", "ny")))
   } else {
     grid(nx=NA, remove_field(grid.args, "nx"))
@@ -102,8 +96,7 @@ grid_axTicks <- function(object, side){
   if(is.numeric(lim)){
     at <- axTicks(side)
   } else{
-    fun <- getFromNamespace(paste0('axis.',class(lim)[1L]),'graphics')
-    at <- fun(side, x = lim, lwd=0, lwd.ticks=0, labels = FALSE)
+    at <- Axis(side = side, x = pretty(lim), lwd=0, lwd.ticks=0, labels = FALSE)
   }
   return(at)
 }
@@ -114,8 +107,21 @@ grid_axTicks <- function(object, side){
 #' @param side a numeric side
 #' @return a series of ticks as a vector, or NULL if they weren't specified
 #' @keywords internal
-axis_axTicks <- function(object, side){
+usr_axTicks <- function(object, side){
   i <- grep(as.side_name(side), names(object))
   usr.at <- object[[i]][['axis']][['at']]
   return(usr.at)
+}
+
+#' get the axes ticks for grid or axes
+#' 
+#' @param object a gsplot object
+#' @param side a numeric side
+#' @return a series of ticks as a vector, or NULL if they weren't specified
+#' @keywords internal
+get_axTicks <- function(object, side){
+  at <- usr_axTicks(object, side)
+  if (is.null(at)){
+    at <- grid_axTicks(object, side)
+  }
 }
