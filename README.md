@@ -288,7 +288,7 @@ renderorderplot_add
 
 ![](README_files/figure-markdown_github/unnamed-chunk-17-1.png)
 
-Easy to do with `gsplot`, but now the two red points are covering up features in the original plot. We can easily change this by using the `where` argument when adding to the plot. It was also update the order of the legend.
+Easy to do with `gsplot`, but now the two red points are covering up features in the original plot. We can easily change this by using the `where` argument when adding to the plot. Specifying `where` will also update the order of the legend.
 
 ``` r
 renderorderplot_order <- renderorderplot %>% 
