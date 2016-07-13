@@ -35,7 +35,7 @@ Feature                                 | Description                 |
 [Callouts](#callouts)                   | Add a line and label in one call. |
 [Axes reversal](#reverse)               | Reverse the axis by specifying one argument to `axis()`.  |
 [Embedded functions](#embed)            | Add extra plot features within a points call (no duplication of x/y values)  |       
-[Change rendering order](#where)        | Manipulate what order plot features are rendered in by specifying the argument `where`  |
+[Change rendering order](#where)        | Manipulate what order plot features are rendered by specifying the argument `where`  |
 [Compatibility with base](#base) | Can start a plot using `gsplot`, and add base R features afterwards.  | 
 
 ```{r table_plots, echo=FALSE, message=FALSE}
