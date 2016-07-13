@@ -149,30 +149,36 @@ combine_legend_args <- function(object, new.legend.args, ..., where){
   
   legend.args <- object[['legend']][['legend.auto']]
   
-  orderedParams <- new.legend.args[match(names(legend.args), names(new.legend.args))]
-  for (j in seq_along(legend.args)) {
-    if (where == 'first'){
-      legend.args[[j]] <- c(orderedParams[[j]], legend.args[[j]])  
-    } else {
-      legend.args[[j]] <- c(legend.args[[j]], orderedParams[[j]])  
-    }
+  is.overall.arg <- names(legend.args) %in% get_legend_arg_names(overall = TRUE)
+  overall.args <- legend.args[is.overall.arg]
+  item.args <- legend.args[!is.overall.arg]
+  ordered.new.args <- new.legend.args[match(get_legend_arg_names(indiv = TRUE), names(new.legend.args))]
+  
+  if(length(item.args) > 0){
     
+    for (j in seq_along(item.args)) {
+      if (where == 'first'){
+        item.args[[j]] <- c(ordered.new.args[[j]], item.args[[j]])  
+      } else {
+        item.args[[j]] <- c(item.args[[j]], ordered.new.args[[j]])  
+      }
+      
+    }
+  } else {
+    item.args <- ordered.new.args
   }
   
-  return(legend.args)
+  combined.legend.args <- append(overall.args, item.args)
+  
+  return(combined.legend.args)
 }
 
 #' Set up an empty legend
 #'
 create_empty_legend <- function() {
-  default.args <- formals(graphics::legend)
-  overall.legend <- c("x", "y", "bty", "bg", "box.lty", "box.lwd", "box.col", "cex",
-                      "xjust", "yjust", "x.intersp", "y.intersp", "adj", "text.width", 
-                      "merge", "trace", "plot", "ncol", "horiz", "title", "inset", 
-                      "xpd", "title.col", "title.adj", "seg.len")  
-  not.overall <- default.args[which(!names(default.args) %in% overall.legend)]
+  not.overall <- get_legend_arg_names(indiv = TRUE)
   legend <- vector("list", length(not.overall))
-  names(legend) <- names(not.overall)
+  names(legend) <- not.overall
   
   # add draw = FALSE as default
   legend$draw <- FALSE
@@ -207,4 +213,33 @@ modify_legend <- function(object, location="topright", legend_offset=0.3, draw=F
   }
   object[['legend']][[paste0("legend.", legend.index)]] <- legend.config
   return(object)
+}
+
+#' get vector of legend arguments - overall or for each entry
+#' 
+#' @param overall logical indicating whether overall legend arguments should be returned. These arguments impact 
+#' the legend style (e.g. title, box.lwd, location, etc)
+#' @param indiv logical indiciating whether arguments applicable to each legend entry should be returned. These are 
+#' the arguments that apply to each individual entry within the legend (e.g. lty, lwd, pch, text.font, etc)
+#' @keywords internal
+get_legend_arg_names <- function(overall = FALSE, indiv = FALSE){
+  names.args <- formal_names('legend')
+  overall.legend.graphics <- c("x", "y", "bty", "bg", "box.lty", "box.lwd", "box.col", "cex",
+                               "xjust", "yjust", "x.intersp", "y.intersp", "adj", "text.width", 
+                               "merge", "trace", "plot", "ncol", "horiz", "title", "inset", 
+                               "xpd", "title.col", "title.adj", "seg.len")  
+  overall.legend.gsplot <- c('location', 'legend_offset', 'draw')
+  overall.args <- c(overall.legend.gsplot, overall.legend.graphics)
+  indiv.args <- names.args[which(!names.args %in% overall.args)]
+  return.args <- list(overall = overall.args, indiv = indiv.args)
+  
+  if(overall && !indiv){
+    return.args <- return.args[['overall']]
+  } else if (!overall && indiv){
+    return.args <- return.args[['indiv']]
+  } else if (!overall && !indiv) {
+    return.args <- NULL
+  }
+  
+  return(return.args)
 }

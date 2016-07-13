@@ -7,3 +7,11 @@ test_that("legend user args", {
     legend()
   expect_equal(usrDef$legend$legend.auto$col, c('dogerblue','orange'))
 })
+
+test_that("legend specified before legend.name args", {
+  gs <- gsplot() %>% 
+    legend() %>% 
+    points(1:4, 1:4, legend.name = "first points")
+  
+  expect_equal(gs$legend$legend.auto$legend, "first points")
+})

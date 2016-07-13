@@ -43,27 +43,10 @@ print.gsplot <- function(x, ...){
 
   par(x$global$par)
   bgCol(x$global$bgCol)
-  if (x$global$config$frame.plot){
-    box()
-  }
   title(x$global$title)
   
   view.info <- view_info(views)
   side.names <- side_names(views)
-
-  for (side.name in side.names){
-    side <- as.side(side.name)
-    old.par <- par(x[[side.name]]$par)
-    set_frame(views, side)
-    if(x[[side.name]][['axes']] | x[[side.name]][['usr.axes']]){
-      draw_axis(x[[side.name]][['axis']])
-    }
-    
-    if(par('ann')){
-      mtext(text=label(views, side), side=side, line = 2, las=config("mtext")$las)
-    }
-    par(old.par)
-  }
   
   for (view.name in view_names(views)){
     par(x$global$par)
@@ -81,10 +64,32 @@ print.gsplot <- function(x, ...){
     par(new=TRUE)
   }
   
+  view.usr <- par('usr')
+  
+  for (side.name in side.names){
+    side <- as.side(side.name)
+    old.par <- par(x[[side.name]]$par)
+    set_frame(views, side)
+    if(x[[side.name]][['axes']] | x[[side.name]][['usr.axes']]){
+      draw_axis(x, side.name)
+    }
+    
+    if(par('ann')){
+      mtext(text=label(views, side), side=side, line = 2, las=config("mtext")$las)
+    }
+    par(old.par)
+  }
+  
+  par(usr = view.usr)
+  
   #i.axis.noview <- i.axis[which(!defined.sides %in% c(view.info$x, view.info$y))]
   #draw_axis(views, index.axis=i.axis.noview)
 
   draw_legend(views)
+  if (x$global$config$frame.plot){
+    box()
+  }
+  
   par(new=FALSE)
 }
 
