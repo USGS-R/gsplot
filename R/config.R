@@ -1,10 +1,12 @@
 gsconfig <- new.env(parent = emptyenv())
+gsconfig$orignial.par <- par(no.readonly = TRUE)
 
 
 #' @title Load gsplot config
 #'
 #' @description Loads the config file into options which are
-#'used elsewhere in the application
+#'used elsewhere in the application. This will only change the config paremeters while
+#'building up the gsplot object, not on print.
 #'
 #' @param filename string to custom file 
 #'
@@ -21,9 +23,13 @@ loadConfig = function(filename) {
   }
 
   graphTemplate <- yaml.load_file(filename)
-
+  origPar <- gsconfig$orignial.par
+  origPar <- origPar[!(names(origPar) %in% names(graphTemplate))]
+  graphTemplate <- c(graphTemplate, origPar)
   gsconfig$options <- graphTemplate
 }
+
+
 
 #' @title Get configuration for gsplot
 #'
