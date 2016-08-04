@@ -1,7 +1,7 @@
 gsconfig <- new.env(parent = emptyenv())
-dev.off()
+dev.new()
 gsconfig$original.par <- par(no.readonly = TRUE)
-
+dev.off()
 
 #' @title Load gsplot config
 #'
