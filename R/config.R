@@ -1,5 +1,6 @@
 gsconfig <- new.env(parent = emptyenv())
-gsconfig$orignial.par <- par(no.readonly = TRUE)
+dev.off()
+gsconfig$original.par <- par(no.readonly = TRUE)
 
 
 #' @title Load gsplot config
@@ -23,7 +24,7 @@ loadConfig = function(filename) {
   }
 
   graphTemplate <- yaml.load_file(filename)
-  origPar <- gsconfig$orignial.par
+  origPar <- gsconfig$original.par
   origPar <- origPar[!(names(origPar) %in% names(graphTemplate))]
   graphTemplate <- c(graphTemplate, origPar)
   gsconfig$options <- graphTemplate
