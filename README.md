@@ -98,8 +98,6 @@ myplot <- myplot %>% points(4,3,col="blue")
 myplot
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-3-1.png)
-
 <a name="legend"></a>
 
 #### Automatic legend

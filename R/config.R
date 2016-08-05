@@ -1,7 +1,4 @@
 gsconfig <- new.env(parent = emptyenv())
-dev.new()
-gsconfig$original.par <- par(no.readonly = TRUE)
-dev.off()
 
 #' @title Load gsplot config
 #'
@@ -24,9 +21,10 @@ loadConfig = function(filename) {
   }
 
   graphTemplate <- yaml.load_file(filename)
-  origPar <- gsconfig$original.par
-  origPar <- origPar[!(names(origPar) %in% names(graphTemplate))]
-  graphTemplate <- c(graphTemplate, origPar)
+  if(.Device != "null device"){
+    dev.off()
+  }
+  
   gsconfig$options <- graphTemplate
 }
 
