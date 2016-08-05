@@ -12,6 +12,7 @@ gsconfig <- new.env(parent = emptyenv())
 #'loadConfig()
 #'@export
 #' @importFrom graphics plot.xy
+#' @importFrom grDevices dev.off
 #' @importFrom graphics par
 #' @importFrom yaml yaml.load_file
 loadConfig = function(filename) {
