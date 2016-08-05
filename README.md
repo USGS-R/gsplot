@@ -319,8 +319,6 @@ Improved workflow examples
 --------------------------
 
 ``` r
-library(gsplot)
-
 demoPlot <- gsplot() %>%
   points(y=c(3,1,2), x=1:3, xlim=c(0,NA),ylim=c(0,NA),
          col="blue", pch=18, legend.name="Points", xlab="Index") %>%
