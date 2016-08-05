@@ -14,10 +14,20 @@ gsplot <- function(x = NULL, ...) UseMethod("gsplot")
 #' @rdname gsplot
 #' @export
 gsplot.default <- function(...) {
-  object <- gsplot(list(global=list('config'=list(frame.plot=TRUE))))
+  object <- gsplot(list(global=list('config'=list(frame.plot=TRUE, 
+                                                  config.file=FALSE))))
   object <- add_new_par(object, 'global')
-  if (length(list(...)) > 0){
-    object <- par(object, ...)
+  arg.list <- list(...)
+  if (length(arg.list) > 0){
+    if("config.file" %in% names(arg.list)){
+      load_temp_config(arg.list$config.file)
+      arg.list$config.file <- NULL 
+      object[["global"]][["config"]]["config.file"] <- TRUE
+    }
+    if(length(arg.list) > 0){
+      object <- par(object, arg.list)
+    }
+    
   }
   return(object)
 }

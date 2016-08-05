@@ -1,7 +1,7 @@
 gsconfig <- new.env(parent = emptyenv())
-dev.new()
+# dev.new()
 gsconfig$original.par <- par(no.readonly = TRUE)
-dev.off()
+# dev.off()
 
 #' @title Load gsplot config
 #'
@@ -30,6 +30,27 @@ loadConfig = function(filename) {
   gsconfig$options <- graphTemplate
 }
 
+#' @title Load gsplot temporary config
+#'
+#' @description Loads the config file into options which are
+#'used elsewhere in the application. This will only change the config paremeters while
+#'building up the gsplot object, not on print.
+#'
+#' @param filename string to custom file 
+#'
+#'@examples
+#'loadConfig()
+#' @importFrom graphics plot.xy
+#' @importFrom graphics par
+#' @importFrom yaml yaml.load_file
+load_temp_config = function(filename) {
+  
+  graphTemplate <- yaml.load_file(filename)
+  origPar <- gsconfig$original.par
+  origPar <- origPar[!(names(origPar) %in% names(graphTemplate))]
+  graphTemplate <- c(graphTemplate, origPar)
+  gsconfig$temp.config <- graphTemplate
+}
 
 
 #' @title Get configuration for gsplot
@@ -47,7 +68,7 @@ loadConfig = function(filename) {
 #' @importFrom graphics plot.xy
 #' @importFrom graphics par
 #' @export
-config <- function(type, ..., persist=FALSE){
+config <- function(type, ..., persist=FALSE, global.config = TRUE){
   allowedTypes <- names(pkg.env$fun.details)
   
   type <- match.arg(type, choices = allowedTypes)
@@ -56,7 +77,11 @@ config <- function(type, ..., persist=FALSE){
     loadConfig()
   }
   
-  config_list <- gsconfig$options
+  # if(custom.config){
+  #   config_list <- gsconfig$temp.config
+  # } else {
+    config_list <- gsconfig$options
+  # }
   
   globalConfig <- config_list[!(names(config_list) %in% allowedTypes[allowedTypes != "par"])]
 
