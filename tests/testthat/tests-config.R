@@ -22,12 +22,9 @@ test_that("persisting to config alters environment", {
 })
 
 test_that("formals are correctly retrieved", {
-  # expect_equal(length(config("par")), 7)
-  # expect_equal(names(config("points")), c("pch", "col"))
-  # expect_equal(length(config("arrows")), 0)
-  expect_equal(length(config("par")), 66)
-  expect_equal(names(config("points")), c("bg", "cex", "lty","lwd","pch","col"))
-  expect_equal(length(config("arrows")), 3)
+  expect_equal(length(config("par")), 7)
+  expect_equal(names(config("points")), c("pch", "col"))
+  expect_equal(length(config("arrows")), 0)
 })
 
 test_that("non-existant type hits error", {
