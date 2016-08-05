@@ -34,7 +34,8 @@ Imports:
     utils,
     methods,
     yaml,
-    lazyeval
+    lazyeval,
+    grDevices
 Suggests:
     testthat,
     knitr
