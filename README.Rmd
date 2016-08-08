@@ -7,6 +7,11 @@ output:
     variant: markdown_github
 ---
 
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(fig.width=6, fig.height=6,
+                      warning=FALSE, message=FALSE)
+```
+
 ##Installation
 Currently only available via github. Easiest way to install is to use the `devtools` package:
 
@@ -38,7 +43,7 @@ Feature                                 | Description                 |
 [Change rendering order](#where)        | Manipulate what order plot features are rendered by specifying the argument `where`  |
 [Compatibility with base](#base) | Can start a plot using `gsplot`, and add base R features afterwards.  | 
 
-```{r table_plots, echo=FALSE, message=FALSE}
+```{r table_plots, echo=FALSE}
 library(gsplot)
 ```
 
@@ -48,7 +53,7 @@ library(gsplot)
 
 With the magrittr pipe (`%>%`) and the gsplot object, you can easily add features to your plot without needing repeat code. 
 
-```{r message=FALSE, warning=FALSE, eval = FALSE}
+```{r eval = FALSE}
 # base:
 plot(1:3, 2:4)
 lines(1:5, 5:1)
@@ -59,7 +64,7 @@ lines(1:5, 5:1)
 points(4,3, col="blue")
 ```
 
-```{r message=FALSE, warning=FALSE}
+```{r }
 myplot <- gsplot() %>% 
   points(1:3, 2:4) %>%
   lines(1:5, 5:1)
@@ -75,7 +80,7 @@ myplot
 
 For each plot feature, the argument `legend.name` can be included in it's function call. Then, the `legend()` function is used to add the legend to your plot object. This creates a legend that inherits `par` specifications from the function calls, so that you do not have to also include it in the legend call. 
 
-```{r message=FALSE, warning=FALSE, eval = FALSE}
+```{r eval = FALSE}
 # base:
 plot(1:3, 1:3, col = "green", pch = 8) 
 points(1:3, 3:1, col = "red", pch = 20)
@@ -91,7 +96,7 @@ legend(x = "topright", legend = c("my points", "some other points", "some line",
        border = c(NA,NA,NA,"black"))
 ```
 
-```{r message=FALSE, warning=FALSE}
+```{r }
 myplot <- gsplot() %>% 
   points(1:3, 1:3, col = "green", pch = 8, legend.name = "my points") %>% 
   points(1:3, 3:1, col = "red", pch = 20, legend.name = "some other points") %>% 
@@ -107,7 +112,7 @@ myplot
 
 `gsplot` automatically regenerates plot limits when new features are added, so that the user does not need to explicity do so. 
 
-```{r message=FALSE, warning=FALSE, eval=FALSE}
+```{r eval=FALSE}
 # base:
 plot(1:3,1:3)
 points(5:6,5:6)
@@ -117,7 +122,7 @@ plot(1:3,1:3, ylim = c(1,6), xlim = c(1,6))
 points(5:6,5:6)
 ```
 
-```{r message=FALSE, warning=FALSE}
+```{r }
 limitsplot <- gsplot() %>% 
   points(1:3,1:3) %>% 
   points(5:6,5:6)
@@ -130,7 +135,7 @@ limitsplot
 
 Apply error bars to points by specifying the upper and lower offsets. Horizontal and vertical error bars can be completed in the same call to `error_bar`. Error bar values are incorporated into the automatic limit calculations.
 
-```{r message=FALSE, warning=FALSE, eval=FALSE}
+```{r eval=FALSE}
 # base:
 plot(1:7, 1:7) 
 arrows(x0 = 1:7, x1 = 1:7, 
@@ -154,7 +159,7 @@ errorbarplot
 
 Add a line and label in one call, rather than making a call to `segments` and `text`. This function automatically determines if the callout line will be outside of the plot limits, and changes the angle accordingly. 
 
-```{r message=FALSE, warning=FALSE, eval=FALSE}
+```{r eval=FALSE}
 # base:
 plot(1:3,1:3)
 segments(x0 = 1:2, y0 = 1:2, x1 = c(1.25,2.25), y1 = c(1.25,2.25))
@@ -164,7 +169,7 @@ segments(x0 = 3, y0 = 3, x1 = 2.75, y1 = 2.75)
 text(x = 2.75, y = 2.75, labels = paste("point 3"), pos = 2)
 ```
 
-```{r message=FALSE, warning=FALSE}
+```{r }
 calloutsplot <- gsplot() %>% 
   points(1:3,1:3) %>% 
   callouts(1:3, 1:3, labels = paste("point", 1:3))
@@ -177,13 +182,13 @@ calloutsplot
 
 If the axis needs to be reversed, you can add the argument `reverse = TRUE` to the function call. The order of your data does not need to change, and you can easily revert the axis flip. 
 
-```{r message=FALSE, warning=FALSE, eval=FALSE}
+```{r eval=FALSE}
 # base:
 data_y <- c(1,7,23,47,31)
 plot(1:5, rev(data_y)) 
 ```
 
-```{r message=FALSE, warning=FALSE}
+```{r }
 data_y <- c(1,7,23,47,31)
 reverseplot <- gsplot() %>% 
   points(1:5, data_y) %>% 
@@ -197,7 +202,7 @@ reverseplot
 
 Add features that apply to points within the points call, so that it inherits those values. Reduces the amount of code because you are not repeating the points values. 
 
-```{r message=FALSE, warning=FALSE, eval=FALSE}
+```{r eval=FALSE}
 # base:
 plot(1:5, 1:5) 
 arrows(x0 = 1:5, x1 = 1:5, 
@@ -211,7 +216,7 @@ text(x = 1.25:5.25, y = 1.25:5.25,
      labels = paste("pt", 1:5), pos = 4)
 ```
 
-```{r message=FALSE, warning=FALSE}
+```{r }
 embedplot <- gsplot() %>% 
   points(1:5, 1:5, 
          error_bar(y.high = 1, y.low = 0.5),
@@ -225,7 +230,7 @@ embedplot
 
 For each plot feature that is added (`points`, `lines`, `callouts`, etc), you can specify if it should render in it's current position (after everything above it) or whether it should go before everything else. Simply add the argument `where = 'first'` or leave the default `where = "last"`.
 
-```{r message=FALSE, warning=FALSE}
+```{r }
 renderorderplot <- gsplot() %>% 
   points(1:5, 1:5, col = "blue", legend.name = "data pts") %>% 
   callouts(2,2, labels = "my note") %>% 
@@ -235,7 +240,7 @@ renderorderplot
 
 Say we have the plot above, but would like to add two red points. 
 
-```{r message=FALSE, warning=FALSE}
+```{r }
 renderorderplot_add <- renderorderplot %>% 
   points(c(2.5,3), c(2,3), pch = 18, cex = 3, legend.name = "additional pts") 
 renderorderplot_add
@@ -244,7 +249,7 @@ renderorderplot_add
 
 Easy to do with `gsplot`, but now the two red points are covering up features in the original plot. We can easily change this by using the `where` argument when adding to the plot. Specifying `where` will also update the order of the legend.
 
-```{r message=FALSE, warning=FALSE}
+```{r }
 renderorderplot_order <- renderorderplot %>% 
   points(c(2.5,3), c(2,3), pch = 18, cex = 3, legend.name = "additional pts", where = "first") 
 renderorderplot_order
@@ -256,7 +261,7 @@ renderorderplot_order
 
 If you need to use a feature that `gsplot` has yet to implement, you can always start with `gsplot` and add on using base R. The reverse is (starting with base and then using `gsplot`) is not supported.
 
-```{r message=FALSE, warning=FALSE}
+```{r }
 date_vector <- seq(as.Date("2010-10-01"), as.Date("2011-09-30"), by="months")
 gs <- gsplot() %>% 
   points(date_vector, 1:12)
@@ -267,8 +272,7 @@ points(as.Date("2010-11-15"),2.5)
 
 ##Improved workflow examples
 
-```{r echo=TRUE, warning=FALSE, message=FALSE}
-library(gsplot)
+```{r echo=TRUE}
 
 demoPlot <- gsplot() %>%
   points(y=c(3,1,2), x=1:3, xlim=c(0,NA),ylim=c(0,NA),
@@ -285,7 +289,7 @@ demoPlot <- gsplot() %>%
 demoPlot
 ```
 
-```{r echo=TRUE, warning=FALSE, message=FALSE}
+```{r echo=TRUE}
 gs <- gsplot() %>%
   points(y=c(3,1,2,4,5), x=c(1:3,8,80), 
          col="blue", pch=18, legend.name="Points") %>%
@@ -298,7 +302,7 @@ gs <- gsplot() %>%
 gs
 ```
 
-```{r echo=TRUE, warning=FALSE, message=FALSE}
+```{r echo=TRUE}
 usrDef <- gsplot(mar=c(4,4,4,4), xaxs='r', yaxs='r') %>% 
      points(x=1, y=2, side=c(3,2), legend.name="Points 1", cex=3, xlab='cat') %>% 
      points(x=3, y=4, side=c(1,4), legend.name="Points 2", pch=5, col="red", ylab=expression(paste("Discharge in ",ft^3/s))) %>% 

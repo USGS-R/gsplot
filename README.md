@@ -98,8 +98,6 @@ myplot <- myplot %>% points(4,3,col="blue")
 myplot
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-3-1.png)
-
 <a name="legend"></a>
 
 #### Automatic legend
@@ -319,8 +317,6 @@ Improved workflow examples
 --------------------------
 
 ``` r
-library(gsplot)
-
 demoPlot <- gsplot() %>%
   points(y=c(3,1,2), x=1:3, xlim=c(0,NA),ylim=c(0,NA),
          col="blue", pch=18, legend.name="Points", xlab="Index") %>%
