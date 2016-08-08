@@ -4,6 +4,8 @@
 #'
 #' @param x list
 #' @param \dots Further graphical parameters may also be supplied as arguments. See 'Details'.
+#' @param config.file path to config yaml for individual gsplot object
+#' @param theme path to theme
 #' @return gsplot 
 #' @export
 #' @rdname gsplot
@@ -13,22 +15,26 @@ gsplot <- function(x = NULL, ...) UseMethod("gsplot")
 
 #' @rdname gsplot
 #' @export
-gsplot.default <- function(...) {
+gsplot.default <- function(...,config.file=NA, theme=NA) {
   object <- gsplot(list(global=list('config'=list(frame.plot=TRUE, 
-                                                  config.file=FALSE))))
-  object <- add_new_par(object, 'global')
-  arg.list <- list(...)
-  if (length(arg.list) > 0){
-    if("config.file" %in% names(arg.list)){
-      load_temp_config(arg.list$config.file)
-      arg.list$config.file <- NULL 
-      object[["global"]][["config"]]["config.file"] <- TRUE
-    }
-    if(length(arg.list) > 0){
-      object <- par(object, arg.list)
-    }
-    
+                                                  config.file=!is.na(config.file)))))
+
+  if (!is.na(config.file)){
+    load_temp_config(config.file)
   }
+  
+  if(!all(gsconfig$orignial.par %in% par(no.readonly = TRUE))){
+    if(.Device != "null device"){
+      dev.off()
+    }
+  }
+  
+  object <- add_new_par(object, 'global')
+  
+  if(length(list(...)) > 0){
+    object <- par(object, ...)
+  }
+
   return(object)
 }
 

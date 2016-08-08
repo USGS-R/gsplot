@@ -1,4 +1,5 @@
 gsconfig <- new.env(parent = emptyenv())
+gsconfig$orignial.par <- par(no.readonly = TRUE)
 
 #' @title Load gsplot config
 #'
@@ -42,12 +43,15 @@ loadConfig = function(filename) {
 #' @importFrom graphics plot.xy
 #' @importFrom graphics par
 #' @importFrom yaml yaml.load_file
+#' @importFrom grDevices dev.off
 load_temp_config = function(filename) {
   
+  gsconfig$orignial.par <- par(no.readonly = TRUE)
+  
   graphTemplate <- yaml.load_file(filename)
-  origPar <- gsconfig$original.par
-  origPar <- origPar[!(names(origPar) %in% names(graphTemplate))]
-  graphTemplate <- c(graphTemplate, origPar)
+  if(.Device != "null device"){
+    dev.off()
+  }
   gsconfig$temp.config <- graphTemplate
 }
 
@@ -60,6 +64,7 @@ load_temp_config = function(filename) {
 #' @param type string of gsplot config object to retrieve
 #' @param ... additional configuration to override what is pulled from config
 #' @param persist logical of whether to persist overrides to config
+#' @param custom.config logical of whether to use default global (TRUE) or a config set for only one gsplot object 
 #'
 #' @examples
 #' config("par")
@@ -67,7 +72,7 @@ load_temp_config = function(filename) {
 #' @importFrom graphics plot.xy
 #' @importFrom graphics par
 #' @export
-config <- function(type, ..., persist=FALSE, global.config = TRUE){
+config <- function(type, ..., persist=FALSE, custom.config = FALSE){
   allowedTypes <- names(pkg.env$fun.details)
   
   type <- match.arg(type, choices = allowedTypes)
@@ -76,11 +81,11 @@ config <- function(type, ..., persist=FALSE, global.config = TRUE){
     loadConfig()
   }
   
-  # if(custom.config){
-  #   config_list <- gsconfig$temp.config
-  # } else {
+  if(custom.config){
+    config_list <- gsconfig$temp.config
+  } else {
     config_list <- gsconfig$options
-  # }
+  }
   
   globalConfig <- config_list[!(names(config_list) %in% allowedTypes[allowedTypes != "par"])]
 

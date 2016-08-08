@@ -8,12 +8,16 @@
 \usage{
 gsplot(x = NULL, ...)
 
-\method{gsplot}{default}(...)
+\method{gsplot}{default}(..., config.file = NA, theme = NA)
 
 \method{gsplot}{list}(x)
 }
 \arguments{
 \item{x}{list}
+
+\item{config.file}{path to config yaml for individual gsplot object}
+
+\item{theme}{path to theme}
 
 \item{\dots}{Further graphical parameters may also be supplied as arguments. See 'Details'.}
 }
