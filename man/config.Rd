@@ -4,7 +4,7 @@
 \alias{config}
 \title{Get configuration for gsplot}
 \usage{
-config(type, ..., persist = FALSE)
+config(type, ..., persist = FALSE, global.config = TRUE)
 }
 \arguments{
 \item{type}{string of gsplot config object to retrieve}

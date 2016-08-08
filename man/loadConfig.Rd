@@ -11,7 +11,8 @@ loadConfig(filename)
 }
 \description{
 Loads the config file into options which are
-used elsewhere in the application
+used elsewhere in the application. This will only change the config paremeters while
+building up the gsplot object, not on print.
 }
 \examples{
 loadConfig()
