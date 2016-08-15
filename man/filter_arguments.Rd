@@ -4,10 +4,12 @@
 \alias{filter_arguments}
 \title{extract the call arguments}
 \usage{
-filter_arguments(fun.name, ...)
+filter_arguments(fun.name, ..., custom.config = FALSE)
 }
 \arguments{
 \item{fun.name}{the name of the rendering function}
+
+\item{custom.config}{logical to use custom or global config file}
 
 \item{\dots}{arguments to \code{fun.name} or an embedded function 
 within it.}

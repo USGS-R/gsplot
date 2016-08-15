@@ -38,8 +38,6 @@ loadConfig = function(filename) {
 #'
 #' @param filename string to custom file 
 #'
-#'@examples
-#'loadConfig()
 #' @importFrom graphics plot.xy
 #' @importFrom graphics par
 #' @importFrom yaml yaml.load_file

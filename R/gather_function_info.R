@@ -20,7 +20,7 @@
 #' @return a code{gsplot} object
 #' @keywords internal
 gather_function_info <- function(object, fun.name, ..., legend.name, side, where){
-  arguments <- filter_arguments(fun.name, ..., side=side)
+  arguments <- filter_arguments(fun.name, ..., custom.config = object[["global"]][["config"]][["config.file"]], side=side)
   
   call.args <- arguments$call.args
   option.args <- arguments$option.args

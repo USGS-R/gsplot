@@ -23,7 +23,7 @@ gsplot.default <- function(...,config.file=NA, theme=NA) {
     load_temp_config(config.file)
   }
   
-  if(!all(gsconfig$orignial.par %in% par(no.readonly = TRUE))){
+  if(length(all.equal(gsconfig$orignial.par, par(no.readonly = TRUE))) > 1){
     if(.Device != "null device"){
       dev.off()
     }

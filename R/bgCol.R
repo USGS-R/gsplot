@@ -36,7 +36,8 @@ bgCol <- function(object, ...) {
 
 bgCol.gsplot <- function(object, ...){
 
-  to.gsplot <- filter_arguments(fun.name = "bgCol", ...)$call.args
+  to.gsplot <- filter_arguments(fun.name = "bgCol", ...,
+                                custom.config = object[["global"]][["config"]][["config.file"]])$call.args
   object$global$bgCol <- append_replace(object$global$bgCol, to.gsplot[[1]])
   return(object)
 
