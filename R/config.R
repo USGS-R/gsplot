@@ -23,10 +23,10 @@ loadConfig = function(filename) {
   }
 
   graphTemplate <- yaml.load_file(filename)
-  if(.Device != "null device"){
-    dev.off()
+
+  if(length(all.equal(gsconfig$orignial.par, par(no.readonly = TRUE))) > 1){
+    par(gsconfig$orignial.par)
   }
-  
   gsconfig$options <- graphTemplate
 }
 
@@ -47,8 +47,9 @@ load_temp_config = function(filename) {
   gsconfig$orignial.par <- par(no.readonly = TRUE)
   
   graphTemplate <- yaml.load_file(filename)
-  if(.Device != "null device"){
-    dev.off()
+
+  if(length(all.equal(gsconfig$orignial.par, par(no.readonly = TRUE))) > 1){
+    par(gsconfig$orignial.par)
   }
   gsconfig$temp.config <- graphTemplate
 }

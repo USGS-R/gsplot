@@ -99,8 +99,9 @@ draw_legend <- function(gsplot) {
         #set bg so that fill/border/etc args are correct, then evaluate any quoted list items
         if (any(names(legend) %in% c("bg"))) {
           par(bg=legend$bg)
+        } else {
+          par(bg = ifelse(par('bg') == "transparent", "#FFFFFF", par('bg')))
         }
-        legend <- lapply(legend, function(x) {unname(sapply(x, function(x) {eval(x)}))})
         # clean out arguments not allowed by legend 
         legend <- legend[na.omit(match(names(default.args), names(legend)))]
         legend(legend)
