@@ -130,8 +130,6 @@ myplot <- gsplot() %>%
 myplot
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-5-1.png)
-
 <a name="limits"></a>
 
 #### Automatic limits
@@ -154,8 +152,6 @@ limitsplot <- gsplot() %>%
   points(5:6,5:6)
 limitsplot
 ```
-
-![](README_files/figure-markdown_github/unnamed-chunk-7-1.png)
 
 <a name="error"></a>
 
@@ -181,8 +177,6 @@ errorbarplot <- gsplot() %>%
 errorbarplot
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-9-1.png)
-
 <a name="callouts"></a>
 
 #### Callouts
@@ -206,8 +200,6 @@ calloutsplot <- gsplot() %>%
 calloutsplot
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-11-1.png)
-
 <a name="reverse"></a>
 
 #### Axis reversal
@@ -227,8 +219,6 @@ reverseplot <- gsplot() %>%
   axis(side = 2, reverse = TRUE)
 reverseplot
 ```
-
-![](README_files/figure-markdown_github/unnamed-chunk-13-1.png)
 
 <a name="embed"></a>
 
@@ -258,8 +248,6 @@ embedplot <- gsplot() %>%
 embedplot
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-15-1.png)
-
 <a name="where"></a>
 
 #### Change rendering order
@@ -273,8 +261,6 @@ renderorderplot <- gsplot() %>%
   legend(location = "topleft", legend_offset=0.5)
 renderorderplot
 ```
-
-![](README_files/figure-markdown_github/unnamed-chunk-16-1.png)
 
 Say we have the plot above, but would like to add two red points.
 
@@ -311,8 +297,6 @@ gs
 points(as.Date("2010-11-15"),2.5)
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-19-1.png)
-
 Improved workflow examples
 --------------------------
 
@@ -332,8 +316,6 @@ demoPlot <- gsplot() %>%
 demoPlot
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-20-1.png)
-
 ``` r
 gs <- gsplot() %>%
   points(y=c(3,1,2,4,5), x=c(1:3,8,80), 
@@ -347,8 +329,6 @@ gs <- gsplot() %>%
 gs
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-21-1.png)
-
 ``` r
 usrDef <- gsplot(mar=c(4,4,4,4), xaxs='r', yaxs='r') %>% 
      points(x=1, y=2, side=c(3,2), legend.name="Points 1", cex=3, xlab='cat') %>% 
@@ -358,8 +338,6 @@ usrDef <- gsplot(mar=c(4,4,4,4), xaxs='r', yaxs='r') %>%
      legend(x=1.5,y=4)
 usrDef
 ```
-
-![](README_files/figure-markdown_github/unnamed-chunk-22-1.png)
 
 Disclaimer
 ----------
