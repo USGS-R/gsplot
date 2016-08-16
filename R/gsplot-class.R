@@ -23,8 +23,8 @@ gsplot.default <- function(...,config.file=NA, theme=NA) {
     load_temp_config(config.file)
   }
   
-  if(length(all.equal(gsconfig$orignial.par, par(no.readonly = TRUE))) > 1){
-    par(gsconfig$orignial.par)
+  if(length(all.equal(gsconfig$original.par, par(no.readonly = TRUE))) > 1){
+    par(gsconfig$original.par)
   }
   
   object <- add_new_par(object, 'global')

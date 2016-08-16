@@ -102,6 +102,8 @@ draw_legend <- function(gsplot) {
         } else {
           par(bg = ifelse(par('bg') == "transparent", "#FFFFFF", par('bg')))
         }
+        legend <- lapply(legend, function(x) {unname(sapply(x, function(x) {eval(x)}))})
+        
         # clean out arguments not allowed by legend 
         legend <- legend[na.omit(match(names(default.args), names(legend)))]
         legend(legend)

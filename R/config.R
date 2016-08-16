@@ -1,5 +1,5 @@
 gsconfig <- new.env(parent = emptyenv())
-gsconfig$orignial.par <- par(no.readonly = TRUE)
+gsconfig$original.par <- par(no.readonly = TRUE)
 
 #' @title Load gsplot config
 #'
@@ -24,8 +24,8 @@ loadConfig = function(filename) {
 
   graphTemplate <- yaml.load_file(filename)
 
-  if(length(all.equal(gsconfig$orignial.par, par(no.readonly = TRUE))) > 1){
-    par(gsconfig$orignial.par)
+  if(length(all.equal(gsconfig$original.par, par(no.readonly = TRUE))) > 1){
+    par(gsconfig$original.par)
   }
   gsconfig$options <- graphTemplate
 }
@@ -44,12 +44,12 @@ loadConfig = function(filename) {
 #' @importFrom grDevices dev.off
 load_temp_config = function(filename) {
   
-  gsconfig$orignial.par <- par(no.readonly = TRUE)
+  gsconfig$original.par <- par(no.readonly = TRUE)
   
   graphTemplate <- yaml.load_file(filename)
 
-  if(length(all.equal(gsconfig$orignial.par, par(no.readonly = TRUE))) > 1){
-    par(gsconfig$orignial.par)
+  if(length(all.equal(gsconfig$original.par, par(no.readonly = TRUE))) > 1){
+    par(gsconfig$original.par)
   }
   gsconfig$temp.config <- graphTemplate
 }
@@ -63,7 +63,7 @@ load_temp_config = function(filename) {
 #' @param type string of gsplot config object to retrieve
 #' @param ... additional configuration to override what is pulled from config
 #' @param persist logical of whether to persist overrides to config
-#' @param custom.config logical of whether to use default global (TRUE) or a config set for only one gsplot object 
+#' @param custom.config logical of whether to use default global (FALSE) or a config set for only one gsplot object 
 #'
 #' @examples
 #' config("par")

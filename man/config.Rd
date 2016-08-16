@@ -13,7 +13,7 @@ config(type, ..., persist = FALSE, custom.config = FALSE)
 
 \item{persist}{logical of whether to persist overrides to config}
 
-\item{custom.config}{logical of whether to use default global (TRUE) or a config set for only one gsplot object}
+\item{custom.config}{logical of whether to use default global (FALSE) or a config set for only one gsplot object}
 }
 \description{
 Gets config for gsplot, mostly used internally
