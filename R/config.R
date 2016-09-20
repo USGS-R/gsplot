@@ -1,10 +1,10 @@
 gsconfig <- new.env(parent = emptyenv())
 
-
 #' @title Load gsplot config
 #'
 #' @description Loads the config file into options which are
-#'used elsewhere in the application
+#'used elsewhere in the application. This will only change the config paremeters while
+#'building up the gsplot object, not on print.
 #'
 #' @param filename string to custom file 
 #'
@@ -12,6 +12,7 @@ gsconfig <- new.env(parent = emptyenv())
 #'loadConfig()
 #'@export
 #' @importFrom graphics plot.xy
+#' @importFrom grDevices dev.off
 #' @importFrom graphics par
 #' @importFrom yaml yaml.load_file
 loadConfig = function(filename) {
@@ -21,9 +22,14 @@ loadConfig = function(filename) {
   }
 
   graphTemplate <- yaml.load_file(filename)
-
+  if(.Device != "null device"){
+    dev.off()
+  }
+  
   gsconfig$options <- graphTemplate
 }
+
+
 
 #' @title Get configuration for gsplot
 #'
