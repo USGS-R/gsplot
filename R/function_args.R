@@ -10,18 +10,12 @@
 #' @param drop boolean for dropping all non-formal args passed in with \dots
 #' 
 #' @keywords internal
-function_args <- function(package, name, object, ..., use.default=paste0(name,'.default'), drop=FALSE){
+function_args <- function(package, name, object=c(), ..., use.default=paste0(name,'.default'), drop=FALSE){
   params <- list(...)
   
   if (!missing(object)) {
-    if (!is.null(names(object)))
-      params <- append(object, params)
-    else {
-      params <- append(list(object), params)
-    }
-  } else {
-    object = c() # replace w/ empty
-  }
+    params <- append_params(object, params)
+  } 
   
   if (length(params) == 0)
     return(list())
@@ -56,6 +50,22 @@ function_args <- function(package, name, object, ..., use.default=paste0(name,'.
     params = params[names(params) %in% names(formals(defFun))]
   
   return(params)
+}
+
+append_params <- function(object, params){
+  UseMethod('append_params')
+}
+
+append_params.NULL <- function(object, params){
+  params
+}
+
+append_params.list <- function(object, params){
+  append(object, params)
+}
+
+append_params.default <- function(object, params){
+  append(list(object), params)
 }
 
 user_function_args <- function_args

@@ -10,7 +10,10 @@ test_that("graphics examples work", {
   lx <- seq(1, 5, length = 41)
   xy = xy.coords(x=10^lx,y=exp(-.5*lx^2))
   plot.xy(xy, type='p')
-
+  
+  plot(1,3)
+  points(data.frame(1,2), col='red')
+  
 })
 
 context("points arguments")
