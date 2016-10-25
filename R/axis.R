@@ -63,6 +63,7 @@ axis <- function(object, ...) {
   override("graphics", "axis", object, ...)
 }
 
+#' @importFrom utils head
 axis.gsplot <- function(object, ..., n.minor=0, tcl.minor=0.15, reverse=NULL, append=FALSE) {
   
   fun.name <- "axis"
