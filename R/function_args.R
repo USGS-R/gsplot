@@ -14,17 +14,14 @@ function_args <- function(package, name, object, ..., use.default=paste0(name,'.
   params <- list(...)
   
   if (!missing(object)) {
-    if (!is.null(names(object)))
-      params <- append(object, params)
-    else {
-      params <- append(list(object), params)
-    }
+    params <- append_params(object, params)
   } else {
-    object = c() # replace w/ empty
+    object=c()
   }
   
   if (length(params) == 0)
     return(list())
+  
   
   # // is there a method for this class?
   defFun <- getS3method(name,class(object),optional=TRUE) # will be NULL when object is missing
@@ -56,6 +53,22 @@ function_args <- function(package, name, object, ..., use.default=paste0(name,'.
     params = params[names(params) %in% names(formals(defFun))]
   
   return(params)
+}
+
+append_params <- function(object, params){
+  UseMethod('append_params')
+}
+
+append_params.NULL <- function(object, params){
+  params
+}
+
+append_params.list <- function(object, params){
+  append(object, params)
+}
+
+append_params.default <- function(object, params){
+  append(list(object), params)
 }
 
 user_function_args <- function_args
