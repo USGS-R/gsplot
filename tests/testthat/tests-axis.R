@@ -70,6 +70,7 @@ test_that("axis can append a third one and the forth clears them",{
     axis(side=1, at=c(0.45, 0.55), append=TRUE) %>% 
     axis(side=1, at=c(0.33))
   expect_equal(sum(names(gs$side.1) == 'axis'), 1)
+  expect_equal(gs$side.1$axis$at, 0.33)
 })
 
 test_that("axis tracks append FALSE by default",{
