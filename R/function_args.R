@@ -15,10 +15,13 @@ function_args <- function(package, name, object=c(), ..., use.default=paste0(nam
   
   if (!missing(object)) {
     params <- append_params(object, params)
-  } 
+  } else {
+    object=c()
+  }
   
   if (length(params) == 0)
     return(list())
+  
   
   # // is there a method for this class?
   defFun <- getS3method(name,class(object),optional=TRUE) # will be NULL when object is missing
