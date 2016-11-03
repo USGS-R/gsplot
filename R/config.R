@@ -1,6 +1,8 @@
 gsconfig <- new.env(parent = emptyenv())
 gsconfig$original.par <- par(no.readonly = TRUE)
 
+#Question...how can I update the user's par?
+
 #' @title Load gsplot config
 #'
 #' @description Loads the config file into options which are
