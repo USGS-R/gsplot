@@ -10,7 +10,7 @@
 #' @param drop boolean for dropping all non-formal args passed in with \dots
 #' 
 #' @keywords internal
-function_args <- function(package, name, object, ..., use.default=paste0(name,'.default'), drop=FALSE){
+function_args <- function(package, name, object=c(), ..., use.default=paste0(name,'.default'), drop=FALSE){
   params <- list(...)
   
   if (!missing(object)) {

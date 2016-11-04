@@ -47,7 +47,6 @@ test_that("axis reverse",{
 })
 
 
-
 context("axis user flipped on")
 
 test_that("axis user FALSE by default",{
