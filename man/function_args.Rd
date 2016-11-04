@@ -4,7 +4,7 @@
 \alias{function_args}
 \title{get matched argument list for a given function}
 \usage{
-function_args(package, name, object = c(), ..., use.default = paste0(name,
+function_args(package, name, object, ..., use.default = paste0(name,
   ".default"), drop = FALSE)
 }
 \arguments{
