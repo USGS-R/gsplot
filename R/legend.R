@@ -85,10 +85,10 @@ draw_legend <- function(gsplot) {
     
     for (legend.name in names(gsplot[['legend']])) {
       
-      par(xpd=TRUE)
-      
       legend <- gsplot[['legend']][[legend.name]]
       if (legend$draw) {
+        par(xpd=TRUE)
+        
         legend <- appendLegendColumnInfo(legend)
         legend <- appendLegendPositionConfiguration(legend)
         # set required legend argument to NA if not exists
