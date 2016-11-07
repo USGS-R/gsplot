@@ -34,24 +34,24 @@ strip_pts <- function(list, param){
   for (v in param){
     if (v %in% names(list) && !inherits(list[[v]], c('function','formula'))) {
       v.vals <- list[[v]]
-      out <- append_keepclass(out, v.vals)
+      out <- append_keepTZ(out, v.vals, tz=attr(v.vals, 'tzone'))
       out.class <- ifelse(!all(is.na(v.vals)), class(v.vals), out.class)
     } else {
       if (any(sapply(list, is.list))){
         u.list <- unname_c(list[sapply(list, is.list)])
         if(v %in% names(u.list)) {
           v.vals <- u.list[[v]]
-          out <- append_keepclass(out, v.vals)
+          out <- append_keepTZ(out, v.vals, tz=attr(v.vals, 'tzone'))
           out.class <- ifelse(!all(is.na(v.vals)), class(v.vals), out.class)
         } else if (any(sapply(u.list, function(x) any(names(x) %in% v)))) {
           v.vals <- u.list[[which(sapply(u.list, function(x) any(names(x) %in% v)))]][[v]]
-          out <- append_keepclass(out, v.vals)
+          out <- append_keepTZ(out, v.vals, tz=attr(v.vals, 'tzone'))
           out.class <- ifelse(!all(is.na(v.vals)), class(v.vals), out.class)
         } else {
-          out <- append(out, NA)
+          out <- append_keepTZ(out, NA, tz=attr(out, "tzone"))
         }
       } else
-        out <- append(out, NA)
+        out <- append_keepTZ(out, NA, tz=attr(out, "tzone"))
     }
     
   }
@@ -78,11 +78,9 @@ strip_pts2 <- function(data, param) {
 
 # append without losing timezones for the case where 
 # append.vals is POSIX and base.vals is NULL
-append_keepclass <- function(base.vals, append.vals){
-  if(is.null(base.vals)){
-    vals <- append.vals
-  } else {
-    vals <- append(base.vals, append.vals)
-  }
+# also handles adding NA to POSIXct vals
+append_keepTZ <- function(base.vals, append.vals, tz=NULL){
+  vals <- append(base.vals, append.vals)
+  attr(vals,"tzone") <- tz
   return(vals)
 }
