@@ -3,6 +3,12 @@
 #' Used to change the class of inputs to "gsplot".
 #'
 #' @param x list
+#' @param config.file path to the file that will only be used for setting 
+#' par in this one gsplot object. If NA (default), par is set by the global options set by
+#' loadConfig().
+#' @param theme path to the file that will only be used for setting 
+#' the gsplot theme in this one gsplot object. If NA (default), there is no theme.
+#' @param frame.plot a logical indicating whether a box should be drawn around the plot.
 #' @param \dots Further graphical parameters may also be supplied as arguments. See 'Details'.
 #' @return gsplot 
 #' @export
