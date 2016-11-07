@@ -30,23 +30,35 @@ remove_field <- function(list, param){
 
 strip_pts <- function(list, param){
   out <- c()
-  # out.class <- 'numeric'
+  out.class <- 'numeric'
   for (v in param){
     if (v %in% names(list) && !inherits(list[[v]], c('function','formula'))) {
       v.vals <- list[[v]]
       out <- append_keepTZ(out, v.vals, tz=attr(v.vals, 'tzone'))
-      out.class <- ifelse(!all(is.na(v.vals)), class(v.vals), out.class)
+      all.na <- all(is.na(v.vals))
+      out.class <- ifelse(!all.na, class(v.vals), out.class)
+      if(all.na){ 
+        class(out) <- out.class 
+      }
     } else {
       if (any(sapply(list, is.list))){
         u.list <- unname_c(list[sapply(list, is.list)])
         if(v %in% names(u.list)) {
           v.vals <- u.list[[v]]
           out <- append_keepTZ(out, v.vals, tz=attr(v.vals, 'tzone'))
-          out.class <- ifelse(!all(is.na(v.vals)), class(v.vals), out.class)
+          all.na <- all(is.na(v.vals))
+          out.class <- ifelse(!all.na, class(v.vals), out.class)
+          if(all.na){ 
+            class(out) <- out.class 
+          }
         } else if (any(sapply(u.list, function(x) any(names(x) %in% v)))) {
           v.vals <- u.list[[which(sapply(u.list, function(x) any(names(x) %in% v)))]][[v]]
           out <- append_keepTZ(out, v.vals, tz=attr(v.vals, 'tzone'))
-          out.class <- ifelse(!all(is.na(v.vals)), class(v.vals), out.class)
+          all.na <- all(is.na(v.vals))
+          out.class <- ifelse(!all.na, class(v.vals), out.class)
+          if(all.na){ 
+            class(out) <- out.class 
+          }
         } else {
           out <- append_keepTZ(out, NA, tz=attr(out, "tzone"))
         }
