@@ -34,12 +34,7 @@ strip_pts <- function(list, param){
   for (v in param){
     if (v %in% names(list) && !inherits(list[[v]], c('function','formula'))) {
       v.vals <- list[[v]]
-      # append to out without losing timezones when it is a date/POSIX
-      if(is.null(out)){
-        out <- v.vals
-      } else {
-        out <- append(out, v.vals)
-      }
+      out <- append_keepclass(out, v.vals)
       out.class <- ifelse(!all(is.na(v.vals)), class(v.vals), out.class)
     } else {
       if (any(sapply(list, is.list))){
