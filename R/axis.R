@@ -63,8 +63,7 @@ axis <- function(object, ...) {
   override("graphics", "axis", object, ...)
 }
 
-#' @importFrom utils head
-axis.gsplot <- function(object, ..., n.minor=0, tcl.minor=0.15, reverse=NULL, append=FALSE) {
+axis.gsplot <- function(object, ..., n.minor=0, tcl.minor=0.15, reverse=NULL) {
   
   fun.name <- "axis"
   
@@ -77,25 +76,9 @@ axis.gsplot <- function(object, ..., n.minor=0, tcl.minor=0.15, reverse=NULL, ap
   
   for(side in sides){
     # append the side and give it defaults if it doesn't exist
-    
     object <- modify_side(object, args = list(), side=side) 
-    which.axis <- which(names(object[[as.side_name(side)]])== 'axis')
-    if (append){
-      last.axis <- tail(which.axis, 1) # get the last one
-      object[[as.side_name(side)]] <- append(object[[as.side_name(side)]], 
-                                             list('axis' = set_args('axis', side=side, package='graphics')), 
-                                             after = last.axis)
-      object[[as.side_name(side)]][[last.axis+1]] <- append_replace(object[[as.side_name(side)]][[last.axis+1]], user_args[[fun.name]])
-    } else {
-      # remove
-      if (length(which.axis) > 1){
-        # remove all axis functions other than the first one
-        object[[as.side_name(side)]] <- object[[as.side_name(side)]][-which.axis[!which.axis %in% head(which.axis, 1)]]  
-      }
-      object[[as.side_name(side)]][['axis']] <- append_replace(object[[as.side_name(side)]][['axis']], user_args[[fun.name]])
-    }
     object[[as.side_name(side)]][['usr.axes']] <- TRUE
-    
+    object[[as.side_name(side)]][['axis']] <- append_replace(object[[as.side_name(side)]][['axis']], user_args[[fun.name]])
     if (!is.null(reverse)){
       object[[as.side_name(side)]][['reverse']] <- reverse
     }
@@ -106,19 +89,9 @@ axis.gsplot <- function(object, ..., n.minor=0, tcl.minor=0.15, reverse=NULL, ap
 }
 
 draw_axis <- function(object, side.name){
-  # method isn't made for multiple axis calls
-  which.axis <- which(names(object[[side.name]]) == 'axis')
-  if (length(which.axis) > 1){
-    for (axis.i in which.axis){
-      tmp <- object
-      tmp[[side.name]] <- tmp[[side.name]][-which.axis[which.axis %in% axis.i]]
-      draw_axis(tmp, side.name)
-    }
-    
-  }
   axis.args <- object[[side.name]][['axis']]
   side.lim <- object[[side.name]][['lim']]
-
+  
   axis.args$at <- get_axTicks(object, as.side(side.name))
   
   # need a cleaner way to extract the non-axis args (such as n.minor and tcl.minor)
@@ -139,7 +112,9 @@ draw_axis <- function(object, side.name){
     axis.args$n.minor <- NULL
     axis.args$tcl.minor <- NULL
     
-    do.call('Axis', axis.args)    
+    do.call('Axis', axis.args)
+    
+    
     
     # Minor axis:
     
