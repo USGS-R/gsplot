@@ -13,8 +13,8 @@ gsplot <- function(x = NULL, ...) UseMethod("gsplot")
 
 #' @rdname gsplot
 #' @export
-gsplot.default <- function(...) {
-  object <- gsplot(list(global=list('config'=list(frame.plot=TRUE))))
+gsplot.default <- function(...,config.file=NA, theme=NA,frame.plot=TRUE) {
+  object <- gsplot(list(global=list('config'=list(frame.plot=frame.plot))))
   object <- add_new_par(object, 'global')
   if (length(list(...)) > 0){
     object <- par(object, ...)
