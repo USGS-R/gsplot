@@ -27,46 +27,46 @@ The goal of this package is to simplify plotting in R. This includes improving t
 </colgroup>
 <thead>
 <tr class="header">
-<th align="left">Feature</th>
-<th align="left">Description</th>
+<th>Feature</th>
+<th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left"><a href="#pipes">Piping and plots as objects</a></td>
-<td align="left">Easily add features to your plot.</td>
+<td><a href="#pipes">Piping and plots as objects</a></td>
+<td>Easily add features to your plot.</td>
 </tr>
 <tr class="even">
-<td align="left"><a href="#legend">Automatic legend</a></td>
-<td align="left">For each plot feature, a corresponding legend name can be specified. Eliminates the need to duplicate <code>par</code> arguments.</td>
+<td><a href="#legend">Automatic legend</a></td>
+<td>For each plot feature, a corresponding legend name can be specified. Eliminates the need to duplicate <code>par</code> arguments.</td>
 </tr>
 <tr class="odd">
-<td align="left"><a href="#limits">Automatic limits</a></td>
-<td align="left">Automatically regenerate limits of plot when new features are added.</td>
+<td><a href="#limits">Automatic limits</a></td>
+<td>Automatically regenerate limits of plot when new features are added.</td>
 </tr>
 <tr class="even">
-<td align="left"><a href="#error">Error bars</a></td>
-<td align="left">Apply error bars to points by specifying the upper and lower offsets.</td>
+<td><a href="#error">Error bars</a></td>
+<td>Apply error bars to points by specifying the upper and lower offsets.</td>
 </tr>
 <tr class="odd">
-<td align="left"><a href="#callouts">Callouts</a></td>
-<td align="left">Add a line and label in one call.</td>
+<td><a href="#callouts">Callouts</a></td>
+<td>Add a line and label in one call.</td>
 </tr>
 <tr class="even">
-<td align="left"><a href="#reverse">Axes reversal</a></td>
-<td align="left">Reverse the axis by specifying one argument to <code>axis()</code>.</td>
+<td><a href="#reverse">Axes reversal</a></td>
+<td>Reverse the axis by specifying one argument to <code>axis()</code>.</td>
 </tr>
 <tr class="odd">
-<td align="left"><a href="#embed">Embedded functions</a></td>
-<td align="left">Add extra plot features within a points call (no duplication of x/y values)</td>
+<td><a href="#embed">Embedded functions</a></td>
+<td>Add extra plot features within a points call (no duplication of x/y values)</td>
 </tr>
 <tr class="even">
-<td align="left"><a href="#where">Change rendering order</a></td>
-<td align="left">Manipulate what order plot features are rendered by specifying the argument <code>where</code></td>
+<td><a href="#where">Change rendering order</a></td>
+<td>Manipulate what order plot features are rendered by specifying the argument <code>where</code></td>
 </tr>
 <tr class="odd">
-<td align="left"><a href="#base">Compatibility with base</a></td>
-<td align="left">Can start a plot using <code>gsplot</code>, and add base R features afterwards.</td>
+<td><a href="#base">Compatibility with base</a></td>
+<td>Can start a plot using <code>gsplot</code>, and add base R features afterwards.</td>
 </tr>
 </tbody>
 </table>
