@@ -30,7 +30,7 @@ remove_field <- function(list, param){
 
 strip_pts <- function(list, param){
   out <- c()
-  out.class <- 'numeric'
+  # out.class <- 'numeric'
   for (v in param){
     if (v %in% names(list) && !inherits(list[[v]], c('function','formula'))) {
       v.vals <- list[[v]]
@@ -55,7 +55,7 @@ strip_pts <- function(list, param){
     }
     
   }
-  class(out) <- out.class
+  # class(out) <- out.class
   return(out)
 }
 
