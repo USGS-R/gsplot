@@ -8,12 +8,22 @@
 \usage{
 gsplot(x = NULL, ...)
 
-\method{gsplot}{default}(...)
+\method{gsplot}{default}(..., config.file = NA, theme = NA,
+  frame.plot = TRUE)
 
 \method{gsplot}{list}(x)
 }
 \arguments{
 \item{x}{list}
+
+\item{config.file}{path to the file that will only be used for setting 
+par in this one gsplot object. If NA (default), par is set by the global options set by
+loadConfig().}
+
+\item{theme}{path to the file that will only be used for setting 
+the gsplot theme in this one gsplot object. If NA (default), there is no theme.}
+
+\item{frame.plot}{a logical indicating whether a box should be drawn around the plot.}
 
 \item{\dots}{Further graphical parameters may also be supplied as arguments. See 'Details'.}
 }

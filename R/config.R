@@ -22,7 +22,8 @@ loadConfig = function(filename) {
   }
 
   graphTemplate <- yaml.load_file(filename)
-  if(.Device != "null device"){
+
+  if(!(.Device %in% c("null device","png"))){
     dev.off()
   }
   
