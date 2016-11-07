@@ -208,7 +208,10 @@ set_side_lim <- function(args, side, side.num){
   if(any(free.lim)){
     side.vals <- strip_pts(args, include)
     if (any(!is.na(side.vals))){
-      data.range <- range(c(side.vals[is.finite(side.vals)], side$lim), na.rm = TRUE)
+      data.range <- range(append_keepTZ(base.vals=side.vals[is.finite(side.vals)], 
+                                        append.vals=side$lim, 
+                                        tz=attr(side.vals, 'tzone')), 
+                          na.rm = TRUE)
       data.range[!free.lim] <- side$lim[!free.lim]
       side$lim <- data.range
     }
