@@ -7,7 +7,7 @@
 add_new_par <- function(object, field){
   defaults <- list(c())
   if (field == 'global'){
-    defaults <- config('par')
+    defaults <- config('par', custom.config = object[["global"]][["config"]][["config.file"]])
   }
   if ('par' %in% names(object[[field]]))
     stop('par in ', field, ' already exists, cannot add it.', call. = FALSE)

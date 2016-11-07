@@ -23,6 +23,7 @@
 #' gs2
 par <- function(object, ...) {
   override("graphics", "par", object, ...)
+  gsconfig$original.par <- par(no.readonly = TRUE)
 }
 
 
@@ -37,3 +38,4 @@ par.gsplot <- function(object, ...){
   object <- modify_global_par(object, arguments)
   return(object)
 }
+

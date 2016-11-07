@@ -57,7 +57,7 @@ draw_custom_grid <- function(object, view.name){
    
   view.name <- names(object[view.name])
   
-  grid.args <- set_args("grid", object[[view.name]][['grid']], package = "graphics")
+  grid.args <- set_args("grid", object[[view.name]][['grid']],custom.config =  object[["global"]][["config"]][["config.file"]], package = "graphics")
   
   if (is.null(grid.args$nx)){
     x.side <- as.x_side_name(view.name)

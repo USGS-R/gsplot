@@ -9,6 +9,7 @@ output:
 
 ```{r global_options, include=FALSE}
 knitr::opts_chunk$set(fig.width=6, fig.height=6,
+                      echo=TRUE,
                       warning=FALSE, message=FALSE)
 ```
 

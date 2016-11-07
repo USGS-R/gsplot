@@ -30,3 +30,27 @@ test_that("formals are correctly retrieved", {
 test_that("non-existant type hits error", {
   expect_error(config("foo"))
 })
+
+test_that("config temp", {
+  df <- data.frame(x = 1:10, y=1:10, z = seq(2,20,2))
+  
+  gsp <- gsplot(config.file = system.file("extdata", "lineScatter.yaml", package = "gsplot")) %>%
+    lines(df$x, df$y, col="red", legend.name = "points") 
+  expect_true(gsp$global$config$config.file)
+  
+  gspDef <- gsplot() %>%
+    lines(df$x, df$y, col="red", legend.name = "points") 
+  expect_false(gspDef$global$config$config.file)
+  
+  loadConfig(system.file("extdata", "lineScatter.yaml", package = "gsplot"))
+  gsp <- gsplot() %>%
+    lines(df$x, df$y, col="red", legend.name = "points") 
+  expect_false(gsp$global$config$config.file)
+  expect_equal(gsp$side.1$axis$lwd, 0.8)
+  
+  loadConfig()
+  gspDef2 <- gsplot() %>%
+    lines(df$x, df$y, col="red", legend.name = "points") 
+  expect_false(gspDef2$global$config$config.file)
+  expect_null(gspDef2$side.1$axis$lwd)
+})

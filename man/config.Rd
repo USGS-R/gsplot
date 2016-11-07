@@ -4,7 +4,7 @@
 \alias{config}
 \title{Get configuration for gsplot}
 \usage{
-config(type, ..., persist = FALSE)
+config(type, ..., persist = FALSE, custom.config = FALSE)
 }
 \arguments{
 \item{type}{string of gsplot config object to retrieve}
@@ -12,6 +12,8 @@ config(type, ..., persist = FALSE)
 \item{...}{additional configuration to override what is pulled from config}
 
 \item{persist}{logical of whether to persist overrides to config}
+
+\item{custom.config}{logical of whether to use default global (FALSE) or a config set for only one gsplot object}
 }
 \description{
 Gets config for gsplot, mostly used internally
