@@ -23,7 +23,6 @@
 #' gs2
 par <- function(object, ...) {
   override("graphics", "par", object, ...)
-  gsconfig$original.par <- par(no.readonly = TRUE)
 }
 
 
