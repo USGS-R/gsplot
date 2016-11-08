@@ -51,4 +51,7 @@ gs <- gsplot() \%>\%
      axis(side=2, reverse=TRUE) 
 gs
 }
+\seealso{
+\code{\link[graphics]{grid}}
+}
 

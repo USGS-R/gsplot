@@ -14,6 +14,7 @@
 #' @param object gsplot object
 #' @param \dots Further graphical parameters may also be supplied as arguments. See 'Details'.
 #'  
+#' @seealso \code{\link[graphics]{title}}
 #' @export
 #' @examples
 #' gs <- gsplot() %>%

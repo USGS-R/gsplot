@@ -47,4 +47,7 @@ gs <- gsplot() \%>\%
 gs
 
 }
+\seealso{
+\code{\link[graphics]{text}}
+}
 

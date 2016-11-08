@@ -12,6 +12,7 @@
 #'  }
 #'    
 #' @rdname axis
+#' @seealso \code{\link[graphics]{axis}}
 #' @export
 #' @examples
 #' gs <- gsplot() %>%

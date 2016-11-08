@@ -21,6 +21,7 @@
 #'  }
 #'    
 #' @rdname rect
+#' @seealso \code{\link[graphics]{rect}}
 #' @export
 #' @examples
 #' gs <- gsplot() %>%

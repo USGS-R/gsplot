@@ -32,4 +32,7 @@ gsNew <- abline(gsNew, b=1, a=0, legend.name="1:1")
 gsNew <- legend(gsNew, location="topleft",title="Awesome!")
 gsNew
 }
+\seealso{
+\code{\link[graphics]{abline}}
+}
 

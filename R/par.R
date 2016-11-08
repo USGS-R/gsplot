@@ -8,7 +8,7 @@
 #' @param object gsplot object
 #' @param \dots Further graphical parameters may also be supplied as arguments. See \code{\link[graphics]{par}}
 #' 
-#' 
+#' @seealso \code{\link[graphics]{par}}
 #' @export
 #' @examples
 #' gs2 <- gsplot(new=TRUE,mar=c(5,4,1,2)) %>%

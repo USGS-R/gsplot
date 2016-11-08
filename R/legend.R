@@ -22,6 +22,7 @@
 #' density, pt.bg, pt.cex, pt.lwd, text.col, text.font}
 #'  
 #' @export
+#' @seealso \code{\link[graphics]{legend}}
 #' @importFrom graphics par
 #' @examples
 #' 

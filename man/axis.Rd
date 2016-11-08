@@ -68,4 +68,7 @@ usrDef <- gsplot(mar=c(4,4,4,4)) \%>\%
   points(x=3:10,y=4:11, side=c(1,2), log='y')
 usrDef
 }
+\seealso{
+\code{\link[graphics]{axis}}
+}
 

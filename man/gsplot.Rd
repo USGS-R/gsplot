@@ -8,16 +8,19 @@
 \usage{
 gsplot(x = NULL, ...)
 
-\method{gsplot}{default}(..., config.file = NA, theme = NA)
+\method{gsplot}{default}(..., config.file = NA, theme = NA,
+  frame.plot = TRUE)
 
 \method{gsplot}{list}(x)
 }
 \arguments{
 \item{x}{list}
 
-\item{config.file}{path to config yaml for individual gsplot object}
+\item{config.file}{path to config yaml for individual gsplot object. Default is \code{NA} and means config options are taken from options.}
 
-\item{theme}{path to theme}
+\item{theme}{path to theme for individual gsplot object. Default is \code{NA} and means no theme.}
+
+\item{frame.plot}{logical. Defaults to \code{TRUE}}
 
 \item{\dots}{Further graphical parameters may also be supplied as arguments. See 'Details'.}
 }

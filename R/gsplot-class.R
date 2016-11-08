@@ -4,8 +4,9 @@
 #'
 #' @param x list
 #' @param \dots Further graphical parameters may also be supplied as arguments. See 'Details'.
-#' @param config.file path to config yaml for individual gsplot object
-#' @param theme path to theme
+#' @param config.file path to config yaml for individual gsplot object. Default is \code{NA} and means config options are taken from options.
+#' @param theme path to theme for individual gsplot object. Default is \code{NA} and means no theme.
+#' @param frame.plot logical. Defaults to \code{TRUE}
 #' @return gsplot 
 #' @export
 #' @rdname gsplot
@@ -15,9 +16,10 @@ gsplot <- function(x = NULL, ...) UseMethod("gsplot")
 
 #' @rdname gsplot
 #' @export
-gsplot.default <- function(...,config.file=NA, theme=NA) {
-  object <- gsplot(list(global=list('config'=list(frame.plot=TRUE, 
-                                                  config.file=!is.na(config.file)))))
+gsplot.default <- function(...,config.file=NA, theme=NA, frame.plot=TRUE) {
+  object <- gsplot(list(global=list('config'=list(frame.plot=frame.plot, 
+                                                  config.file=!is.na(config.file),
+                                                  theme=!is.na(theme)))))
 
   if (!is.na(config.file)){
     load_temp_config(config.file)

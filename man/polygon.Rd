@@ -40,4 +40,7 @@ gs <- gsplot() \%>\%
            density=NA, col="blue", border=NA) 
 gs
 }
+\seealso{
+\code{\link[graphics]{polygon}}
+}
 

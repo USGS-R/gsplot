@@ -6,6 +6,7 @@
 #' @param \dots Further graphical parameters may also be supplied as arguments
 #' 
 #' @export
+#' @seealso \code{\link[graphics]{grid}}
 #' @examples
 #' gs <- gsplot()
 #' gsNew <- points(gs, y=1, x=2, xlim=c(0,NA),ylim=c(0,NA),

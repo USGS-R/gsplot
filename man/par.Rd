@@ -29,4 +29,7 @@ gs2 <- gsplot(new=TRUE, cex=1.2) \%>\%
   par(new=FALSE, mar=c(5,4,3,3), cex=2.1) 
 gs2
 }
+\seealso{
+\code{\link[graphics]{par}}
+}
 
