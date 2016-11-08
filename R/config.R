@@ -105,13 +105,13 @@ config <- function(type, ..., persist=FALSE, custom.config = FALSE){
     globalConfig <- append(globalConfig, list(...))
   }
   
-  # if (persist){
-  #   if (type == "par"){
-  #     gsconfig$options[names(globalConfig)] <- globalConfig 
-  #   } else {
-  #     gsconfig$options[[type]] <- globalConfig
-  #   }
-  # }
+  if (persist){
+    if (type == "par"){
+      gsconfig$options[names(globalConfig)] <- globalConfig
+    } else {
+      gsconfig$options[[type]] <- globalConfig
+    }
+  }
   
   return(globalConfig)
 }
