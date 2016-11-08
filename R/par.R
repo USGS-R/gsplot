@@ -38,3 +38,7 @@ par.gsplot <- function(object, ...){
   return(object)
 }
 
+par.list <- function(...){
+  graphics::par(...)
+  gsconfig$original.par <- par(no.readonly = TRUE)
+}
