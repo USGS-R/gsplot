@@ -46,8 +46,6 @@ loadConfig = function(filename) {
 #' @importFrom grDevices dev.off
 load_temp_config = function(filename) {
   
-  gsconfig$original.par <- par(no.readonly = TRUE)
-  
   graphTemplate <- yaml.load_file(filename)
 
   if(length(all.equal(gsconfig$original.par, par(no.readonly = TRUE))) > 1){
@@ -107,13 +105,13 @@ config <- function(type, ..., persist=FALSE, custom.config = FALSE){
     globalConfig <- append(globalConfig, list(...))
   }
   
-  if (persist){
-    if (type == "par"){
-      gsconfig$options[names(globalConfig)] <- globalConfig 
-    } else {
-      gsconfig$options[[type]] <- globalConfig
-    }
-  }
+  # if (persist){
+  #   if (type == "par"){
+  #     gsconfig$options[names(globalConfig)] <- globalConfig 
+  #   } else {
+  #     gsconfig$options[[type]] <- globalConfig
+  #   }
+  # }
   
   return(globalConfig)
 }
