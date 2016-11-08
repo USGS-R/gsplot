@@ -16,13 +16,14 @@ gsplot(x = NULL, ...)
 \arguments{
 \item{x}{list}
 
-\item{config.file}{path to config yaml for individual gsplot object. Default is \code{NA} and means config options are taken from options.}
+\item{config.file}{path to the file that will only be used for setting 
+par in this one gsplot object. If \code{NA} (default), par is set by the global options set by
+loadConfig().}
 
-\item{theme}{path to theme for individual gsplot object. Default is \code{NA} and means no theme.}
+\item{theme}{path to the file that will only be used for setting 
+the gsplot theme in this one gsplot object. If \code{NA} (default), there is no theme.}
 
-\item{frame.plot}{logical. Defaults to \code{TRUE}}
-
-\item{frame.plot}{a logical indicating whether a box should be drawn around the plot.}
+\item{frame.plot}{a logical indicating whether a box should be drawn around the plot. Default is \code{TRUE}.}
 
 \item{\dots}{Further graphical parameters may also be supplied as arguments. See 'Details'.}
 }
