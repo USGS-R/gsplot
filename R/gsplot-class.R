@@ -4,15 +4,12 @@
 #'
 #' @param x list
 #' @param config.file path to the file that will only be used for setting 
-#' par in this one gsplot object. If NA (default), par is set by the global options set by
+#' par in this one gsplot object. If \code{NA} (default), par is set by the global options set by
 #' loadConfig().
 #' @param theme path to the file that will only be used for setting 
-#' the gsplot theme in this one gsplot object. If NA (default), there is no theme.
-#' @param frame.plot a logical indicating whether a box should be drawn around the plot.
+#' the gsplot theme in this one gsplot object. If \code{NA} (default), there is no theme.
+#' @param frame.plot a logical indicating whether a box should be drawn around the plot. Default is \code{TRUE}.
 #' @param \dots Further graphical parameters may also be supplied as arguments. See 'Details'.
-#' @param config.file path to config yaml for individual gsplot object. Default is \code{NA} and means config options are taken from options.
-#' @param theme path to theme for individual gsplot object. Default is \code{NA} and means no theme.
-#' @param frame.plot logical. Defaults to \code{TRUE}
 #' @return gsplot 
 #' @export
 #' @rdname gsplot
