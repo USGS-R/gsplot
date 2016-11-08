@@ -29,9 +29,16 @@ test_that("graphics par behaves as expected",{
   expect_equal(gsplot::par("usr","mar"), graphics::par("usr","mar"))
 })
 
+<<<<<<< HEAD
 test_that("No frame plot", {
   gs <- gsplot(frame.plot=FALSE) %>%
     points(3,2,cex=2)
   expect_false(gs[['global']][['config']][['frame.plot']])
   
+=======
+test_that("No frame plot",{
+  gs <- gsplot(frame.plot=FALSE) %>% 
+    points(3,2,cex=2)
+  expect_false(gs[['global']][['config']][['frame.plot']])
+>>>>>>> f1ff94522e97ba90cbbb386f503721ade9c063fa
 })

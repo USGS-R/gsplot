@@ -22,6 +22,8 @@ gsplot(x = NULL, ...)
 
 \item{frame.plot}{logical. Defaults to \code{TRUE}}
 
+\item{frame.plot}{a logical indicating whether a box should be drawn around the plot.}
+
 \item{\dots}{Further graphical parameters may also be supplied as arguments. See 'Details'.}
 }
 \value{
