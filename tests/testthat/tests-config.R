@@ -40,7 +40,7 @@ test_that("config temp", {
     legend()
   expect_true(gsp$global$config$config.file)
   expect_equal(par(no.readonly = TRUE)$lwd, orig.par$lwd)
-  gsp
+  print(gsp)
   expect_equal(par(no.readonly = TRUE)$lwd, 0.8)
   
   gspDef <- gsplot() %>%
@@ -56,7 +56,7 @@ test_that("config temp", {
   expect_equal(par(no.readonly = TRUE)$lwd, orig.par$lwd)
   expect_false(gsp$global$config$config.file)
   expect_equal(gsp$side.1$axis$lwd, 0.8)
-  gsp
+  print(gsp)
   expect_equal(par(no.readonly = TRUE)$lwd, 0.8)
   
   loadConfig()
