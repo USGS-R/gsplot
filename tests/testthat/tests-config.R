@@ -35,12 +35,15 @@ test_that("config temp", {
   df <- data.frame(x = 1:10, y=1:10, z = seq(2,20,2))
   
   gsp <- gsplot(config.file = system.file("extdata", "lineScatter.yaml", package = "gsplot")) %>%
-    lines(df$x, df$y, col="red", legend.name = "points") 
+    lines(df$x, df$y, col="red", legend.name = "points") %>%
+    legend()
   expect_true(gsp$global$config$config.file)
+  expect_equal(par(no.readonly = TRUE)$lwd, 0.8)
   
   gspDef <- gsplot() %>%
     lines(df$x, df$y, col="red", legend.name = "points") 
   expect_false(gspDef$global$config$config.file)
+  expect_equal(par(no.readonly = TRUE)$lwd, 1)
   
   loadConfig(system.file("extdata", "lineScatter.yaml", package = "gsplot"))
   gsp <- gsplot() %>%
