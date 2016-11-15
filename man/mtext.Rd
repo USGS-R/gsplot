@@ -33,4 +33,7 @@ gsNew <- title(gsNew, main="Great Graph")
 gsNew <- mtext(gsNew, text="More Stuff", side=2, line=3)
 gsNew
 }
+\seealso{
+\code{\link[graphics]{mtext}}
+}
 

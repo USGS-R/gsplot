@@ -16,6 +16,7 @@
 #'  \item{\code{callouts}} {add callouts and text to the defined line, see \code{\link{callouts}} 
 #'  for arguments, must add arguments as a list}
 #' }  
+#' @seealso \code{\link[graphics]{lines}}
 #'    
 #' @examples
 #' gsNew <- gsplot()

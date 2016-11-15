@@ -18,6 +18,7 @@
 #'  \item{\code{legend.name}} {name that appears in the legend, see \code{\link{legend}} for more legend parameters}
 #'  }
 #'    
+#' @seealso \code{\link[graphics]{polygon}}
 #' @rdname polygon
 #' @export
 #' @examples

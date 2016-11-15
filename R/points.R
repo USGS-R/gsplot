@@ -18,7 +18,7 @@
 #' 
 #' @param object gsplot object
 #' @param \dots Further graphical parameters may also be supplied as arguments. See 'Details'.
-#' 
+#' @seealso \code{\link[graphics]{points}}
 #' @examples
 #' gs <- gsplot()
 #' gsNew <- points(gs, y=1, x=2, col="blue", pch=18,frame.plot=FALSE)

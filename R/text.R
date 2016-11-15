@@ -13,6 +13,7 @@
 #' @param \dots Further graphical parameters may also be supplied as arguments. See 'Details'.
 #'  
 #' @export
+#' @seealso \code{\link[graphics]{text}}
 #' @examples
 #' gs <- gsplot()
 #' gsNew <- points(gs, y=1, x=2, col="blue", pch=18, legend.name="Points", xlab="Stuff")

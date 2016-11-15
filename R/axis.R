@@ -12,6 +12,7 @@
 #'  }
 #'    
 #' @rdname axis
+#' @seealso \code{\link[graphics]{axis}}
 #' @export
 #' @examples
 #' gs <- gsplot() %>%
@@ -68,7 +69,8 @@ axis.gsplot <- function(object, ..., n.minor=0, tcl.minor=0.15, reverse=NULL, ap
   
   fun.name <- "axis"
   
-  user_args <- filter_arguments(fun.name = fun.name, ...)$call.args
+  user_args <- filter_arguments(fun.name = fun.name, ..., 
+                                custom.config = object[["global"]][["config"]][["config.file"]])$call.args
   
   sides <- user_args[[fun.name]]$side
   user_args[[fun.name]]$side <- NULL

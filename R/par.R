@@ -8,7 +8,7 @@
 #' @param object gsplot object
 #' @param \dots Further graphical parameters may also be supplied as arguments. See \code{\link[graphics]{par}}
 #' 
-#' 
+#' @seealso \code{\link[graphics]{par}}
 #' @export
 #' @examples
 #' gs2 <- gsplot(new=TRUE,mar=c(5,4,1,2)) %>%
@@ -36,4 +36,9 @@ par.gsplot <- function(object, ...){
   
   object <- modify_global_par(object, arguments)
   return(object)
+}
+
+par.list <- function(...){
+  graphics::par(...)
+  gsconfig$original.par <- par(no.readonly = TRUE)
 }

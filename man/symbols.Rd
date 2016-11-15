@@ -45,4 +45,7 @@ gs <- gsplot() \%>\%
    title(xlab="", ylab="", xlim=c(0,4))
 gs
 }
+\seealso{
+\code{\link[graphics]{symbols}}
+}
 

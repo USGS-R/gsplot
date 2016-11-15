@@ -75,7 +75,9 @@ print.gsplot <- function(x, ...){
     }
     
     if(par('ann')){
-      mtext(text=label(views, side), side=side, line = 2, las=config("mtext")$las)
+      mtext(text=label(views, side), 
+            side=side, line = 2, 
+            las=config("mtext", custom.config = x[["global"]][["config"]][["config.file"]])$las)
     }
     par(old.par)
   }

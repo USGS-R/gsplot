@@ -14,6 +14,7 @@
 #' @param object gsplot object
 #' @param \dots Further graphical parameters may also be supplied as arguments. See 'Details'.
 #'  
+#' @seealso \code{\link[graphics]{title}}
 #' @export
 #' @examples
 #' gs <- gsplot() %>%
@@ -33,7 +34,7 @@ title <- function(object, ...) {
 
 
 title.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
-  to.gsplot <- set_args("title", ..., package = "graphics")
+  to.gsplot <- set_args("title", ..., custom.config = object[["global"]][["config"]][["config.file"]], package = "graphics")
   
   object$global$title <- append_replace(object$global$title, to.gsplot)
   return(object)

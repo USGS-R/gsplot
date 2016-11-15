@@ -46,4 +46,7 @@ gs <- gsplot() \%>\%
        callouts=list(labels=c(NA, "data"), col="blue"))
 gs
 }
+\seealso{
+\code{\link[graphics]{lines}}
+}
 

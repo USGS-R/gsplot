@@ -12,7 +12,7 @@ arrows(object, ...)
 \item{\dots}{Further graphical parameters may also be supplied as arguments. See 'Details'.}
 }
 \description{
-Creates an arrow pointing at a specified plot location.   See \code{\link[graphics]{arrows}} for more details.
+Creates an arrow pointing at a specified plot location. See \code{\link[graphics]{arrows}} for more details.
 }
 \details{
 Often used with \code{\link{text}} to label a feature on the plot. Additional graphical parameter inputs:
@@ -37,5 +37,8 @@ gs <- gsplot() \%>\%
    title("Graphing Fun") \%>\%
    text(.75,1.75,labels="Weird data")
 gs
+}
+\seealso{
+\code{\link[graphics]{arrows}}
 }
 

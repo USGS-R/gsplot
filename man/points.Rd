@@ -50,4 +50,7 @@ gs2
 gs <- points(gsplot(), c(0,3), c(2,4), callouts(labels=c('dogs','cats')))
 gs
 }
+\seealso{
+\code{\link[graphics]{points}}
+}
 

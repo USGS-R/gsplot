@@ -230,7 +230,9 @@ add_new_side <- function(object, side.name){
   if (side.name %in% side_names(object))
     stop(side.name, ' already exists, cannot add it.', call. = FALSE)
   side.template <- list(list(
-    axis = set_args('axis', side=as.side(side.name), package='graphics'), 
+    axis = set_args('axis', side=as.side(side.name), 
+                    custom.config = object[["global"]][["config"]][["config.file"]], 
+                    package='graphics'), 
     lim = c(NA, NA), log=FALSE, label="", axes = TRUE, reverse = FALSE, usr.lim=c(FALSE, FALSE), usr.axes=FALSE))
   
   names(side.template) <- side.name

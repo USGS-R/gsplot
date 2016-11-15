@@ -50,4 +50,7 @@ gs <- gsplot() \%>\%
    legend()
 gs
 }
+\seealso{
+\code{\link[graphics]{rect}}
+}
 

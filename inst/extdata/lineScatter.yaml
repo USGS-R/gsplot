@@ -16,7 +16,6 @@ lines:
   col: "black"
   lty: 1
   lwd: 1
-  labels: FALSE
 abline:
   col: "grey"
   lty: 1
