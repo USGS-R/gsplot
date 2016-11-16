@@ -47,7 +47,7 @@ print.gsplot <- function(x, ...){
   
   view.info <- view_info(views)
   side.names <- side_names(views)
-  
+
   old.par <- par(no.readonly=TRUE)
   
   for (view.name in view_names(views)){
@@ -67,10 +67,12 @@ print.gsplot <- function(x, ...){
   }
   
   view.usr <- par('usr')
-  
+  old.par <- par(no.readonly=TRUE)
   for (side.name in side.names){
     side <- as.side(side.name)
-    old.par <- par(x[[side.name]]$par)
+    browser()
+    # old.par <- par(x[[side.name]]$par)
+    par(x[[side.name]]$par)
     set_frame(views, side)
     if(x[[side.name]][['axes']] | x[[side.name]][['usr.axes']]){
       draw_axis(x, side.name)
@@ -82,6 +84,7 @@ print.gsplot <- function(x, ...){
             las=config("mtext", custom.config = x[["global"]][["config"]][["config.file"]])$las)
     }
     par(old.par)
+    # par(new=TRUE)
   }
   
   par(usr = view.usr)
