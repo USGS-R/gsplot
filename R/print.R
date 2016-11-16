@@ -48,8 +48,9 @@ print.gsplot <- function(x, ...){
   view.info <- view_info(views)
   side.names <- side_names(views)
   
+  old.par <- par(no.readonly=TRUE)
+  
   for (view.name in view_names(views)){
-    par(x$global$par)
     x.side.name <- as.x_side_name(view.name)
     y.side.name <- as.y_side_name(view.name)
     par(x[[x.side.name]]$par)
@@ -61,6 +62,7 @@ print.gsplot <- function(x, ...){
 
     print.view(views[[view.name]])
     
+    par(old.par)
     par(new=TRUE)
   }
   
