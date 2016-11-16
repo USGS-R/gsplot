@@ -6,6 +6,7 @@
 #' @param \dots Further graphical parameters may also be supplied as arguments
 #' 
 #' @export
+#' @seealso \code{\link[graphics]{grid}}
 #' @examples
 #' gs <- gsplot()
 #' gsNew <- points(gs, y=1, x=2, xlim=c(0,NA),ylim=c(0,NA),
@@ -57,7 +58,7 @@ draw_custom_grid <- function(object, view.name){
    
   view.name <- names(object[view.name])
   
-  grid.args <- set_args("grid", object[[view.name]][['grid']], package = "graphics")
+  grid.args <- set_args("grid", object[[view.name]][['grid']],custom.config =  object[["global"]][["config"]][["config.file"]], package = "graphics")
   
   if (is.null(grid.args$nx)){
     x.side <- as.x_side_name(view.name)

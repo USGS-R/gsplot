@@ -37,4 +37,7 @@ gs <- gsplot() \%>\%
       title(main="Great Graph")
 gs
 }
+\seealso{
+\code{\link[graphics]{title}}
+}
 

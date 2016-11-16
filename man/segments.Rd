@@ -34,4 +34,7 @@ gsNew <- grid(gsNew)
 gsNew <- segments(gsNew, x0=2, y0=0.75, y1=1.25)
 gsNew
 }
+\seealso{
+\code{\link[graphics]{segments}}
+}
 

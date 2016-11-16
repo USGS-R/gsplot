@@ -23,6 +23,7 @@
 #'  }
 #'    
 #' @rdname curve
+#' @seealso \code{\link[graphics]{curve}}
 #' @export
 #' @importFrom lazyeval lazy lazy_eval
 #' @examples

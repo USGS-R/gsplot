@@ -63,4 +63,7 @@ gs <- gsplot() \%>\%
        pt.cex = 1:4, title = "Size", col="red")
 gs
 }
+\seealso{
+\code{\link[graphics]{legend}}
+}
 

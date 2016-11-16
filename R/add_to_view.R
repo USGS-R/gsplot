@@ -57,6 +57,7 @@ add_to_view <- function(object, call.args, side, where){
 #' @param fun.name the name of the rendering function
 #' @param \dots arguments to \code{fun.name} or an embedded function 
 #' within it. 
+#' @param custom.config logical to use custom or global config file
 #' @return list with arguments. List is named according to function 
 #' names. 
 #' @examples 
@@ -70,14 +71,14 @@ add_to_view <- function(object, call.args, side, where){
 #' gsplot:::filter_arguments('points', x=1:5, y=1:5, xlim=c(0,10), ylim=c(0,10), 
 #'                callouts(labels=c(rep(NA, 4), "oh")))$extracted.args
 #' @keywords internal
-filter_arguments <- function(fun.name, ...){
+filter_arguments <- function(fun.name, ..., custom.config = FALSE){
   dots <- separate_args(...)
   
   standard.eval.args <- standard_eval_arguments(dots$args)
   if (is.null(fun.name)){
     function.args <- NULL
   } else {
-    function.args <- function_call_args(fun.name, standard.eval.args)
+    function.args <- function_call_args(fun.name, standard.eval.args, custom.config = custom.config)
   }
   
   option.args <- standard.eval.args[!names(standard.eval.args) %in% c("", names(function.args[[1]]))]
@@ -101,14 +102,16 @@ standard_eval_arguments <- function(.dots){
 #' get the arguments that go into the function call, stripping out others and adding config defaults
 #' 
 #' @param fun.name the name of the rendering function
+#' @param custom.config logical whether or not to use custom.config or global config defaults
 #' @param .dots lazy_dots arguments
 #' @keywords internal
-function_call_args <- function(fun.name, all.args){
+function_call_args <- function(fun.name, all.args, custom.config=FALSE){
 
   fun.defaults <- function_defaults(fun.name)
 
-  args <- set_args(fun.name, all.args, package=fun.defaults$package)
-  call.args <- list(formal_arguments(args, fun.defaults$def.funs, keep.names = names(config(fun.name))))
+  args <- set_args(fun.name, all.args, custom.config = custom.config, package=fun.defaults$package)
+  call.args <- list(formal_arguments(args, fun.defaults$def.funs, 
+                                     keep.names = names(config(fun.name, custom.config = custom.config))))
   names(call.args) <- fun.name
   return(call.args)
 }

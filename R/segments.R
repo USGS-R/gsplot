@@ -9,6 +9,7 @@
 #'  \item{\code{col, lty, lwd}} {parameters describing the color, type, and width of the segment, respectively}
 #'  \item{\code{legend.name}} {name that appears in the legend, see \code{\link{legend}} for more legend parameters}
 #' }
+#' @seealso \code{\link[graphics]{segments}}
 #' 
 #' @param object gsplot object
 #' @param \dots Further graphical parameters may also be supplied as arguments. See 'Details'.

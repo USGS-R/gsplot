@@ -13,6 +13,7 @@
 #' }
 #'    
 #' @export
+#' @seealso \code{\link[graphics]{mtext}}
 #' @examples
 #' gs <- gsplot()
 #' gsNew <- points(gs, y=1, x=2, col="blue", pch=18, legend.name="Points")

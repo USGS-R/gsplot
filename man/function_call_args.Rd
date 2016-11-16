@@ -4,10 +4,12 @@
 \alias{function_call_args}
 \title{get the arguments that go into the function call, stripping out others and adding config defaults}
 \usage{
-function_call_args(fun.name, all.args)
+function_call_args(fun.name, all.args, custom.config = FALSE)
 }
 \arguments{
 \item{fun.name}{the name of the rendering function}
+
+\item{custom.config}{logical whether or not to use custom.config or global config defaults}
 
 \item{.dots}{lazy_dots arguments}
 }

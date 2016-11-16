@@ -20,6 +20,7 @@
 #'  }
 #'    
 #' @rdname symbols
+#' @seealso \code{\link[graphics]{symbols}}
 #' @export
 #' @examples
 #' 

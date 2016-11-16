@@ -1,4 +1,7 @@
 gsconfig <- new.env(parent = emptyenv())
+gsconfig$original.par <- par(no.readonly = TRUE)
+
+#Question...how can I update the user's par?
 
 #' @title Load gsplot config
 #'
@@ -22,13 +25,34 @@ loadConfig = function(filename) {
   }
 
   graphTemplate <- yaml.load_file(filename)
-  if(.Device != "null device"){
-    dev.off()
+
+  if(length(all.equal(gsconfig$original.par, par(no.readonly = TRUE))) > 1){
+    par(gsconfig$original.par)
   }
-  
   gsconfig$options <- graphTemplate
 }
 
+#' @title Load gsplot temporary config
+#'
+#' @description Loads the config file into options which are
+#'used elsewhere in the application. This will only change the config paremeters while
+#'building up the gsplot object, not on print.
+#'
+#' @param filename string to custom file 
+#'
+#' @importFrom graphics plot.xy
+#' @importFrom graphics par
+#' @importFrom yaml yaml.load_file
+#' @importFrom grDevices dev.off
+load_temp_config = function(filename) {
+  
+  graphTemplate <- yaml.load_file(filename)
+
+  if(length(all.equal(gsconfig$original.par, par(no.readonly = TRUE))) > 1){
+    par(gsconfig$original.par)
+  }
+  gsconfig$temp.config <- graphTemplate
+}
 
 
 #' @title Get configuration for gsplot
@@ -39,6 +63,7 @@ loadConfig = function(filename) {
 #' @param type string of gsplot config object to retrieve
 #' @param ... additional configuration to override what is pulled from config
 #' @param persist logical of whether to persist overrides to config
+#' @param custom.config logical of whether to use default global (FALSE) or a config set for only one gsplot object 
 #'
 #' @examples
 #' config("par")
@@ -46,7 +71,7 @@ loadConfig = function(filename) {
 #' @importFrom graphics plot.xy
 #' @importFrom graphics par
 #' @export
-config <- function(type, ..., persist=FALSE){
+config <- function(type, ..., persist=FALSE, custom.config = FALSE){
   allowedTypes <- names(pkg.env$fun.details)
   
   type <- match.arg(type, choices = allowedTypes)
@@ -55,7 +80,11 @@ config <- function(type, ..., persist=FALSE){
     loadConfig()
   }
   
-  config_list <- gsconfig$options
+  if(custom.config){
+    config_list <- gsconfig$temp.config
+  } else {
+    config_list <- gsconfig$options
+  }
   
   globalConfig <- config_list[!(names(config_list) %in% allowedTypes[allowedTypes != "par"])]
 
@@ -78,7 +107,7 @@ config <- function(type, ..., persist=FALSE){
   
   if (persist){
     if (type == "par"){
-      gsconfig$options[names(globalConfig)] <- globalConfig 
+      gsconfig$options[names(globalConfig)] <- globalConfig
     } else {
       gsconfig$options[[type]] <- globalConfig
     }
