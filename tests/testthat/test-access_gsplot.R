@@ -141,3 +141,16 @@ test_that("summary ",{
     points(x=3:10,y=4:11, side=c(1,2), log='xy')
   expect_output(summary(usrDef),regexp = "2 views:")
 })
+
+test_that("users can access metadata", {
+  gs <- gsplot()
+  expect_equal(whatDate(gs), Sys.Date())
+  
+  old.version <- "0.5.2"
+  gs2 <- gsplot(gsplot.version=old.version)
+  expect_equal(whatVersion(gs2), old.version)
+  
+  old.date <- as.Date("2010-10-21")
+  gs3 <- gsplot(created=old.date)
+  expect_equal(whatDate(gs3), old.date)
+})
