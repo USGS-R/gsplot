@@ -3,6 +3,10 @@
 #' Used to change the class of inputs to "gsplot".
 #'
 #' @param x list
+#' @param created vector of length one giving the date the gsplot object was created. Defaults to 
+#' using \code{Sys.Date()}. Output class matches that of the input.
+#' @param gsplot.version vector of length one giving the version of the gsplot package used to create the
+#' object. Defaults to calling \code{packageDescription()}. Output class matches that of the input.
 #' @param config.file path to the file that will only be used for setting 
 #' par in this one gsplot object. If \code{NA} (default), par is set by the global options set by
 #' loadConfig().
@@ -19,8 +23,12 @@ gsplot <- function(x = NULL, ...) UseMethod("gsplot")
 
 #' @rdname gsplot
 #' @export
-gsplot.default <- function(...,config.file=NA, theme=NA, frame.plot=TRUE) {
-  object <- gsplot(list(global=list('config'=list(frame.plot=frame.plot, 
+gsplot.default <- function(..., created=Sys.Date(), 
+                           gsplot.version=packageDescription("gsplot", fields = "Version"),
+                           config.file=NA, theme=NA, frame.plot=TRUE) {
+  object <- gsplot(list(metadata=list(created=created,
+                                      gsplot.version=gsplot.version),
+                        global=list('config'=list(frame.plot=frame.plot, 
                                                   config.file=!is.na(config.file),
                                                   theme=!is.na(theme)))))
 
