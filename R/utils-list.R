@@ -34,6 +34,9 @@ strip_pts <- function(list, param){
   for (v in param){
     if (v %in% names(list) && !inherits(list[[v]], c('function','formula'))) {
       v.vals <- list[[v]]
+      if(is.list(v.vals)){
+        v.vals <- strip_pts(v.vals, param)
+      }
       out <- append_keepTZ(out, v.vals, tz=attr(v.vals, 'tzone'))
       all.na <- all(is.na(v.vals))
       out.class <- ifelse(!all.na, class(v.vals), out.class)
@@ -43,7 +46,7 @@ strip_pts <- function(list, param){
     } else {
       if (any(sapply(list, is.list))){
         u.list <- unname_c(list[sapply(list, is.list)])
-        if(v %in% names(u.list)) {
+        if(v %in% names(u.list) && !inherits(u.list[[v]], c('function','formula'))) {
           v.vals <- u.list[[v]]
           out <- append_keepTZ(out, v.vals, tz=attr(v.vals, 'tzone'))
           all.na <- all(is.na(v.vals))
