@@ -24,7 +24,8 @@ gsplot <- function(x = NULL, ...) UseMethod("gsplot")
 #' @rdname gsplot
 #' @export
 gsplot.default <- function(..., created=Sys.Date(), 
-                           gsplot.version=packageDescription("gsplot", fields = "Version"),
+                           gsplot.version=packageDescription(getPackageName(), 
+                                                             fields = "Version"),
                            config.file=NA, theme=NA, frame.plot=TRUE) {
   object <- gsplot(list(metadata=list(created=created,
                                       gsplot.version=gsplot.version),
