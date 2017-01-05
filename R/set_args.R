@@ -14,14 +14,6 @@ set_args <- function(fun.name, ..., custom.config = FALSE, package='graphics'){
   config_args <- config(fun.name, custom.config = custom.config)
   user_args <- function_args(name=fun.name, package=package, ...)
   
-  if(fun.name %in% c('points', 'lines')){
-    if(!is.null(user_args[['x']]) & is.null(user_args[['y']])){
-      xy_args <- list(x = seq_along(user_args[['x']]),
-                      y = user_args[['x']])
-      user_args <- append_replace(user_args, xy_args)
-    }
-  }
-  
   indicesToAdd <- !(names(config_args) %in% names(user_args))
   arguments <- append(user_args, config_args[indicesToAdd])
   return(arguments)
