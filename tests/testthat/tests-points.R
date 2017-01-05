@@ -15,7 +15,7 @@ test_that("graphics examples work", {
 
 context("points arguments")
 test_that("setting params works as expected",{
-  expect_equal(gsplot:::function_args("graphics","points", 5, y = NULL), list(x=5, y=NULL))
+  expect_equal(gsplot:::function_args("graphics","points", 5, y = NULL), list(x=1, y=5))
   expect_equal(gsplot:::function_args("graphics","points", y=5, x=0), list(x=0, y=5))
 })
 
