@@ -45,6 +45,13 @@ function_args <- function(package, name, object, ..., use.default=paste0(name,'.
     names(params)[which(names(params) == "")] <- arg.names[seq_len(sum(names(params) == ""))]
   }
   
+  if(name %in% c('points', 'lines')){
+    if(!is.null(params[['x']]) & is.null(params[['y']])){
+      xy_args <- list(x = seq_along(params[['x']]),
+                      y = params[['x']])
+      params <- append_replace(params, xy_args)
+    }
+  }
   
   # // re-order
   sort.i <- seq_len(length(params))
