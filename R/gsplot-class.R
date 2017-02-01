@@ -21,6 +21,12 @@
 #' @importFrom utils packageDescription
 #' @examples
 #' gsplot() 
+#' gsplot(theme = theme.hadley)
+#' 
+#' gs <- gsplot(theme = theme.hadley) %>%
+#'         points(1:10, 1:10, xlab="Index")
+#' gs
+#' 
 gsplot <- function(x = NULL, ...) UseMethod("gsplot")
 
 #' @rdname gsplot
@@ -29,11 +35,27 @@ gsplot.default <- function(..., created=Sys.Date(),
                            gsplot.version=packageDescription(getPackageName(), 
                                                              fields = "Version"),
                            config.file=NA, theme=NA, frame.plot=TRUE) {
-  object <- gsplot(list(metadata=list(created=created,
-                                      gsplot.version=gsplot.version),
-                        global=list('config'=list(frame.plot=frame.plot, 
-                                                  config.file=!is.na(config.file),
-                                                  theme=!is.na(theme)))))
+  
+  if(!all(is.na(theme))){
+
+    if(!all(is.na(config.file))){
+      config.file <- theme$global$config.file
+    }
+    
+    object <- gsplot(c(list(metadata=list(created=created,
+                                        gsplot.version=gsplot.version),
+                            global=c(list('config'=list(frame.plot=theme[["global"]][["config"]][["frame.plot"]], #this means you can't override the theme's frame.plot. You could use box() later though
+                                                    config.file=!is.na(config.file))),
+                                      theme[["global"]][names(theme[["global"]])[names(theme[["global"]]) != "config"]])),
+                            theme[names(theme)[!(names(theme) %in% c("metadata","global"))]]
+                          )
+                     )
+  } else {
+    object <- gsplot(list(metadata=list(created=created,
+                                        gsplot.version=gsplot.version),
+                          global=list('config'=list(frame.plot=frame.plot, 
+                                                    config.file=!is.na(config.file)))))    
+  }
 
   if (!is.na(config.file)){
     load_temp_config(config.file)
@@ -43,7 +65,9 @@ gsplot.default <- function(..., created=Sys.Date(),
     par(gsconfig$original.par)
   }
   
-  object <- add_new_par(object, 'global')
+  if(is.null(object[["global"]][["config"]]["par"])){
+    object <- add_new_par(object, 'global')
+  }
   
   if(length(list(...)) > 0){
     object <- par(object, ...)
