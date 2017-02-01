@@ -17,6 +17,8 @@
 #' @return gsplot 
 #' @export
 #' @rdname gsplot
+#' @importFrom methods getPackageName
+#' @importFrom utils packageDescription
 #' @examples
 #' gsplot() 
 gsplot <- function(x = NULL, ...) UseMethod("gsplot")
