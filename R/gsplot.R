@@ -76,6 +76,7 @@ NULL
 #'  \item{theme.hadley}{Used to look like a default ggplot2 graph}
 #'}
 #'
+#'@aliases theme.hadley
 #'@name Themes
 #'@docType data
 #'@export theme.hadley

@@ -3,6 +3,7 @@
 \docType{data}
 \name{Themes}
 \alias{Themes}
+\alias{theme.hadley}
 \title{Built-in themes 
  
 \itemize{
