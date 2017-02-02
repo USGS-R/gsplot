@@ -17,8 +17,21 @@
 #' @return gsplot 
 #' @export
 #' @rdname gsplot
+#' @importFrom methods getPackageName
+#' @importFrom utils packageDescription
 #' @examples
 #' gsplot() 
+#' gsplot(theme = theme.hadley)
+#' gs_config <- gsplot(config.file = 
+#' system.file("extdata", "lineScatter.yaml", package = "gsplot")) %>%
+#' lines(1:10, 1:10)
+#' 
+#' gs_config
+#' 
+#' gs <- gsplot(theme = theme.hadley) %>%
+#'         points(1:10, 1:10, xlab="Index")
+#' gs
+#' 
 gsplot <- function(x = NULL, ...) UseMethod("gsplot")
 
 #' @rdname gsplot
@@ -27,22 +40,46 @@ gsplot.default <- function(..., created=Sys.Date(),
                            gsplot.version=packageDescription(getPackageName(), 
                                                              fields = "Version"),
                            config.file=NA, theme=NA, frame.plot=TRUE) {
-  object <- gsplot(list(metadata=list(created=created,
-                                      gsplot.version=gsplot.version),
-                        global=list('config'=list(frame.plot=frame.plot, 
-                                                  config.file=!is.na(config.file),
-                                                  theme=!is.na(theme)))))
+  
+  user.config <- config.file
+  
+  if(!all(is.na(theme))){
+    object <- theme
+    
+    if("metadata" %in% names(object)){
+      object <- object[-which(names(object) == "metadata")]
+    }
+    
+    if(is.na(config.file) && 
+       "config.file" %in% names(theme[["global"]][["config"]])){ #if no config file specified by user
+      config.file <- theme$global$config$config.file
+    }
+    
+    object[["global"]][["config"]]["config.file"] <- config.file
+    
+  } else {
+    object <- list(global= list(config=list(frame.plot=frame.plot,
+                                            config.file = !is.na(config.file))))
+  }
+  
+  object <- c(list(metadata = list(created=created,
+                               gsplot.version=gsplot.version)),
+                 object)
 
-  if (!is.na(config.file)){
+  if (!is.na(user.config)){
     load_temp_config(config.file)
   } 
-  
+
   if(length(all.equal(gsconfig$original.par, par(no.readonly = TRUE))) > 1){
     par(gsconfig$original.par)
   }
   
-  object <- add_new_par(object, 'global')
-  
+  if(!("par" %in% names(object[["global"]]))){
+    object <- add_new_par(object, 'global')
+  } 
+   
+  object <- gsplot(object)
+
   if(length(list(...)) > 0){
     object <- par(object, ...)
   }
