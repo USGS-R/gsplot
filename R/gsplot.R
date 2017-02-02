@@ -70,17 +70,3 @@ NULL
 #' head(MaumeeDV)
 NULL
 
-#' Built-in themes 
-#'  
-#'\itemize{
-#'  \item{theme.hadley}{Used to look like a default ggplot2 graph}
-#'}
-#'
-#'@aliases theme.hadley
-#'@name Themes
-#'@docType data
-#'@export theme.hadley
-#'@keywords datasets
-#'@examples
-#' ggplotTheme <- theme.hadley
-NULL

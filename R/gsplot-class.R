@@ -36,27 +36,32 @@ gsplot.default <- function(..., created=Sys.Date(),
                                                              fields = "Version"),
                            config.file=NA, theme=NA, frame.plot=TRUE) {
   
-  if(!all(is.na(theme))){
-
-    if(!all(is.na(config.file))){
+  object <- theme
+  
+  
+  if("metadata" %in% names(object)){
+    object <- object[-which(names(object) == "metadata")]
+  }
+  
+  object <- c(list(metadata = list(created=created,
+                               gsplot.version=gsplot.version)),
+                 object)
+  
+  if(all(is.na(config.file))){
+    if(!all(is.na(theme)) && !is.null(theme$global$config.file)){
       config.file <- theme$global$config.file
     }
-    
-    object <- gsplot(c(list(metadata=list(created=created,
-                                        gsplot.version=gsplot.version),
-                            global=c(list('config'=list(frame.plot=theme[["global"]][["config"]][["frame.plot"]], #this means you can't override the theme's frame.plot. You could use box() later though
-                                                    config.file=!is.na(config.file))),
-                                      theme[["global"]][names(theme[["global"]])[names(theme[["global"]]) != "config"]])),
-                            theme[names(theme)[!(names(theme) %in% c("metadata","global"))]]
-                          )
-                     )
-  } else {
-    object <- gsplot(list(metadata=list(created=created,
-                                        gsplot.version=gsplot.version),
-                          global=list('config'=list(frame.plot=frame.plot, 
-                                                    config.file=!is.na(config.file)))))    
   }
-
+  
+  if(all(is.na(theme))){
+    object <- c(list(global= list(config=list(frame.plot=frame.plot,
+                                  config.file = !is.na(config.file)))),
+                object)   
+    object <- object[-length(object)]
+  } 
+   
+  object <- gsplot(object)
+  
   if (!is.na(config.file)){
     load_temp_config(config.file)
   } 
