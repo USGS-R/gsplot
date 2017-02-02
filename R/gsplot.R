@@ -22,6 +22,7 @@ pkg.env <- new.env()
     "segments" = c(), "arrows" = c(), "rect" = c(), 
     "polygon" = c(), "symbols" = c(), "curve" = c()
   )
+  
 }
 
 
