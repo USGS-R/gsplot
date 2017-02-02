@@ -18,7 +18,7 @@ pkg.env <- new.env()
       list(package='gsplot', def.funs=gsplot::error_bar.default),
     
     "par" = c(),"axis" = c(), "abline" = c(), "legend" = c(), 
-    "title" = c(), "mtext" = c(), "grid" = c(), 
+    "title" = c(), "mtext" = c(), "grid" = c(), #"box" = c(),
     "segments" = c(), "arrows" = c(), "rect" = c(), 
     "polygon" = c(), "symbols" = c(), "curve" = c()
   )

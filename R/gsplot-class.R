@@ -22,7 +22,11 @@
 #' @examples
 #' gsplot() 
 #' gsplot(theme = theme.hadley)
-#' gsplot(config.file = system.file("extdata", "lineScatter.yaml", package = "gsplot"))
+#' gs_config <- gsplot(config.file = 
+#' system.file("extdata", "lineScatter.yaml", package = "gsplot")) %>%
+#' lines(1:10, 1:10)
+#' 
+#' gs_config
 #' 
 #' gs <- gsplot(theme = theme.hadley) %>%
 #'         points(1:10, 1:10, xlab="Index")
@@ -65,7 +69,7 @@ gsplot.default <- function(..., created=Sys.Date(),
   if (!is.na(user.config)){
     load_temp_config(config.file)
   } 
-  
+
   if(length(all.equal(gsconfig$original.par, par(no.readonly = TRUE))) > 1){
     par(gsconfig$original.par)
   }
