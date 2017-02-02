@@ -22,6 +22,7 @@
 #' @examples
 #' gsplot() 
 #' gsplot(theme = theme.hadley)
+#' gsplot(config.file = system.file("extdata", "lineScatter.yaml", package = "gsplot"))
 #' 
 #' gs <- gsplot(theme = theme.hadley) %>%
 #'         points(1:10, 1:10, xlab="Index")
@@ -36,33 +37,32 @@ gsplot.default <- function(..., created=Sys.Date(),
                                                              fields = "Version"),
                            config.file=NA, theme=NA, frame.plot=TRUE) {
   
-  object <- theme
+  user.config <- config.file
   
-  
-  if("metadata" %in% names(object)){
-    object <- object[-which(names(object) == "metadata")]
+  if(!all(is.na(theme))){
+    object <- theme
+    
+    if("metadata" %in% names(object)){
+      object <- object[-which(names(object) == "metadata")]
+    }
+    
+    if(is.na(config.file) && 
+       "config.file" %in% names(theme[["global"]][["config"]])){ #if no config file specified by user
+      config.file <- theme$global$config$config.file
+    }
+    
+    object[["global"]][["config"]]["config.file"] <- config.file
+    
+  } else {
+    object <- list(global= list(config=list(frame.plot=frame.plot,
+                                            config.file = !is.na(config.file))))
   }
   
   object <- c(list(metadata = list(created=created,
                                gsplot.version=gsplot.version)),
                  object)
-  
-  if(all(is.na(config.file))){
-    if(!all(is.na(theme)) && !is.null(theme$global$config.file)){
-      config.file <- theme$global$config.file
-    }
-  }
-  
-  if(all(is.na(theme))){
-    object <- c(list(global= list(config=list(frame.plot=frame.plot,
-                                  config.file = !is.na(config.file)))),
-                object)   
-    object <- object[-length(object)]
-  } 
-   
-  object <- gsplot(object)
-  
-  if (!is.na(config.file)){
+
+  if (!is.na(user.config)){
     load_temp_config(config.file)
   } 
   
@@ -70,10 +70,12 @@ gsplot.default <- function(..., created=Sys.Date(),
     par(gsconfig$original.par)
   }
   
-  if(is.null(object[["global"]][["config"]]["par"])){
+  if(!("par" %in% names(object[["global"]]))){
     object <- add_new_par(object, 'global')
-  }
-  
+  } 
+   
+  object <- gsplot(object)
+
   if(length(list(...)) > 0){
     object <- par(object, ...)
   }
