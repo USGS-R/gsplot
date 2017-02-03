@@ -1,11 +1,10 @@
 user.par <- names(par(no.readonly=TRUE))
 
 global.only.par <- c("ask", "fig", "fin", "lheight", "mai", "mar", "mex", "mfcol", "mfrow", "mfg",
-                     "new", "oma", "omd", "omi", "pin", "plt", "ps", "pty", "usr", "xlog", "ylog",
-                     "ylbias")
+                     "new", "oma", "omd", "omi", "pin", "plt", "ps", "pty", "usr", "ylbias")
 
-side.par <- c('cex.axis', 'col.axis', 'cex.lab', 'col.lab', 'font.axis', 'mgp', 'xaxp', 'yaxp', 
-              'tck', 'tcl', 'las', 'fg', 'xaxt', 'yaxt', 'adj', 'yaxs', 'xaxs','font.lab', 'ann')
+side.par <- c('cex.axis', 'col.axis', 'cex.lab', 'col.lab', 'font.axis', 'mgp', 'xaxp', 'yaxp', 'tck', 
+              'tcl', 'las', 'fg', 'xaxt', 'yaxt', 'adj', 'yaxs', 'xaxs','font.lab', 'ann', "xlog", "ylog")
 
 view.par <- user.par[!(user.par %in% side.par) & !(user.par %in% global.only.par)]
 
