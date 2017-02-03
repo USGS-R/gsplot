@@ -43,4 +43,3 @@ gs
 \seealso{
 \code{\link[graphics]{polygon}}
 }
-

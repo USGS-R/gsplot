@@ -16,4 +16,3 @@ an character vector of x side names
 take a view name and extract the named x sides
 }
 \keyword{internal}
-

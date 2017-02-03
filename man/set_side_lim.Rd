@@ -20,4 +20,3 @@ a modified \code{sides} list
 sets the side limits according to a new addition
 }
 \keyword{internal}
-

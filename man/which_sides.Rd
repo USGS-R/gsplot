@@ -16,4 +16,3 @@ indices of sides
 which indices in the gsplot object are sides
 }
 \keyword{internal}
-

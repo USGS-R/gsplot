@@ -16,4 +16,3 @@ a vector of ints
 get the indices of the gsplot object for where the views are
 }
 \keyword{internal}
-

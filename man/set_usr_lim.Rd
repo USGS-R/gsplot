@@ -18,4 +18,3 @@ the modified side
 sets the user-defined limits to sides
 }
 \keyword{internal}
-

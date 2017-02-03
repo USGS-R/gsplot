@@ -20,4 +20,3 @@ modify_side_par(object, arguments, side, on.readonly = "skip")
 modify the par for side(s)
 }
 \keyword{internal}
-

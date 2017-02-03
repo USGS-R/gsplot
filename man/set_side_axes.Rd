@@ -18,4 +18,3 @@ a modified \code{side}
 set the axes logical on a side
 }
 \keyword{internal}
-

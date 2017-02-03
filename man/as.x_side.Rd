@@ -16,4 +16,3 @@ an integer vector of x sides
 take a view name and extract the numeric x side
 }
 \keyword{internal}
-

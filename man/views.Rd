@@ -16,4 +16,3 @@ a subset of the gsplot object that contains only views
 views in the gsplot object
 }
 \keyword{internal}
-

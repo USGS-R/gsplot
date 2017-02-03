@@ -19,4 +19,3 @@ verify_par_args(arguments, available.par, on.readonly = c("stop", "skip",
 verify par arguments against a vector of allowed names
 }
 \keyword{internal}
-

@@ -18,4 +18,3 @@ a modified \code{side}
 set the log value on a side
 }
 \keyword{internal}
-

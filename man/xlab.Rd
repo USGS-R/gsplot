@@ -14,4 +14,3 @@ xlab(object, side)
 \description{
 get the xlab for views in gsplot object
 }
-

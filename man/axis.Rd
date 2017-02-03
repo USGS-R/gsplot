@@ -71,4 +71,3 @@ usrDef
 \seealso{
 \code{\link[graphics]{axis}}
 }
-

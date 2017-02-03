@@ -16,4 +16,3 @@ numeric values for \code{side}
 take a named side and turn it into numeric
 }
 \keyword{internal}
-

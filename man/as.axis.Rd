@@ -16,4 +16,3 @@ as.axis(x)
 take a named or numbered side and give whether it is an x or y axis
 }
 \keyword{internal}
-

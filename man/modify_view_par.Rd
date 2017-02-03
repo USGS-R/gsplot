@@ -20,4 +20,3 @@ modify_view_par(object, arguments, side, on.readonly = "skip")
 modify the par for a view
 }
 \keyword{internal}
-

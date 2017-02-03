@@ -27,4 +27,3 @@ This function is really hard to test because it uses the actual plot to get tick
 so it is hard to isolate.
 }
 \keyword{internal}
-
