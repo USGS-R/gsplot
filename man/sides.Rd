@@ -18,4 +18,3 @@ a sides list
 subset the gsplot object to return only sides
 }
 \keyword{internal}
-

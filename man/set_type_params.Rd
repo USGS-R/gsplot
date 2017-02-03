@@ -10,4 +10,3 @@ set_type_params(list, type.name, params)
 figure out the correct par args needed depending on the "type"
 }
 \keyword{internal}
-

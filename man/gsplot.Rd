@@ -43,6 +43,11 @@ Used to change the class of inputs to "gsplot".
 \examples{
 gsplot() 
 gsplot(theme = theme.hadley)
+gs_config <- gsplot(config.file = 
+system.file("extdata", "lineScatter.yaml", package = "gsplot")) \%>\%
+lines(1:10, 1:10)
+
+gs_config
 
 gs <- gsplot(theme = theme.hadley) \%>\%
         points(1:10, 1:10, xlab="Index")

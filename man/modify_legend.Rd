@@ -11,4 +11,3 @@ modify_legend(object, location = "topright", legend_offset = 0.3,
 add legend configs
 }
 \keyword{internal}
-

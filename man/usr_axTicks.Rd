@@ -18,4 +18,3 @@ a series of ticks as a vector, or NULL if they weren't specified
 get the user-specified locations for axes ticks for a side
 }
 \keyword{internal}
-

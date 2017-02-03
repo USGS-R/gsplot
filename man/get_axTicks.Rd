@@ -18,4 +18,3 @@ a series of ticks as a vector, or NULL if they weren't specified
 get the axes ticks for grid or axes
 }
 \keyword{internal}
-

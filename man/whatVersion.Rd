@@ -15,4 +15,3 @@ The gsplot version number.
 \description{
 Get the version number that was used to create this gsplot object.
 }
-

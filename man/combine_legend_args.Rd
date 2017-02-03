@@ -13,4 +13,3 @@ combine_legend_args(object, new.legend.args, ..., where)
 add the current function call legend info to the overall legend arguments
 }
 \keyword{internal}
-

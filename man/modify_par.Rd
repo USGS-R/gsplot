@@ -27,4 +27,3 @@ gs <- gsplot:::modify_par(gs, list(new=TRUE, cex=1.4, omi=c(0,0,0,0)))
 names(gs$global$par)
 }
 \keyword{internal}
-

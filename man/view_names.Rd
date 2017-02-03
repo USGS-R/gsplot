@@ -16,4 +16,3 @@ a character vector of view names
 names of the views in gsplot object
 }
 \keyword{internal}
-

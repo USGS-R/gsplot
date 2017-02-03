@@ -9,15 +9,14 @@ set_args(fun.name, ..., custom.config = FALSE, package = "graphics")
 \arguments{
 \item{fun.name}{the name of the function to generate an arg list for}
 
+\item{\dots}{user arguments to be used for the list}
+
 \item{custom.config}{logical}
 
 \item{package}{the package to use to get the function from (defaults to 'graphics')}
-
-\item{\dots}{user arguments to be used for the list}
 }
 \description{
 extracts default arguments, user-specified arguments, and gsplot config arguments  
 into a function-ready list.
 }
 \keyword{internal}
-

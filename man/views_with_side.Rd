@@ -18,4 +18,3 @@ indices for views that have this side
 find views with a certain side
 }
 \keyword{internal}
-

@@ -17,4 +17,3 @@ building up the gsplot object, not on print.
 \examples{
 loadConfig()
 }
-

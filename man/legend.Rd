@@ -66,4 +66,3 @@ gs
 \seealso{
 \code{\link[graphics]{legend}}
 }
-

@@ -23,4 +23,3 @@ gs <- gsplot() \%>\%
        grid(side=c(3,4))
 summary(gs)
 }
-

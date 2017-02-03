@@ -15,4 +15,3 @@ The date the gsplot object was created.
 \description{
 Get the date that this gsplot object was originally created.
 }
-

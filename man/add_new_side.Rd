@@ -17,4 +17,3 @@ a modifies gsplot object
 \description{
 add a new default side to gsplot
 }
-

@@ -26,4 +26,3 @@ logged(gs, 1)
 logged(gs)
 logged(gs, c(1,2))
 }
-

@@ -54,4 +54,3 @@ gs
 \seealso{
 \code{\link[graphics]{grid}}
 }
-

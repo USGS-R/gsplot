@@ -9,4 +9,3 @@ create_empty_legend()
 \description{
 Set up an empty legend
 }
-
