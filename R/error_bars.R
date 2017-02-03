@@ -37,7 +37,7 @@
 #' 
 #' gs <- gsplot() %>%
 #'    points(1:10, 1:10) %>%
-#'    error_bar(5, 5, y.high=1) 
+#'    error_bar(x=5, y=5, y.high=1, col="green") 
 #' gs 
 error_bar <- function(object, ...) {
   override("gsplot", "error_bar", object, ...)
@@ -48,9 +48,18 @@ error_bar.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
   
   fun.name='error_bar'
   object <- gather_function_info(object, fun.name, ..., legend.name=legend.name, side=side)
-
+  
+  arguments <- filter_arguments(fun.name, ..., custom.config = object[["global"]][["config"]][["config.file"]], side=side)
+  
+  data.list <- do.call(calculate_error_bars, arguments[["call.args"]]$error_bar)
+  data.list <- data.list[sapply(data.list, length) != 0]
+  
+  for(i in names(data.list)){
+    object <- modify_side(object, data.list[[i]], side=side)
+  }
+  
   return(object)
-    
+  
 }
 
 #' create error bars
@@ -66,11 +75,52 @@ error_bar.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
 #' @export
 #' @keywords internal
 error_bar.default <- function(x, y, y.high=0, y.low=0, x.high=0, x.low=0, epsilon=0.1, ...){
+  
+  data.list <- calculate_error_bars(x=x,y=y,y.high=y.high,y.low=y.low,x.high=x.high, epsilon=epsilon)
+  
+  if(!all(y.low == 0)){
+    graphics::arrows(x0=data.list[["y.low"]]$x0, 
+           y0=data.list[["y.low"]]$y0,
+           x1=data.list[["y.low"]]$x1,
+           y1=data.list[["y.low"]]$y1, 
+           length=data.list[["y.low"]]$length, angle=90, ...)
+  }
+  
+  if(!all(y.high == 0)){
+    graphics::arrows(x0=data.list[["y.high"]]$x0, 
+           y0=data.list[["y.high"]]$y0,
+           x1=data.list[["y.high"]]$x1,
+           y1=data.list[["y.high"]]$y1, 
+           length=data.list[["y.high"]]$length, angle=90, ...)
+  }
+  
+  if(!all(x.low == 0)){
+    graphics::arrows(x0=data.list[["x.low"]]$x0, 
+           y0=data.list[["x.low"]]$y0,
+           x1=data.list[["x.low"]]$x1,
+           y1=data.list[["x.low"]]$y1, 
+           length=data.list[["x.low"]]$length, angle=90, ...)
+  }
+  
+  if(!all(x.high == 0)){
+    graphics::arrows(x0=data.list[["x.high"]]$x0, 
+           y0=data.list[["x.high"]]$y0,
+           x1=data.list[["x.high"]]$x1,
+           y1=data.list[["x.high"]]$y1, 
+           length=data.list[["x.high"]]$length, angle=90, ...)
+  }
 
+  return()
+}
+
+calculate_error_bars <- function(x, y, y.high=0, y.low=0, x.high=0, x.low=0, epsilon=0.1, ...){
   y.high[is.na(y.high)] <- 0
   y.low[is.na(y.low)] <- 0
   x.high[is.na(x.high)] <- 0
   x.low[is.na(x.low)] <- 0
+  
+  data.list <- rep(list(list()), 4) 
+  names(data.list) <- c("y.low","y.high","x.low","x.high")
   
   if(!all(y.low == 0)){
     y.low.coord <- y-y.low
@@ -78,7 +128,7 @@ error_bar.default <- function(x, y, y.high=0, y.low=0, x.high=0, x.low=0, epsilo
     y.low.coord <- y.low.coord[errorIndex]
     y.error <- y[errorIndex]
     x.error <- x[errorIndex]
-    arrows(x0=x.error, y0=y.error, x1=x.error, y1=y.low.coord, 
+    data.list[["y.low"]] <- list(x0=x.error, y0=y.error, x1=x.error, y1=y.low.coord, 
            length=epsilon, angle=90)
   }
   
@@ -88,8 +138,8 @@ error_bar.default <- function(x, y, y.high=0, y.low=0, x.high=0, x.low=0, epsilo
     y.high.coord <- y.high.coord[errorIndex]
     y.error <- y[errorIndex]
     x.error <- x[errorIndex]
-    arrows(x0=x.error, y0=y.error, x1=x.error, y1=y.high.coord, length=epsilon, 
-           angle=90, ...)
+    data.list[["y.high"]] <- list(x0=x.error, y0=y.error, x1=x.error, y1=y.high.coord, length=epsilon, 
+           angle=90)
   }
   
   if(!all(x.low == 0)){
@@ -98,8 +148,8 @@ error_bar.default <- function(x, y, y.high=0, y.low=0, x.high=0, x.low=0, epsilo
     x.low.coord <- x.low.coord[errorIndex]
     x.error <- x[errorIndex]
     y.error <- y[errorIndex]
-    arrows(x0=x.error, y0=y.error, x1=x.low.coord, y1=y.error, length=epsilon, 
-           angle=90, ...)
+    data.list[["x.low"]] <- list(x0=x.error, y0=y.error, x1=x.low.coord, y1=y.error, length=epsilon, 
+           angle=90)
   }
   
   if(!all(x.high == 0)){
@@ -108,10 +158,9 @@ error_bar.default <- function(x, y, y.high=0, y.low=0, x.high=0, x.low=0, epsilo
     x.high.coord <- x.high.coord[errorIndex]
     x.error <- x[errorIndex]
     y.error <- y[errorIndex]
-    arrows(x0=x.error, y0=y.error, x1=x.high.coord, y1=y.error, length=epsilon, 
-           angle=90, ...)
+    data.list[["x.high"]] <- list(x0=x.error, y0=y.error, x1=x.high.coord, y1=y.error, length=epsilon, 
+           angle=90)
   }
-  # warning("this function doesn't do anything")
-  return()
-}
 
+  return(data.list)
+}
