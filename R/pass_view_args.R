@@ -18,6 +18,6 @@ view <- function(object, ...) {
 #' @export
 view.gsplot <- function(object, ..., side=c(1,2)){
   fun.name <- NULL
-  object <- gather_function_info(object, fun.name, ..., legend.name=NULL, side=c(1,2))
+  object <- gather_function_info(object, fun.name, ..., legend.name=NULL, side=side)
   return(object)
 }
