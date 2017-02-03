@@ -15,4 +15,3 @@ Here NULL means color 0.}
 create a background color
 }
 \keyword{internal}
-

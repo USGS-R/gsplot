@@ -36,4 +36,3 @@ gsNew
 \seealso{
 \code{\link[graphics]{mtext}}
 }
-

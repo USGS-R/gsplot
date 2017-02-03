@@ -14,4 +14,3 @@ ylab(object, side)
 \description{
 get the ylab for views in gsplot object
 }
-

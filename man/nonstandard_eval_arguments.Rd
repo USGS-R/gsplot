@@ -17,4 +17,3 @@ nonstandard_eval_arguments(fun.name, embedded.dots, parent.args)
 get the embedded arguments that go into the function call
 }
 \keyword{internal}
-

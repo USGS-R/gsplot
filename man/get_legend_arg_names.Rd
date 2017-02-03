@@ -17,4 +17,3 @@ the arguments that apply to each individual entry within the legend (e.g. lty, l
 get vector of legend arguments - overall or for each entry
 }
 \keyword{internal}
-

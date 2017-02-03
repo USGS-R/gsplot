@@ -41,4 +41,3 @@ gs
 \seealso{
 \code{\link[graphics]{arrows}}
 }
-

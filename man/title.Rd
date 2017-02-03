@@ -40,4 +40,3 @@ gs
 \seealso{
 \code{\link[graphics]{title}}
 }
-

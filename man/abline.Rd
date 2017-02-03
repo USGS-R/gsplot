@@ -35,4 +35,3 @@ gsNew
 \seealso{
 \code{\link[graphics]{abline}}
 }
-

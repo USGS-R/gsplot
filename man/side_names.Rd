@@ -16,4 +16,3 @@ a character vector of side names
 names of the sides in gsplot object
 }
 \keyword{internal}
-

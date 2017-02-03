@@ -16,4 +16,3 @@ the side that corresponds to y
 return sides that are either y (even)
 }
 \keyword{internal}
-

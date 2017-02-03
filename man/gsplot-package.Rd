@@ -20,4 +20,3 @@ LazyLoad: \tab yes\cr
 \details{
 Collection of functions to do USGS graphics.
 }
-

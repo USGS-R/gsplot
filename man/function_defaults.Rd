@@ -17,4 +17,3 @@ a list if more than one output is selected, unlisted if length one
 \description{
 parent package for function, and default functions for capturing arguments
 }
-
