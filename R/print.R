@@ -48,6 +48,8 @@ print.gsplot <- function(x, ...){
   view.info <- view_info(views)
   side.names <- side_names(views)
   
+  old.par <- par(no.readonly=TRUE)
+  
   for (view.name in view_names(views)){
     par(x$global$par)
     x.side.name <- as.x_side_name(view.name)
@@ -60,26 +62,24 @@ print.gsplot <- function(x, ...){
     }
 
     print.view(views[[view.name]])
-    
-    par(new=TRUE)
+    par(old.par)
   }
   
   view.usr <- par('usr')
   
   for (side.name in side.names){
+    par(x[[side.name]]$par)
     side <- as.side(side.name)
-    old.par <- par(x[[side.name]]$par)
     set_frame(views, side)
     if(x[[side.name]][['axes']] | x[[side.name]][['usr.axes']]){
       draw_axis(x, side.name)
     }
-    
     if(par('ann')){
       mtext(text=label(views, side), 
             side=side, line = 2, 
             las=config("mtext", custom.config = x[["global"]][["config"]][["config.file"]])$las)
     }
-    par(old.par)
+    par(old.par[which(names(old.par) %in% side.par)])
   }
   
   par(usr = view.usr)

@@ -8,13 +8,22 @@
 \usage{
 gsplot(x = NULL, ...)
 
-\method{gsplot}{default}(..., config.file = NA, theme = NA,
-  frame.plot = TRUE)
+\method{gsplot}{default}(..., created = Sys.Date(),
+  gsplot.version = packageDescription(getPackageName(), fields = "Version"),
+  config.file = NA, theme = NA, frame.plot = TRUE)
 
 \method{gsplot}{list}(x)
 }
 \arguments{
 \item{x}{list}
+
+\item{\dots}{Further graphical parameters may also be supplied as arguments. See 'Details'.}
+
+\item{created}{vector of length one giving the date the gsplot object was created. Defaults to 
+using \code{Sys.Date()}. Output class matches that of the input.}
+
+\item{gsplot.version}{vector of length one giving the version of the gsplot package used to create the
+object. Defaults to calling \code{packageDescription()}. Output class matches that of the input.}
 
 \item{config.file}{path to the file that will only be used for setting 
 par in this one gsplot object. If \code{NA} (default), par is set by the global options set by
@@ -24,8 +33,6 @@ loadConfig().}
 the gsplot theme in this one gsplot object. If \code{NA} (default), there is no theme.}
 
 \item{frame.plot}{a logical indicating whether a box should be drawn around the plot. Default is \code{TRUE}.}
-
-\item{\dots}{Further graphical parameters may also be supplied as arguments. See 'Details'.}
 }
 \value{
 gsplot
@@ -35,5 +42,10 @@ Used to change the class of inputs to "gsplot".
 }
 \examples{
 gsplot() 
-}
+gsplot(theme = theme.hadley)
 
+gs <- gsplot(theme = theme.hadley) \%>\%
+        points(1:10, 1:10, xlab="Index")
+gs
+
+}
