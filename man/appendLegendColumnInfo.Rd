@@ -12,4 +12,3 @@ appendLegendColumnInfo(legend)
 \description{
 Based on location set legend columns
 }
-

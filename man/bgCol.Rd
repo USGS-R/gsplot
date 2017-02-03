@@ -37,4 +37,3 @@ gs <- gsplot() \%>\%
    bgCol("lightgoldenrod") 
 gs
 }
-

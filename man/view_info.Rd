@@ -15,4 +15,3 @@ data frame with one row per view. Each view has an x side, y side, the log comma
 \description{
 get the views in gsplot object
 }
-

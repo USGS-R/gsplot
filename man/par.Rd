@@ -32,4 +32,3 @@ gs2
 \seealso{
 \code{\link[graphics]{par}}
 }
-

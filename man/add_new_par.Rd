@@ -18,4 +18,3 @@ a modified gsplot object
 \description{
 add a new defaul par list to the gsplot object
 }
-

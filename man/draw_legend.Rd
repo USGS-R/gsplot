@@ -13,4 +13,3 @@ draw_legend(gsplot)
 Will cycle through  the gsplot, looking at the legend configuration (if one exists), and
 create legend entries based on the points, lines, etc. contained in the gsplot.
 }
-

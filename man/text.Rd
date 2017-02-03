@@ -50,4 +50,3 @@ gs
 \seealso{
 \code{\link[graphics]{text}}
 }
-

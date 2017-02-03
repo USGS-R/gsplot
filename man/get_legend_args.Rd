@@ -13,4 +13,3 @@ get_legend_args(fun.name, call.args, legend.name, option.args)
 get the arguments that go into the legend for a single function call
 }
 \keyword{internal}
-

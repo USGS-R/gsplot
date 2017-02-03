@@ -20,4 +20,3 @@ lim(object, side, axis, set.undefined, if.null)
 \description{
 get the limits for sides in gsplot object
 }
-

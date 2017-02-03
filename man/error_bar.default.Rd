@@ -28,4 +28,3 @@ error_bar.default(x, y, y.high, y.low, x.high, x.low, epsilon = 0.1, lwd, lty,
 create error bars
 }
 \keyword{internal}
-

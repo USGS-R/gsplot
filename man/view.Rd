@@ -21,4 +21,3 @@ gs <- gsplot() \%>\%
                
 ylim(gs)
 }
-

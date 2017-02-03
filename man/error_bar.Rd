@@ -49,4 +49,3 @@ gs <- gsplot() \%>\%
    error_bar(5, 5, y.high=1) 
 gs 
 }
-

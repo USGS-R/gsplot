@@ -12,4 +12,3 @@ lhs \%>\% rhs
 \description{
 using the magrittr pipe (lhs \%>\% rhs) to chain operations
 }
-

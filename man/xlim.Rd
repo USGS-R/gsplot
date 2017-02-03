@@ -16,4 +16,3 @@ xlim(object, side, set.undefined)
 \description{
 get the xlim for views in gsplot object
 }
-

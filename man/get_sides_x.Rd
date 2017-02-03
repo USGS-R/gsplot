@@ -16,4 +16,3 @@ the side that corresponds to x
 return sides that are either x (odd)
 }
 \keyword{internal}
-

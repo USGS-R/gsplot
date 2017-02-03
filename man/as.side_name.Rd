@@ -16,4 +16,3 @@ a character vector of side names
 get the side names
 }
 \keyword{internal}
-

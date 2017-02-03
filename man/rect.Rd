@@ -53,4 +53,3 @@ gs
 \seealso{
 \code{\link[graphics]{rect}}
 }
-

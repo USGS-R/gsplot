@@ -23,4 +23,3 @@ a modified object with the function added to the proper view
 add function call to view
 }
 \keyword{internal}
-

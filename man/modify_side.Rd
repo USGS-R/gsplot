@@ -23,4 +23,3 @@ gs <- gsplot:::modify_side(gs, args = list(x=c(1,2), xlim=c(0,12)), side=1)
 
 }
 \keyword{internal}
-
