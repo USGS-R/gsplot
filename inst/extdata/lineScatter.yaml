@@ -13,13 +13,13 @@ points:
   pch: 19
   col: "darkblue"
 lines: 
-  col: "black"
+  col: "purple"
   lty: 1
   lwd: 1
 abline:
   col: "grey"
   lty: 1
-  lwd: 1
+  lwd: 3
 axis:
   labels: TRUE
   tick: TRUE 
@@ -28,25 +28,23 @@ axis:
   outer: FALSE
   las: 1
   lwd: 0.8
+  tcl: -0.3
 title: NULL
 text: NULL
 mtext: 
   las: 0
 grid:
-  col: "gray20"
-  lwd: 0.6
+  col: "gray80"
+  lwd: 3
   lty: 1
 segments: NULL
 error_bar:
-  y.high: 0 
-  y.low: 0 
-  x.high: 0
-  x.low: 0
-  epsilon: 0.1
+  col: "green"
+  lwd: 3
 arrows: NULL
 callouts:
-  col: 'black'
-bgCol: 
+  col: 'red'
+background_color: 
   col: 'lightgrey'
 legend:
   title: 'EXPLANATION'

@@ -10,8 +10,8 @@ pkg.env <- new.env()
       list(package='graphics', def.funs=graphics::text.default),
     'plot' = 
       list(package='graphics', def.funs=graphics::plot.xy),
-    'bgCol' =
-      list(package='gsplot', def.funs=gsplot::bgCol.default),
+    'background_color' =
+      list(package='gsplot', def.funs=gsplot::background_color.default),
     'callouts' =
       list(package='gsplot', def.funs=gsplot::callouts.default),
     'error_bar' =

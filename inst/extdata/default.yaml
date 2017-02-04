@@ -42,6 +42,6 @@ error_bar:
 arrows: NULL
 callouts:
   col: 'black'
-bgCol: 
+background_color: 
   col: 'lightgrey'
 
