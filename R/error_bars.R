@@ -78,7 +78,7 @@ error_bar.default <- function(x, y, y.high=0, y.low=0, x.high=0, x.low=0, epsilo
   
   data.list <- calculate_error_bars(x=x,y=y,y.high=y.high,y.low=y.low,x.high=x.high, epsilon=epsilon)
   
-  if(!all(y.low == 0)){
+  if(length(data.list[["y.low"]]) > 1){
     graphics::arrows(x0=data.list[["y.low"]]$x0, 
            y0=data.list[["y.low"]]$y0,
            x1=data.list[["y.low"]]$x1,
@@ -86,7 +86,7 @@ error_bar.default <- function(x, y, y.high=0, y.low=0, x.high=0, x.low=0, epsilo
            length=data.list[["y.low"]]$length, angle=90, ...)
   }
   
-  if(!all(y.high == 0)){
+  if(length(data.list[["y.high"]]) > 1){
     graphics::arrows(x0=data.list[["y.high"]]$x0, 
            y0=data.list[["y.high"]]$y0,
            x1=data.list[["y.high"]]$x1,
@@ -94,7 +94,7 @@ error_bar.default <- function(x, y, y.high=0, y.low=0, x.high=0, x.low=0, epsilo
            length=data.list[["y.high"]]$length, angle=90, ...)
   }
   
-  if(!all(x.low == 0)){
+  if(length(data.list[["x.low"]]) > 1){
     graphics::arrows(x0=data.list[["x.low"]]$x0, 
            y0=data.list[["x.low"]]$y0,
            x1=data.list[["x.low"]]$x1,
@@ -102,7 +102,7 @@ error_bar.default <- function(x, y, y.high=0, y.low=0, x.high=0, x.low=0, epsilo
            length=data.list[["x.low"]]$length, angle=90, ...)
   }
   
-  if(!all(x.high == 0)){
+  if(length(data.list[["x.high"]]) > 1){
     graphics::arrows(x0=data.list[["x.high"]]$x0, 
            y0=data.list[["x.high"]]$y0,
            x1=data.list[["x.high"]]$x1,
