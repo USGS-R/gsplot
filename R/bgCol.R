@@ -34,11 +34,12 @@ bgCol <- function(object, ...) {
 }
 
 
-bgCol.gsplot <- function(object, ...){
+bgCol.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
 
-  to.gsplot <- filter_arguments(fun.name = "bgCol", ...,
-                                custom.config = object[["global"]][["config"]][["config.file"]])$call.args
-  object$global$bgCol <- append_replace(object$global$bgCol, to.gsplot[[1]])
+  fun.name='bgCol'
+  object <- gather_function_info(object, fun.name, ..., 
+                                 legend.name=legend.name, side=side,where = "first")
+  
   return(object)
 
 }
