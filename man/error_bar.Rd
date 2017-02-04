@@ -21,7 +21,6 @@ Additional graphical parameter inputs:
  \item{\code{y.high, y.low}} {the y-value specifying the error above the point (high) and below the point (low)}
  \item{\code{x.high, x.low}} {the x-value specifying the error above the point (high) and below the point (low)}
  \item{\code{epsilon}} {width of the end of the error bar (in inches)}
- \item{\code{col, lty, lwd}} {parameters describing the color, type, and width of the line, respectively}
  \item{\code{legend.name}} {name that appears in the legend, see \code{\link{legend}} for more legend parameters}
 }
 }
@@ -46,6 +45,6 @@ gs
 
 gs <- gsplot() \%>\%
    points(1:10, 1:10) \%>\%
-   error_bar(5, 5, y.high=1) 
+   error_bar(x=5, y=5, y.high=1, col="green") 
 gs 
 }
