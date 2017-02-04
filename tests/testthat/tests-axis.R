@@ -95,3 +95,20 @@ test_that("axis user flipped to TRUE when specified",{
   gs <- axis(gs, 1)
   expect_true(gs$side.1$usr.axes)
 })
+
+
+test_that("format",{
+  
+  gs <- gsplot() %>%
+    points(seq.Date(as.Date("2010-01-01"), as.Date("2010-12-31"), by="month"),
+           1:12) %>%
+    axis(side = 1, format="%Y-%m")
+
+  expect_true(class(gs$side.1$lim) == "Date")
+  
+  gs <- gsplot() %>%
+    points(seq.Date(as.Date("2010-01-01"), as.Date("2010-12-31"), by="month"),
+           1:12) %>%
+    axis(side = 1, format="%B")
+  expect_equal(gs$side.1$axis$format, "%B")
+})
