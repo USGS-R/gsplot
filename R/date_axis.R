@@ -21,15 +21,17 @@ date_axis <- function(object, ...) {
   override("gsplot", "date_axis", object, ...)
 }
 
-date_axis.gsplot <- function(object, ..., lab.pos="tick", tick.int, snap.to=NULL) {
+date_axis.gsplot <- function(object, ..., lab.pos="tick", tick.int=NULL, snap.to=NULL) {
+  if (!is.null(at) && !is.null(tick.int)) {
+    warning("cannot specify both at and tick.int, at will be ignored")
+  }
   
   # can we lazy eval 'at'
   object <- axis(object, ..., at=seq(year[1], year[2], "months"), labels=FALSE)
   object <- axis(object, ..., at=seq(year[1], year[2], "months")+15, tick=FALSE, append=TRUE)
 }
 
-date_axis.default <- function(lab.pos="tick", tick.int, snap.to=NULL, ...) {
+date_axis.default <- function(lab.pos="tick", tick.int=NULL, snap.to=NULL, ...) {
   warning("date_axis is not implemented for base graphics plots")
   return()
 }
-
