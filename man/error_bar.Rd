@@ -45,6 +45,6 @@ gs
 
 gs <- gsplot() \%>\%
    points(1:10, 1:10) \%>\%
-   error_bar(x=5, y=5, y.high=1, col="green") 
+   error_bar(5, 5, y.high=1, col="green") 
 gs 
 }

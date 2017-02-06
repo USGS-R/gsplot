@@ -27,4 +27,7 @@ error_bar.default(x, y, y.high = 0, y.low = 0, x.high = 0, x.low = 0,
 \description{
 create error bars
 }
-\keyword{internal}
+\examples{
+plot(1:10, 1:10)
+error_bar(5, 5, y.high=1, col="green")
+}

@@ -37,7 +37,7 @@
 #' 
 #' gs <- gsplot() %>%
 #'    points(1:10, 1:10) %>%
-#'    error_bar(x=5, y=5, y.high=1, col="green") 
+#'    error_bar(5, 5, y.high=1, col="green") 
 #' gs 
 error_bar <- function(object, ...) {
   override("gsplot", "error_bar", object, ...)
@@ -73,7 +73,9 @@ error_bar.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
 #' @param epsilon width of bar in relative units
 #' @param \dots additional arguments passed to \code{\link[graphics]{arrows}}
 #' @export
-#' @keywords internal
+#' @examples 
+#' plot(1:10, 1:10)
+#' error_bar(5, 5, y.high=1, col="green")
 error_bar.default <- function(x, y, y.high=0, y.low=0, x.high=0, x.low=0, epsilon=0.1, ...){
   
   data.list <- calculate_error_bars(x=x,y=y,y.high=y.high,y.low=y.low,x.high=x.high, epsilon=epsilon)
