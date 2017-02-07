@@ -193,12 +193,15 @@ create_empty_legend <- function() {
 modify_legend <- function(object, location="topright", legend_offset=0.3, draw=FALSE, ...){
   # // this should be shared between add_to_legend and legend
   # // check if legend exists, if not add it (someone could call legend before any legend.names)
-  legend.config <- list(location = location, legend_offset = legend_offset, draw = draw, ...)
+  legend.config <- list(location = location, legend_offset = legend_offset, draw = draw)
+  arguments <- filter_arguments("legend", ..., custom.config = object[["global"]][["config"]][["config.file"]])
 
-  arguments <- list(...)
+  arguments <- arguments$call.args$legend
+  arguments <- arguments[!unlist(lapply(arguments, is.null))]
+  legend.config <- append_replace(arguments, legend.config)
   # auto is used when "legend" arg comes from "legend.name" in gsplot calls
   legend.index <- ifelse("legend" %in% names(legend.config),length(grep("legend.\\d+", names(object$legend))) + 1, "auto")
-  
+
   if ("x" %in% names(arguments)){
     legend.config$location <- legend.config$x
     legend.config$x <- NULL
@@ -211,7 +214,9 @@ modify_legend <- function(object, location="topright", legend_offset=0.3, draw=F
     auto.legend[names(legend.config)] <- legend.config
     legend.config <- auto.legend
   }
+
   object[['legend']][[paste0("legend.", legend.index)]] <- legend.config
+  
   return(object)
 }
 
