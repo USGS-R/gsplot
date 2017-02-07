@@ -138,7 +138,7 @@ Apply error bars to points by specifying the upper and lower offsets. Horizontal
 
 ```{r eval=FALSE}
 # base:
-plot(1:7, 1:7) 
+plot(1:7, 1:7, ylim=c(0, 8)) 
 arrows(x0 = 1:7, x1 = 1:7, 
        y0 = 1:7, y1 = 2:8, 
        angle = 90, length = 0.1)
