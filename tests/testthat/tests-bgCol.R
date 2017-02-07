@@ -20,3 +20,14 @@ context("background_color arguments")
 test_that("setting params works as expected",{
   expect_equal(gsplot:::function_args("gsplot","background_color", "coral2"), list(col="coral2"))
 })
+
+test_that("testing background_color config", {
+  
+  
+  gsp <- gsplot(config.file = system.file("extdata", "lineScatter.yaml", package = "gsplot")) %>%
+    background_color()
+  
+  expect_true(gsp$global$config$config.file)
+  expect_equal(gsp$view.1.2$background_color$col, "lightgrey")
+  
+})

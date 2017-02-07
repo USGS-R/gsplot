@@ -47,5 +47,25 @@ test_that("testing content of gsplot list for embedded error bar", {
   
 })
 
+test_that("testing error_bar limits", {
+  
+  
+  errorbarplot <- gsplot() %>% 
+       points(1:7, 1:7) %>% 
+       error_bar(x = 1:7, y = 1:7, y.high = 1, y.low = 1)
+  
+  expect_equal(ylim(errorbarplot)$side.2, c(0, 8))
 
+  
+})
 
+test_that("testing error_bar config", {
+  
+  
+  gsp <- gsplot(config.file = system.file("extdata", "lineScatter.yaml", package = "gsplot")) %>%
+    error_bar(1:10, 1:10, y.high=1) 
+  
+  expect_true(gsp$global$config$config.file)
+  expect_equal(gsp$view.1.2$error_bar$col, "green")
+  
+})
