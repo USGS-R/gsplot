@@ -44,12 +44,23 @@ error_bar <- function(object, ...) {
 }
 
 
-error_bar.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
+error_bar.gsplot <- function(object, 
+                             x, y=NULL, y.high=0, y.low=0, x.high=0, x.low=0,
+                             epsilon=0.1,
+                             ..., legend.name=NULL, side=c(1,2)){
+  if (is.null(y)) {
+    warning("y=NULL not currently supported in error_bar.gsplot")
+    return()
+  }
   
   fun.name='error_bar'
-  object <- gather_function_info(object, fun.name, ..., legend.name=legend.name, side=side)
   
-  arguments <- filter_arguments(fun.name, ..., custom.config = object[["global"]][["config"]][["config.file"]], side=side)
+  args <- list(x=x, y=y, y.high=y.high, y.low=y.low, x.high=x.high, x.low=x.low, epsilon=epsilon, ...)
+
+  full.args <- c(list(object=object,  legend.name = legend.name, side = side, fun.name = fun.name),args)
+  object <- do.call(gather_function_info, full.args)
+
+  arguments <- filter_arguments(fun.name, args, custom.config = object[["global"]][["config"]][["config.file"]], side=side)
   
   data.list <- do.call(calculate_error_bars, arguments[["call.args"]]$error_bar)
   data.list <- data.list[sapply(data.list, length) != 0]
