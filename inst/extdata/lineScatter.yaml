@@ -48,6 +48,5 @@ background_color:
   col: 'lightgrey'
 legend:
   title: 'EXPLANATION'
-  lwd: 0.6
   location: "topright"
 
