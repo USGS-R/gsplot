@@ -16,6 +16,8 @@ pkg.env <- new.env()
       list(package='gsplot', def.funs=gsplot::callouts.default),
     'error_bar' =
       list(package='gsplot', def.funs=gsplot::error_bar.default),
+    'date_axis' =
+      list(package="gsplot", def.funs=c(gsplot::date_axis.default, graphics::axis)),
     
     "par" = c(),"axis" = c(), "abline" = c(), "legend" = c(), 
     "title" = c(), "mtext" = c(), "grid" = c(), #"box" = c(),

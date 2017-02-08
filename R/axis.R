@@ -65,7 +65,7 @@ axis <- function(object, ...) {
 }
 
 #' @importFrom utils head
-axis.gsplot <- function(object, ..., n.minor=0, tcl.minor=0.15, reverse=NULL, append=FALSE) {
+axis.gsplot <- function(object, ..., n.minor=0, tcl.minor=0.15, tick.loc=NULL, reverse=NULL, append=FALSE) {
   
   fun.name <- "axis"
   
@@ -76,6 +76,7 @@ axis.gsplot <- function(object, ..., n.minor=0, tcl.minor=0.15, reverse=NULL, ap
   user_args[[fun.name]]$side <- NULL
   user_args[[fun.name]]$n.minor <- n.minor
   user_args[[fun.name]]$tcl.minor <- tcl.minor
+  user_args[[fun.name]]$tick.loc <- tick.loc
   
   for(side in sides){
     # append the side and give it defaults if it doesn't exist
@@ -116,7 +117,6 @@ draw_axis <- function(object, side.name){
       tmp[[side.name]] <- tmp[[side.name]][-which.axis[which.axis %in% axis.i]]
       draw_axis(tmp, side.name)
     }
-    
   }
   axis.args <- object[[side.name]][['axis']]
   side.lim <- object[[side.name]][['lim']]

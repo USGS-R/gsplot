@@ -50,12 +50,21 @@ print.gsplot <- function(x, ...){
   
   old.par <- par(no.readonly=TRUE)
   
+  # lock sides
+  for (side.name in side.names){
+    if (!is.null(views[[side.name]][['snap.to']]) && inherits(views[[side.name]][['snap.to']], "lazy")) {
+      snapTo <- views[[side.name]][['snap.to']]
+      views[[side.name]][['lim']] <- lazy_eval(snapTo, data = list(object=views))
+      views[[side.name]][['usr.lim']] <- c(TRUE, TRUE)
+    }
+  }
+  
   for (view.name in view_names(views)){
-    par(x$global$par)
+    par(views$global$par)
     x.side.name <- as.x_side_name(view.name)
     y.side.name <- as.y_side_name(view.name)
-    par(x[[x.side.name]]$par)
-    par(x[[y.side.name]]$par)
+    par(views[[x.side.name]]$par)
+    par(views[[y.side.name]]$par)
     set_frame(views, side=view.name)
     if(any(names(views[[view.name]]) %in% 'grid')){
       draw_custom_grid(views,view.name)
@@ -68,16 +77,17 @@ print.gsplot <- function(x, ...){
   view.usr <- par('usr')
   
   for (side.name in side.names){
-    par(x[[side.name]]$par)
+    par(views[[side.name]]$par)
+    
     side <- as.side(side.name)
     set_frame(views, side)
-    if(x[[side.name]][['axes']] | x[[side.name]][['usr.axes']]){
-      draw_axis(x, side.name)
+    if(views[[side.name]][['axes']] | views[[side.name]][['usr.axes']]){
+      draw_axis(views, side.name)
     }
     if(par('ann')){
       mtext(text=label(views, side), 
             side=side, line = 2, 
-            las=config("mtext", custom.config = x[["global"]][["config"]][["config.file"]])$las)
+            las=config("mtext", custom.config = views[["global"]][["config"]][["config.file"]])$las)
     }
     par(old.par[which(names(old.par) %in% side.par)])
   }
@@ -88,7 +98,7 @@ print.gsplot <- function(x, ...){
   #draw_axis(views, index.axis=i.axis.noview)
 
   draw_legend(views)
-  if (x$global$config$frame.plot){
+  if (views$global$config$frame.plot){
     box()
   }
   
