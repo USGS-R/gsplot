@@ -17,7 +17,7 @@ demoPlot <- gsplot() %>%
 demoPlot
 
 
-## ----echo=TRUE, message=FALSE----------------------------------
+## ----echo=TRUE, message=FALSE--------------------------------------------
 
 sites <- unique(MaumeeDV$site_no)
 dates <- sapply(sites, function(x) MaumeeDV$Date[which(MaumeeDV$site_no==x)], USE.NAMES=TRUE)

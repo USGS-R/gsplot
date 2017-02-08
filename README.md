@@ -386,21 +386,11 @@ plot3 <- gsplot() %>%
 
 layout(matrix(c(1,2,3), byrow=TRUE, nrow=3))
 plot1
-```
-
-![](README_files/figure-markdown_github/unnamed-chunk-23-1.png)
-
-``` r
 plot2
-```
-
-![](README_files/figure-markdown_github/unnamed-chunk-23-2.png)
-
-``` r
 plot3
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-23-3.png)
+![](README_files/figure-markdown_github/unnamed-chunk-23-1.png)
 
 Disclaimer
 ----------
