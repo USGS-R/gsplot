@@ -15,6 +15,13 @@ test_that("abline gsplot",{
   expect_equal(names(gs$view.1.2), c("par","points","abline"))
 })
 
+test_that("abline limits",{
+  gs = points(gsplot(), c(1), c(1)) %>% 
+    abline(h = 10, v = 10, col = "gray60", lwd=4)
+  expect_equal(xlim(gs)[["side.1"]][2], 10)
+  expect_equal(ylim(gs)[["side.2"]][2], 10)
+})
+
 test_that("segments",{
   x <- stats::runif(12); y <- stats::rnorm(12)
   i <- order(x, y); x <- x[i]; y <- y[i]
