@@ -18,10 +18,10 @@ date_axis(object, ...)
 Special axis for date handling, including interval labelling.
 }
 \examples{
-x <- seq(as.Date("2013-01-22"), as.Date("2013-12-02"), "days")
+x <- seq(as.Date("2013-01-22"), as.Date("2013-10-02"), "days")
 y <- rnorm(length(x), 71, 19)
 gs <- gsplot() \%>\%
    points(x, y) \%>\%
-   date_axis(lab.pos="interval", tick.int="monthly", snap.to="year")
+   date_axis(side=1, lab.pos="interval", tick.int="month", snap.to="year")
 gs
 }
