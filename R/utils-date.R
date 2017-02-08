@@ -16,9 +16,24 @@ ndays <- function(date) {
 day_period <- function(period) UseMethod("day_period", object = period)
 week_period <- function(period) UseMethod("week_period", object = period)
 month_period <- function(period) UseMethod("month_period", object = period)
+#' Returns the period padded to the quarter boundaries
+#' 
+#' @param period Date or POSIXct vector representing period of time
+#' @return new period representing the padded range
+#' @keywords internal
 quarter_period <- function(period) UseMethod("quarter_period", object = period)
 year_period <- function(period) UseMethod("year_period", object = period)
+#' Returns the period padded to the water year boundaries
+#' 
+#' @param period Date or POSIXct vector representing period of time
+#' @return new period representing the padded range
+#' @keywords internal
 wateryear_period <- function(period) UseMethod("wateryear_period", object = period)
+#' Returns the period padded to the decade boundaries
+#' 
+#' @param period Date or POSIXct vector representing period of time
+#' @return new period representing the padded range
+#' @keywords internal
 decade_period <- function(period) UseMethod("decade_period", object = period)
 
 day_period.Date <- function(period) {
@@ -31,8 +46,8 @@ day_period.POSIXt <- function(period) {
 }
 
 week_period.Date <- function(period) {
-  return(c(as.Date(period[1]) - format(as.Date(period[1]), '%w'), # 0 = sunday
-    as.Date(period[2]) + (6 - format(as.Date(period[2]), '%w')))) # 6 = saturday
+  return(c(as.Date(period[1]) - as.integer(format(as.Date(period[1]), '%w')), # 0 = sunday
+    as.Date(period[2]) + (6 - as.integer(format(as.Date(period[2]), '%w'))))) # 6 = saturday
 }
 
 week_period.POSIXt <- function(period) {
@@ -40,19 +55,14 @@ week_period.POSIXt <- function(period) {
 }
 
 month_period.Date <- function(period) {
-  return(c(as.Date(format(period[1]), '%Y-%m-01'),
-    as.Date(format(period[2]), paste0('%Y-%m-', ndays(period[2])))))
+  return(c(as.Date(format(period[1], '%Y-%m-01')),
+    as.Date(format(period[2], paste0('%Y-%m-', ndays(period[2]))))))
 }
 
 month_period.POSIXt <- function(period) {
   return(posix_boundaries(month_period.Date(period)))
 }
 
-#' Returns the period padded to the quarter boundaries
-#' 
-#' @param period Date or POSIXct vector representing period of time
-#' @return new period representing the padded range
-#' @keywords internal
 quarter_period.Date <- function(period) {
   qs <- quarters(period)
   formats <- lapply(qs, switch,
@@ -76,11 +86,6 @@ year_period.POSIXt <- function(period) {
   return(posix_boundaries(year_period.Date(period)))
 }
 
-#' Returns the period padded to the water year boundaries
-#' 
-#' @param period Date or POSIXct vector representing period of time
-#' @return new period representing the padded range
-#' @keywords internal
 wateryear_period.Date <- function(period) {
   year <- sapply(period, function(instant) {
     offset <- ifelse(format(instant, "%m") < 10, 0, 1)
@@ -93,11 +98,6 @@ wateryear_period.POSIXt <- function(period) {
   return(posix_boundaries(wateryear_period.Date(period)))
 }
 
-#' Returns the period padded to the decade boundaries
-#' 
-#' @param period Date or POSIXct vector representing period of time
-#' @return new period representing the padded range
-#' @keywords internal
 decade_period.Date <- function(period) {
   years <- c(floor(as.integer(format(period[1], "%Y"))/10)*10, 
              (ceiling(as.integer(format(period[2], "%Y"))/10)*10)-1)
@@ -109,6 +109,6 @@ decade_period.POSIXt <- function(period) {
 }
 
 posix_boundaries <- function(period) {
-  return(c(as.POSIXct(format(period[1], '%Y-%m-%dT00:00:00')),
-           as.POSIXct(format(period[2], '%Y-%m-%dT23:59:59'))))
+  return(c(as.POSIXct(format(period[1], '%Y-%m-%d 00:00:00')),
+           as.POSIXct(format(period[2], '%Y-%m-%d 23:59:59'))))
 }

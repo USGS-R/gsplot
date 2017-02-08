@@ -16,10 +16,10 @@ pkg.env <- new.env()
       list(package='gsplot', def.funs=gsplot::callouts.default),
     'error_bar' =
       list(package='gsplot', def.funs=gsplot::error_bar.default),
-    'date_axis' =
-      list(package="gsplot", def.funs=c(gsplot::date_axis.default, graphics::axis)),
+    "axis" = 
+      list(package='graphics', def.funs=c(graphics::axis, graphics::axis.Date, graphics::axis.POSIXct)),
     
-    "par" = c(),"axis" = c(), "abline" = c(), "legend" = c(), 
+    "par" = c(), "abline" = c(), "legend" = c(), 
     "title" = c(), "mtext" = c(), "grid" = c(), #"box" = c(),
     "segments" = c(), "arrows" = c(), "rect" = c(), 
     "polygon" = c(), "symbols" = c(), "curve" = c()
