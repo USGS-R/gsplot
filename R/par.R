@@ -13,12 +13,12 @@
 #' @examples
 #' gs2 <- gsplot(new=TRUE,mar=c(5,4,1,2)) %>%
 #'   points(1, 2) %>%
-#'   bgCol(col="white") 
+#'   background_color(col="white") 
 #' gs2
 #' 
 #' gs2 <- gsplot(new=TRUE, cex=1.2) %>%
 #'   points(1, 2) %>%
-#'   bgCol(col="white") %>%
+#'   background_color(col="white") %>%
 #'   par(new=FALSE, mar=c(5,4,3,3), cex=2.1) 
 #' gs2
 par <- function(object, ...) {

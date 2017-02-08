@@ -42,7 +42,7 @@ print.gsplot <- function(x, ...){
   }
 
   par(x$global$par)
-  bgCol(x$global$bgCol)
+  background_color(x$global$background_color)
   title(x$global$title)
   
   view.info <- view_info(views)

@@ -18,7 +18,7 @@
 #' gs <- gsplot() %>%
 #'    points(x=1:5, y=1:5, legend.name="Stuff") %>%
 #'    lines(2:6, y=2:6, ylim=c(0,10)) %>%
-#'    bgCol(col="lightgoldenrod") %>%
+#'    background_color(col="lightgoldenrod") %>%
 #'    axis(side=c(3,4),labels=FALSE) %>%
 #'    legend("topright")
 #' gs
