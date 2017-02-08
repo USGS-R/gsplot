@@ -62,12 +62,20 @@ print.gsplot <- function(x, ...){
     }
 
     print.view(views[[view.name]])
-    par(old.par)
+    
+    
+    if(is.na(as.logical(all.equal(c(1,1), par()$mfrow))) & is.na(as.logical(all.equal(c(1,1,1,1), par()$mfg)))){
+      par(new=TRUE) # We want this if using layout
+    } else {
+      par(old.par)
+    }
+    
   }
   
   view.usr <- par('usr')
   
   for (side.name in side.names){
+    old.par <- par(x[[side.name]]$par)
     par(x[[side.name]]$par)
     side <- as.side(side.name)
     set_frame(views, side)
@@ -83,9 +91,6 @@ print.gsplot <- function(x, ...){
   }
   
   par(usr = view.usr)
-  
-  #i.axis.noview <- i.axis[which(!defined.sides %in% c(view.info$x, view.info$y))]
-  #draw_axis(views, index.axis=i.axis.noview)
 
   draw_legend(views)
   if (x$global$config$frame.plot){
