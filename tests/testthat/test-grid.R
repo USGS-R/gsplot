@@ -94,3 +94,19 @@ test_that('grid works with dates', {
   
   expect_silent(gs)
 })
+
+test_that("testing grid config", {
+  
+  gsp <- gsplot(config.file = system.file("extdata", "lineScatter.yaml", package = "gsplot")) %>%
+    grid()
+  
+  expect_true(gsp$global$config$config.file)
+  expect_equal(gsp$view.1.2$grid$col, "gray80")
+  
+  gsp <- gsplot() %>%
+    grid()
+  
+  expect_false(gsp$global$config$config.file)
+  expect_equal(gsp$view.1.2$grid$col, "grey") #This is what our default currently is
+  
+})

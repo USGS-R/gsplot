@@ -363,6 +363,45 @@ usrDef
 
 ![](README_files/figure-markdown_github/unnamed-chunk-22-1.png)
 
+Multiple plots in one figure
+----------------------------
+
+What if you wanted to see if there was any relationship between the pH and water temperature? Consider the following three graphs: pH vs water temperature, pH timeseries, water temperature timeseries. To view these three plots at one time, use `layout` to "append" the three different plots.
+
+``` r
+MaumeeDV <- MaumeeDV
+site <- '04193490'
+
+Maumee_1 <- MaumeeDV[MaumeeDV$site_no == site,]
+
+plot1 <- gsplot() %>% 
+  points(Maumee_1$Wtemp, Maumee_1$pH_Median, col="black", pch=20)%>%
+  title(main=paste("Site", site), xlab="Water Temperature (deg C)", ylab="pH")
+plot2 <- gsplot() %>% 
+  lines(Maumee_1$Date, Maumee_1$pH_Median, col="seagreen")%>%
+  title(main="", xlab="time", ylab="pH")
+plot3 <- gsplot() %>% 
+  lines(Maumee_1$Date, Maumee_1$Wtemp, col="orangered")%>%
+  title(main="", xlab="time", ylab="Water Temperature (deg C)")
+
+layout(matrix(c(1,2,3), byrow=TRUE, nrow=3))
+plot1
+```
+
+![](README_files/figure-markdown_github/unnamed-chunk-23-1.png)
+
+``` r
+plot2
+```
+
+![](README_files/figure-markdown_github/unnamed-chunk-23-2.png)
+
+``` r
+plot3
+```
+
+![](README_files/figure-markdown_github/unnamed-chunk-23-3.png)
+
 Disclaimer
 ----------
 

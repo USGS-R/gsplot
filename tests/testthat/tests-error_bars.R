@@ -68,4 +68,21 @@ test_that("testing error_bar config", {
   expect_true(gsp$global$config$config.file)
   expect_equal(gsp$view.1.2$error_bar$col, "green")
   
+  gsp <- gsplot() %>%
+    error_bar(1:10, 1:10, y.high=1) 
+  
+  expect_false(gsp$global$config$config.file)
+  expect_null(gsp$view.1.2$error_bar$col)
+  
+})
+
+
+test_that("testing default error_bar", {
+  
+  
+  plot(1:10, 1:10)
+  
+  expect_silent(error_bar(5, 5, y.high=1, col="green"))
+
+  
 })
