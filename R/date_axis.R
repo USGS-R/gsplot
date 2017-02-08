@@ -44,14 +44,13 @@ date_axis.gsplot <- function(object, ..., side, lab.pos="tick", at=NULL, tick.in
   labelsAt <- lazy({
     labels <- NULL
     limit <- lim(object, side)
-    tick.loc <- object[[as.side_name(side)]][['axis']][['tick.loc']]
     
-    if (is.null(tick.loc)) {
+    if (is.null(ticksAt)) {
       main.ticks <- grid_axTicks(object, side)
-    } else if (inherits(tick.loc, "lazy")) {
-      main.ticks <- lazy_eval(tick.loc, data=list(object=object))
+    } else if (inherits(ticksAt, "lazy")) {
+      main.ticks <- lazy_eval(ticksAt, data=list(object=object))
     } else {
-      main.ticks <- tick.loc
+      main.ticks <- ticksAt
     }
     
     if (lab.pos == "tick") {
@@ -76,15 +75,11 @@ date_axis.gsplot <- function(object, ..., side, lab.pos="tick", at=NULL, tick.in
     old.lim <- lim(object, side)
     # TODO: handle start.on.monday=TRUE use %u instead of %w and offset 1
     limit <- switch(snap.to,
-           "day" = c(as.POSIXct(format(old.lim[1], '%Y-%m-%dT00:00:00')),
-                     as.POSIXct(format(old.lim[2], '%Y-%m-%dT23:59:59'))),
-           "week" = c(as.Date(old.lim[1]) - format(old.lim[1], '%w'), # 0 = sunday
-                      as.Date(old.lim[2]) + (6 - format(old.lim[2], '%w'))), # 6 = saturday
-           "month" = c(as.Date(format(old.lim[1]), '%Y-%m-01'),
-                      as.Date(format(old.lim[2]), paste0('%Y-%m-', ndays(old.lim[2])))),
+           "day" = day_period(old.lim),
+           "week" = week_period(old.lim),
+           "month" = month_period(old.lim),
            "quarter" = quarter_period(old.lim),
-           "year" = c(as.Date(format(old.lim[1], '%Y-01-01')),
-                      as.Date(format(old.lim[2], '%Y-12-31'))),
+           "year" = year_period(old.lim),
            "wateryear" = wateryear_period(old.lim),
            "decade" = decade_period(old.lim),
            old.lim # default
@@ -92,7 +87,7 @@ date_axis.gsplot <- function(object, ..., side, lab.pos="tick", at=NULL, tick.in
   })
 
   object <- axis(object, ..., side, at=ticksAt, labels=FALSE)
-  object <- axis(object, ..., side, at=labelsAt, tick.loc=ticksAt, tick=FALSE, append=TRUE)
+  object <- axis(object, ..., side, at=labelsAt, tick=FALSE, append=TRUE)
   for (side_name in as.side_name(side)) {
     object[[side_name]][["snap.to"]] <- snapTo
   }
@@ -108,55 +103,3 @@ date_axis.default <- function(side, lab.pos="tick", tick.int=NULL, snap.to=NULL,
   return()
 }
 
-#' Returns the number of days the month of a given date
-#' 
-#' @param date a Date or POSIXct
-#' @return numeric number of days in month of date
-#' @keywords internal
-ndays <- function(date) {
-  if (length(date) != 1) {
-    stop(length(date), " arguments passed to 'ndays' which requires 1")
-  }
-  last_days <- 28:31
-  rev(last_days[which(!is.na(as.Date(paste(substr(date, 1, 8),
-                                           last_days, sep = ''), '%Y-%m-%d')))])[1]
-}
-
-#' Returns the period padded to the quarter boundaries
-#' 
-#' @param period Date or POSIXct vector representing period of time
-#' @return new period representing the padded range
-#' @keywords internal
-quarter_period <- function(period) {
-  qs <- quarters(period)
-  formats <- lapply(qs, switch,
-                   "Q1"=c("%Y-01-01", "%Y-03-31"),
-                   "Q2"=c("%Y-04-01", "%Y-06-30"),
-                   "Q3"=c("%Y-07-01", "%Y-09-30"),
-                   "Q4"=c("%Y-10-01", "%Y-12-31"))
-  return(c(as.Date(format(period[1], formats[[1]][1])), as.Date(format(period[2], formats[[2]][2]))))
-}
-
-#' Returns the period padded to the water year boundaries
-#' 
-#' @param period Date or POSIXct vector representing period of time
-#' @return new period representing the padded range
-#' @keywords internal
-wateryear_period <- function(period) {
-  year <- sapply(period, function(instant) {
-    offset <- ifelse(format(instant, "%m") < 10, 0, 1)
-    return(as.integer(format(instant, "%Y")) + offset)
-  })
-  return(c(as.Date(paste0(year[1]-1, "-10-01")), as.Date(paste0(year[2], "-09-30"))))
-}
-
-#' Returns the period padded to the decade boundaries
-#' 
-#' @param period Date or POSIXct vector representing period of time
-#' @return new period representing the padded range
-#' @keywords internal
-decade_period <- function(period) {
-  years <- c(floor(as.integer(format(period[1], "%Y"))/10)*10, 
-             (ceiling(as.integer(format(period[2], "%Y"))/10)*10)-1)
-  return(c(as.Date(paste0(years[1], "-01-01")), as.Date(paste0(years[2], "-12-31"))))
-}
