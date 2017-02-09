@@ -13,8 +13,26 @@ ndays <- function(date) {
                                            last_days, sep = ''), '%Y-%m-%d')))])[1]
 }
 
+#' Returns the period padded to full days
+#' 
+#' @param period Date or POSIXct vector representing period of time
+#' @return new period representing the padded range
+#' @keywords internal
 day_period <- function(period) UseMethod("day_period", object = period)
+#' Returns the period padded to the weekly boundaries
+#' 
+#' Currently only supports weeks starting sunday, need to eventually support
+#' start.on.monday passthrough.
+#' 
+#' @param period Date or POSIXct vector representing period of time
+#' @return new period representing the padded range
+#' @keywords internal
 week_period <- function(period) UseMethod("week_period", object = period)
+#' Returns the period padded to the month boundaries
+#' 
+#' @param period Date or POSIXct vector representing period of time
+#' @return new period representing the padded range
+#' @keywords internal
 month_period <- function(period) UseMethod("month_period", object = period)
 #' Returns the period padded to the quarter boundaries
 #' 
@@ -22,6 +40,11 @@ month_period <- function(period) UseMethod("month_period", object = period)
 #' @return new period representing the padded range
 #' @keywords internal
 quarter_period <- function(period) UseMethod("quarter_period", object = period)
+#' Returns the period padded to the year boundaries
+#' 
+#' @param period Date or POSIXct vector representing period of time
+#' @return new period representing the padded range
+#' @keywords internal
 year_period <- function(period) UseMethod("year_period", object = period)
 #' Returns the period padded to the water year boundaries
 #' 
