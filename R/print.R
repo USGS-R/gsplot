@@ -99,9 +99,10 @@ print.gsplot <- function(x, ...){
     par(old.par[which(names(old.par) %in% side.par)])
   }
 
-  view.info <- view_info(views)
-  default_view <- ifelse("view.1.2" %in% view.info$name, "view.1.2", view.info$name[1])
-  set_frame(views, default_view)
+  if(!is.null(view.info)){
+    default_view <- ifelse("view.1.2" %in% view.info$name, "view.1.2", view.info$name[1])
+    set_frame(views, default_view)    
+  }
   
   draw_legend(views)
   if (x$global$config$frame.plot){
