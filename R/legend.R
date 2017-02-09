@@ -83,7 +83,9 @@ draw_legend <- function(gsplot) {
     # and par scope each run of the for loop
     oldXPD <- par()$xpd
     oldBg <- par('bg')
-    
+    view.info <- view_info(gsplot)
+    default_view <- ifelse("view.1.2" %in% view.info$name, "view.1.2", view.info$name[1])
+    set_frame(gsplot, default_view)
     for (legend.name in names(gsplot[['legend']])) {
       
       legend <- gsplot[['legend']][[legend.name]]
