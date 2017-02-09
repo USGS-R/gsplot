@@ -52,10 +52,12 @@ print.gsplot <- function(x, ...){
   
   for (view.name in view_names(views)){
     par(x$global$par)
+
     x.side.name <- as.x_side_name(view.name)
     y.side.name <- as.y_side_name(view.name)
     par(x[[x.side.name]]$par)
     par(x[[y.side.name]]$par)
+    
     set_frame(views, side=view.name)
     if(any(names(views[[view.name]]) %in% 'grid')){
       draw_custom_grid(views,view.name)
@@ -63,17 +65,12 @@ print.gsplot <- function(x, ...){
 
     print.view(views[[view.name]])
     
+    par(xlog=old.par$xlog)
+    par(ylog=old.par$ylog)
     
     if(is.na(as.logical(all.equal(c(1,1), par()$mfrow))) & is.na(as.logical(all.equal(c(1,1,1,1), par()$mfg)))){
-      par(xlog=old.par$xlog)
-      par(ylog=old.par$ylog)
-      # par(old.par[-which(names(old.par) %in% c("xlog","ylog","mfrow","mfg","yaxp","xaxp"))])
       par(new=TRUE) # We want this if using layout
-    } else {
-      # par(old.par)
-      par(xlog=old.par$xlog)
-      par(ylog=old.par$ylog)
-    }
+    } 
     
   }
   
@@ -82,6 +79,13 @@ print.gsplot <- function(x, ...){
   for (side.name in side.names){
     old.par <- par(x[[side.name]]$par)
     par(x[[side.name]]$par)
+    
+    if("x" == as.axis(side.name)){
+      par(xlog=x[[side.name]]$log)
+    } else {
+      par(ylog=x[[side.name]]$log)
+    }
+    
     side <- as.side(side.name)
     set_frame(views, side)
     if(x[[side.name]][['axes']] | x[[side.name]][['usr.axes']]){
@@ -116,9 +120,6 @@ print.gsplot <- function(x, ...){
 print.view <- function(x, ...){
   plots <- remove_field(x, param = c('par','grid','window'))
   
-  # if(window$frame.plot){
-  #   box()
-  # } 
   old.par <- par(x[['par']])
   
   # -- call functions -- 
