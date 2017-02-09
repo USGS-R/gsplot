@@ -65,6 +65,9 @@ print.gsplot <- function(x, ...){
     
     
     if(is.na(as.logical(all.equal(c(1,1), par()$mfrow))) & is.na(as.logical(all.equal(c(1,1,1,1), par()$mfg)))){
+      par(xlog=old.par$xlog)
+      par(ylog=old.par$ylog)
+      # par(old.par[-which(names(old.par) %in% c("xlog","ylog","mfrow","mfg","yaxp","xaxp"))])
       par(new=TRUE) # We want this if using layout
     } else {
       par(old.par)
@@ -90,7 +93,10 @@ print.gsplot <- function(x, ...){
     par(old.par[which(names(old.par) %in% side.par)])
   }
   
-  par(usr = view.usr)
+  # if(!is.na(as.logical(all.equal(c(1,1), par()$mfrow))) & 
+  #    !is.na(as.logical(all.equal(c(1,1,1,1), par()$mfg)))){
+    # par(usr = view.usr)
+  # }
 
   draw_legend(views)
   if (x$global$config$frame.plot){

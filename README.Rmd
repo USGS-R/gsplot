@@ -268,7 +268,7 @@ gs <- gsplot() %>%
   points(date_vector, 1:12)
 gs
 
-points(as.Date("2010-11-15"),2.5)
+points(as.Date("2011-01-15"),2.5, col="blue", pch=20)
 ```
 
 ##Improved workflow examples
