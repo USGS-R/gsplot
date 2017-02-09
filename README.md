@@ -392,6 +392,53 @@ plot3
 
 ![](README_files/figure-markdown_github/unnamed-chunk-23-1.png)
 
+Inset
+-----
+
+Base:
+
+``` r
+set.seed(1)
+x <- rnorm(100)  
+y <- rnorm(100)  
+
+
+plot(x, pch=18, col="red")
+u <- par("usr")
+p <- c(.75, .75, 1, 1) #xbot, ybot, xhigh, yhigh
+v <- c(grconvertX(p[c(1,3)], "npc", "ndc"),
+       grconvertY(p[c(2,4)], "npc", "ndc"))
+user <- c(grconvertX(p[c(1,3)], "npc", "user"),
+       grconvertY(p[c(2,4)], "npc", "user")) 
+rect(user[1], user[3], user[2], user[4], col="white")
+par(new=TRUE, mar=c(0,0,0,0), fig=v)
+plot(y, axes=FALSE, xlab="",ylab="", pch=20, cex=0.5)
+```
+
+![](README_files/figure-markdown_github/unnamed-chunk-24-1.png)
+
+gsplot:
+
+``` r
+loadConfig()
+
+
+gs_main <- gsplot() %>%
+  points(x, pch=18)
+gs_inset <- gsplot() %>%
+  points(y, axes=FALSE, xlab="", ylab="", pch=20, cex=0.5, col="black") %>%
+  background_color(col="white") 
+
+gs_main
+p <- c(.75, .75, 1, 1) #xbot, ybot, xhigh, yhigh
+v <- c(grconvertX(p[c(1,3)], "npc", "ndc"),
+       grconvertY(p[c(2,4)], "npc", "ndc"))
+par(new=TRUE, mar=c(0,0,0,0), fig=v)
+gs_inset
+```
+
+![](README_files/figure-markdown_github/unnamed-chunk-25-1.png)
+
 Disclaimer
 ----------
 

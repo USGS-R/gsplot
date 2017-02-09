@@ -70,7 +70,9 @@ print.gsplot <- function(x, ...){
       # par(old.par[-which(names(old.par) %in% c("xlog","ylog","mfrow","mfg","yaxp","xaxp"))])
       par(new=TRUE) # We want this if using layout
     } else {
-      par(old.par)
+      # par(old.par)
+      par(xlog=old.par$xlog)
+      par(ylog=old.par$ylog)
     }
     
   }
