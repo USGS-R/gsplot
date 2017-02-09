@@ -430,7 +430,7 @@ gs_inset <- gsplot() %>%
   background_color(col="white") 
 
 gs_main
-p <- c(.75, .75, 1, 1) #xbot, ybot, xhigh, yhigh
+p <- c(.75, .75, 1, 1) #xlow, ylow, xhigh, yhigh
 v <- c(grconvertX(p[c(1,3)], "npc", "ndc"),
        grconvertY(p[c(2,4)], "npc", "ndc"))
 par(new=TRUE, mar=c(0,0,0,0), fig=v)
