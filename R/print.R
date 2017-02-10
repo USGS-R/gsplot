@@ -65,19 +65,35 @@ print.gsplot <- function(x, ...){
     y.side.name <- as.y_side_name(view.name)
     par(views[[x.side.name]]$par)
     par(views[[y.side.name]]$par)
+
     set_frame(views, side=view.name)
     if(any(names(views[[view.name]]) %in% 'grid')){
       draw_custom_grid(views,view.name)
     }
 
     print.view(views[[view.name]])
-    par(old.par)
+    
+    par(xlog=old.par$xlog)
+    par(ylog=old.par$ylog)
+    
+    if(is.na(as.logical(all.equal(c(1,1), par()$mfrow))) & is.na(as.logical(all.equal(c(1,1,1,1), par()$mfg)))){
+      par(new=TRUE) # We want this if using layout
+    } 
+    
   }
   
   view.usr <- par('usr')
   
   for (side.name in side.names){
+
+    old.par <- par(x[[side.name]]$par)
     par(views[[side.name]]$par)
+    
+    if("x" == as.axis(side.name)){
+      par(xlog=views[[side.name]]$log)
+    } else {
+      par(ylog=views[[side.name]]$log)
+    }
     
     side <- as.side(side.name)
     set_frame(views, side)
@@ -91,12 +107,12 @@ print.gsplot <- function(x, ...){
     }
     par(old.par[which(names(old.par) %in% side.par)])
   }
-  
-  par(usr = view.usr)
-  
-  #i.axis.noview <- i.axis[which(!defined.sides %in% c(view.info$x, view.info$y))]
-  #draw_axis(views, index.axis=i.axis.noview)
 
+  if(!is.null(view.info)){
+    default_view <- ifelse("view.1.2" %in% view.info$name, "view.1.2", view.info$name[1])
+    set_frame(views, default_view)    
+  }
+  
   draw_legend(views)
   if (views$global$config$frame.plot){
     box()
@@ -113,9 +129,6 @@ print.gsplot <- function(x, ...){
 print.view <- function(x, ...){
   plots <- remove_field(x, param = c('par','grid','window'))
   
-  # if(window$frame.plot){
-  #   box()
-  # } 
   old.par <- par(x[['par']])
   
   # -- call functions -- 

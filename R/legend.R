@@ -83,7 +83,7 @@ draw_legend <- function(gsplot) {
     # and par scope each run of the for loop
     oldXPD <- par()$xpd
     oldBg <- par('bg')
-    
+
     for (legend.name in names(gsplot[['legend']])) {
       
       legend <- gsplot[['legend']][[legend.name]]
