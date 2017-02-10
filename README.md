@@ -310,7 +310,7 @@ gs <- gsplot() %>%
   points(date_vector, 1:12)
 gs
 
-points(as.Date("2010-11-15"),2.5)
+points(as.Date("2011-01-15"),2.5, col="blue", pch=20)
 ```
 
 ![](README_files/figure-markdown_github/unnamed-chunk-19-1.png)
@@ -386,26 +386,63 @@ plot3 <- gsplot() %>%
 
 layout(matrix(c(1,2,3), byrow=TRUE, nrow=3))
 plot1
+plot2
+plot3
 ```
 
 ![](README_files/figure-markdown_github/unnamed-chunk-23-1.png)
 
+Inset
+-----
+
+Base:
+
 ``` r
-plot2
+set.seed(1)
+x <- rnorm(100)  
+y <- rnorm(100)  
+
+
+plot(x, pch=18, col="red")
+u <- par("usr")
+p <- c(.75, .75, 1, 1) #xbot, ybot, xhigh, yhigh
+v <- c(grconvertX(p[c(1,3)], "npc", "ndc"),
+       grconvertY(p[c(2,4)], "npc", "ndc"))
+user <- c(grconvertX(p[c(1,3)], "npc", "user"),
+       grconvertY(p[c(2,4)], "npc", "user")) 
+rect(user[1], user[3], user[2], user[4], col="white")
+par(new=TRUE, mar=c(0,0,0,0), fig=v)
+plot(y, axes=FALSE, xlab="",ylab="", pch=20, cex=0.5)
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-23-2.png)
+![](README_files/figure-markdown_github/unnamed-chunk-24-1.png)
+
+gsplot:
 
 ``` r
-plot3
+loadConfig()
+
+
+gs_main <- gsplot() %>%
+  points(x, pch=18)
+gs_inset <- gsplot() %>%
+  points(y, axes=FALSE, xlab="", ylab="", pch=20, cex=0.5, col="black") %>%
+  background_color(col="white") 
+
+gs_main
+p <- c(.75, .75, 1, 1) #xlow, ylow, xhigh, yhigh
+v <- c(grconvertX(p[c(1,3)], "npc", "ndc"),
+       grconvertY(p[c(2,4)], "npc", "ndc"))
+par(new=TRUE, mar=c(0,0,0,0), fig=v)
+gs_inset
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-23-3.png)
+![](README_files/figure-markdown_github/unnamed-chunk-25-1.png)
 
 Disclaimer
 ----------
 
-This software is in the public domain because it contains materials that originally came from the U.S. Geological Survey, an agency of the United States Department of Interior. For more information, see the [official USGS copyright policy](http://www.usgs.gov/visual-id/credit_usgs.html#copyright/ "official USGS copyright policy")
+This software is in the public domain because it contains materials that originally came from the U.S. Geological Survey, an agency of the United States Department of Interior. For more information, see the [official USGS copyright policy](https://www.usgs.gov/visual-id/credit_usgs.html#copyright/ "official USGS copyright policy")
 
 Although this software program has been used by the U.S. Geological Survey (USGS), no warranty, expressed or implied, is made by the USGS or the U.S. Government as to the accuracy and functioning of the program and related program material nor shall the fact of distribution constitute any such warranty, and no responsibility is assumed by the USGS in connection therewith.
 

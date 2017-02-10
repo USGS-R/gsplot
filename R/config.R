@@ -1,6 +1,15 @@
 gsconfig <- new.env(parent = emptyenv())
 gsconfig$original.par <- par(no.readonly = TRUE)
 
+#' Clear par
+#' 
+#' Resets par to what it was when gsplot was loaded.
+#' 
+#' @export
+clear_par <- function(){
+  par(gsconfig$original.par)
+}
+
 #Question...how can I update the user's par?
 
 #' @title Load gsplot config
