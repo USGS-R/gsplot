@@ -24,7 +24,7 @@ date_axis <- function(object, ...) {
 #'
 #'
 #' @export
-date_axis.gsplot <- function(object, ..., side, lab.pos="tick", at=NULL, tick.int=NULL, snap.to=NULL) {
+date_axis.gsplot <- function(object, ..., side, lab.pos="tick", at=NULL, tick.int=NULL, snap.to="day") {
   if (exists("at") &&!is.null(at) && !is.null(tick.int)) {
     warning("cannot specify both at and tick.int, at will be ignored")
   }
