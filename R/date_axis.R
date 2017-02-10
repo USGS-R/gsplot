@@ -2,11 +2,15 @@
 #' 
 #' Special axis for date handling, including interval labelling.
 #' 
-#' @param lab.pos where should the label be positioned, centered on the "tick" or "interval".
-#' @param tick.int interval in which ticks should be placed, alternative to defining at.
-#' @param snap.to set the limits to coincide with temporal boundaries. Accepts "day", "week", "month", "quarter",
-#' "year", "wateryear", "decade".
-#' 
+#' @param object gsplot object
+#' @param \dots Further graphical parameters may also be supplied as arguments. See 'Details'.
+#' @details Additional graphical parameter inputs:
+#' \itemize{
+#'   \item{\code{pos.lab}} {where should the label be positioned, centered on the "tick" or "interval".}
+#'   \item{\code{tick.int}} {interval in which ticks should be placed, alternative to defining at.}
+#'   \item{\code{snap.to}} {set the limits to coincide with temporal boundaries. Accepts "day", "week", "month", "quarter",
+#' "year", "wateryear", "decade".}
+#' }
 #'
 #' @rdname date_axis
 #' @export
@@ -15,16 +19,29 @@
 #' y <- rnorm(length(x), 71, 19)
 #' gs <- gsplot() %>%
 #'    points(x, y) %>%
-#'    date_axis(side=1, lab.pos="interval", tick.int="month", snap.to="year")
+#'    date_axis(side=1, pos.lab="interval", tick.int="month", snap.to="year")
+#' gs
+#' 
+#' x <- seq(as.POSIXct("1992-03-03 06:00:00"), as.POSIXct("1992-03-08 12:00:00"), "hour")
+#' y <- rnorm(length(x), 19, 2)
+#' gs <- gsplot() %>%
+#'    points(x, y) %>%
+#'    date_axis(side=1, pos.lab="tick", tick.int="day", snap.to="day", format="%D")
 #' gs
 date_axis <- function(object, ...) {
   override("gsplot", "date_axis", object, ...)
 }
 
-#'
-#'
+#' @param side side to place the axis on
+#' @param pos.lab where should the label be positioned, centered on the "tick" or "interval".
+#' @param at specific location to place ticks
+#' @param tick.int interval in which ticks should be placed, alternative to defining at.
+#' @param snap.to set the limits to coincide with temporal boundaries. Accepts "day", "week", "month", "quarter",
+#' "year", "wateryear", "decade".
+#' 
+#' @rdname date_axis
 #' @export
-date_axis.gsplot <- function(object, ..., side, lab.pos="tick", at=NULL, tick.int=NULL, snap.to="day") {
+date_axis.gsplot <- function(object, ..., side, pos.lab="tick", at=NULL, tick.int=NULL, snap.to="day") {
   if (exists("at") &&!is.null(at) && !is.null(tick.int)) {
     warning("cannot specify both at and tick.int, at will be ignored")
   }
@@ -53,9 +70,9 @@ date_axis.gsplot <- function(object, ..., side, lab.pos="tick", at=NULL, tick.in
       main.ticks <- ticksAt
     }
     
-    if (lab.pos == "tick") {
+    if (pos.lab == "tick") {
       labels <- main.ticks
-    } else if (lab.pos == "interval") {
+    } else if (pos.lab == "interval") {
       all.ints <- c(limit[1], main.ticks, limit[2])
       for (i in 2:length(all.ints)) {
         prev = all.ints[i-1]
@@ -67,7 +84,7 @@ date_axis.gsplot <- function(object, ..., side, lab.pos="tick", at=NULL, tick.in
         }
       }
     } else {
-      stop("lab.pos must be \"tick\" or \"interval\"")
+      stop("pos.lab must be \"tick\" or \"interval\"")
     }
     return(labels)
   })
@@ -94,11 +111,9 @@ date_axis.gsplot <- function(object, ..., side, lab.pos="tick", at=NULL, tick.in
   return(object)
 }
 
-
-#'
-#'
+#' @rdname date_axis
 #' @export
-date_axis.default <- function(side, lab.pos="tick", tick.int=NULL, snap.to=NULL, ...) {
+date_axis.default <- function(side, pos.lab="tick", tick.int=NULL, snap.to=NULL, ...) {
   warning("date_axis is not implemented for base graphics plots")
   return()
 }

@@ -2,12 +2,28 @@
 % Please edit documentation in R/date_axis.R
 \name{date_axis}
 \alias{date_axis}
+\alias{date_axis.gsplot}
+\alias{date_axis.default}
 \title{gsplot date axis}
 \usage{
 date_axis(object, ...)
+
+date_axis.gsplot(object, ..., side, pos.lab = "tick", at = NULL,
+  tick.int = NULL, snap.to = "day")
+
+date_axis.default(side, pos.lab = "tick", tick.int = NULL, snap.to = NULL,
+  ...)
 }
 \arguments{
-\item{lab.pos}{where should the label be positioned, centered on the "tick" or "interval".}
+\item{object}{gsplot object}
+
+\item{\dots}{Further graphical parameters may also be supplied as arguments. See 'Details'.}
+
+\item{side}{side to place the axis on}
+
+\item{pos.lab}{where should the label be positioned, centered on the "tick" or "interval".}
+
+\item{at}{specific location to place ticks}
 
 \item{tick.int}{interval in which ticks should be placed, alternative to defining at.}
 
@@ -17,11 +33,27 @@ date_axis(object, ...)
 \description{
 Special axis for date handling, including interval labelling.
 }
+\details{
+Additional graphical parameter inputs:
+\itemize{
+  \item{\code{pos.lab}} {where should the label be positioned, centered on the "tick" or "interval".}
+  \item{\code{tick.int}} {interval in which ticks should be placed, alternative to defining at.}
+  \item{\code{snap.to}} {set the limits to coincide with temporal boundaries. Accepts "day", "week", "month", "quarter",
+"year", "wateryear", "decade".}
+}
+}
 \examples{
 x <- seq(as.Date("2013-01-22"), as.Date("2013-10-02"), "days")
 y <- rnorm(length(x), 71, 19)
 gs <- gsplot() \%>\%
    points(x, y) \%>\%
-   date_axis(side=1, lab.pos="interval", tick.int="month", snap.to="year")
+   date_axis(side=1, pos.lab="interval", tick.int="month", snap.to="year")
+gs
+
+x <- seq(as.POSIXct("1992-03-03 06:00:00"), as.POSIXct("1992-03-08 12:00:00"), "hour")
+y <- rnorm(length(x), 19, 2)
+gs <- gsplot() \%>\%
+   points(x, y) \%>\%
+   date_axis(side=1, pos.lab="tick", tick.int="day", snap.to="day", format="\%D")
 gs
 }
