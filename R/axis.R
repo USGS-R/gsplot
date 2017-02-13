@@ -116,7 +116,6 @@ draw_axis <- function(object, side.name){
       tmp[[side.name]] <- tmp[[side.name]][-which.axis[which.axis %in% axis.i]]
       draw_axis(tmp, side.name)
     }
-    
   }
   axis.args <- object[[side.name]][['axis']]
   side.lim <- object[[side.name]][['lim']]
