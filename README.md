@@ -438,6 +438,41 @@ gs_inset
 Config and Theme
 ----------------
 
+A "config" file is used to set defaults for functions. You can see the default in the file "default.yaml" in the inst/extdata folder. To see the full path:
+
+``` r
+system.file("extdata", "default.yaml", package = "gsplot")
+```
+
+It is possible to change the global default.
+
+TODO: MORE TEXT NEEDED!!!!!!
+
+It is also possible to load a temporary config file into a single `gsplot` object:
+
+``` r
+line_scatter_config <- system.file("extdata", "lineScatter.yaml", package = "gsplot")
+
+g1 <- gsplot(config.file = line_scatter_config) %>% 
+  points(1:10, 1:10, pch=20, legend.name="first points") %>% 
+  lines(4:1, 4:1, legend.name="first line") %>% 
+  points(c(3,7,4), c(9,3,6), pch=20, col="black", legend.name="second points") %>% 
+  legend()
+g1
+```
+
+![](README_files/figure-markdown_github/unnamed-chunk-26-1.png)
+
+Finally, a theme can call a config file to load up defaults, but also makes particular calls as a default. There are a few themes pre-loaded into the `gsplot` package
+
+``` r
+gs_packers <- gsplot(theme = theme.packers) %>%
+  points(1:10, 1:10)
+gs_packers
+```
+
+![](README_files/figure-markdown_github/unnamed-chunk-27-1.png)
+
 Disclaimer
 ----------
 

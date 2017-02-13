@@ -1,0 +1,7 @@
+tcl: -0.2
+cex: 0.75
+las: 1
+points:
+  pch: 16
+  col: "brown"
+  cex: 5

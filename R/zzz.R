@@ -14,17 +14,19 @@
 #' gbTheme <- theme.packers
 #' 
 #' # Code to get theme:
+#' 
 #' theme.hadley <- gsplot(frame.plot=FALSE) %>%
 #'   background_color(col="grey90") %>%
 #'   grid(col = "white", lty = 1) %>%
 #'   par(tcl=-0.2, cex=0.75) %>%
 #'   axis(side = c(1,2), lwd = 0, lwd.ticks = 1)
 #'   
-#' theme.packers <- gsplot() %>% #TODO: add config so that points are brown
+#' packers_config <- system.file("extdata", "packers.yaml", package = "gsplot")
+#'
+#' theme.packers <- gsplot(frame.plot=FALSE, config.file=packers_config) %>% 
 #'   background_color(col="#203731") %>%
 #'   grid(col = "gold", lty = 1, lwd=3) %>%
-#'   par(tcl=-0.2, cex=0.75) %>%
-#'   axis(side = c(1,2), lwd = 0, lwd.ticks = 1)
+#'   axis(side = c(1,2), lwd = 0)
 #'   
 #' \dontrun{
 #' save(theme.hadley, theme.packers, file="sysdata.rda")
