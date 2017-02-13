@@ -37,8 +37,9 @@ background_color <- function(object, ...) {
 background_color.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
 
   fun.name='background_color'
-  object <- gather_function_info(object, fun.name, ..., 
-                                 legend.name=legend.name, side=side,where = "first")
+
+  arguments <- filter_arguments(fun.name, ..., custom.config = object[["global"]][["config"]][["config.file"]], side=side)
+  object[["global"]] <- append_replace(object[["global"]], arguments$call.args)
   
   return(object)
 
