@@ -398,13 +398,18 @@ Inset
 Base:
 
 ``` r
+#Base:
+
 set.seed(1)
 x <- rnorm(100)  
 y <- rnorm(100)  
 
 
-plot(x, pch=18, col="red")
+par(mfcol=c(1,2)) #Let's look at base next to gsplot
+
+plot(x, pch=18, col="red", main="Base defaults")
 u <- par("usr")
+mar.par <- par()$mar
 p <- c(.75, .75, 1, 1) #xbot, ybot, xhigh, yhigh
 v <- c(grconvertX(p[c(1,3)], "npc", "ndc"),
        grconvertY(p[c(2,4)], "npc", "ndc"))
@@ -413,31 +418,25 @@ user <- c(grconvertX(p[c(1,3)], "npc", "user"),
 rect(user[1], user[3], user[2], user[4], col="white")
 par(new=TRUE, mar=c(0,0,0,0), fig=v)
 plot(y, axes=FALSE, xlab="",ylab="", pch=20, cex=0.5)
-```
 
-![](README_files/figure-markdown_github/unnamed-chunk-24-1.png)
-
-gsplot:
-
-``` r
-loadConfig()
-
-
+#gsplot:
 gs_main <- gsplot() %>%
-  points(x, pch=18)
+  points(x, pch=18) %>%
+  title(main="gsplot defaults")
 gs_inset <- gsplot() %>%
   points(y, axes=FALSE, xlab="", ylab="", pch=20, cex=0.5, col="black") %>%
   background_color(col="white") 
 
+par(new=TRUE, fig=c(0.5,1,0,1), mar=mar.par) #step into gsplot
 gs_main
-p <- c(.75, .75, 1, 1) #xlow, ylow, xhigh, yhigh
-v <- c(grconvertX(p[c(1,3)], "npc", "ndc"),
-       grconvertY(p[c(2,4)], "npc", "ndc"))
-par(new=TRUE, mar=c(0,0,0,0), fig=v)
+par(new=TRUE, mar=c(0,0,0,0), fig=v+ c(0.5,0.5,0,0))
 gs_inset
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-25-1.png)
+![](README_files/figure-markdown_github/unnamed-chunk-24-1.png)
+
+Config and Theme
+----------------
 
 Disclaimer
 ----------
