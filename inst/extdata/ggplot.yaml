@@ -6,5 +6,4 @@ las: 1
 cex: 0.75
 points:
   pch: 16
-  col: "brown"
-  cex: 3
+  col: "black"

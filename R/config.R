@@ -47,20 +47,18 @@ loadConfig = function(filename) {
 #'used elsewhere in the application. This will only change the config paremeters while
 #'building up the gsplot object, not on print.
 #'
-#' @param filename string to custom file 
+#' @param object gsplot object
 #'
 #' @importFrom graphics plot.xy
 #' @importFrom graphics par
 #' @importFrom yaml yaml.load_file
 #' @importFrom grDevices dev.off
-load_temp_config = function(filename) {
-  
-  graphTemplate <- yaml.load_file(filename)
+load_temp_config = function(object){
 
   if(length(all.equal(gsconfig$original.par, par(no.readonly = TRUE))) > 1){
     par(gsconfig$original.par)
   }
-  gsconfig$temp.config <- graphTemplate
+  gsconfig$temp.config <- object[["config"]]
 }
 
 

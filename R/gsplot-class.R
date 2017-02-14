@@ -69,7 +69,8 @@ gsplot.default <- function(..., created=Sys.Date(),
                  object)
 
   if (!is.na(object[["global"]][["config"]]$config.path)){
-    load_temp_config(object[["global"]][["config"]]$config.path)
+    object[["config"]] <- yaml.load_file(config.file)
+    load_temp_config(object)
   } 
 
   if(length(all.equal(gsconfig$original.par, par(no.readonly = TRUE))) > 1){

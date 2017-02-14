@@ -23,12 +23,12 @@ ggplotTheme <- theme.hadley
 gbTheme <- theme.packers
 
 # Code to get theme:
+ggplot_config <- system.file("extdata", "ggplot.yaml", package = "gsplot")
 
-theme.hadley <- gsplot(frame.plot=FALSE) \%>\%
+theme.hadley <- gsplot(frame.plot=FALSE, config.file=ggplot_config) \%>\%
   background_color(col="grey90") \%>\%
   grid(col = "white", lty = 1) \%>\%
-  par(tcl=-0.2, cex=0.75) \%>\%
-  axis(side = c(1,2), lwd = 0, lwd.ticks = 1)
+  axis(side = c(1,2), lwd = 0, lwd.ticks = 1) 
   
 packers_config <- system.file("extdata", "packers.yaml", package = "gsplot")
 
