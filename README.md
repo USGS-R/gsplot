@@ -321,14 +321,14 @@ Improved workflow examples
 ``` r
 demoPlot <- gsplot() %>%
   points(y=c(3,1,2), x=1:3, xlim=c(0,NA),ylim=c(0,NA),
-         col="blue", pch=18, legend.name="Points", xlab="Index") %>%
+         col="blue", pch=18, legend.name="Points", xlab="Index", 
+         error_bar(y.high = c(0.5,0.25,1), y.low = 0.1,
+                   x.low=0.2, x.high=0.2, col="red", lwd=2)) %>%
   lines(c(3,4,3), c(2,4,6), legend.name="Lines", ylab=expression(paste("Data [ft"^"3","/s]"))) %>%
   abline(b=1, a=0, legend.name="1:1") %>%
   axis(side=c(3,4), labels=FALSE) %>%
   legend(location="topleft",title="Awesome!") %>%
   grid() %>%
-  error_bar(x=1:3, y=c(3,1,2), y.high=c(0.5,0.25,1), y.low=0.1) %>%
-  error_bar(x=1:3, y=c(3,1,2), x.low=.2, x.high=.2, col="red",lwd=3) %>%
   callouts(x=1, y=2.8, lwd=2, angle=250, labels="Weird data") %>%
   title("Graphing Fun")
 demoPlot
@@ -398,13 +398,18 @@ Inset
 Base:
 
 ``` r
+#Base:
+
 set.seed(1)
 x <- rnorm(100)  
 y <- rnorm(100)  
 
 
-plot(x, pch=18, col="red")
+par(mfcol=c(1,2)) #Let's look at base next to gsplot
+
+plot(x, pch=18, col="red", main="Base defaults")
 u <- par("usr")
+mar.par <- par()$mar
 p <- c(.75, .75, 1, 1) #xbot, ybot, xhigh, yhigh
 v <- c(grconvertX(p[c(1,3)], "npc", "ndc"),
        grconvertY(p[c(2,4)], "npc", "ndc"))
@@ -413,31 +418,60 @@ user <- c(grconvertX(p[c(1,3)], "npc", "user"),
 rect(user[1], user[3], user[2], user[4], col="white")
 par(new=TRUE, mar=c(0,0,0,0), fig=v)
 plot(y, axes=FALSE, xlab="",ylab="", pch=20, cex=0.5)
-```
 
-![](README_files/figure-markdown_github/unnamed-chunk-24-1.png)
-
-gsplot:
-
-``` r
-loadConfig()
-
-
+#gsplot:
 gs_main <- gsplot() %>%
-  points(x, pch=18)
+  points(x, pch=18) %>%
+  title(main="gsplot defaults")
 gs_inset <- gsplot() %>%
   points(y, axes=FALSE, xlab="", ylab="", pch=20, cex=0.5, col="black") %>%
   background_color(col="white") 
 
+par(new=TRUE, fig=c(0.5,1,0,1), mar=mar.par) #step into gsplot
 gs_main
-p <- c(.75, .75, 1, 1) #xlow, ylow, xhigh, yhigh
-v <- c(grconvertX(p[c(1,3)], "npc", "ndc"),
-       grconvertY(p[c(2,4)], "npc", "ndc"))
-par(new=TRUE, mar=c(0,0,0,0), fig=v)
+par(new=TRUE, mar=c(0,0,0,0), fig=v+ c(0.5,0.5,0,0))
 gs_inset
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-25-1.png)
+![](README_files/figure-markdown_github/unnamed-chunk-24-1.png)
+
+Config and Theme
+----------------
+
+A "config" file is used to set defaults for functions. You can see the default in the file "default.yaml" in the inst/extdata folder. To see the full path:
+
+``` r
+system.file("extdata", "default.yaml", package = "gsplot")
+```
+
+It is possible to change the global default.
+
+TODO: MORE TEXT NEEDED!!!!!!
+
+It is also possible to load a temporary config file into a single `gsplot` object:
+
+``` r
+line_scatter_config <- system.file("extdata", "lineScatter.yaml", package = "gsplot")
+
+g1 <- gsplot(config.file = line_scatter_config) %>% 
+  points(1:10, 1:10, pch=20, legend.name="first points") %>% 
+  lines(4:1, 4:1, legend.name="first line") %>% 
+  points(c(3,7,4), c(9,3,6), pch=20, col="black", legend.name="second points") %>% 
+  legend()
+g1
+```
+
+![](README_files/figure-markdown_github/unnamed-chunk-26-1.png)
+
+Finally, a theme can call a config file to load up defaults, but also makes particular calls as a default. There are a few themes pre-loaded into the `gsplot` package
+
+``` r
+gs_packers <- gsplot(theme = theme.packers) %>%
+  points(1:10, 1:10)
+gs_packers
+```
+
+![](README_files/figure-markdown_github/unnamed-chunk-27-1.png)
 
 Disclaimer
 ----------

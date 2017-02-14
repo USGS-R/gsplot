@@ -11,7 +11,7 @@ test_that("testing content of gsplot list for background_color", {
     lines(20:30,20:30, side=c(3,4)) %>%
     background_color(col="coral2")
   
-  expect_true("background_color" %in% names(gs$view.1.2))
+  expect_true("background_color" %in% names(gs$global))
   
 })
 
@@ -28,6 +28,6 @@ test_that("testing background_color config", {
     background_color()
   
   expect_true(gsp$global$config$config.file)
-  expect_equal(gsp$view.1.2$background_color$col, "lightgrey")
+  expect_equal(gsp$global$background_color$col, "lightgrey")
   
 })

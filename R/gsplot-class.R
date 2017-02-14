@@ -52,22 +52,25 @@ gsplot.default <- function(..., created=Sys.Date(),
     
     if(is.na(config.file) && 
        "config.file" %in% names(theme[["global"]][["config"]])){ #if no config file specified by user
-      config.file <- theme$global$config$config.file
+      config.file <- theme$global$config$config.path
     }
     
-    object[["global"]][["config"]]["config.file"] <- config.file
+    object[["global"]][["config"]][["config.file"]] <- !is.na(config.file)
+    object[["global"]][["config"]][["config.path"]] <- config.file
     
   } else {
     object <- list(global= list(config=list(frame.plot=frame.plot,
-                                            config.file = !is.na(config.file))))
+                                            config.file = !is.na(config.file),
+                                            config.path = config.file)))
   }
   
   object <- c(list(metadata = list(created=created,
                                gsplot.version=gsplot.version)),
                  object)
 
-  if (!is.na(user.config)){
-    load_temp_config(config.file)
+  if (!is.na(object[["global"]][["config"]]$config.path)){
+    object[["config"]] <- yaml.load_file(config.file)
+    load_temp_config(object)
   } 
 
   if(length(all.equal(gsconfig$original.par, par(no.readonly = TRUE))) > 1){

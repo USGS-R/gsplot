@@ -4,10 +4,10 @@
 \alias{load_temp_config}
 \title{Load gsplot temporary config}
 \usage{
-load_temp_config(filename)
+load_temp_config(object)
 }
 \arguments{
-\item{filename}{string to custom file}
+\item{object}{gsplot object}
 }
 \description{
 Loads the config file into options which are
