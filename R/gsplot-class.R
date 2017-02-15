@@ -10,8 +10,9 @@
 #' @param config.file path to the file that will only be used for setting 
 #' par in this one gsplot object. If \code{NA} (default), par is set by the global options set by
 #' loadConfig().
-#' @param theme path to the file that will only be used for setting 
-#' the gsplot theme in this one gsplot object. If \code{NA} (default), there is no theme.
+#' @param theme There are several built in themes (see \link{Themes}). Additionally, the user can create a \code{gsplot}
+#' object in their workspace. This argument then takes the name of that object (either built-in or custom).
+#' If \code{NA} (default), no theme is used.
 #' @param frame.plot a logical indicating whether a box should be drawn around the plot. Default is \code{TRUE}.
 #' @param \dots Further graphical parameters may also be supplied as arguments. See 'Details'.
 #' @return gsplot 
@@ -68,10 +69,13 @@ gsplot.default <- function(..., created=Sys.Date(),
                                gsplot.version=gsplot.version)),
                  object)
 
-  if (!is.na(object[["global"]][["config"]]$config.path)){
+  if (!is.na(user.config)){
     object[["config"]] <- yaml.load_file(config.file)
-    load_temp_config(object)
   } 
+  
+  if(object[["global"]][["config"]]$config.file){
+    load_temp_config(object)
+  }
 
   if(length(all.equal(gsconfig$original.par, par(no.readonly = TRUE))) > 1){
     par(gsconfig$original.par)
