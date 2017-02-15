@@ -1,6 +1,15 @@
 gsconfig <- new.env(parent = emptyenv())
 gsconfig$original.par <- par(no.readonly = TRUE)
 
+#' Clear par
+#' 
+#' Resets par to what it was when gsplot was loaded.
+#' 
+#' @export
+clear_par <- function(){
+  par(gsconfig$original.par)
+}
+
 #Question...how can I update the user's par?
 
 #' @title Load gsplot config
@@ -38,20 +47,18 @@ loadConfig = function(filename) {
 #'used elsewhere in the application. This will only change the config paremeters while
 #'building up the gsplot object, not on print.
 #'
-#' @param filename string to custom file 
+#' @param object gsplot object
 #'
 #' @importFrom graphics plot.xy
 #' @importFrom graphics par
 #' @importFrom yaml yaml.load_file
 #' @importFrom grDevices dev.off
-load_temp_config = function(filename) {
-  
-  graphTemplate <- yaml.load_file(filename)
+load_temp_config = function(object){
 
   if(length(all.equal(gsconfig$original.par, par(no.readonly = TRUE))) > 1){
     par(gsconfig$original.par)
   }
-  gsconfig$temp.config <- graphTemplate
+  gsconfig$temp.config <- object[["config"]]
 }
 
 

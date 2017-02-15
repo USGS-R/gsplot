@@ -124,6 +124,8 @@ get_axTicks <- function(object, side){
   at <- usr_axTicks(object, side)
   if (is.null(at)){
     at <- grid_axTicks(object, side)
+  } else if (inherits(at, "lazy")) {
+    at <- lazy_eval(at, data=list(object=object))
   }
   return(at)
 }

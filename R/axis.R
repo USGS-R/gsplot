@@ -18,7 +18,7 @@
 #' gs <- gsplot() %>%
 #'    points(x=1:5, y=1:5, legend.name="Stuff") %>%
 #'    lines(2:6, y=2:6, ylim=c(0,10)) %>%
-#'    bgCol(col="lightgoldenrod") %>%
+#'    background_color(col="lightgoldenrod") %>%
 #'    axis(side=c(3,4),labels=FALSE) %>%
 #'    legend("topright")
 #' gs
@@ -91,7 +91,19 @@ axis.gsplot <- function(object, ..., n.minor=0, tcl.minor=0.15, reverse=NULL) {
 }
 
 draw_axis <- function(object, side.name){
-  axis.args <- object[[side.name]][['axis']]
+
+
+  # method isn't made for multiple axis calls
+  which.axis <- which(names(object[[side.name]]) == 'axis')
+  if (length(which.axis) > 1){
+    for (axis.i in which.axis){
+      tmp <- object
+      tmp[[side.name]] <- tmp[[side.name]][-which.axis[which.axis %in% axis.i]]
+      draw_axis(tmp, side.name)
+    }
+  }
+
+  master  axis.args <- object[[side.name]][['axis']]
   side.lim <- object[[side.name]][['lim']]
   
   axis.args$at <- get_axTicks(object, as.side(side.name))

@@ -10,14 +10,16 @@ pkg.env <- new.env()
       list(package='graphics', def.funs=graphics::text.default),
     'plot' = 
       list(package='graphics', def.funs=graphics::plot.xy),
-    'bgCol' =
-      list(package='gsplot', def.funs=gsplot::bgCol.default),
+    'background_color' =
+      list(package='gsplot', def.funs=gsplot::background_color.default),
     'callouts' =
       list(package='gsplot', def.funs=gsplot::callouts.default),
     'error_bar' =
-      list(package='gsplot', def.funs=gsplot::error_bar.default),
+      list(package='gsplot', def.funs=c(gsplot::error_bar.default, graphics::plot.xy)),
+    'axis' = 
+      list(package='graphics', def.funs=c(graphics::axis, graphics::axis.Date, graphics::axis.POSIXct)),
     
-    "par" = c(),"axis" = c(), "abline" = c(), "legend" = c(), 
+    "par" = c(),"abline" = c(), "legend" = c(), 
     "title" = c(), "mtext" = c(), "grid" = c(), #"box" = c(),
     "segments" = c(), "arrows" = c(), "rect" = c(), 
     "polygon" = c(), "symbols" = c(), "curve" = c()
@@ -36,7 +38,7 @@ pkg.env <- new.env()
 #' that originally came from the United States Geological Survey, an agency of
 #' the United States Department of Interior. For more information, see the
 #' official USGS copyright policy at
-#' http://www.usgs.gov/visual-id/credit_usgs.html#copyright\cr
+#' https://www.usgs.gov/visual-id/credit_usgs.html#copyright\cr
 #' LazyLoad: \tab yes\cr
 #' }
 #'

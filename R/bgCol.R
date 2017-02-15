@@ -1,4 +1,4 @@
-#' gsplot bgCol
+#' gsplot background_color
 #'
 #' Adds color to the plot background. 
 #' 
@@ -10,35 +10,37 @@
 #' @examples
 #' gs <- gsplot() %>%
 #'    points(y=c(3,1,2), x=4:6, xlim=c(0,NA),legend.name="Points") %>%
-#'    bgCol(col="lightgrey") %>%
+#'    background_color(col="lightgrey") %>%
 #'    lines( c(3,4,3), c(2,4,6), legend.name="Lines", side=c(3,4)) %>%
 #'    legend(location="topleft")      
 #' gs
 #' 
 #' gs <- gsplot() %>%
 #'    points(1:100, rnorm(100,mean=10000, sd=1000), log="y") %>%
-#'    bgCol(col="lightgrey")
+#'    background_color(col="lightgrey")
 #' gs
 #' 
 #' gs <- gsplot() %>%
 #'    points(1:100, rnorm(100,mean=10000, sd=1000), log="y") %>%
-#'    bgCol() #yaml specifies lightgrey
+#'    background_color() #yaml specifies lightgrey
 #' gs
 #' 
 #' gs <- gsplot() %>%
 #'    points(1:100, rnorm(100,mean=10000, sd=1000), log="y") %>%
-#'    bgCol("lightgoldenrod") 
+#'    background_color("lightgoldenrod") 
 #' gs
-bgCol <- function(object, ...) {
-  override("gsplot", "bgCol", object, ...)
+background_color <- function(object, ...) {
+  override("gsplot", "background_color", object, ...)
 }
 
 
-bgCol.gsplot <- function(object, ...){
+background_color.gsplot <- function(object, ..., legend.name=NULL, side=c(1,2)){
 
-  to.gsplot <- filter_arguments(fun.name = "bgCol", ...,
-                                custom.config = object[["global"]][["config"]][["config.file"]])$call.args
-  object$global$bgCol <- append_replace(object$global$bgCol, to.gsplot[[1]])
+  fun.name='background_color'
+
+  arguments <- filter_arguments(fun.name, ..., custom.config = object[["global"]][["config"]][["config.file"]], side=side)
+  object[["global"]] <- append_replace(object[["global"]], arguments$call.args)
+  
   return(object)
 
 }
@@ -50,7 +52,7 @@ bgCol.gsplot <- function(object, ...){
 #' Here NULL means color 0.
 #' @export
 #' @keywords internal
-bgCol.default <- function(col=NULL){
+background_color.default <- function(col=NULL){
   
   if(par()$xlog){
     x1 <- 10^(par("usr")[1])
