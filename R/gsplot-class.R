@@ -68,10 +68,13 @@ gsplot.default <- function(..., created=Sys.Date(),
                                gsplot.version=gsplot.version)),
                  object)
 
-  if (!is.na(object[["global"]][["config"]]$config.path)){
+  if (!is.na(user.config)){
     object[["config"]] <- yaml.load_file(config.file)
-    load_temp_config(object)
   } 
+  
+  if(object[["global"]][["config"]]$config.file){
+    load_temp_config(object)
+  }
 
   if(length(all.equal(gsconfig$original.par, par(no.readonly = TRUE))) > 1){
     par(gsconfig$original.par)
