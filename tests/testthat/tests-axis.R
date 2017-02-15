@@ -18,8 +18,8 @@ test_that("axis gsplot",{
                                    "view.1.2", "global", "metadata")))
   
   gs <- gsplot() %>%
-     lines(1:5, c(1,10,100,1000,10000), log="y", axes=FALSE) %>%
-     axis(side=c(2,4), labels=FALSE, n.minor=4)
+    lines(1:5, c(1,10,100,1000,10000), log="y", axes=FALSE) %>%
+    axis(side=c(2,4), labels=FALSE, n.minor=4)
   
   expect_false(gs$side.1$axes)
   expect_false(gs$side.2$axes)
