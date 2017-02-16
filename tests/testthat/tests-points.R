@@ -12,7 +12,7 @@ test_that("graphics examples work", {
   plot.xy(xy, type='p')
   
   plot(1,3)
-  points(data.frame(1,2), col='red')
+  # points(data.frame(1,2), col='red')
   
 })
 
