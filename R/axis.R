@@ -64,7 +64,7 @@ axis <- function(object, ...) {
   override("graphics", "axis", object, ...)
 }
 
-axis.gsplot <- function(object, ..., n.minor=0, tcl.minor=0.15, reverse=NULL) {
+axis.gsplot <- function(object, ..., n.minor=0, tcl.minor=0.15, reverse=NULL, append=FALSE) {
   
   fun.name <- "axis"
   
@@ -78,7 +78,12 @@ axis.gsplot <- function(object, ..., n.minor=0, tcl.minor=0.15, reverse=NULL) {
   
   for(side in sides){
     # append the side and give it defaults if it doesn't exist
-    object <- modify_side(object, args = list(), side=side) 
+    if(append){
+      
+    } else {
+      object <- modify_side(object, args = list(), side=side) 
+    }
+    
     object[[as.side_name(side)]][['usr.axes']] <- TRUE
     object[[as.side_name(side)]][['axis']] <- append_replace(object[[as.side_name(side)]][['axis']], user_args[[fun.name]])
     if (!is.null(reverse)){
@@ -103,7 +108,7 @@ draw_axis <- function(object, side.name){
     }
   }
 
-  master  axis.args <- object[[side.name]][['axis']]
+  axis.args <- object[[side.name]][['axis']]
   side.lim <- object[[side.name]][['lim']]
   
   axis.args$at <- get_axTicks(object, as.side(side.name))
