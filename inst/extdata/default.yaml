@@ -34,10 +34,10 @@ grid:
   lty: 2
 segments: NULL
 error_bar:
-  y.high: 0 
-  y.low: 0 
-  x.high: 0
-  x.low: 0
+  offset.up: 0 
+  offset.down: 0 
+  offset.right: 0
+  offset.left: 0
   epsilon: 0.1
 arrows: NULL
 callouts:
