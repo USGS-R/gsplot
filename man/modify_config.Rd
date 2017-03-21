@@ -18,4 +18,3 @@ a modified object with the global config field changed
 modify the global config field of the gsplot object
 }
 \keyword{internal}
-

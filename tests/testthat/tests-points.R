@@ -10,12 +10,15 @@ test_that("graphics examples work", {
   lx <- seq(1, 5, length = 41)
   xy = xy.coords(x=10^lx,y=exp(-.5*lx^2))
   plot.xy(xy, type='p')
-
+  
+  plot(1,3)
+  # points(data.frame(1,2), col='red')
+  
 })
 
 context("points arguments")
 test_that("setting params works as expected",{
-  expect_equal(gsplot:::function_args("graphics","points", 5, y = NULL), list(x=5, y=NULL))
+  expect_equal(gsplot:::function_args("graphics","points", 5, y = NULL), list(x=1, y=5))
   expect_equal(gsplot:::function_args("graphics","points", y=5, x=0), list(x=0, y=5))
 })
 
@@ -58,3 +61,18 @@ test_that("points.gsplot accepts formulas",{
            
 })
 
+test_that("points works with indexing", {
+  
+  x <- 7:10
+  gs <- gsplot() %>%
+    points(x)
+  expect_equal(class(gs$view.1.2$points$y), "integer")
+  expect_equal(gs$view.1.2$points$x, seq_along(x))
+  
+
+  oct_dates <- seq(as.Date("2015-10-11"), as.Date("2015-10-15"), by="days")
+  gs_dates <- gsplot() %>%
+    points(oct_dates)
+  expect_equal(class(gs_dates$view.1.2$points$y), "Date")
+  expect_equal(gs_dates$view.1.2$points$x, seq_along(oct_dates))
+})

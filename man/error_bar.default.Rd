@@ -4,21 +4,21 @@
 \alias{error_bar.default}
 \title{create error bars}
 \usage{
-error_bar.default(x, y, y.high, y.low, x.high, x.low, epsilon = 0.1, lwd, lty,
-  col, ...)
+error_bar.default(x, y, offset.up = 0, offset.down = 0, offset.right = 0,
+  offset.left = 0, epsilon = 0.1, ...)
 }
 \arguments{
 \item{x}{location in x}
 
 \item{y}{location in y}
 
-\item{y.high}{offset up}
+\item{offset.up}{offset up}
 
-\item{y.low}{offset down}
+\item{offset.down}{offset down}
 
-\item{x.high}{offset right}
+\item{offset.right}{offset right}
 
-\item{x.low}{offset left}
+\item{offset.left}{offset left}
 
 \item{epsilon}{width of bar in relative units}
 
@@ -27,5 +27,7 @@ error_bar.default(x, y, y.high, y.low, x.high, x.low, epsilon = 0.1, lwd, lty,
 \description{
 create error bars
 }
-\keyword{internal}
-
+\examples{
+plot(1:10, 1:10)
+error_bar(5, 5, offset.up=1, col="green")
+}

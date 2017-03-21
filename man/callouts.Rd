@@ -13,6 +13,8 @@ callouts.default(x, y = NULL, labels = NA, length = 0.1, angle = "auto",
 \arguments{
 \item{object}{gsplot object}
 
+\item{\dots}{Further graphical parameters may also be supplied as arguments. See 'Details'.}
+
 \item{x}{values for callout location}
 
 \item{y}{values for callout location}
@@ -28,8 +30,6 @@ callouts.default(x, y = NULL, labels = NA, length = 0.1, angle = "auto",
 \item{lwd}{passed to \code{\link[graphics]{arrows}} for line weights}
 
 \item{lty}{passed to \code{\link[graphics]{arrows}} for line type}
-
-\item{\dots}{Further graphical parameters may also be supplied as arguments. See 'Details'.}
 }
 \description{
 Add callout lines and text to a plot.
@@ -53,4 +53,3 @@ gsNew <- points(gs, y=1, x=2, xlim=c(0,3),ylim=c(0,3),
 gsNew <- callouts(gsNew, 2, 1, labels='dog')
 gsNew
 }
-

@@ -25,8 +25,8 @@ demoPlot <- gsplot() %>%
   abline(b=1, a=0, legend.name="1:1") %>%
   legend(location="topleft",title="Awesome!") %>%
   grid() %>%
-  error_bar(x=1:3, y=c(3,1,2), y.high=c(0.5,0.25,1), y.low=0.1) %>%
-  error_bar(x=1:3, y=c(3,1,2), x.low=.2, x.high=.2, col="red",lwd=3) %>%
+  error_bar(x=1:3, y=c(3,1,2), offset.up=c(0.5,0.25,1), offset.down=0.1) %>%
+  error_bar(x=1:3, y=c(3,1,2), offset.left=.2, offset.right=.2, col="red",lwd=3) %>%
   callouts(x=1, y=2.8, lwd=2, angle=250, labels="Weird data") %>%
   title("Graphing Fun")
 demoPlot
@@ -35,7 +35,7 @@ demoPlot
 
 ## Overview
 
-`gsplot` uses similar plotting graphics to R base graphics, but allows users to execute them in a more intuitive manner. Additionally, as the complexity of the plot features increase, `gpslot` code is simplistic compared to that of base graphics. `gsplot` also includes features not present in base graphics that are useful when working with USGS data, such as `callouts` (combines `segments` and `text` into a single call), `error_bar` (allows an error to be given as `y.high`, `y.low`, `x.high`, and `x.low` and automatically builds an error bar), and the argument `legend.name` (an argument within `points`, `lines`, etc. which does not require colors, linetypes, and other par information to be redefined within the `legend` call).
+`gsplot` uses similar plotting graphics to R base graphics, but allows users to execute them in a more intuitive manner. Additionally, as the complexity of the plot features increase, `gpslot` code is simplistic compared to that of base graphics. `gsplot` also includes features not present in base graphics that are useful when working with USGS data, such as `callouts` (combines `segments` and `text` into a single call), `error_bar` (allows an error to be given as `offset.up`, `offset.down`, `offset.right`, and `offset.left` and automatically builds an error bar), and the argument `legend.name` (an argument within `points`, `lines`, etc. which does not require colors, linetypes, and other par information to be redefined within the `legend` call).
 
 ## Data manipulation
 

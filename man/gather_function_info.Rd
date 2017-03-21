@@ -11,14 +11,14 @@ gather_function_info(object, fun.name, ..., legend.name, side, where)
 
 \item{fun.name}{a function name (character)}
 
+\item{\dots}{arguments to be used in the above mentioned functions}
+
 \item{legend.name}{the name to use for the legend name (can be \code{NULL})}
 
 \item{side}{the side(s) that the arguments apply to}
 
 \item{where}{location to put \code{call.args}.
 Can be "first" or "last". Used in \code{\link{add_to_view}}}
-
-\item{\dots}{arguments to be used in the above mentioned functions}
 }
 \value{
 a code{gsplot} object
@@ -35,4 +35,3 @@ These arguments are then used in calls to \code{\link{modify_side}},
 \code{gsplot}
 }
 \keyword{internal}
-

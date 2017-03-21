@@ -15,4 +15,3 @@ set_frame(object, side)
 set up the plot frame/window for a side
 }
 \keyword{internal}
-

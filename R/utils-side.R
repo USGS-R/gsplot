@@ -194,8 +194,8 @@ set_side_lim <- function(args, side, side.num){
   stopifnot(length(side.num) == 1)
   axis <- as.axis(side.num)
   include <- switch(axis,
-                    x = c('x','x1','x0','xleft','xright', 'data'),
-                    y = c('y','y1','y0','ytop','ybottom', 'data'))
+                    x = c('x','x1','x0','xleft','xright', 'data', 'v'),
+                    y = c('y','y1','y0','ytop','ybottom', 'data', 'h'))
   # // need value arguments, need yaxs/xaxs args, need user-specified ylim/xlim values
   usr.lims <- c(NA, NA)
   lim.arg = paste0(axis,"lim")

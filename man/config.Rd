@@ -23,4 +23,3 @@ but exposed for use by gsplot users
 config("par")
 
 }
-

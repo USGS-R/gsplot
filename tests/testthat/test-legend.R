@@ -49,3 +49,14 @@ test_that("gsplot legend args are still the same", {
   
 })
 
+test_that("testing legend config", {
+  
+  
+  gsp <- gsplot(config.file = system.file("extdata", "lineScatter.yaml", package = "gsplot")) %>%
+    points(1:10,1:10,legend="Thing") %>%
+    legend()
+  
+  expect_true(gsp$global$config$config.file)
+  expect_equal(gsp$legend$legend.auto$title, "EXPLANATION")
+  
+})

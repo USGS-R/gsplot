@@ -16,4 +16,3 @@ a vector of view names
 convert sides vector into view name
 }
 \keyword{internal}
-

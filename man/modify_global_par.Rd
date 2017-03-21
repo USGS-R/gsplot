@@ -18,4 +18,3 @@ modify_global_par(object, arguments, on.readonly = "stop")
 modify global par
 }
 \keyword{internal}
-

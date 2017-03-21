@@ -35,4 +35,3 @@ gs <- gsplot() \%>\%
 gs
 is.gsplot(gs)
 }
-

@@ -37,4 +37,3 @@ gsNew
 \seealso{
 \code{\link[graphics]{segments}}
 }
-

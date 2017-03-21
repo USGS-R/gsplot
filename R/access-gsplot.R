@@ -259,3 +259,27 @@ view_info <- function(object){
   
   return(viewInfo)
 }
+
+#' Get gsplot object creation date.
+#' 
+#' Get the date that this gsplot object was originally created.
+#' 
+#' @param object a gsplot object
+#' @return The date the gsplot object was created.
+#' @export
+whatDate <- function(object){
+  date_created <- object$metadata$created
+  return(date_created)
+}
+
+#' Get gsplot version used.
+#' 
+#' Get the version number that was used to create this gsplot object.
+#' 
+#' @param object a gsplot object
+#' @return The gsplot version number.
+#' @export
+whatVersion <- function(object){
+  version_created <- object$metadata$gsplot.version
+  return(version_created)
+}

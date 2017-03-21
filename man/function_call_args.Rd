@@ -17,4 +17,3 @@ function_call_args(fun.name, all.args, custom.config = FALSE)
 get the arguments that go into the function call, stripping out others and adding config defaults
 }
 \keyword{internal}
-

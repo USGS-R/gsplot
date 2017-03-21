@@ -25,4 +25,3 @@ MaumeeDV <- renameNWISColumns(MaumeeDV)
 }
 head(MaumeeDV)
 }
-

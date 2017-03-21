@@ -14,14 +14,13 @@ function_args(package, name, object, ..., use.default = paste0(name,
 
 \item{object}{the first argument, which may have a class to match functions to}
 
+\item{\dots}{user arguments to be used for the list}
+
 \item{use.default}{use different function name other than <function>.default (optional)}
 
 \item{drop}{boolean for dropping all non-formal args passed in with \dots}
-
-\item{\dots}{user arguments to be used for the list}
 }
 \description{
 extracts and names user-specified arguments according to function defaults
 }
 \keyword{internal}
-

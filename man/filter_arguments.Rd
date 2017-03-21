@@ -9,10 +9,10 @@ filter_arguments(fun.name, ..., custom.config = FALSE)
 \arguments{
 \item{fun.name}{the name of the rendering function}
 
-\item{custom.config}{logical to use custom or global config file}
-
 \item{\dots}{arguments to \code{fun.name} or an embedded function 
 within it.}
+
+\item{custom.config}{logical to use custom or global config file}
 }
 \value{
 list with arguments. List is named according to function 
@@ -27,7 +27,7 @@ rendering functions.
 gs <- gsplot() \%>\% 
          points(x=1:5, y=1:5, xlim=c(0,10), ylim=c(0,10), 
                callouts(labels=c(rep(NA, 4), "oh")), 
-               error_bar(y.high=1))
+               error_bar(offset.up=1))
 gs
 
 gsplot:::filter_arguments('points', x=2:6, y=2:6, ylim=c(-1, 11))$call.args
@@ -35,4 +35,3 @@ gsplot:::filter_arguments('points', x=1:5, y=1:5, xlim=c(0,10), ylim=c(0,10),
                callouts(labels=c(rep(NA, 4), "oh")))$extracted.args
 }
 \keyword{internal}
-

@@ -20,4 +20,3 @@ a modified \code{sides} list
 set the label value on a side
 }
 \keyword{internal}
-
