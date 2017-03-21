@@ -14,7 +14,12 @@ function_args <- function(package, name, object, ..., use.default=paste0(name,'.
   params <- list(...)
   
   if (!missing(object)) {
-    params <- append_params(object, params)
+    # params <- append_params(object, params)
+    if (!is.null(names(object)) & !is.data.frame(object)){
+      params <- append(object, params)
+    } else {
+      params <- append(list(object), params)
+    }
   } else {
     object=c()
   }
