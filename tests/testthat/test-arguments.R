@@ -1,7 +1,7 @@
 context("lining up default arguments")
-test_that("setting params with other default works as expected",{
-  expect_equal(gsplot:::function_args("grDevices","points", 5:10, y = NULL, 'label', use.default='xy.coords'), 
-               list(x=1:6, y=5:10,xlab='label'))
+test_that("leaving y NULL results in x as indices and y as values",{
+  expect_equal(gsplot:::set_args("points", 5:10, y = NULL, package="graphics"), 
+               list(x=1:6, y=5:10, pch=6, col="red"))
 })
 
 test_that("setting params with class match works as expected",{
