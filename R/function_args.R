@@ -14,12 +14,7 @@ function_args <- function(package, name, object, ..., use.default=paste0(name,'.
   params <- list(...)
   
   if (!missing(object)) {
-    # params <- append_params(object, params)
-    if (!is.null(names(object)) & !is.data.frame(object)){
-      params <- append(object, params)
-    } else {
-      params <- append(list(object), params)
-    }
+    params <- append_params(object, params)
   } else {
     object=c()
   }
@@ -68,6 +63,9 @@ append_params.NULL <- function(object, params){
 }
 
 append_params.list <- function(object, params){
+  if(is.null(names(object))){
+    object <- list(object)
+  }
   append(object, params)
 }
 
