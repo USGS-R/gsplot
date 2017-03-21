@@ -14,12 +14,7 @@ function_args <- function(package, name, object, ..., use.default=paste0(name,'.
   params <- list(...)
   
   if (!missing(object)) {
-    # params <- append_params(object, params)
-    if (!is.null(names(object))){
-      params <- append(object, params)
-    } else {
-      params <- append(list(object), params)
-    }
+    params <- append_params(object, params)
   } else {
     object=c()
   }
@@ -45,14 +40,6 @@ function_args <- function(package, name, object, ..., use.default=paste0(name,'.
     names(params) <- arg.names[seq_len(length(params))]
   } else {
     names(params)[which(names(params) == "")] <- arg.names[seq_len(sum(names(params) == ""))]
-  }
-  
-  if(name %in% c('points', 'lines')){
-    if(!is.null(params[['x']]) & is.null(params[['y']])){
-      xy_args <- list(x = seq_along(params[['x']]),
-                      y = params[['x']])
-      params <- append_replace(params, xy_args)
-    }
   }
   
   # // re-order
