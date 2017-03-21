@@ -31,8 +31,8 @@ gs <- gsplot() \%>\%
    abline(b=1, a=0, legend.name="1:1") \%>\%
    legend(location="topleft",title="Awesome!") \%>\%
    grid() \%>\%
-   error_bar(x=1:3, y=c(3,1,2), y.high=c(0.5,0.25,1), y.low=0.1) \%>\%
-   error_bar(x=1:3, y=c(3,1,2), x.low=.2, x.high=.2, col="red",lwd=3) \%>\%
+   error_bar(x=1:3, y=c(3,1,2), offset.up=c(0.5,0.25,1), offset.down=0.1) \%>\%
+   error_bar(x=1:3, y=c(3,1,2), offset.left=.2, offset.right=.2, col="red",lwd=3) \%>\%
    arrows(x0=0.75, y0=2, x1=1, y1=2.8, lwd=2) \%>\%
    title("Graphing Fun") \%>\%
    text(.75,1.75,labels="Weird data")

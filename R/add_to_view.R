@@ -64,7 +64,7 @@ add_to_view <- function(object, call.args, side, where){
 #' gs <- gsplot() %>% 
 #'          points(x=1:5, y=1:5, xlim=c(0,10), ylim=c(0,10), 
 #'                callouts(labels=c(rep(NA, 4), "oh")), 
-#'                error_bar(y.high=1))
+#'                error_bar(offset.up=1))
 #' gs
 #' 
 #' gsplot:::filter_arguments('points', x=2:6, y=2:6, ylim=c(-1, 11))$call.args
