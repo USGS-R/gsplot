@@ -197,7 +197,12 @@ modify_legend <- function(object, location="topright", legend_offset=0.3, draw=F
   arguments <- filter_arguments("legend", ..., custom.config = object[["global"]][["config"]][["config.file"]])
 
   arguments <- arguments$call.args$legend
-  arguments <- arguments[!unlist(lapply(arguments, is.null))]
+  
+  null.args <- unlist(lapply(arguments, is.null))
+  if(!is.null(null.args)){
+    arguments <- arguments[!null.args]
+  }
+  
   legend.config <- append_replace(arguments, legend.config)
   # auto is used when "legend" arg comes from "legend.name" in gsplot calls
   legend.index <- ifelse("legend" %in% names(legend.config),length(grep("legend.\\d+", names(object$legend))) + 1, "auto")
