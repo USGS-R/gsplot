@@ -53,7 +53,7 @@ test_that("axis can append a second one",{
     points(0:1,0:1) %>% 
     axis(side=1, at=c(0.5,1)) %>% 
     axis(side=1, at=c(0.25, 0.75), append=TRUE)
-  # expect_equal(sum(names(gs$side.1) == 'axis'), 2)
+  expect_equal(sum(names(gs$side.1) == 'axis'), 2)
 })
 
 test_that("axis can append a third one and the forth clears them",{
@@ -63,7 +63,7 @@ test_that("axis can append a third one and the forth clears them",{
     axis(side=1, at=c(0.25, 0.75), append=TRUE) %>% 
     axis(side=1, at=c(0.45, 0.55), append=TRUE)
   
-  # expect_equal(sum(names(gs$side.1) == 'axis'), 3)
+  expect_equal(sum(names(gs$side.1) == 'axis'), 3)
   gs <- gsplot() %>% 
     points(0:1,0:1) %>% 
     axis(side=1, at=c(0.5,1)) %>% 
@@ -80,7 +80,7 @@ test_that("axis tracks append FALSE by default",{
     axis(side=1, at=c(0.5,1)) %>% 
     axis(side=1, at=c(0.25, 0.75)) %>% 
     axis(side=1, at=c(0.45, 0.55), append=TRUE)
-  # expect_equal(sum(names(gs$side.1) == 'axis'), 2)
+  expect_equal(sum(names(gs$side.1) == 'axis'), 2)
 })
 
 context("axis user flipped on")

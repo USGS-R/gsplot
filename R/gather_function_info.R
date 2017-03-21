@@ -38,6 +38,21 @@ gather_function_info <- function(object, fun.name, ..., legend.name, side, where
   
   object <- add_to_legend(object, fun.name, legend.name, call.args[[1]], option.args, where=where)
   
+  # Populate missing sides
+  missing_sides <- c(1:4)[sapply(1:4, function(x) length(views_with_side(object, x)) == 0)]
+  
+  if(length(missing_sides) > 0){
+    for(i in missing_sides){
+      if(i %% 2 == 1){
+        option.args$side <- c(side[which(side %% 2 == 0)],i)
+      } else {
+        option.args$side <- c(i,side[which(side %% 2 == 1)])
+      }
+      object <- modify_side(object, c(call.args, option.args), side=i)
+      object <- modify_side_par(object, option.args, side=i)      
+    }
+  } 
+  
   class(object) <- 'gsplot'
   return(object)
 }
