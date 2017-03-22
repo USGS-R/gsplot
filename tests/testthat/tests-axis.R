@@ -98,6 +98,13 @@ test_that("special args given to axis are retained", {
   expect_equal(gs$side.1$axis[["tcl.minor"]], -0.136)
 })
 
+test_that("style params given to points calls are in side par, style on axis stay there",{
+  gs <- points(gsplot(), 1, 0, tcl=0.5) %>% axis(side=1, tcl = -0.136)
+  expect_equal(gs$side.1$axis[["tcl"]], -0.136)
+  expect_equal(gs$side.1$par[["tcl"]], 0.5)
+})
+
+
 context("axis user flipped on")
 
 test_that("axis user FALSE by default",{

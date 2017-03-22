@@ -72,7 +72,7 @@ axis.gsplot <- function(object, ..., n.minor=0, tcl.minor=0.15, reverse=NULL, ap
                            custom.config = object[["global"]][["config"]][["config.file"]])
   
   if (length(args$extracted.args) > 0){
-    warning('axs.gsplot is not configured to support embedded function calls', call. = FALSE)
+    warning('axis.gsplot is not configured to support embedded function calls', call. = FALSE)
   }
   
   user.args <- args$call.args
