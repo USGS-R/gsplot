@@ -10,6 +10,9 @@ axis(object, ...)
 \item{object}{gsplot object}
 
 \item{\dots}{Further graphical parameters may also be supplied as arguments. See 'Details'.}
+
+\item{tcl.minor}{tick length for minor ticks (used if \code{n.minor} > 0). Use NA (the default) to have this 
+calculated automatically as half of the value for \code{par('tcl')} at the time of rendering the axis.}
 }
 \description{
 Formats axes for the plotting region.  See \code{\link[graphics]{axis}} for more details.
