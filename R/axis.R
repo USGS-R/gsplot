@@ -4,6 +4,12 @@
 #'
 #' @param object gsplot object
 #' @param \dots Further graphical parameters may also be supplied as arguments. See 'Details'.
+#' @param n.minor number of minor ticks between major ticks
+#' @param tcl.minor tick length for minor ticks (used if \code{n.minor} > 0). Use NA (the default) to have this 
+#' calculated automatically as half of the value for \code{par('tcl')} at the time of rendering the axis. 
+#' @param reverse flip the orientation of the axis?
+#' @param append replace or append an existing axis for this side (logical)
+#' 
 #' 
 #' @details Additional graphical parameter inputs: 
 #' \itemize{
@@ -64,7 +70,7 @@ axis <- function(object, ...) {
   override("graphics", "axis", object, ...)
 }
 
-axis.gsplot <- function(object, ..., n.minor=0, tcl.minor=0.15, reverse=NULL, append=FALSE) {
+axis.gsplot <- function(object, ..., n.minor=0, tcl.minor=NA, reverse=NULL, append=FALSE) {
   
   fun.name <- "axis"
   
@@ -96,8 +102,8 @@ axis.gsplot <- function(object, ..., n.minor=0, tcl.minor=0.15, reverse=NULL, ap
 }
 
 draw_axis <- function(object, side.name){
-
-
+  
+  
   # method isn't made for multiple axis calls
   which.axis <- which(names(object[[side.name]]) == 'axis')
   if (length(which.axis) > 1){
@@ -107,7 +113,7 @@ draw_axis <- function(object, side.name){
       draw_axis(tmp, side.name)
     }
   }
-
+  
   axis.args <- object[[side.name]][['axis']]
   side.lim <- object[[side.name]][['lim']]
   
@@ -124,8 +130,7 @@ draw_axis <- function(object, side.name){
     
     tcl <- NULL
     if (exists('tcl.minor',axis.args)){
-      tcl <- axis.args$tcl.minor
-      
+      tcl <- ifelse(is.na(axis.args$tcl.minor), par('tcl')*0.5, axis.args$tcl.minor)
     }
     
     axis.args$n.minor <- NULL

@@ -337,9 +337,9 @@ demoPlot
 ![](README_files/figure-markdown_github/unnamed-chunk-20-1.png)
 
 ``` r
-gs <- gsplot() %>%
+gs <- gsplot(mgp=c(1.4,0.8,0)) %>%
   points(y=c(3,1,2,4,5), x=c(1:3,8,80), 
-         col="blue", pch=18, legend.name="Points") %>%
+         col="blue", pch=18, legend.name="Points", tcl=-0.38) %>%
   lines(c(3,4,3), c(2,4,6), legend.name="Lines", 
         ylab="logged y axis", xlab="logged x axis", log='xy') %>%
   callouts(x=8, y=4, lwd=2, angle=45, labels="Not sure about this one") %>%
