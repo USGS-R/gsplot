@@ -98,12 +98,6 @@ test_that("special args given to axis are retained", {
   expect_equal(gs$side.1$axis[["tcl.minor"]], -0.136)
 })
 
-
-test_that("minor ticks get default direction and size from major ticks",{
-  # tcl
-  # tcl.minor
-})
-
 context("axis user flipped on")
 
 test_that("axis user FALSE by default",{
