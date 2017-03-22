@@ -74,28 +74,39 @@ axis.gsplot <- function(object, ..., n.minor=0, tcl.minor=NA, reverse=NULL, appe
   
   fun.name <- "axis"
   
-  user_args <- filter_arguments(fun.name = fun.name, ..., 
-                                custom.config = object[["global"]][["config"]][["config.file"]])$call.args
+  args <- filter_arguments(fun.name = fun.name, ..., 
+                           custom.config = object[["global"]][["config"]][["config.file"]])
   
-  sides <- user_args[[fun.name]]$side
-  user_args[[fun.name]]$side <- NULL
-  user_args[[fun.name]]$n.minor <- n.minor
-  user_args[[fun.name]]$tcl.minor <- tcl.minor
+  if (length(args$extracted.args) > 0){
+    warning('axis.gsplot is not configured to support embedded function calls', call. = FALSE)
+  }
+  
+  user.args <- args$call.args
+  sides <- user.args[[fun.name]]$side
+  
+  if (is.null(sides)){
+    return(object)
+  }
+  
+  user.args[[fun.name]]$side <- NULL
+  user.args[[fun.name]]$n.minor <- n.minor
+  user.args[[fun.name]]$tcl.minor <- tcl.minor
+  
+  user.args[[fun.name]] <- append_replace(user.args[[fun.name]], args$option.args)
   
   for(side in sides){
     # append the side and give it defaults if it doesn't exist
-    if(append){
-      
-    } else {
+    if(!append){
       object <- modify_side(object, args = list(), side=side) 
     }
     
     object[[as.side_name(side)]][['usr.axes']] <- TRUE
-    object[[as.side_name(side)]][['axis']] <- append_replace(object[[as.side_name(side)]][['axis']], user_args[[fun.name]])
+    object[[as.side_name(side)]][['axis']] <- append_replace(object[[as.side_name(side)]][['axis']], user.args[[fun.name]])
     if (!is.null(reverse)){
       object[[as.side_name(side)]][['reverse']] <- reverse
     }
   }
+  
   class(object) <- 'gsplot'
   return(object)
   

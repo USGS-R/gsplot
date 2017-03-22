@@ -83,6 +83,28 @@ test_that("axis tracks append FALSE by default",{
   # expect_equal(sum(names(gs$side.1) == 'axis'), 2)
 })
 
+context("axis style arguments handled appropriately")
+
+test_that("par args sent to axis() end up in axis args",{
+  gs <- points(gsplot(), 1, 0) %>% axis(side=1, tcl = -0.25)
+  expect_equal(gs$side.1$axis[["tcl"]], -0.25)
+})
+
+test_that("special args given to axis are retained", {
+  gs <- points(gsplot(), 1, 0) %>% axis(side=1, n.minor = 4)
+  expect_equal(gs$side.1$axis[["n.minor"]], 4)
+  
+  gs <- points(gsplot(), 1, 0) %>% axis(side=1, tcl.minor = -0.136)
+  expect_equal(gs$side.1$axis[["tcl.minor"]], -0.136)
+})
+
+test_that("style params given to points calls are in side par, style on axis stay there",{
+  gs <- points(gsplot(), 1, 0, tcl=0.5) %>% axis(side=1, tcl = -0.136)
+  expect_equal(gs$side.1$axis[["tcl"]], -0.136)
+  expect_equal(gs$side.1$par[["tcl"]], 0.5)
+})
+
+
 context("axis user flipped on")
 
 test_that("axis user FALSE by default",{
@@ -97,13 +119,14 @@ test_that("axis user flipped to TRUE when specified",{
 })
 
 
+
 test_that("format",{
   
   gs <- gsplot() %>%
     points(seq.Date(as.Date("2010-01-01"), as.Date("2010-12-31"), by="month"),
            1:12) %>%
     axis(side = 1, format="%Y-%m")
-
+  
   expect_true(class(gs$side.1$lim) == "Date")
   
   gs <- gsplot() %>%
