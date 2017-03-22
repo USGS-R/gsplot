@@ -14,19 +14,10 @@ function_args <- function(package, name, object, ..., use.default=paste0(name,'.
   params <- list(...)
   
   if (!missing(object)) {
-    # params <- append_params(object, params)
-    if (!is.null(names(object))){
-      params <- append(object, params)
-    } else {
-      params <- append(list(object), params)
-    }
+    params <- append_params(object, params)
   } else {
     object=c()
   }
-  
-  if (length(params) == 0)
-    return(list())
-  
   
   # // is there a method for this class?
   defFun <- getS3method(name,class(object),optional=TRUE) # will be NULL when object is missing
@@ -36,7 +27,9 @@ function_args <- function(package, name, object, ..., use.default=paste0(name,'.
   
   arg.names = names(formals(defFun))[which(!names(formals(defFun)) %in% names(params))]
   
-  if (is.null(names(params))){
+  # need to check length(params) > 0 because if params is an empty list,
+  # indexing arg.names based on length(params) will fail.
+  if (is.null(names(params)) & length(params) > 0){
     # // all are unnamed
     if (arg.names[seq_len(length(params))][1] == "..."){
       # // special case where unnamed args go to ..., and should remain as characters (such as par("usr"))
@@ -45,14 +38,6 @@ function_args <- function(package, name, object, ..., use.default=paste0(name,'.
     names(params) <- arg.names[seq_len(length(params))]
   } else {
     names(params)[which(names(params) == "")] <- arg.names[seq_len(sum(names(params) == ""))]
-  }
-  
-  if(name %in% c('points', 'lines')){
-    if(!is.null(params[['x']]) & is.null(params[['y']])){
-      xy_args <- list(x = seq_along(params[['x']]),
-                      y = params[['x']])
-      params <- append_replace(params, xy_args)
-    }
   }
   
   # // re-order
@@ -76,6 +61,9 @@ append_params.NULL <- function(object, params){
 }
 
 append_params.list <- function(object, params){
+  if(is.null(names(object))){
+    object <- list(object)
+  }
   append(object, params)
 }
 

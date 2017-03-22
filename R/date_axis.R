@@ -38,10 +38,15 @@ date_axis <- function(object, ...) {
 #' @param tick.int interval in which ticks should be placed, alternative to defining at.
 #' @param snap.to set the limits to coincide with temporal boundaries. Accepts "day", "week", "month", "quarter",
 #' "year", "wateryear", "decade".
+#' @param warn set to FALSE to turn off experimental warning
 #' 
 #' @rdname date_axis
 #' @export
-date_axis.gsplot <- function(object, ..., side, pos.lab="tick", at=NULL, tick.int=NULL, snap.to="day") {
+date_axis.gsplot <- function(object, ..., side, pos.lab="tick", at=NULL, tick.int=NULL, snap.to="day", warn=TRUE) {
+  if (isTRUE(warn)) {
+    message("date_axis is still experimental, use at your own risk.\nSet warn=FALSE to disable this message")
+  }
+  
   if (exists("at") &&!is.null(at) && !is.null(tick.int)) {
     warning("cannot specify both at and tick.int, at will be ignored")
   }
