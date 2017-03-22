@@ -90,6 +90,14 @@ test_that("par args sent to axis() end up in axis args",{
   expect_equal(gs$side.1$axis[["tcl"]], -0.25)
 })
 
+test_that("special args given to axis are retained", {
+  gs <- points(gsplot(), 1, 0) %>% axis(side=1, n.minor = 4)
+  expect_equal(gs$side.1$axis[["n.minor"]], 4)
+  
+  gs <- points(gsplot(), 1, 0) %>% axis(side=1, tcl.minor = -0.136)
+  expect_equal(gs$side.1$axis[["tcl.minor"]], -0.136)
+})
+
 
 test_that("minor ticks get default direction and size from major ticks",{
   # tcl

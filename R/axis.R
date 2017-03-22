@@ -86,7 +86,7 @@ axis.gsplot <- function(object, ..., n.minor=0, tcl.minor=0.15, reverse=NULL, ap
   user.args[[fun.name]]$n.minor <- n.minor
   user.args[[fun.name]]$tcl.minor <- tcl.minor
   
-  user.args[[fun.name]] <- append(args$call.args[[fun.name]], args$option.args)
+  user.args[[fun.name]] <- append_replace(user.args[[fun.name]], args$option.args)
   
   for(side in sides){
     # append the side and give it defaults if it doesn't exist
