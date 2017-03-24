@@ -2,14 +2,27 @@
 % Please edit documentation in R/axis.R
 \name{axis}
 \alias{axis}
+\alias{axis.gsplot}
 \title{gsplot axis}
 \usage{
 axis(object, ...)
+
+axis.gsplot(object, ..., n.minor = 0, tcl.minor = NA, reverse = NULL,
+  append = FALSE)
 }
 \arguments{
 \item{object}{gsplot object}
 
 \item{\dots}{Further graphical parameters may also be supplied as arguments. See 'Details'.}
+
+\item{n.minor}{number of minor ticks between major ticks}
+
+\item{tcl.minor}{tick length for minor ticks (used if \code{n.minor} > 0). Use NA (the default) to have this 
+calculated automatically as half of the value for \code{par('tcl')} at the time of rendering the axis.}
+
+\item{reverse}{flip the orientation of the axis?}
+
+\item{append}{replace or append an existing axis for this side (logical)}
 }
 \description{
 Formats axes for the plotting region.  See \code{\link[graphics]{axis}} for more details.
