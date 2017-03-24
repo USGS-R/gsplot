@@ -90,8 +90,8 @@ draw_legend <- function(gsplot) {
       if (legend$draw) {
         par(xpd=TRUE)
         
-        legend <- appendLegendColumnInfo(legend)
-        legend <- appendLegendPositionConfiguration(legend)
+        legend <- append_legend_column_info(legend)
+        legend <- append_legend_position_config(legend)
         # set required legend argument to NA if not exists
         if (!"legend" %in% names(legend)) {
          legend$legend <- NA
@@ -115,7 +115,7 @@ draw_legend <- function(gsplot) {
   }
 }
 
-appendLegendPositionConfiguration <- function(legend) {
+append_legend_position_config <- function(legend) {
   #TODO support explicit x/y coords
   legend_offset <- legend$legend_offset
   location <- legend$location
@@ -139,7 +139,7 @@ appendLegendPositionConfiguration <- function(legend) {
 #' Based on location set legend columns
 #' 
 #' @param legend to set columns on
-appendLegendColumnInfo <- function(legend) {
+append_legend_column_info <- function(legend) {
   location <- legend[['location']]
   if (location == "below" || location == "above") {
     itemsPerCol <- 3 # TODO load this from config
