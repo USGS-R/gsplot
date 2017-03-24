@@ -69,6 +69,7 @@ axis <- function(object, ...) {
 #' @param tcl.minor tick length for minor ticks (used if \code{n.minor} > 0). Use NA (the default) to have this 
 #' calculated automatically as half of the value for \code{par('tcl')} at the time of rendering the axis. 
 #' @param reverse flip the orientation of the axis?
+#' @rdname axis
 #' @param append replace or append an existing axis for this side (logical)
 axis.gsplot <- function(object, ..., n.minor=0, tcl.minor=NA, reverse=NULL, append=FALSE) {
   

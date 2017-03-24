@@ -21,13 +21,13 @@ clear_par <- function(){
 #' @param filename string to custom file 
 #'
 #'@examples
-#'loadConfig()
+#'load_config()
 #'@export
 #' @importFrom graphics plot.xy
 #' @importFrom grDevices dev.off
 #' @importFrom graphics par
 #' @importFrom yaml yaml.load_file
-loadConfig = function(filename) {
+load_config = function(filename) {
   
   if(missing(filename)){
     filename <- system.file("extdata", "default.yaml", package = "gsplot")
@@ -84,7 +84,7 @@ config <- function(type, ..., persist=FALSE, custom.config = FALSE){
   type <- match.arg(type, choices = allowedTypes)
   
   if (is.null(gsconfig$options)) {
-    loadConfig()
+    load_config()
   }
   
   if(custom.config){

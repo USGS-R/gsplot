@@ -27,7 +27,7 @@ object. Defaults to calling \code{packageDescription()}. Output class matches th
 
 \item{config.file}{path to the file that will only be used for setting 
 par in this one gsplot object. If \code{NA} (default), par is set by the global options set by
-loadConfig().}
+load_config().}
 
 \item{theme}{There are several built in themes (see \link{Themes}). Additionally, the user can create a \code{gsplot}
 object in their workspace. This argument then takes the name of that object (either built-in or custom).
