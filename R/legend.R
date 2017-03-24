@@ -91,7 +91,7 @@ draw_legend <- function(gsplot) {
         par(xpd=TRUE)
         
         legend <- append_legend_column_info(legend)
-        legend <- appendLegendPositionConfiguration(legend)
+        legend <- append_legend_position_config(legend)
         # set required legend argument to NA if not exists
         if (!"legend" %in% names(legend)) {
          legend$legend <- NA
@@ -115,7 +115,7 @@ draw_legend <- function(gsplot) {
   }
 }
 
-appendLegendPositionConfiguration <- function(legend) {
+append_legend_position_config <- function(legend) {
   #TODO support explicit x/y coords
   legend_offset <- legend$legend_offset
   location <- legend$location
