@@ -9,7 +9,7 @@
 date_axis(object, ...)
 
 date_axis.gsplot(object, ..., side, pos.lab = "tick", at = NULL,
-  tick.int = NULL, snap.to = "day")
+  tick.int = NULL, snap.to = "day", warn = TRUE)
 
 date_axis.default(side, pos.lab = "tick", tick.int = NULL, snap.to = NULL,
   ...)
@@ -29,6 +29,8 @@ date_axis.default(side, pos.lab = "tick", tick.int = NULL, snap.to = NULL,
 
 \item{snap.to}{set the limits to coincide with temporal boundaries. Accepts "day", "week", "month", "quarter",
 "year", "wateryear", "decade".}
+
+\item{warn}{set to FALSE to turn off experimental warning}
 }
 \description{
 Special axis for date handling, including interval labelling.

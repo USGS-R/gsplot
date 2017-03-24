@@ -18,7 +18,12 @@ test_that("graphics examples work", {
 
 context("points arguments")
 test_that("setting params works as expected",{
-  expect_equal(gsplot:::function_args("graphics","points", 5, y = NULL), list(x=1, y=5))
+  #not specifying y in points call works (passed through function_args, fixed in set_args)
+  expect_equal(gsplot:::function_args("graphics","points", 5, y = NULL), list(x=5, y=NULL))
+  expect_equal(gsplot:::set_args("points", 5, y = NULL, package="graphics"), 
+               list(x=1, y=5, pch=6, col="red"))
+  
+  #function_args gives back values of x and y unchanged
   expect_equal(gsplot:::function_args("graphics","points", y=5, x=0), list(x=0, y=5))
 })
 

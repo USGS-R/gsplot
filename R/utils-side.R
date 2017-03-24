@@ -13,7 +13,7 @@ side_names <- function(object){
 #' @return an integer vector of x sides
 #' @keywords internal
 as.x_side <- function(view.name){
-  unname(sapply(view.name, function(x) get_sides_x(as.side(x))))
+  sapply(view.name, function(x) get_sides_x(as.side(x)), USE.NAMES = FALSE)
 }
 
 #' take a view name and extract the named x sides
@@ -31,7 +31,7 @@ as.x_side_name <- function(view.name){
 #' @return an integer vector of y sides
 #' @keywords internal
 as.y_side <- function(view.name){
-  unname(sapply(view.name, function(x) get_sides_y(as.side(x))))
+  sapply(view.name, function(x) get_sides_y(as.side(x)), USE.NAMES = FALSE)
 }
 
 #' take a view name and extract the named y sides
@@ -59,7 +59,7 @@ as.side_name.numeric <- function(x){
 #' @keywords internal
 #' @export
 as.side_name.character <- function(x){
-  as.side_name(unname(sapply(x, function(x) as.numeric(tail(strsplit(x,'[.]')[[1]],-1L)))))
+  as.side_name(sapply(x, function(x) as.numeric(tail(strsplit(x,'[.]')[[1]],-1L)), USE.NAMES = FALSE))
 }
 
 #' take a named side and turn it into numeric

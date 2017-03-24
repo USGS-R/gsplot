@@ -1,7 +1,7 @@
 context("config")
 
 cleanup <- function() {
-  loadConfig()
+  load_config()
 }
 
 test_that("lists and named args are identical", {
@@ -48,7 +48,7 @@ test_that("config temp", {
   expect_false(gspDef$global$config$config.file)
   expect_equal(par(no.readonly = TRUE)$lwd, orig.par$lwd)
   
-  loadConfig(system.file("extdata", "lineScatter.yaml", package = "gsplot"))
+  load_config(system.file("extdata", "lineScatter.yaml", package = "gsplot"))
   expect_equal(par(no.readonly = TRUE)$lwd, orig.par$lwd)
   
   gsp <- gsplot() %>%
@@ -59,7 +59,7 @@ test_that("config temp", {
   print(gsp)
   expect_equal(par(no.readonly = TRUE)$lwd, 0.8)
   
-  loadConfig()
+  load_config()
   expect_equal(par(no.readonly = TRUE)$lwd, orig.par$lwd)
   gspDef2 <- gsplot() %>%
     lines(df$x, df$y, col="red", legend.name = "points") 
