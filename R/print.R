@@ -87,6 +87,17 @@ print.gsplot <- function(x, ...){
   for (side.name in side.names){
 
     old.par <- par(x[[side.name]]$par)
+    side.num <- as.side(side.name)
+    
+    if(length(views_with_side(x, side.num)) == 0){
+
+      if(side.num %% 2 == 1){ #odd
+        views <- view(views, side=c(side.num, view.info$y[1]), log=view.info$log[1])
+      } else { #even
+        views <- view(views, side=c(view.info$x[1], side.num), log=view.info$log[1])
+      }
+    }
+    
     par(views[[side.name]]$par)
     
     if("x" == as.axis(side.name)){
