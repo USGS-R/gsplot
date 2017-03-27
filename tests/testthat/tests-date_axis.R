@@ -21,7 +21,7 @@ test_that("axis ticks in the right location", {
 
 test_that("axis labels centered on interval", {
   gs <- gsplot() %>%
-    points(seq(as.Date("2013-01-01"), as.Date("2013-12-31"), "days"), 1:31) %>%
+    points(seq(as.Date("2013-01-01"), as.Date("2013-12-31"), "days"), 1:365) %>%
     date_axis(side=1, lab.pos = "interval", tick.int="month", "snap.to"="month")
   
   labels <- lazyeval::lazy_eval(gs$side.1[[2]]$at, data=list(object=gs))

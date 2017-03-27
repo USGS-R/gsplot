@@ -97,19 +97,28 @@ axis.gsplot <- function(object, ..., n.minor=0, tcl.minor=NA, reverse=NULL, appe
   
   for(side in sides){
     # append the side and give it defaults if it doesn't exist
+    
+    side.name <- as.side_name(side)
+    object <- modify_side(object, args = list(), side=side)
+    
     if(!append){
-      object[[paste0("side.",side)]] <- NULL
-      object <- modify_side(object, args = list(), side=side) 
+
+      which.axis <- which(names(object[[side.name]])== 'axis')
+      if(length(which.axis) > 1){
+        object[[side.name]] <- object[[side.name]][-which.axis[2:length(which.axis)]]
+      }
+      
+      object[[side.name]][[fun.name]] <- append_replace(object[[as.side_name(side)]][[fun.name]], user.args[[fun.name]])
     } else {
-      side.name <- paste0("side.",side)
+
       user.args$axis <- c(side = side, user.args$axis)
       object[[side.name]] <- c(object[[side.name]],user.args)
     }
+
+    object[[side.name]][['usr.axes']] <- TRUE
     
-    object[[as.side_name(side)]][['usr.axes']] <- TRUE
-    object[[as.side_name(side)]][['axis']] <- append_replace(object[[as.side_name(side)]][['axis']], user.args[[fun.name]])
     if (!is.null(reverse)){
-      object[[as.side_name(side)]][['reverse']] <- reverse
+      object[[side.name]][['reverse']] <- reverse
     }
   }
   
@@ -119,8 +128,6 @@ axis.gsplot <- function(object, ..., n.minor=0, tcl.minor=NA, reverse=NULL, appe
 }
 
 draw_axis <- function(object, side.name){
-  
-  
   # method isn't made for multiple axis calls
   which.axis <- which(names(object[[side.name]]) == 'axis')
   if (length(which.axis) > 1){
@@ -129,8 +136,8 @@ draw_axis <- function(object, side.name){
       tmp[[side.name]] <- tmp[[side.name]][-which.axis[which.axis %in% axis.i]]
       draw_axis(tmp, side.name)
     }
+    
   }
-  
   axis.args <- object[[side.name]][['axis']]
   side.lim <- object[[side.name]][['lim']]
   
@@ -147,15 +154,14 @@ draw_axis <- function(object, side.name){
     
     tcl <- NULL
     if (exists('tcl.minor',axis.args)){
-      tcl <- ifelse(is.na(axis.args$tcl.minor), par('tcl')*0.5, axis.args$tcl.minor)
+      tcl <- axis.args$tcl.minor
+      
     }
     
     axis.args$n.minor <- NULL
     axis.args$tcl.minor <- NULL
     
-    do.call('Axis', axis.args)
-    
-    
+    do.call('Axis', axis.args)    
     
     # Minor axis:
     
