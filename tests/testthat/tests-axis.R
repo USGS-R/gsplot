@@ -145,12 +145,30 @@ test_that("format",{
 
 test_that("log stuff",{
 
-
   gs <- gsplot() %>%
         points(1:100, 1:100, log="xy", side=c(3,4))  %>%
         axis(1)
 
-  # expect_true(gs$side.1$log)
+  expect_true(gs$side.1$log)
+  
+  gs <- gsplot() %>%
+    points(1:100, 1:100, log="xy")  %>%
+    axis(3)
+  
+  expect_true(gs$side.3$log)
+  
+  gs <- gsplot() %>%
+    points(1:100, 1:100, log="xy", side=c(3,4))  %>%
+    axis(c(1,2))
+  expect_true(gs$side.1$log)
+  expect_true(gs$side.2$log)
+  
+  gs <- gsplot() %>% 
+    points(1:3, c(1,10,100)) %>% 
+    points(3:5, c(10,100,1000), col="blue", side=4, log='y') %>% 
+    axis(side=4) 
+  expect_true(gs$side.4$log)
+  expect_false(gs$side.2$log)
   
   gs <- gsplot() %>%
     points(1:100, 1:100, log="xy", side=c(3,4))  %>% 
