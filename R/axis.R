@@ -98,7 +98,12 @@ axis.gsplot <- function(object, ..., n.minor=0, tcl.minor=NA, reverse=NULL, appe
   for(side in sides){
     # append the side and give it defaults if it doesn't exist
     if(!append){
+      object[[paste0("side.",side)]] <- NULL
       object <- modify_side(object, args = list(), side=side) 
+    } else {
+      side.name <- paste0("side.",side)
+      user.args$axis <- c(side = side, user.args$axis)
+      object[[side.name]] <- c(object[[side.name]],user.args)
     }
     
     object[[as.side_name(side)]][['usr.axes']] <- TRUE
