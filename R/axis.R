@@ -94,10 +94,11 @@ axis.gsplot <- function(object, ..., n.minor=0, tcl.minor=NA, reverse=NULL, appe
   user.args[[fun.name]]$tcl.minor <- tcl.minor
   
   user.args[[fun.name]] <- append_replace(user.args[[fun.name]], args$option.args)
+  view.info <- view_info(object)
   
   for(side in sides){
     # append the side and give it defaults if it doesn't exist
-    
+
     side.name <- as.side_name(side)
     object <- modify_side(object, args = list(), side=side)
     
@@ -120,9 +121,20 @@ axis.gsplot <- function(object, ..., n.minor=0, tcl.minor=NA, reverse=NULL, appe
     if (!is.null(reverse)){
       object[[side.name]][['reverse']] <- reverse
     }
+    
+    class(object) <- 'gsplot'
+    
+    if(!is.null(view.info) && length(views_with_side(object, side)) == 0){
+      if(side %% 2 == 1){ #odd
+        object <- view(object, side=c(side, view.info$y[1]), log=view.info$log[1])
+      } else { #even
+        object <- view(object, side=c(view.info$x[1], side), log=view.info$log[1])
+      }
+    }
+    
   }
   
-  class(object) <- 'gsplot'
+  # class(object) <- 'gsplot'
   return(object)
   
 }

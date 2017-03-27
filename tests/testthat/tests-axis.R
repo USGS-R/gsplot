@@ -15,14 +15,15 @@ test_that("axis gsplot",{
   gs = points(gsplot(mar=c(1,1,1,1)), c(-2,3), c(-1,5)) %>% 
     axis(3)
   expect_true(all(names(gs) %in% c("side.1", "side.2", "side.3", 
-                                   "view.1.2", "global", "metadata")))
+                                   "view.1.2","view.3.2",
+                                   "global", "metadata")))
   
   gs <- gsplot() %>%
     lines(1:5, c(1,10,100,1000,10000), log="y", axes=FALSE) %>%
     axis(side=c(2,4), labels=FALSE, n.minor=4)
   
   expect_false(gs$side.1$axes)
-  # expect_false(gs$side.2$axes) #is this right?
+  expect_false(gs$side.2$axes) 
   
 })
 
@@ -107,8 +108,7 @@ test_that("style params given to points calls are in side par, style on axis sta
   gs <- points(gsplot(), 1, 0, tcl=0.5) %>% 
     axis(side=1, tcl = -0.136)
   expect_equal(gs$side.1$axis[["tcl"]], -0.136)
-  # Is this what we want? The behavior seems right if we change this to side.2?
-  # expect_equal(gs$side.1$par[["tcl"]], 0.5)
+  expect_equal(gs$side.1$par[["tcl"]], 0.5)
 })
 
 
@@ -148,12 +148,20 @@ test_that("log stuff",{
   gs <- gsplot() %>%
         points(1:100, 1:100, log="xy", side=c(3,4))  %>%
         axis(1)
-
+  # Right now, only converting the log arg on print
+  # If 
   expect_true(gs$side.1$log)
+
+  gs <- gsplot() %>%
+    points(1:100, 1:100, log="xy")  %>%
+    axis(3) 
+  
+  expect_true(gs$side.3$log)
   
   gs <- gsplot() %>%
     points(1:100, 1:100, log="xy")  %>%
-    axis(3)
+    axis(3) %>%
+    points(1:100, 1:100, log="y", side=c(3,4))
   
   expect_true(gs$side.3$log)
   
