@@ -6,13 +6,13 @@
 
 language: r
 cache: packages
-sudo: false
 dist: trusty
 
 matrix:
   include:
     - os: linux
       r: release
+      env: R_CODECOV=true
     - os: linux
       r: devel
 
@@ -28,7 +28,7 @@ r_github_packages:
   - jimhester/covr
 
 after_success:
-  - Rscript -e 'covr::coveralls()'
+  - if [[ "${R_CODECOV}" ]]; then R -e 'covr::coveralls()'; fi
   
 notifications:
   email:

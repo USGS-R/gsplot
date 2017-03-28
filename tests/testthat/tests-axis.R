@@ -15,14 +15,15 @@ test_that("axis gsplot",{
   gs = points(gsplot(mar=c(1,1,1,1)), c(-2,3), c(-1,5)) %>% 
     axis(3)
   expect_true(all(names(gs) %in% c("side.1", "side.2", "side.3", 
-                                   "view.1.2", "global", "metadata")))
+                                   "view.1.2","view.3.2",
+                                   "global", "metadata")))
   
   gs <- gsplot() %>%
     lines(1:5, c(1,10,100,1000,10000), log="y", axes=FALSE) %>%
     axis(side=c(2,4), labels=FALSE, n.minor=4)
   
   expect_false(gs$side.1$axes)
-  expect_false(gs$side.2$axes)
+  expect_false(gs$side.2$axes) 
   
 })
 
@@ -52,8 +53,9 @@ test_that("axis can append a second one",{
   gs <- gsplot() %>% 
     points(0:1,0:1) %>% 
     axis(side=1, at=c(0.5,1)) %>% 
-    axis(side=1, at=c(0.25, 0.75), append=TRUE)
-  # expect_equal(sum(names(gs$side.1) == 'axis'), 2)
+    axis(side=1, at=c(0.33, 0.85), append=TRUE)
+  expect_equal(sum(names(gs$side.1) == 'axis'), 2)
+  expect_equal(sum(names(gs$side.3) == 'axis'), 0)
 })
 
 test_that("axis can append a third one and the forth clears them",{
@@ -63,7 +65,10 @@ test_that("axis can append a third one and the forth clears them",{
     axis(side=1, at=c(0.25, 0.75), append=TRUE) %>% 
     axis(side=1, at=c(0.45, 0.55), append=TRUE)
   
-  # expect_equal(sum(names(gs$side.1) == 'axis'), 3)
+  expect_equal(sum(names(gs$side.1) == 'axis'), 3)
+  expect_equal(sum(names(gs$side.3) == 'axis'), 0)
+  expect_equal(sum(names(gs$side.4) == 'axis'), 0)
+  
   gs <- gsplot() %>% 
     points(0:1,0:1) %>% 
     axis(side=1, at=c(0.5,1)) %>% 
@@ -80,7 +85,7 @@ test_that("axis tracks append FALSE by default",{
     axis(side=1, at=c(0.5,1)) %>% 
     axis(side=1, at=c(0.25, 0.75)) %>% 
     axis(side=1, at=c(0.45, 0.55), append=TRUE)
-  # expect_equal(sum(names(gs$side.1) == 'axis'), 2)
+  expect_equal(sum(names(gs$side.1) == 'axis'), 2)
 })
 
 context("axis style arguments handled appropriately")
@@ -92,6 +97,7 @@ test_that("par args sent to axis() end up in axis args",{
 
 test_that("special args given to axis are retained", {
   gs <- points(gsplot(), 1, 0) %>% axis(side=1, n.minor = 4)
+  # Not printing minor ticks though!!!!
   expect_equal(gs$side.1$axis[["n.minor"]], 4)
   
   gs <- points(gsplot(), 1, 0) %>% axis(side=1, tcl.minor = -0.136)
@@ -99,7 +105,8 @@ test_that("special args given to axis are retained", {
 })
 
 test_that("style params given to points calls are in side par, style on axis stay there",{
-  gs <- points(gsplot(), 1, 0, tcl=0.5) %>% axis(side=1, tcl = -0.136)
+  gs <- points(gsplot(), 1, 0, tcl=0.5) %>% 
+    axis(side=1, tcl = -0.136)
   expect_equal(gs$side.1$axis[["tcl"]], -0.136)
   expect_equal(gs$side.1$par[["tcl"]], 0.5)
 })
@@ -134,4 +141,48 @@ test_that("format",{
            1:12) %>%
     axis(side = 1, format="%B")
   expect_equal(gs$side.1$axis$format, "%B")
+})
+
+test_that("log stuff",{
+
+  gs <- gsplot() %>%
+        points(1:100, 1:100, log="xy", side=c(3,4))  %>%
+        axis(1)
+  # Right now, only converting the log arg on print
+  # If 
+  expect_true(gs$side.1$log)
+
+  gs <- gsplot() %>%
+    points(1:100, 1:100, log="xy")  %>%
+    axis(3) 
+  
+  expect_true(gs$side.3$log)
+  
+  gs <- gsplot() %>%
+    points(1:100, 1:100, log="xy")  %>%
+    axis(3) %>%
+    points(1:100, 1:100, log="y", side=c(3,4))
+  
+  expect_true(gs$side.3$log)
+  
+  gs <- gsplot() %>%
+    points(1:100, 1:100, log="xy", side=c(3,4))  %>%
+    axis(c(1,2))
+  expect_true(gs$side.1$log)
+  expect_true(gs$side.2$log)
+  
+  gs <- gsplot() %>% 
+    points(1:3, c(1,10,100)) %>% 
+    points(3:5, c(10,100,1000), col="blue", side=4, log='y') %>% 
+    axis(side=4) 
+  expect_true(gs$side.4$log)
+  expect_false(gs$side.2$log)
+  
+  gs <- gsplot() %>%
+    points(1:100, 1:100, log="xy", side=c(3,4))  %>% 
+    axis(1, at=c(2,5,50), labels = FALSE) %>%
+    view(c(1,2), log="xy", axes=FALSE)
+  
+  expect_true(gs$side.1$log)
+  
 })

@@ -35,6 +35,6 @@ test_that("view_info", {
   
   view.information <- view_info(usrDef)
   expect_equal(nrow(view.information), 2)
-  # expect_equal(view.information$log, c("xy","y"))
-  
+  expect_equal(view.information$log[view.information$name == "view.1.2"], "y")
+  expect_equal(view.information$log[view.information$name == "view.3.2"], "xy")
 })

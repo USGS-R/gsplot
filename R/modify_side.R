@@ -27,22 +27,11 @@ modify_side <- function(object, args, side) {
   for (sideName in sideNames) {
     sideNum <- as.side(sideName)
     thisSide <- sides[[sideName]]
-    
-    if("side.3" == sideName & length(views_with_side(object, 3)) == 0 & "side.1" %in% names(object)){
-      thisSide$log <- object$side.1$log
-    } else if ("side.4" == sideName & length(views_with_side(object, 4)) == 0 & "side.2" %in% names(object)){
-      thisSide$log <- object$side.2$log
-    } else if ("side.1" == sideName & length(views_with_side(object, 1)) == 0 & "side.3" %in% names(object)){
-      thisSide$log <- object$side.3$log
-    } else if ("side.2" == sideName & length(views_with_side(object, 2)) == 0 & "side.4" %in% names(object)){
-      thisSide$log <- object$side.4$log
-    }
-    
+
     thisSide <- set_side_lim(args, thisSide, sideNum)
     thisSide <- set_side_log(args, thisSide, sideNum)
     thisSide <- set_side_lab(args, thisSide, sideNum)
     thisSide <- set_side_axes(args, thisSide, sideNum)
-    
 
     object[[sideName]] <- thisSide
   }
