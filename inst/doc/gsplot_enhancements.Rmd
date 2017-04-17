@@ -1,0 +1,614 @@
+---
+title: "gsplotEnhancements"
+author: "Lindsay R. Carr"
+date: "October 6, 2015"
+output:
+  html_document:
+    toc: yes
+  pdf_document:
+    toc: yes
+---
+
+
+```{r  echo=FALSE, message=FALSE}
+library(smwrGraphs)
+library(smwrData)
+library(gsplot)
+```
+
+
+#Box Plot Types - ADD
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.cap="The four basic types of box plots."}
+# Generate a random sample for the box plot
+set.seed(27036)
+BP <- rchisq(32, 3)
+bp <- rchisq(4, 3)
+Gchar <- rep(c("A", "B"), 16)
+Gnum <- rep(c(1998, 2002), 16)
+
+AA.lo <- setLayout(width=rep(1.25, 4), height=4, xtop=1.5)
+AA.gr <- setGraph(1, AA.lo)
+boxPlot(BP, margin=AA.gr)
+addTitle("Truncated")
+setGraph(2, AA.lo)
+boxPlot(BP, Box=list(type="simple"), margin=AA.gr)
+addTitle("Simple")
+setGraph(3, AA.lo)
+boxPlot(BP, Box=list(type="tukey"), margin=AA.gr)
+addTitle("Tukey")
+setGraph(4, AA.lo)
+boxPlot(BP, Box=list(type="extended"), margin=AA.gr)
+addTitle("Extended")
+
+```
+
+***
+
+#Graph Additions
+
+```{r echo=FALSE}
+set.seed(3636)
+X <- rnorm(32)
+Y <- X + rnorm(32)
+```
+
+##Reference Line with Annotation - GSPLOT
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.cap="DL example"}
+AA.pl <- xyPlot(X, Y)
+refLine(horizontal = median(Y), current=AA.pl)
+addAnnotation(min(X), median(Y), "Median Y", current=AA.pl)
+```
+
+```{r  message=FALSE, warning=FALSE, fig.cap="gsplot example"}
+gs <- gsplot() %>% 
+  points(X,Y, pch=20, col="black") %>% 
+	abline(h=median(Y)) %>% 
+	text(-1.5, median(Y), labels="Median Y", pos=3) %>% 
+	title(xlab="X", ylab="Y")
+gs
+```
+
+##Grid Lines - GSPLOT
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.cap="DL example"}
+AA.pl <- xyPlot(X, Y, Plot=list(what="none"))
+addGrid(AA.pl)
+AA.pl <- addXY(X, Y, Plot=list(what="points"))
+```
+
+```{r  message=FALSE, warning=FALSE, fig.cap="gsplot example"}
+gs <- gsplot() %>% 
+	points(X,Y, pch=20, col="black") %>% 
+	grid(lty="solid") %>%
+	title(xlab="X", ylab="Y")
+gs
+```
+
+##Smoothed Line - ADD
+##Regression Line with Confidence Intervals - ADD
+##Area Covered by Data - DON'T NEED TO ADD??
+
+***
+
+#Graph Gallery
+```{r echo=FALSE}
+data(IonBalance)
+data(MiscGW)
+PD <- transform(MiscGW, Ca.meq = conc2meq(Calcium, "calcium"),
+  Mg.meq = conc2meq(Magnesium, "magnesium"),
+  Na.meq = conc2meq(Sodium, "sodium"),
+  Cl.meq = conc2meq(Chloride, "chloride"),
+  SO4.meq = conc2meq(Sulfate, "sulfate"),
+  HCO3.meq = conc2meq(Bicarbonate, "bicarb")) # abbreviations allowed
+data(MC11_1993)
+```
+
+##Graph with Error Bars - GSPLOT
+```{r echo=FALSE}
+Stats <- lapply(IonBalance[, c("Ca", "Mg", "Na")],
+  function(x) {
+	stats <- t.test(x)
+	return(c(mean=as.vector(stats$estimate),
+	  U95=stats$conf.int[2], L95=stats$conf.int[1]))
+  })
+Stats <- as.data.frame(do.call(rbind, Stats))
+Stats$Constituent <- as.factor(row.names(Stats))
+```		
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.cap="DL example"}
+AA.pl <- with(Stats, xyPlot(Constituent, mean, yaxis.range=c(0,4),
+  Plot=list(name="Mean"),
+  ytitle="Concentation in milli-equivalents per liter"))
+AA.pl <- with(Stats, addErrorBars(Constituent, L95, U95, 
+    Bars=list(name="95 percent confidence interval"), current=AA.pl))
+addExplanation(AA.pl, "ur")
+```
+
+```{r message=FALSE, warning=FALSE, fig.cap="gsplot example"}
+gs <- gsplot() %>% 
+	points(x=seq_along(Stats$Constituent), y=Stats$mean, pch=20, col="black", legend.name="Mean", 
+		   axes=FALSE) %>% 
+	error_bar(seq_along(Stats$Constituent), Stats$mean, y.high=(Stats$U95-Stats$mean), 
+		  y.low=(Stats$mean-Stats$L95), legend.name="95 percent confidence interval") %>% 
+	axis(side=1, at=seq_along(Stats$Constituent), labels=Stats$Constituent, tick=FALSE, xaxt='s') %>% 
+	axis(side=2, at=seq(0,4,by=0.5), las=2) %>% 
+	legend(title="EXPLANATION", text.font=2) %>% 
+	title(ylab="Concentration in milli-equivalents per liter")
+gs
+```
+
+##Biplot - GSPLOT
+```{r echo=FALSE}
+MGW.pp <- princomp(data.matrix(MiscGW[, c("Calcium", "Magnesium", "Sodium")]), 
+  cor=TRUE, scores=TRUE)
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.cap="DL example"}
+biPlot(MGW.pp)
+```
+
+```{r  message=FALSE, warning=FALSE, fig.cap="gsplot example"}
+gs <- gsplot() %>%
+	points(x=(MGW.pp$scores[,1]/MGW.pp$sdev[1]), y=(MGW.pp$scores[,2]/MGW.pp$sdev[2]), 
+	       pch=20, col="black") %>% 
+	text(x=(MGW.pp$scores[,1]/MGW.pp$sdev[1]), y=(MGW.pp$scores[,2]/MGW.pp$sdev[2]),
+	     labels=rownames(MGW.pp$scores), pos=c(4,2,4,4)) %>% 
+	arrows(x0=0, y0=0, x1=(MGW.pp$loadings[,1]*MGW.pp$sdev[1]), 
+	       y1=(MGW.pp$loadings[,2]*MGW.pp$sdev[2]), col="blue") %>% 
+	text(x=(MGW.pp$loadings[,1]*MGW.pp$sdev[1]), y=(MGW.pp$loadings[,2]*MGW.pp$sdev[2]),
+	     labels=rownames(MGW.pp$loadings), col="blue", pos=c(1,2,2)) %>% 
+	title(xlab="Comp.1", ylab="Comp.2")
+gs
+```
+
+##Scaleless Graph
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.cap="DL example"}
+setPNG()
+AA.pl <- with(MGW.pp, xyPlot(scores[,1], scores[,2], Plot=list(what="none"),
+  ylabels=0, xlabels=0, ytitle="", xtitle=""))
+addLabel(expression("Increasing Relative Calcium" %->% ""), par("usr")[1],
+  "bottom", justification="left", current=AA.pl)
+addLabel(expression("Increasing Sodium - Magnesium difference" %->% ""), 
+  par("usr")[3],
+  "left", justification="left", current=AA.pl)
+AA.pl <- with(MiscGW, addStiff(MGW.pp$scores[,1], MGW.pp$scores[,2],
+  width=1, height=0.5, cations=cbind(Calcium, Magnesium, Sodium),
+  anions=cbind(Bicarbonate, Sulfate, Chloride), 
+  catlabels=c("Ca", "Mg", "Na"), anlabels=c("HCO3", "SO4", "Cl"),
+  current=AA.pl))
+```
+
+```{r message=FALSE, warning=FALSE}
+#works in gsplot v0.4.0
+MGW.pp <- princomp(data.matrix(MiscGW[, c("Calcium", "Magnesium", "Sodium")]), 
+                   cor=TRUE, scores=TRUE)
+
+gs <- gsplot() %>%
+    polygon(x=c(-1,0,0,1,2,0.25), y=c(5,4.5,4,4,4.5,5), col="grey") %>%
+    segments(x0=-1.5, x1=2, y0=5, y1=5, lty="dotted") %>%
+    segments(x0=-1.5, x1=2, y0=4.5, y1=4.5, lty="dotted") %>%
+    segments(x0=-1.5, x1=2, y0=4, y1=4, lty="dotted") %>%
+    segments(x0=0, x1=0, y0=3.5, y1=5.5) %>%
+    text(x=-2, y=c(5,4.5,4), labels=c("NA", "Mg", "Ca"), adj=0) %>%
+    text(x=2, y=c(5,4.5,4), labels=c("Cl", "SO4", "HCO3"), adj=1) %>%
+    points(NA,NA, type='n', ylim=c(0,7), xlim=c(-6,8), axes=FALSE) %>%
+    title(xlab=expression("Increasing Relative Calcium" %->% ""), 
+          ylab=expression("Increasing Sodium - Magnesium difference" %->% ""))
+gs
+```
+##Area Graph - GSPLOT
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.cap="DL example"}
+Xdata <- seq(0, 5, length.out=101)
+areaPlot(Xdata, dlpearsonIII(Xdata, 0, 1, .5), Areas=list(fillDir="under", 
+  fillColors="gray"), xaxis.range=c(0,5))
+```
+
+```{r message=FALSE, warning=FALSE, fig.cap="gsplot example"}
+Xdata <- seq(0, 5, length.out=101)
+Ydata <- dlpearsonIII(Xdata, 0, 1, .5)
+
+gs <- gsplot() %>% 
+	lines(Xdata,Ydata) %>% 
+	axis(side=2, at=seq(0,0.8,by=0.1)) %>% 
+	polygon(Xdata,Ydata, col="grey")
+gs
+```
+
+##Contour Plot - ADD
+
+##Correlogram - GSPLOT
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+set.seed(1236)
+Rdates <- sort(runif(100, 2010, 2014))
+Yrand <- scale(rnorm(100))
+Yser <- scale(Yrand + c(0, Yrand[-100]) + c(0, 0, Yrand[-c(99,100)])/3)
+Yseas <- scale(Yrand + cos(2*pi*Rdates))
+Ytime <- scale(Yrand + seq(-1, 1, length.out=100))
+Yanom <- scale(Yrand + 0.75*(Rdates > 2011.1 & Rdates < 2011.7))
+library(KernSmooth)
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.cap="DL example"}
+setPNG()
+AA.lo <- setLayout(num.rows=3, num.cols=2)
+setGraph(1, AA.lo)
+corGram(Rdates, Yrand, Plot=list(color="gray90"), yaxis.range = c(-1, 1))
+addTitle("Random data")
+setGraph(2, AA.lo)
+corGram(Rdates, Yser, Plot=list(color="gray90"), yaxis.range = c(-1, 1))
+addTitle("Serial Correlation")
+setGraph(3, AA.lo)
+corGram(Rdates, Yseas, Plot=list(color="gray90"), yaxis.range = c(-1, 1))
+addTitle("Seasonal Lack of Fit")
+setGraph(4, AA.lo)
+corGram(Rdates, Ytime, Plot=list(color="gray90"), yaxis.range = c(-1, 1))
+addTitle("Temporal Lack of Fit")
+setGraph(5, AA.lo)
+corGram(Rdates, Yanom, Plot=list(color="gray90"), yaxis.range = c(-1, 1))
+addTitle("Anomaly")
+```
+
+```{r  message=FALSE, warning=FALSE, fig.cap="gsplot example"}
+x <- outer(Rdates, Rdates, "-")
+YYrand <- outer(Yrand, Yrand)
+YYser <- outer(Yser, Yser)
+YYseas <- outer(Yseas, Yseas)
+YYtime <- outer(Ytime, Ytime)
+YYanom <- outer(Yanom, Yanom)
+
+Yrand_ksmo <- locpoly(x[x !=0], YYrand[x!=0], degree=2, kernel = 'normal',
+            bandwidth = 0.15, truncate=FALSE, gridsize=121)
+Yser_ksmo <- locpoly(x[x !=0], YYser[x!=0], degree=2, kernel = 'normal',
+            bandwidth = 0.15, truncate=FALSE, gridsize=121)
+Yseas_ksmo <- locpoly(x[x !=0], YYseas[x!=0], degree=2, kernel = 'normal',
+            bandwidth = 0.15, truncate=FALSE, gridsize=121)
+Ytime_ksmo <- locpoly(x[x !=0], YYtime[x!=0], degree=2, kernel = 'normal',
+            bandwidth = 0.15, truncate=FALSE, gridsize=121)
+Yanom_ksmo <- locpoly(x[x !=0], YYanom[x!=0], degree=2, kernel = 'normal',
+            bandwidth = 0.15, truncate=FALSE, gridsize=121)
+
+gs1 <- gsplot() %>% 
+	points(x[x>0], YYrand[x>0], col="grey", pch=20, xlim=c(0,1.5), 
+		   ylim=c(-1,1), axes=FALSE) %>%
+	abline(h=0, lty="dashed", col="black") %>%
+	lines(Yrand_ksmo$x, Yrand_ksmo$y) %>%
+	title(main="Random data", xlab="Difference in Time, in Years", 
+		  ylab="Standardized Serial Correlation") %>%
+	axis(side=2, at=seq(-1,1,by=0.5), las=2) %>%
+	axis(side=1, at=seq(0,1.5,by=0.5))
+gs2 <- gsplot() %>% 
+	points(x[x>0], outer(Yser, Yser)[x>0], col="grey", pch=20, xlim=c(0,1.5), 
+		   ylim=c(-1,1), axes=FALSE) %>%
+	abline(h=0, lty="dashed", col="black") %>%
+	lines(Yser_ksmo$x, Yser_ksmo$y) %>%
+	title(main="Serial Correlation", xlab="Difference in Time, in Years", 
+		  ylab="Standardized Serial Correlation") %>%
+	axis(side=2, at=seq(-1,1,by=0.5), las=2) %>%
+	axis(side=1, at=seq(0,1.5,by=0.5))
+gs3 <- gsplot() %>% 
+	points(x[x>0], outer(Yseas, Yseas)[x>0], col="grey", pch=20, xlim=c(0,1.5), 
+		   ylim=c(-1,1), axes=FALSE) %>%
+	abline(h=0, lty="dashed", col="black") %>%
+	lines(Yseas_ksmo$x, Yseas_ksmo$y) %>%
+	title(main="Seasonal Lack of Fit", xlab="Difference in Time, in Years", 
+		  ylab="Standardized Serial Correlation") %>%
+	axis(side=2, at=seq(-1,1,by=0.5), las=2) %>%
+	axis(side=1, at=seq(0,1.5,by=0.5))
+gs4 <- gsplot() %>% 
+	points(x[x>0], outer(Ytime, Ytime)[x>0], col="grey", pch=20, xlim=c(0,1.5), 
+		   ylim=c(-1,1), axes=FALSE) %>%
+	abline(h=0, lty="dashed", col="black") %>%
+	lines(Ytime_ksmo$x, Ytime_ksmo$y) %>%
+	title(main="Temporal Lack of Fit", xlab="Difference in Time, in Years", 
+		  ylab="Standardized Serial Correlation") %>%
+	axis(side=2, at=seq(-1,1,by=0.5), las=2) %>%
+	axis(side=1, at=seq(0,1.5,by=0.5))
+gs5 <- gsplot() %>% 
+	points(x[x>0], outer(Yanom, Yanom)[x>0], col="grey", pch=20, xlim=c(0,1.5), 
+		   ylim=c(-1,1), axes=FALSE) %>%
+	abline(h=0, lty="dashed", col="black") %>%
+	lines(Yanom_ksmo$x, Yanom_ksmo$y) %>%
+	title(main="Anomaly", xlab="Difference in Time, in Years", 
+		  ylab="Standardized Serial Correlation") %>%
+	axis(side=2, at=seq(-1,1,by=0.5), las=2) %>%
+	axis(side=1, at=seq(0,1.5,by=0.5))
+
+layout(matrix(c(1,2,3,4,5,0), 3, 2, byrow = TRUE))
+gs1
+gs2
+gs3
+gs4
+gs5
+```
+
+##Surface Plot - ADD
+- could implement base R "persp" for surfaces
+
+##Report Graph - DON'T NEED TO ADD
+- could manipulate gsplot to do this
+- do we really need to make sure gsplot can accomplish this?
+```{r, message=FALSE, warning=FALSE}
+AA.lm <- lm(Mg ~ Ca, data=IonBalance)
+```
+
+```{r echo=FALSE}
+reportGraph(summary(AA.lm))
+```
+
+```{r message=FALSE, warning=FALSE}
+#works in gsplot v.0.2.3
+txt <- paste(capture.output(summary(AA.lm)), collapse="\n")
+
+gs <- gsplot(mar=c(0.35,0.5,0.35,0.75), usr=c(0,1,0,1), bty='n') %>% 
+	text(0,1, labels=txt, adj=0) %>% 
+	points(1,1, type='n', axes=FALSE)
+gs
+```		
+
+##Dendrogram - ADD
+- base R method is very simple
+```{r}
+CaMg <- data.matrix(IonBalance[, c("Ca", "Mg")])
+rownames(CaMg) <- as.character(IonBalance$DATES)
+CaMg.dist <- dist(CaMg)
+CaMg.hclust <- hclust(CaMg.dist, method="average")
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+dendGram(CaMg.hclust, ytitle="Tree Height")
+```
+
+```{r message=FALSE, warning=FALSE}
+x <- as.dendrogram(CaMg.hclust)
+par(mar=c(4,4,4,4))
+plot(x)
+```
+
+***
+
+#Graph Setup - DON'T NEED TO ADD
+Don't need to add any graphs from here.
+
+***
+
+#Line Scatter
+
+```{r}
+set.seed(2576)
+X <- runif(33)
+Y <- runif(33)
+Z <- rep(c("A", "B", "C"), 11)
+X12 <- X[1:12]
+Z12 <- LETTERS[1:12]
+library(smwrData)
+data(IonBalance)
+data(KlamathTP)
+```
+
+##Scatter Plot - GSPLOT
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+xyPlot(X, Y, Plot=list(color="darkblue"))
+```
+
+```{r message=FALSE, warning=FALSE}
+gs <- gsplot() %>%
+	points(X, Y, xlim=c(0,1), ylim=c(0,1), col="darkblue", pch=16) %>%
+	title(xlab="X", ylab="Y")
+gs
+```
+
+##Date/Time Plot - GSPLOT
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+with(KlamathTP, timePlot(sample_dt, TP_ss, Plot=list(what="points", color="darkblue"),
+  yaxis.range=c(0,1.5)))
+```
+
+```{r message=FALSE, warning=FALSE}
+gs <- gsplot() %>%
+	points(KlamathTP$sample_dt, KlamathTP$TP_ss, col="darkblue", pch=16, ylim=c(0,1.5)) %>%
+	title(xlab="Calendar Year", ylab="TP_ss")
+gs
+```
+
+##Season Plot - GSPLOT
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+with(KlamathTP, seasonPlot(sample_dt, TP_ss, yaxis.range=c(0,1.5)))
+```
+
+```{r message=FALSE, warning=FALSE}
+onlyMD <- format(KlamathTP$sample_dt, format="%m-%d")
+X <- as.Date(onlyMD, format="%m-%d")
+
+gs <- gsplot() %>%
+	points(X, KlamathTP$TP_ss, col="black", pch=16, ylim=c(0,1.5)) %>%
+	title(xlab="Calendar Year", ylab="TP_ss") 
+gs
+```
+
+##Series Plot - DON'T NEED TO ADD? 
+
+##Color Plot - GSPLOT
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+X <- runif(33)
+Y <- runif(33)
+Z <- rep(c("A", "B", "C"), 11)
+AA.pl <- colorPlot(X, Y, color=Z)
+addExplanation(AA.pl, where="ul", title="", box.off=FALSE)
+```
+
+```{r message=FALSE, warning=FALSE}
+num.unique <- length(unique(Z))
+plot.colors <- sample(colors(), num.unique)
+levels(plot.colors) <- unique(Z)
+allcols <- plot.colors[match(Z, levels(plot.colors))]
+
+gs <- gsplot() %>%
+	points(X,Y, pch=16, col=allcols) %>%
+	legend(x="topleft", legend=c("A", "B", "C"), col=plot.colors, pch=20, bty='n')
+gs
+```
+
+##Dot Plot - GSPLOT
+```{r}
+Z12f <- factor(Z12, levels=Z12[order(X12)])
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+dotPlot(X12, Z12f)
+```
+
+```{r message=FALSE, warning=FALSE}
+gs <- gsplot() %>% 
+	abline(h=Z12f, col="grey") %>%
+	points(X12, Z12f, pch=16, col="black", axes=FALSE, xlim=c(0.1,1)) %>% 
+	axis(side=2, at=seq_along(Z12f), labels=levels(Z12f), reverse=TRUE) %>% 
+	axis(side=1, at=seq(0.1,1, by=0.1))
+gs
+```
+
+##Scaled Plot - GSPLOT
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+with(IonBalance, scalePlot(Ca, Mg, Plot=list(what="points")))
+```
+
+```{r message=FALSE, warning=FALSE}
+gs <- gsplot() %>% 
+	points(IonBalance$Ca, IonBalance$Mg, pch=16, col="black",
+		   xlim=c(1,5), ylim=c(0.5,3.5)) %>% 
+	axis(side=1, at=seq(1,5,by=0.5)) %>% 
+	axis(side=c(3,4), labels=FALSE) %>% 
+	title(xlab="Ca", ylab="Mg")
+gs
+```
+
+##Scatter Plot Matrix - GSPLOT
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+setPNG()
+AA.lo <- with(IonBalance, setSplom(num.variables=3, touching=FALSE))
+with(IonBalance, splomPlot(cbind(Ca, Mg, Na), Panel=list(line="slr"), layout=AA.lo))
+```
+
+```{r message=FALSE, warning=FALSE}
+gs1 <- gsplot() %>%
+	points(IonBalance$Ca, IonBalance$Mg, pch=16, col="black", xlim=c(1,5), ylim=c(0.5,3.5)) %>%
+	axis(side=1, labels=FALSE) %>%
+	title(ylab="Mg")
+gs2 <- gsplot() %>%
+	points(IonBalance$Ca, IonBalance$Na, pch=16, col="black", xlim=c(1,5), ylim=c(0,0.7)) %>%
+	title(xlab="Ca", ylab="Na")
+gs3 <- gsplot() %>%
+	points(IonBalance$Mg, IonBalance$Na, pch=16, col="black", xlim=c(0.5,3.5), ylim=c(0,0.7)) %>%
+	axis(side=2, labels=FALSE) %>%
+	title(xlab="Mg")
+
+layout(matrix(c(1,0,2,3), 2,2, byrow=TRUE))
+gs1
+gs2
+gs3
+```
+
+***
+
+#Piper Plots - DON'T NEED TO ADD
+Don't need to add any graphs from here
+
+***
+
+#Probability Plots
+
+```{r}
+set.seed(2736)
+Xnorm <- rnorm(32)
+Xlogn <- rlnorm(32)
+Xmix <- exp(c(rnorm(15), rnorm(15, 0.5))) + .5
+Xbig <- rnorm(100)
+```
+
+##Empirical Distribution Function - GSPLOT
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+setPNG()
+ecdfPlot(Xmix)
+```
+
+```{r message=FALSE, warning=FALSE}
+x <- Xmix
+x <- sort(x)
+x <- c(x[1], x) # Duplicate the first observation to be a riser
+y <- seq(0, 1, length.out=length(x))
+
+gs <- gsplot(xlog=TRUE) %>% 
+    points(x, y, type='s', col="black") %>%
+    title(xlab="Xmix", ylab="Cumulative Probability")
+gs
+```
+
+##Probability Plots - GSPLOT
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+setPNG()
+probPlot(Xlogn, mean=mean(log(Xlogn)), sd=sd(log(Xlogn)))
+```
+
+```{r message=FALSE, warning=FALSE}
+#x axis labels are set based on pp in an axis call (cannot do with gsplot bugs in axis right now)
+x <- Xlogn
+x <- sort(x)
+pp <- ppoints(x, 0.4)
+xcoord <- qnorm(pp)
+
+gs <- gsplot(ylog=TRUE) %>% 
+    abline(a=0, b=0.4342945, col="black") %>% 
+    points(xcoord, x, pch=16, col="black", ylim=c(0.01, 10)) %>%
+    title(ylab="Xlogn", xlab="Cumulative Probability")
+gs
+```
+
+##Q-normal Plot - GSPLOT
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+setPNG()
+qqPlot(Xnorm)
+```
+
+```{r message=FALSE, warning=FALSE}
+y <- sort(Xnorm[!is.na(Xnorm)])
+x <- qnorm(ppoints(Xnorm, 0.4))
+
+gs <- gsplot() %>%
+  abline(a=mean(y), b=sd(y)) %>%
+  points(x,y, pch=16, col="black", xlim=c(-3,3), ylim=c(-3,4)) %>%
+  axis(side=c(3,4), labels=FALSE) %>%
+  title(xlab="Normal Quantities", ylab="Xnorm")
+gs
+```
+
+##Q-Q Plot - GSPLOT
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+setPNG()
+qqPlot(Xnorm, Xbig)
+```
+
+```{r message=FALSE, warning=FALSE}
+y <- sort(Xbig)
+x <- sort(Xnorm)
+lx <- length(x)
+ly <- length(y)
+
+alpha <- 0.4
+ahpla <- 1 - 2 * alpha
+probs <- ((ly + ahpla) * (seq(lx) - alpha)/(lx+ahpla) + alpha - 1)/ly
+y <- quantile(y, probs=probs)
+sl <- sd(y)/sd(x)
+
+gs <- gsplot(xaxs='i', yaxs='i') %>%
+  abline(a=mean(y) - sl*mean(x), b=sl, col="black") %>%
+  abline(a=0, b=1) %>%
+  points(x,y, pch=16, col="black", xlim=c(-3,4), ylim=c(-3,2)) %>%
+  axis(side=c(3,4), labels=FALSE) %>%
+  title(xlab="Normal Quantities", ylab="Xnorm")
+gs
+```
+
+##Histogram - ADD
+
+##Adding Plots to Probability Graphs - GSPLOT
+- accomplished using layout()
+
