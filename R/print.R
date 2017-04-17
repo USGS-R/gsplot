@@ -110,6 +110,17 @@ print.gsplot <- function(x, ...){
 
   if(!is.null(view.info)){
     default_view <- ifelse("view.1.2" %in% view.info$name, "view.1.2", view.info$name[1])
+    
+    # reset par logs before adding the default side
+    # otherwise, par is stuck on the last side added
+    for(side.name in as.side_name(default_view)){
+      if("x" == as.axis(side.name)){
+        par(xlog=views[[side.name]]$log)
+      } else {
+        par(ylog=views[[side.name]]$log)
+      }
+    }
+    
     set_frame(views, default_view)    
   }
   
