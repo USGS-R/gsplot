@@ -7,11 +7,9 @@ This package is considered a 'support' package. For more information, see: <http
 
 This package is still very much in development, so the API may change at any time.
 
-[![Build status](https://ci.appveyor.com/api/projects/status/1nt561l271x6xhsw?svg=true)](https://ci.appveyor.com/project/jread-usgs/gsplot)
-
-[![Build Status](https://travis-ci.org/USGS-R/gsplot.svg)](https://travis-ci.org/USGS-R/gsplot)
-
-[![Coverage Status](https://coveralls.io/repos/USGS-R/gsplot/badge.svg?branch=master&service=github)](https://coveralls.io/github/USGS-R/gsplot?branch=master)
+| Windows                                                                                                                                     | Linix                                                                                                   |
+|---------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|
+| [![Build status](https://ci.appveyor.com/api/projects/status/1nt561l271x6xhsw?svg=true)](https://ci.appveyor.com/project/jread-usgs/gsplot) | [![travis](https://travis-ci.org/USGS-R/gsplot.svg?branch=master)](https://travis-ci.org/USGS-R/gsplot) |
 
 ### Reporting bugs
 
