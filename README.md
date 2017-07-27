@@ -1,11 +1,9 @@
-Installation
-------------
+Package Status
+--------------
 
-Currently only available via github. Easiest way to install is to use the `devtools` package:
+[![status](https://img.shields.io/badge/USGS-Support-yellow.svg)](https://owi.usgs.gov/R/packages.html#support)
 
-``` r
-devtools::install_github("USGS-R/gsplot")
-```
+This package is considered a 'support' package. For more information, see: <https://owi.usgs.gov/R/packages.html#support>
 
 This package is still very much in development, so the API may change at any time.
 
@@ -14,6 +12,23 @@ This package is still very much in development, so the API may change at any tim
 [![Build Status](https://travis-ci.org/USGS-R/gsplot.svg)](https://travis-ci.org/USGS-R/gsplot)
 
 [![Coverage Status](https://coveralls.io/repos/USGS-R/gsplot/badge.svg?branch=master&service=github)](https://coveralls.io/github/USGS-R/gsplot?branch=master)
+
+### Reporting bugs
+
+Please consider reporting bugs and asking questions on the Issues page: <https://github.com/USGS-R/gsplot/issues>
+
+Follow `@USGS_R` on Twitter for updates on USGS R packages:
+
+[![Twitter Follow](https://img.shields.io/twitter/follow/USGS_R.svg?style=social&label=Follow%20USGS_R)](https://twitter.com/USGS_R)
+
+Installation
+------------
+
+Currently only available via github. Easiest way to install is to use the `devtools` package:
+
+``` r
+devtools::install_github("USGS-R/gsplot")
+```
 
 Overview
 --------
@@ -472,6 +487,11 @@ gs_packers
 ```
 
 ![](README_files/figure-markdown_github/unnamed-chunk-27-1.png)
+
+Code of Conduct
+---------------
+
+We want to encourage a warm, welcoming, and safe environment for contributing to this project. See the [code of conduct](https://github.com/USGS-R/gsplot/blob/master/CONDUCT.md) for more information.
 
 Disclaimer
 ----------

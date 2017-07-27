@@ -5,3 +5,4 @@ README_files
 test.png
 ^.*\.Rproj$
 ^\.Rproj\.user$
+CONDUCT.md
