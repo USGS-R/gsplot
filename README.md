@@ -1,3 +1,8 @@
+gsplot
+======
+
+The goal of this package is to simplify base-R plotting.
+
 Package Status
 --------------
 

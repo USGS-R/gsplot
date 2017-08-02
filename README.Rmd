@@ -13,6 +13,10 @@ knitr::opts_chunk$set(fig.width=6, fig.height=6,
                       warning=FALSE, message=FALSE)
 ```
 
+# gsplot
+
+The goal of this package is to simplify base-R plotting.
+
 ## Package Status
 
 [![status](https://img.shields.io/badge/USGS-Support-yellow.svg)](https://owi.usgs.gov/R/packages.html#support)
