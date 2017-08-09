@@ -24,6 +24,12 @@ Follow `@USGS_R` on Twitter for updates on USGS R packages:
 
 [![Twitter Follow](https://img.shields.io/twitter/follow/USGS_R.svg?style=social&label=Follow%20USGS_R)](https://twitter.com/USGS_R)
 
+### Package Support
+
+The Water Mission Area of the USGS has supported the development and maintenance of the `gsplot` R-package. Resources are available primarily for maintenance. Priorities on the development are determined by the `gsplot` development team.
+
+[![USGS](http://usgs-r.github.io/images/usgs.png)](https://www.usgs.gov/)
+
 Installation
 ------------
 
